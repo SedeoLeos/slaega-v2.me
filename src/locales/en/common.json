@@ -1,0 +1,23 @@
+{
+    "Me": {
+        "menu": {
+            "profile": "Mon profil",
+            "settings": "Paramètres",
+            "help": "Aide et support",
+            "logout": "Déconnexion"
+        },
+        "MyProfile": {
+            "title": "Mon compte",
+            "metaTitle": "Mon compte",
+            "metaDescription": "Consultez et modifiez vos informations personnelles"
+        },
+        "MySettings": {
+            "title": "Paramètres",
+            "metaTitle": "Paramètres",
+            "metaDescription": "Modifiez vos paramètres de compte et de sécurité."
+        },
+        "errors": {
+            "serverError": "Une erreur est survenue lors de la tentative de récupération des informations de l'utilisateur. Veuillez réessayer plus tard."
+        }
+    }
+}

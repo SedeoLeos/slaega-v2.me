@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #DCDED0;
+  --foreground: #000000;
+  --secondary: hsl(0, 0%, 59%);
+  --accent: hsl(79, 29%, 37%);
+  --primary: hsl(79, 29%, 37%);
+  --green-app: #05796B;
 }
 
 @theme inline {
+  --spacing-content: 1457px;
+  --spacing-content-blog: 900px;
+  --breakpoint-2lg: 1100px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
+
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-green-app: var(--green-app);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    @apply font-poppins;
   }
+  a {
+    @apply text-foreground no-underline;
+  }
+
+  input, textarea {
+    @apply bg-zinc-100 w-full md:w-2xl;
+
+  }
+  input {
+    @apply h-20 p-5;
+
+  }
+
+  textarea {
+    @apply h-80 p-5;
+
+  }
+  /* Applique les styles à tout contenu Markdown dans <article.project> */
+
+article.project h1 {
+  @apply text-4xl mb-4 pb-2  font-bold;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+article.project h2 {
+  @apply text-3xl mt-8 mb-4 font-semibold;
+}
+
+article.project p {
+  @apply my-4 leading-7;
+}
+
+article.project ul {
+  @apply my-4 pl-6 list-disc;
+}
+
+article.project ol {
+  @apply my-4 pl-6 list-decimal;
+}
+
+article.project code {
+  @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+article.project pre {
+  @apply bg-gray-800 text-gray-50 p-4 rounded-lg overflow-x-auto my-6 text-sm;
+}
+
+article.project blockquote {
+  @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 my-4;
+}
+
+  
 }
