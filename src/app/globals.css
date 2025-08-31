@@ -50,35 +50,35 @@
   }
   /* Applique les styles à tout contenu Markdown dans <article.project> */
 
-article.project h1 {
-  @apply text-4xl mb-4 pb-2  font-bold;
+article .project h1 {
+  @apply hidden;
 }
 
-article.project h2 {
+article .project h2 {
   @apply text-3xl mt-8 mb-4 font-semibold;
 }
 
-article.project p {
+article .project p {
   @apply my-4 leading-7;
 }
 
-article.project ul {
+article .project ul {
   @apply my-4 pl-6 list-disc;
 }
 
-article.project ol {
+article .project ol {
   @apply my-4 pl-6 list-decimal;
 }
 
-article.project code {
+article .project code {
   @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
 }
 
-article.project pre {
+article .project pre {
   @apply bg-gray-800 text-gray-50 p-4 rounded-lg overflow-x-auto my-6 text-sm;
 }
 
-article.project blockquote {
+article .project blockquote {
   @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 my-4;
 }
 

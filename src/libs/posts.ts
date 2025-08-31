@@ -15,7 +15,7 @@ export function getPost(slug: string) {
 }
 
 
-const postsDirectory = path.join(process.cwd(), "content/project");
+const postsDirectory = path.join(process.cwd(), "src/content/project");
 
 /**
  * Récupère la liste de tous les posts MDX avec leurs métadonnées
@@ -29,10 +29,8 @@ export function getAllPosts() {
     .map((filename) => {
       const filePath = path.join(postsDirectory, filename);
       const fileContent = fs.readFileSync(filePath, "utf-8");
-
       // Extraire le front-matter
-      const { data } = matter(fileContent);
-
+      const { data } = matter(fileContent);  
       // Générer le slug à partir du nom de fichier
       const slug = filename.replace(/\.mdx$/, "");
 

@@ -12,7 +12,8 @@ const menuData = [
 const Header = () => {
   return (
     <header className="w-full py-10 px-10 md:px-20  text-foreground font-poppins  flex justify-between items-center max-w-content mx-auto">
-      <h1 className="text-3xl font-bold text-green-app">Slaega</h1>
+      <Link href={"/"}><h1 className="text-3xl font-bold text-green-app">
+        Slaega</h1> </Link>
 
       <nav className="2lg:flex hidden">
         <ul className="flex text-base font-medium gap-5">

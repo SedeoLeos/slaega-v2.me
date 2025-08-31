@@ -2,28 +2,56 @@
 title: "Wapi Taxis – Application Client"
 date: "2025-01-15"
 tags: ["Django", "Django Channels", "WebSockets", "Django REST Framework", "Flutter", "Temps Réel", "Mobilité"]
+image: "/images/img.jpg"
 ---
 
 # 🚖 Wapi Taxis – Application Client
 
-**Wapi Taxis (version client)** est une application mobile innovante qui permet aux passagers de commander un taxi en temps réel et de suivre leur trajet en toute transparence.  
-Elle répond au besoin croissant de mobilité urbaine intelligente et connectée.  
+## 🌍 Introduction
+La mobilité urbaine est aujourd’hui l’un des défis majeurs des grandes villes. Entre la croissance démographique, la circulation dense et les besoins de déplacements rapides, les utilisateurs recherchent des solutions **fiables, accessibles et instantanées**.  
+C’est dans ce contexte que **Wapi Taxis (version client)** a été conçu : une application mobile qui permet aux passagers de commander un taxi en quelques secondes et de suivre leur trajet en toute transparence.  
+L’objectif est simple : **réinventer l’expérience du transport urbain** en combinant innovation technologique, simplicité d’utilisation et confort pour l’utilisateur.
+
+---
+
+## 📝 Description du projet
+Wapi Taxis offre une expérience fluide et intuitive pour toute personne souhaitant se déplacer rapidement en ville.  
+Dès l’ouverture de l’application, l’utilisateur accède à une carte interactive affichant les chauffeurs disponibles à proximité. En un clic, il peut réserver une course et être mis en relation avec le chauffeur le plus proche.  
+
+L’application met un point d’honneur sur la **confiance et la transparence** :  
+- Le client peut suivre en temps réel l’arrivée de son chauffeur grâce au suivi GPS.  
+- Les notifications push informent des étapes importantes : validation de la commande, arrivée du chauffeur, début et fin de la course.  
+- Un système de profils et d’historique de courses permet une meilleure organisation et un suivi personnalisé.  
+
+En résumé, Wapi Taxis se veut être **l’allié quotidien** des citadins pour des déplacements plus intelligents et sans stress.
+
+---
 
 ## ✨ Fonctionnalités clés
-- 📍 **Géolocalisation en temps réel** des chauffeurs disponibles
-- 🚕 **Commande instantanée** et mise en relation rapide avec le chauffeur le plus proche
-- 🔔 **Notifications push** en direct via **Django Channels & WebSockets**
-- 📱 Expérience mobile fluide et multiplateforme avec **Flutter**
-- 🔐 **Sécurité renforcée** : authentification, gestion des profils et suivi des courses
+- 📍 **Géolocalisation en temps réel** des chauffeurs et passagers  
+- 🚕 **Commande instantanée** avec affectation automatique du chauffeur le plus proche  
+- 🔔 **Notifications push en direct** grâce à Django Channels & WebSockets  
+- 📱 Interface mobile ergonomique et multiplateforme via **Flutter**  
+- 🔐 **Sécurité renforcée** avec authentification JWT et gestion des profils utilisateurs  
+- 📊 **Historique des courses** et suivi personnalisé des déplacements  
+
+---
 
 ## 🛠️ Technologies utilisées
-- **Backend** : Django + Django REST Framework  
-- **Communication temps réel** : Django Channels (WebSockets)  
-- **Frontend mobile** : Flutter (Android & iOS)  
-- **Base de données** : PostgreSQL  
-- **Authentification & API** : JWT + DRF  
+Le projet s’appuie sur un socle technologique robuste et moderne :  
+
+- **Backend** : Django (framework rapide et fiable) + **Django REST Framework** pour exposer des API performantes  
+- **Communication temps réel** : Django Channels et WebSockets pour une interaction instantanée entre client et chauffeur  
+- **Frontend mobile** : Flutter, permettant un développement cross-platform (Android & iOS) avec une seule base de code  
+- **Base de données** : PostgreSQL pour une gestion fiable et scalable des données  
+- **Authentification** : JWT combiné à DRF pour sécuriser l’accès aux services et protéger les données utilisateurs  
+
+---
 
 ## 🚀 Résultats et impact
-- ⏱️ Réduction significative du temps d’attente des clients  
-- 🌍 Expérience utilisateur améliorée grâce au suivi en direct  
-- 📊 Contribution à une meilleure organisation de la mobilité urbaine
+Depuis son lancement, Wapi Taxis a démontré un réel impact sur la mobilité urbaine :  
+- ⏱️ **Réduction du temps d’attente** grâce à la mise en relation intelligente et rapide  
+- 🌍 **Expérience utilisateur améliorée** avec un suivi précis et transparent de la course  
+- 📊 **Contribution à une mobilité plus organisée**, fluidifiant les trajets en ville et réduisant l’incertitude pour les passagers  
+
+Wapi Taxis illustre ainsi comment la technologie peut transformer la mobilité quotidienne et offrir une **solution durable et moderne** pour les villes connectées.  
