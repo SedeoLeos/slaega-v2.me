@@ -31,8 +31,8 @@ function ProjectList() {
                             </div>
                             <h4 className=''> {item.title || ''}</h4>
                             <div className='flex items-center w-5/6 justify-between'>
-                            <Link href={`fr/project/${item.slug}`} className='text-accent'>Read More</Link>
-                            <Link href={`fr/project/${item.slug}`} className='w-9 h-9 rounded-full bg-accent justify-center items-center flex'>
+                            <Link href={`/fr/project/${item.slug}`}  className='text-accent'>Read More</Link>
+                            <Link href={`/fr/project/${item.slug}`} className='w-9 h-9 rounded-full bg-accent justify-center items-center flex'>
                                 <Arrow60/>
                             </Link>
                             </div>

@@ -50,37 +50,96 @@
   }
   /* Applique les styles à tout contenu Markdown dans <article.project> */
 
+  /* Style global pour le contenu markdown dans un article */
+/* Arrière-plan global clair */
+article .project {
+  @apply text-[#1E1E1E] leading-relaxed;
+}
+
+/* Titres */
 article .project h1 {
   @apply hidden;
 }
 
 article .project h2 {
-  @apply text-3xl mt-8 mb-4 font-semibold;
+  @apply text-3xl font-bold text-[#111111] mt-5 lg:mt-10 mb-4;
 }
 
+article .project h3 {
+  @apply text-2xl font-semibold text-[#1E1E1E] mt-8 mb-4;
+}
+
+article .project h4 {
+  @apply text-xl font-semibold text-[#1E1E1E] mt-6 mb-3;
+}
+
+article .project h5,
+article .project h6 {
+  @apply text-lg font-semibold text-[#1E1E1E] mt-4 mb-2;
+}
+
+/* Paragraphes */
 article .project p {
-  @apply my-4 leading-7;
+  @apply my-4 text-base leading-7 text-[#333333];
 }
 
+/* Listes */
 article .project ul {
-  @apply my-4 pl-6 list-disc;
+  @apply list-disc pl-6 my-4 text-[#333333];
 }
 
 article .project ol {
-  @apply my-4 pl-6 list-decimal;
+  @apply list-decimal pl-6 my-4 text-[#333333];
 }
 
-article .project code {
-  @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+article .project li {
+  @apply mb-2;
 }
 
-article .project pre {
-  @apply bg-gray-800 text-gray-50 p-4 rounded-lg overflow-x-auto my-6 text-sm;
+/* Liens */
+article .project a {
+  @apply text-[#0F766E] hover:text-[#0D5B56] underline transition-all duration-200;
 }
 
+/* HR */
+article .project hr {
+  @apply my-10 border-[#A0A0A0];
+}
+
+/* Blockquote */
 article .project blockquote {
-  @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 my-4;
+  @apply border-l-4 border-[#A0A0A0] pl-6 italic text-[#666666] my-6 bg-[#EBEBEB] py-3 rounded;
 }
+
+/* Code inline */
+article .project code {
+  @apply bg-[#E6E6E6] text-[#D97706] px-1.5 py-0.5 rounded font-mono text-sm;
+}
+
+/* Code block */
+article .project pre {
+  @apply bg-[#E6E6E6] text-[#1E1E1E] p-4 rounded-lg overflow-x-auto my-6 text-sm;
+}
+
+/* Images */
+article .project img {
+  @apply rounded-lg my-6 max-w-full h-auto shadow-md;
+}
+
+/* Tables */
+article .project table {
+  @apply w-full text-left border-collapse my-6 text-sm;
+}
+
+article .project th {
+  @apply border-b border-[#999999] font-semibold px-4 py-2 text-[#111111];
+}
+
+article .project td {
+  @apply border-b border-[#CCCCCC] px-4 py-2 text-[#1E1E1E];
+}
+
+
 
   
 }

@@ -13,9 +13,9 @@ function Contact() {
             <div className='absolute left-0'>
                 <IllustrationContact />
             </div>
-            <div className='w-full max-w-content self-center flex py-40 justify-between z-[2] px-20'>
+            <div className='w-full max-w-content self-center flex py-40  justify-center lg:justify-between  z-[2] px-10 lg:px-20 md:flex-nowrap flex-wrap gap-5'>
 
-                <div className='max-w-md gap-10 flex flex-col'>
+                <div className='w-md gap-10 flex flex-col'>
                     <h2 className='text-5xl'>Let’s work together</h2>
                     <p className='leading-8 text-lg'>
                         This is a template Figma file, turned into code using Anima. Learn more at AnimaApp.com This is a template Figma file, turned into code using Anima. Learn more at AnimaApp.com
@@ -41,8 +41,8 @@ function Contact() {
                 </div>
 
 
-                <div>
-                    <form action="" method="post" className='flex flex-col gap-7'>
+                <div className=''>
+                    <form action="" method="post" className='flex flex-col gap-7 items-center'>
                         <input type="email" name="" id="" />
                         <input type="name" name="" id="" />
                         <textarea></textarea>

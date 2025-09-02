@@ -1,7 +1,15 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
+export function splitMarkdownByParagraphs(md: string, numberOfParagraphs = 2): [string, string] {
+    // Découpe sur deux sauts de ligne (fin de paragraphe)
+    const parts = md.split(/\n\s*\n/);
+  
+    const preview = parts.slice(0, numberOfParagraphs).join('\n\n');
+    const rest = parts.slice(numberOfParagraphs).join('\n\n');
+  
+    return [preview, rest];
+}
 export function getPost(slug: string) {
   const filePath = path.join(process.cwd(), "src/content/project", `${slug}.mdx`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -44,4 +52,14 @@ export function getAllPosts() {
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return posts;
+}
+
+export function  getPostPath (){
+  const files = fs.readdirSync(path.join(process.cwd(), "src/content/project"))
+
+  return files.map((fileName) => ({
+    params: {
+      slug: fileName.replace(/\.mdx$/, ''),
+    },
+  }))
 }

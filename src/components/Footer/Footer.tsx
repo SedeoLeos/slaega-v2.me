@@ -10,10 +10,10 @@ import Tweeter from '../icons/tweeter'
 function Footer() {
     return (
 
-        <div className='mt-52 flex flex-col gap-y-10'>
-            <div className='self-center max-w-content w-full px-20'>
+        <div className='lg:mt-52 p-5 flex flex-col gap-y-10'>
+            <div className='self-center max-w-content w-full px-5 md:px-20'>
 
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center flex-col md:flex-row gap-5'>
 
                     <h2 className='text-6xl max-w-lg'>
                         Let’s <br />
@@ -31,7 +31,7 @@ function Footer() {
             </div>
 
             <div className='bg-zinc-800 w-full h-0.5'></div>
-            <div className='self-center max-w-content w-full px-20 pb-5 flex justify-between items-center'>
+            <div className='self-center max-w-content w-full px-20 pb-5 flex justify-between items-center sm:flex-row flex-col gap-5'>
 
                 <div>
                     <span>
