@@ -33,7 +33,7 @@ function CircleTextV() {
 
 function Hero() {
   return (
-    <div className="flex  w-full max-w-content self-center font-poppins flex-wrap justify-center gap-10 lg:gap-0 lg:justify-between md:px-20 px-10 py-10 ">
+    <div className=" flex  w-full max-w-content self-center font-poppins flex-wrap justify-center gap-10 lg:gap-0 lg:justify-between md:px-20 px-10 py-10 ">
       <div className="flex  lg:min-w-full ">
         <div className="relative justify-center lg:-ml-10 items-center flex ">
           <CircleTextV />
@@ -50,9 +50,9 @@ function Hero() {
           <span>lets think</span> <span className="text-green-app">creative</span></p>
       </div>
 
-      <div className="md:h-[434px] w-full md:w-[353]  flex flex-col">
-        <div className=" w-[80%] md:w-[271.87px]  h-[328.18px] bg-white  md:ml-[78px] md:-mb-[50%] self-end z-20 relative"></div>
-        <div className=" w-[80%]   md:w-[271.87px]  h-[285.07px] bg-accent  self-start md:mt-0 md:ml-0  -mt-[80%] relative z-0"></div>
+      <div className="h-[434px] w-full max-w-[353px]  flex flex-col ">
+        <div className=" w-[80%] sm:w-[271.87px]  h-[328.18px] bg-white  sm:ml-[78px] sm:-mb-[50%] self-end z-20 relative"></div>
+        <div className=" w-[80%] max-w-[271.87px]  sm:w-[271.87px]  h-[285.07px] bg-accent  self-start sm:mt-0 sm:ml-0  -mt-[180px] relative z-0"></div>
       </div>
 
       <div className="w-md flex flex-col gap-8  lg:-mr-10">

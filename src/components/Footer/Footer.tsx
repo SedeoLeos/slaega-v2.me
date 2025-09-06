@@ -1,16 +1,12 @@
 import Link from 'next/link'
 import React from 'react'
 import Gmail from '../icons/gmail'
-import Linkden from '../icons/linkden'
-import Sport from '../icons/sport'
-import Facebook from '../icons/facebook'
-import Instagram from '../icons/instagram'
-import Tweeter from '../icons/tweeter'
+import SocialLinK from '../SocialLinK'
 
 function Footer() {
     return (
 
-        <div className='lg:mt-52 p-5 flex flex-col gap-y-10'>
+        <footer className='lg:mt-52 p-5 flex flex-col gap-y-10 w-full overflow-hidden'>
             <div className='self-center max-w-content w-full px-5 md:px-20'>
 
                 <div className='flex justify-between items-center flex-col md:flex-row gap-5'>
@@ -30,34 +26,24 @@ function Footer() {
 
             </div>
 
-            <div className='bg-zinc-800 w-full h-0.5'></div>
-            <div className='self-center max-w-content w-full px-20 pb-5 flex justify-between items-center sm:flex-row flex-col gap-5'>
+            <hr className='bg-zinc-800 w-full h-0.5'/>
+            <div className='self-center max-w-content w-full px-20  flex justify-between items-center sm:flex-row flex-col gap-5 '>
 
-                <div>
+                <div className=''>
                     <span>
                         © 2025 All rights reserved.
                     </span>
                 </div>
-                <div className='flex gap-5'>
-                    <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                        <Linkden />
-                    </Link>
-                    <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                        <Sport />
-                    </Link>
-                    <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                        <Facebook />
-                    </Link>
-                    <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                        <Instagram />
-                    </Link>
-                    <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                        <Tweeter />
-                    </Link>
+                <div className='flex gap-5 '>
+                    <SocialLinK href={""} icon='linkden'/>                    
+                    <SocialLinK href={""} icon='sport' />                  
+                    <SocialLinK href={""} icon='facebook' />
+                    <SocialLinK href={""} icon='instagram' />
+                    <SocialLinK href={""} icon='tweeter' />
                 </div>
             </div>
 
-        </div>
+        </footer>
     )
 }
 

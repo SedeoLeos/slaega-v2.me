@@ -2,7 +2,8 @@ import Content from "@/components/Content/Content";
 import Arrow60 from "@/components/icons/arrow60";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
-import { getAllPosts, getPost, getPostPath, splitMarkdownByParagraphs } from "@/libs/posts";
+import { splitMarkdownByParagraphs } from "@/libs/matter";
+import { getAllPosts, getPost, getPostPath } from "@/libs/posts";
 import { serialize } from "next-mdx-remote/serialize";
 import Image from 'next/image'
 import Link from "next/link";
@@ -22,17 +23,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const paramWait = await params;
   const slug = paramWait.slug;
-  const { content, meta } = getPost(slug)
+  const { content, meta } = await getPost(slug)
 
   const [previewRaw, fullRaw] = splitMarkdownByParagraphs(content, 5)
 
   const previewSource = await serialize(previewRaw || '')
   const fullSource = await serialize(fullRaw || '')
 
-  const posts = getAllPosts()
+  const posts = await getAllPosts()
 
 
-  return <article className="w-full  mx-auto  maw-w-content min-h-screen p-2.5 lg:p-20 flex flex-col gap-5 lg:gap-10  items-center overflow-x-hidden">
+  return <article className="w-full  mx-auto  max-w-content min-h-screen p-2.5 lg:p-20 flex flex-col gap-5 lg:gap-10  items-center overflow-x-hidden">
     <div className="absolute lg:left-0 -left-3/5  opacity-30 lg:opacity-100">
       <IllustrationProject />
     </div>

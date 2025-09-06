@@ -19,5 +19,28 @@
         "errors": {
             "serverError": "Une erreur est survenue lors de la tentative de récupération des informations de l'utilisateur. Veuillez réessayer plus tard."
         }
-    }
+    },
+    "categories":{
+        "showcase-site": "Site vitrine",
+        "e-commerce": "E-commerce",
+        "web-app": "Application web",
+        "api-webservice": "Web services / API",
+        "automation": "Automatisation",
+        "wordpress-site": "Site WordPress",
+        "data-integration": "Intégration de données",
+        "admin-dashboard": "Dashboard / Admin",
+        "poc-prototype": "POC / Prototype",
+        "mobile-app": "Application mobile",
+        "desktop-app": "Application desktop",
+        "self-hosted-platform": "Plateforme auto-hébergée",
+        "devops-infrastructure": "DevOps / Infrastructure",
+        "platform-deployment": "Déploiement de plateforme",
+        "auth-system": "Système d’autorisation",
+        "ci-cd": "CI/CD",
+        "cloud-setup": "Configuration cloud",
+        "monitoring-logging": "Monitoring & Logs",
+        "reverse-proxy": "Proxy / Routage"
+          
+      }
+      
 }

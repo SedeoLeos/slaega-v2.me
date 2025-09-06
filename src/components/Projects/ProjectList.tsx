@@ -1,25 +1,34 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Arrow60 from '../icons/arrow60'
-import { getAllPosts } from '@/libs/posts'
+import FilterCategorie from './FilterCategorie'
+import { useProject } from '@/hooks/useProjects'
+import { useSearchParams } from 'next/navigation'
 function ProjectList() {
-    const posts = getAllPosts()
+    const searchParams = useSearchParams();
+    const category = searchParams.get("category");
+    const categories = category?.split(',')
+    const {data, } = useProject({categories})
+    const projects = data?.pages.flat() || []
     return (
-        <div className='w-full max-w-content flex py-20  flex-col gap-20 justify-center items-center self-center'>
+        <div className='w-full max-w-content flex py-20 px-10 md:px-20 flex-col gap-20 justify-center items-center self-center'>
 
             <div className='text-center space-y-1.5'>
                 <h2 className='text-5xl font-extrabold '>Projects</h2>
                 <span className='text-sm '>Some of my Work</span>
             </div>
+            <FilterCategorie />
 
             <div className='grid md:grid-cols-2 xl:grid-cols-3  max-w-[1191px] gap-5'>
-                {posts.map((item, index) =>
-                    <div key={index} className='self-center  place-self-center  flex flex-col p-7 border-stone-900 relative  '>
+                {projects && projects.map((item, index) =>
+                    <div key={index} className='self-center  place-self-center  flex flex-col p-7 border-stone-900 relative w-full  lg:max-w-96'>
 
                         <Image 
                         width={369} height={198} 
                         src={item.image || '/img.jpg'} alt='img'
+                        className='w-full'
                         placeholder={'data:image/img.jpg'}
                          />
                         <div className='bg-background -mt-7 mx-1 py-2 px-4 flex flex-col gap-5 shadow-[0_4px_8px_0_rgba(0,0,0,0.04)]'>

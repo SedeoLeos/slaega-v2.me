@@ -1,16 +1,16 @@
+'use server';
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-export function splitMarkdownByParagraphs(md: string, numberOfParagraphs = 2): [string, string] {
-    // Découpe sur deux sauts de ligne (fin de paragraphe)
-    const parts = md.split(/\n\s*\n/);
-  
-    const preview = parts.slice(0, numberOfParagraphs).join('\n\n');
-    const rest = parts.slice(numberOfParagraphs).join('\n\n');
-  
-    return [preview, rest];
+type ProjectMeta = {
+  title:string;
+  date:Date;
+  tags:string [];
+  categories:string[];
+  image:string;
 }
-export function getPost(slug: string) {
+
+export async function getPost(slug: string) {
   const filePath = path.join(process.cwd(), "src/content/project", `${slug}.mdx`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
 
@@ -28,33 +28,50 @@ const postsDirectory = path.join(process.cwd(), "src/content/project");
 /**
  * Récupère la liste de tous les posts MDX avec leurs métadonnées
  */
-export function getAllPosts() {
-  // Lire tous les fichiers du dossier "content"
+type Params = {
+  page: number;
+  pageSize: number;
+  categories?: string[];
+};
+
+export async function getAllProjects (){
   const filenames = fs.readdirSync(postsDirectory);
 
   const posts = filenames
-    .filter((name) => name.endsWith(".mdx")) // ne garder que les .mdx
+    .filter((name) => name.endsWith(".mdx"))
     .map((filename) => {
       const filePath = path.join(postsDirectory, filename);
       const fileContent = fs.readFileSync(filePath, "utf-8");
-      // Extraire le front-matter
-      const { data } = matter(fileContent);  
-      // Générer le slug à partir du nom de fichier
+      const { data } = matter(fileContent) as unknown as { data: ProjectMeta };
       const slug = filename.replace(/\.mdx$/, "");
-
-      return {
-        slug,
-        ...data, // title, date, tags, etc.
-      };
+      return { slug, ...data };
     });
 
-  // Optionnel : trier par date décroissante
-  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  return posts;
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export function  getPostPath (){
+export async function getProjects({ page, pageSize, categories }: Params): Promise<ProjectMeta[]> {
+  let projects = await  getAllProjects();
+  if (categories && categories.length > 0) {
+    projects = projects.filter((post) =>
+      post.categories?.some((cat) => categories.includes(cat))
+    );
+  }
+
+  const start = page * pageSize;
+  const end = start + pageSize;
+
+  return projects.slice(start, end);
+}
+
+
+export async function getAllCategories() {
+  const projects = await getAllProjects()
+  return [...new Set(projects.map(item => item.categories).flat())];
+}
+
+
+export async function  getPostPath (){
   const files = fs.readdirSync(path.join(process.cwd(), "src/content/project"))
 
   return files.map((fileName) => ({

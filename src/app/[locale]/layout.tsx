@@ -7,6 +7,8 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
+import { QueryClientProvider } from "@tanstack/react-query";
+import Store from "@/Provider/Store";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,15 +45,19 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <body
-        className={`${inter.variable} ${poppins.variable} antialiased`}
-      >
-        <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+      <Store >
+        <body
+          className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}
+        >
           <Header />
-          {children}
+          <main className="w-full relative overflow-hidden bg-background min-h-screen flex flex-col mt-20">
+            {children}
+          </main>
           <Footer />
-        </NextIntlClientProvider>
-      </body>
+        </body>
+      </Store>
+      </NextIntlClientProvider>
     </html>
   );
 }

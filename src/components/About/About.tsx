@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function About() {
     return (
-        <div className='flex justify-center items-center flex-col max-w-content self-center w-full gap-10 p-10 font-poppins'>
+        <div className='flex justify-center items-center flex-col max-w-content self-center w-full gap-10 p-10 font-poppins z-[2] relative'>
             <div className='text-center space-y-1.5'>
                 <h2 className='text-5xl font-extrabold '>About</h2>
                 <span className='text-sm font-semibold'>Get to know me</span>

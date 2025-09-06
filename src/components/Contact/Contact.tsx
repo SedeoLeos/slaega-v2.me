@@ -1,58 +1,41 @@
 import React from 'react'
-import Linkden from '../icons/linkden'
-import Sport from '../icons/sport'
-import Facebook from '../icons/facebook'
-import Instagram from '../icons/instagram'
-import Tweeter from '../icons/tweeter'
-import Link from 'next/link'
 import IllustrationContact from '../Illustration/IllustrationContact'
+import SocialLinK from '../SocialLinK'
 
 function Contact() {
     return (
-        <div className='w-full bg-white flex flex-col items-center justify-center'>
+        <div className='w-full bg-white flex flex-col items-center justify-center overflow-hidden relative'>
             <div className='absolute left-0'>
                 <IllustrationContact />
             </div>
-            <div className='w-full max-w-content self-center flex py-40  justify-center lg:justify-between  z-[2] px-10 lg:px-20 md:flex-nowrap flex-wrap gap-5'>
+            <div className='lg:w-full max-w-content  self-center flex py-40   lg:justify-between  z-[2] px-10 lg:px-20 flex-col lg:flex-row  gap-5'>
 
-                <div className='w-md gap-10 flex flex-col'>
+                <div className='sm:w-md gap-10 flex flex-col'>
                     <h2 className='text-5xl'>Let’s work together</h2>
                     <p className='leading-8 text-lg'>
                         This is a template Figma file, turned into code using Anima. Learn more at AnimaApp.com This is a template Figma file, turned into code using Anima. Learn more at AnimaApp.com
                     </p>
                     <div className='flex gap-5'>
-                        <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                            <Linkden />
-                        </Link>
-                        <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                            <Sport />
-                        </Link>
-                        <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                            <Facebook />
-                        </Link>
-                        <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                            <Instagram />
-                        </Link>
-                        <Link href={""} className='p-2 rounded-full border-zinc-900 border aspect-square justify-center items-center flex'>
-                            <Tweeter />
-                        </Link>
+                        <SocialLinK href={""} icon='linkden' />
+                        <SocialLinK href={""} icon='sport' />
+                        <SocialLinK href={""} icon='facebook' />
+                        <SocialLinK href={""} icon='instagram' />
+                        <SocialLinK href={""} icon='tweeter' />
                     </div>
 
                 </div>
 
 
-                <div className=''>
-                    <form action="" method="post" className='flex flex-col gap-7 items-center'>
-                        <input type="email" name="" id="" />
-                        <input type="name" name="" id="" />
-                        <textarea></textarea>
+                <form action="" method="post" className='flex flex-col gap-7 items-center flex-1 max-w-2xl '>
+                    <input type="email" name="" id="" className=' border-zinc-400 border focus-visible:border-0 focus-visible:outline-2 focus-visible:outline-zinc-400' placeholder='Email' />
+                    <input type="name" name="" id="" placeholder='Name' className=' border-zinc-400 border focus-visible:border-0 focus-visible:outline-2 focus-visible:outline-zinc-400' />
+                    <textarea placeholder='Content' className=' border-zinc-400 border focus-visible:border-0 focus-visible:outline-2 focus-visible:outline-zinc-400'></textarea>
 
-                        <button type="submit" className='self-start outline-0 px-12 py-4 bg-zinc-900 text-white'>
-                            Submit
-                        </button>
-                    </form>
+                    <button type="submit" className='self-start outline-0 px-12 py-4 bg-zinc-900 text-white'>
+                        Submit
+                    </button>
+                </form>
 
-                </div>
 
 
             </div>
