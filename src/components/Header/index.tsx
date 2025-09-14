@@ -3,18 +3,19 @@ import Link from "next/link";
 import NavItem from "./NavItem";
 import Drawer from "../icons/drawer";
 import { useState } from "react";
-
-const menuData = [
-  { href: "/", text: "meet raees" },
-  { href: "/", text: "my work" },
-  { href: "/about", text: "case studies" },
-  { href: "/about", text: "testimonials" },
-  { href: "/contact", text: "blog" },
-  { href: "/contact", text: "contact me" },
-];
+import { useTranslations } from 'next-intl';
 const Header = () => {
-
+  const t = useTranslations()
   const [menu, setMenu] = useState(false);
+
+  const menuData = [
+    { href: "/", text: t('header.navigation.meetRaees') },
+    { href: "/", text: t('header.navigation.myWork') },
+    { href: "/about", text: t('header.navigation.caseStudies') },
+    { href: "/about", text: t('header.navigation.testimonials') },
+    { href: "/contact", text: t('header.navigation.blog') },
+    { href: "/contact", text: t('header.navigation.contactMe') },
+  ];
 
   const onClick = () => {
     setMenu((prev) => !prev)
@@ -35,9 +36,9 @@ const Header = () => {
 
         <div className="flex items-center gap-10 ">
           <div className="hidden md:flex gap-5 text-xl font-bold">
-            <Link href={"#"}>Gh</Link>
-            <Link href={"#"}>Yt</Link>
-            <Link href={"#"}>In</Link>
+            <Link href={"#"}>{t('header.social.github')}</Link>
+            <Link href={"#"}>{t('header.social.youtube')}</Link>
+            <Link href={"#"}>{t('header.social.linkedin')}</Link>
           </div>
           <div className="relative flex flex-col ">
             <button className="2lg:hidden flex text-3xl group" type="button" onClick={onClick}>

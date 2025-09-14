@@ -2,8 +2,11 @@ import Link from 'next/link'
 import React from 'react'
 import Gmail from '../icons/gmail'
 import SocialLinK from '../SocialLinK'
+import { useTranslations } from 'next-intl'
 
 function Footer() {
+    const t = useTranslations()
+    
     return (
 
         <footer className='lg:mt-52 p-5 flex flex-col gap-y-10 w-full overflow-hidden'>
@@ -12,14 +15,18 @@ function Footer() {
                 <div className='flex justify-between items-center flex-col md:flex-row gap-5'>
 
                     <h2 className='text-6xl max-w-lg'>
-                        Let’s <br />
-                        Work Together -
+                        {t('footer.cta.title').split('\n').map((line, index) => (
+                            <React.Fragment key={index}>
+                                {line}
+                                {index === 0 && <br />}
+                            </React.Fragment>
+                        ))}
                     </h2>
 
-                    <Link href={"mailto:smatsoula19@gmail.com"} className='py-4 px-10 border-zinc-800 border flex justify-center items-center gap-2'>
+                    <Link href={`mailto:${t('footer.cta.email')}`} className='py-4 px-10 border-zinc-800 border flex justify-center items-center gap-2'>
                         <Gmail />
                         <span>
-                            smatsoula19@gmail.com
+                            {t('footer.cta.email')}
                         </span>
                     </Link>
                 </div>
@@ -31,7 +38,7 @@ function Footer() {
 
                 <div className=''>
                     <span>
-                        © 2025 All rights reserved.
+                        {t('footer.copyright')}
                     </span>
                 </div>
                 <div className='flex gap-5 '>

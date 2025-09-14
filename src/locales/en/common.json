@@ -1,45 +1,115 @@
 {
-    "Me": {
-        "menu": {
-            "profile": "Mon profil",
-            "settings": "Paramètres",
-            "help": "Aide et support",
-            "logout": "Déconnexion"
+    "header": {
+        "navigation": {
+            "meetRaees": "Meet Slaega",
+            "myWork": "My Projects",
+            "caseStudies": "Case Studies",
+            "testimonials": "Testimonials",
+            "blog": "Blog",
+            "contactMe": "Contact Me"
         },
-        "MyProfile": {
-            "title": "Mon compte",
-            "metaTitle": "Mon compte",
-            "metaDescription": "Consultez et modifiez vos informations personnelles"
-        },
-        "MySettings": {
-            "title": "Paramètres",
-            "metaTitle": "Paramètres",
-            "metaDescription": "Modifiez vos paramètres de compte et de sécurité."
-        },
-        "errors": {
-            "serverError": "Une erreur est survenue lors de la tentative de récupération des informations de l'utilisateur. Veuillez réessayer plus tard."
+        "social": {
+            "github": "Gt",
+            "youtube": "Yb",
+            "linkedin": "Lk"
         }
     },
+    "about": {
+        "title": "About",
+        "subtitle": "Get to know me",
+        "paragraph1": "Hi there! I'm Seba Gedeon, a passionate software engineer specializing in full-stack application development. My expertise spans mobile, web, backend, desktop development, data integration, and DevOps. I'm dedicated to creating robust and secure solutions that meet the complex needs of modern businesses.",
+        "paragraph2": "I bring deep technical expertise in application security, permission systems, and authentication. Whether it's developing high-performance mobile apps, scalable backends, or implementing secure DevOps infrastructures, I master the entire software development chain.",
+        "paragraph3": "Let's work together to bring your technological projects to life with custom, secure, and high-performance solutions. Contact me to discuss your next technical challenge!",
+        "downloadResume": "Download Resume"
+    },
+    "services": {
+        "title": "Services",
+        "subtitle": "What I can do for you",
+        "items": [
+            {
+                "title": "Mobile & Web Development",
+                "description": "Creating native and cross-platform mobile applications, as well as modern and responsive web applications. Expertise in React Native, Flutter, React, Vue.js and advanced web technologies."
+            },
+            {
+                "title": "Backend Development & APIs",
+                "description": "Design and development of robust backends, RESTful and GraphQL APIs, microservices and distributed architectures. Mastery of Node.js, Python, Java, and relational/NoSQL databases."
+            },
+            {
+                "title": "Desktop Apps & Integration",
+                "description": "Development of cross-platform desktop applications and data integration solutions. Expertise in Electron, .NET, third-party API integration and data synchronization."
+            },
+            {
+                "title": "Security & Authentication",
+                "description": "Implementation of secure authentication systems, permission management, OAuth, JWT, encryption and application security best practices to protect your sensitive data."
+            },
+            {
+                "title": "DevOps & Infrastructure",
+                "description": "Setting up CI/CD pipelines, Docker containerization, Kubernetes orchestration, monitoring, and automated cloud deployment (AWS, Azure, GCP) for scalable applications."
+            }
+        ]
+    },
+    "contact": {
+        "title": "Let's work together",
+        "description": "Have a software development project in mind? I'd love to discuss how we can collaborate to create innovative and secure technical solutions. Feel free to reach out and explore the possibilities.",
+        "form": {
+            "email": "Email",
+            "name": "Name",
+            "message": "Message",
+            "submit": "Submit"
+        },
+        "social": {
+            "linkedin": "Lk",
+            "github": "Gh",
+            "facebook": "Fb",
+            "instagram": "It",
+            "twitter": "Tw"
+        }
+    },
+    "footer": {
+        "cta": {
+            "title": "Let's\nWork Together -",
+            "email": "smatsoula19@gmail.com"
+        },
+        "copyright": "© 2025 All rights reserved.",
+        "social": {
+            "linkedin": "Lk",
+            "github": "Gh",
+            "facebook": "Fb",
+            "instagram": "It",
+            "twitter": "Tw"
+        }
+    },
+    "hero": {
+        "greeting": "hi there",
+        "tagline1": "lets think",
+        "tagline2": "creative",
+        "name": "I'm Seba Gedeon",
+        "description": "A Software Engineer who builds robust, scalable applications across the full technology stack. I specialize in mobile, web, and backend development, with expertise in modern frameworks, cloud deployment, and creating secure, high-performance solutions.",
+        "learnMore": "learn more"
+    },
+    "projects": {
+        "title": "Projects",
+        "subtitle": "Some of my work"
+    },
     "categories":{
-        "showcase-site": "Site vitrine",
+        "showcase-site": "Showcase Site",
         "e-commerce": "E-commerce",
-        "web-app": "Application web",
-        "api-webservice": "Web services / API",
-        "automation": "Automatisation",
-        "wordpress-site": "Site WordPress",
-        "data-integration": "Intégration de données",
+        "web-app": "Web Application",
+        "api-webservice": "Web Services / API",
+        "automation": "Automation",
+        "wordpress-site": "WordPress Site",
+        "data-integration": "Data Integration",
         "admin-dashboard": "Dashboard / Admin",
         "poc-prototype": "POC / Prototype",
-        "mobile-app": "Application mobile",
-        "desktop-app": "Application desktop",
-        "self-hosted-platform": "Plateforme auto-hébergée",
+        "mobile-app": "Mobile Application",
+        "desktop-app": "Desktop Application",
+        "self-hosted-platform": "Self-hosted Platform",
         "devops-infrastructure": "DevOps / Infrastructure",
-        "platform-deployment": "Déploiement de plateforme",
-        "auth-system": "Système d’autorisation",
+        "platform-deployment": "Platform Deployment",
+        "auth-system": "Authorization System",
         "ci-cd": "CI/CD",
-        "cloud-setup": "Configuration cloud",
+        "cloud-setup": "Cloud Setup",
         "monitoring-logging": "Monitoring & Logs",
-        "reverse-proxy": "Proxy / Routage"
-          
-      }
+        "reverse-proxy": "Proxy / Routing"
+    }
 }

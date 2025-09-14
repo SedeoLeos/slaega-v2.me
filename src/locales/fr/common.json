@@ -1,24 +1,95 @@
 {
-    "Me": {
-        "menu": {
-            "profile": "Mon profil",
-            "settings": "Paramètres",
-            "help": "Aide et support",
-            "logout": "Déconnexion"
+    "header": {
+        "navigation": {
+            "meetRaees": "Rencontrer Slaega",
+            "myWork": "Mes projets",
+            "caseStudies": "Études de cas",
+            "testimonials": "Témoignages",
+            "blog": "Blog",
+            "contactMe": "Me contacter"
         },
-        "MyProfile": {
-            "title": "Mon compte",
-            "metaTitle": "Mon compte",
-            "metaDescription": "Consultez et modifiez vos informations personnelles"
-        },
-        "MySettings": {
-            "title": "Paramètres",
-            "metaTitle": "Paramètres",
-            "metaDescription": "Modifiez vos paramètres de compte et de sécurité."
-        },
-        "errors": {
-            "serverError": "Une erreur est survenue lors de la tentative de récupération des informations de l'utilisateur. Veuillez réessayer plus tard."
+        "social": {
+            "github": "Gt",
+            "youtube": "Yb",
+            "linkedin": "Lk"
         }
+    },
+    "about": {
+        "title": "À propos",
+        "subtitle": "Apprenez à me connaître",
+        "paragraph1": "Salut ! Je suis Seba Gedeon, un ingénieur logiciel passionné spécialisé dans le développement d'applications complètes. Mon expertise couvre le développement mobile, web, backend, desktop, l'intégration de données, et le DevOps. Je me consacre à créer des solutions robustes et sécurisées qui répondent aux besoins complexes des entreprises modernes.",
+        "paragraph2": "J'apporte une expertise technique approfondie en sécurisation d'applications, systèmes de permissions et authentification. Que ce soit pour développer des applications mobiles performantes, des backends scalables, ou mettre en place des infrastructures DevOps sécurisées, je maîtrise l'ensemble de la chaîne de développement logiciel.",
+        "paragraph3": "Travaillons ensemble pour concrétiser vos projets technologiques avec des solutions sur mesure, sécurisées et performantes. Contactez-moi pour discuter de votre prochain défi technique !",
+        "downloadResume": "Télécharger le CV"
+    },
+    "services": {
+        "title": "Services",
+        "subtitle": "Ce que je peux faire pour vous",
+        "items": [
+            {
+                "title": "Développement Mobile & Web",
+                "description": "Création d'applications mobiles natives et cross-platform, ainsi que d'applications web modernes et responsives. Expertise en React Native, Flutter, React, Vue.js et technologies web avancées."
+            },
+            {
+                "title": "Développement Backend & API",
+                "description": "Conception et développement de backends robustes, APIs RESTful et GraphQL, microservices et architectures distribuées. Maîtrise de Node.js, Python, Java, et bases de données relationnelles/NoSQL."
+            },
+            {
+                "title": "Applications Desktop & Intégration",
+                "description": "Développement d'applications desktop multiplateformes et solutions d'intégration de données. Expertise en Electron, .NET, intégration d'APIs tierces et synchronisation de données."
+            },
+            {
+                "title": "Sécurité & Authentification",
+                "description": "Implémentation de systèmes d'authentification sécurisés, gestion des permissions, OAuth, JWT, chiffrement et bonnes pratiques de sécurité applicative pour protéger vos données sensibles."
+            },
+            {
+                "title": "DevOps & Infrastructure",
+                "description": "Mise en place de pipelines CI/CD, containerisation Docker, orchestration Kubernetes, monitoring, et déploiement automatisé sur cloud (AWS, Azure, GCP) pour des applications scalables."
+            }
+        ]
+    },
+    "contact": {
+        "title": "Travaillons ensemble",
+        "description": "Vous avez un projet de développement logiciel ? Je serais ravi de discuter de la façon dont nous pouvons collaborer pour créer des solutions techniques innovantes et sécurisées. N'hésitez pas à me contacter pour explorer les possibilités.",
+        "form": {
+            "email": "Email",
+            "name": "Nom",
+            "message": "Message",
+            "submit": "Envoyer"
+        },
+        "social": {
+            "linkedin": "Lk",
+            "github": "Gh",
+            "facebook": "Fb",
+            "instagram": "It",
+            "twitter": "Tw"
+        }
+    },
+    "footer": {
+        "cta": {
+            "title": "Travaillons\nEnsemble -",
+            "email": "smatsoula19@gmail.com"
+        },
+        "copyright": "© 2025 Tous droits réservés.",
+        "social": {
+            "linkedin": "LinkedIn",
+            "github": "GitHub",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "twitter": "Twitter"
+        }
+    },
+    "hero": {
+        "greeting": "salut",
+        "tagline1": "pensons",
+        "tagline2": "créatif",
+        "name": "Je suis Seba Gedeon",
+        "description": "Un ingénieur logiciel qui développe des applications robustes et évolutives sur l'ensemble de la pile technologique. Je me spécialise dans le développement mobile, web et backend, avec une expertise en frameworks modernes, déploiement cloud et création de solutions sécurisées et performantes.",
+        "learnMore": "en savoir plus"
+    },
+    "projects": {
+        "title": "Projets",
+        "subtitle": "Quelques-uns de mes travaux"
     },
     "categories":{
         "showcase-site": "Site vitrine",
@@ -35,12 +106,10 @@
         "self-hosted-platform": "Plateforme auto-hébergée",
         "devops-infrastructure": "DevOps / Infrastructure",
         "platform-deployment": "Déploiement de plateforme",
-        "auth-system": "Système d’autorisation",
+        "auth-system": "Système d'autorisation",
         "ci-cd": "CI/CD",
         "cloud-setup": "Configuration cloud",
         "monitoring-logging": "Monitoring & Logs",
         "reverse-proxy": "Proxy / Routage"
-          
-      }
-      
+    }
 }

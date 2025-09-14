@@ -5,6 +5,7 @@ import CurvedText from "react-curved-text";
 import Arrow from "../icons/arrow";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 function CircleTextV() {
   return (
@@ -33,6 +34,8 @@ function CircleTextV() {
 }
 
 function Hero() {
+  const t = useTranslations();
+  
   return (
     <div className=" flex  w-full max-w-content self-center font-poppins flex-wrap justify-center gap-10 lg:gap-0 lg:justify-between md:px-20 px-10 py-10 ">
       <div className="flex  lg:min-w-full ">
@@ -46,9 +49,9 @@ function Hero() {
       </div>
 
       <div className=" flex-col w-[320px]  self-end  ">
-        <div className="flex gap-2 items-center uppercase"> <p>hi there</p>  <div className="w-24 h-1 bg-black"></div></div>
+        <div className="flex gap-2 items-center uppercase"> <p>{t('hero.greeting')}</p>  <div className="w-24 h-1 bg-black"></div></div>
         <p className="text-7xl">
-          <span>lets think</span> <span className="text-green-app">creative</span></p>
+          <span>{t('hero.tagline1')}</span> <span className="text-green-app">{t('hero.tagline2')}</span></p>
       </div>
 
       <div className="h-[434px] w-full max-w-[353px]  flex flex-col ">
@@ -61,14 +64,12 @@ function Hero() {
 
       <div className="w-md flex flex-col gap-8  lg:-mr-10">
         <h2 className="text-3xl font-bold">
-          I&apos;m <span>Seba Gedeon</span>
+          {t('hero.name')}
         </h2>
         <p className="">
-          A Frontend Developer who excels in shaping seamless user
-          experiences. I possess a strong design sensibility, focusing on
-          crafting intuitive and visually appealing websites.
+          {t('hero.description')}
         </p>
-        <Link href={""} className="font-semibold  flex items-center gap-2"> <span>learn more</span> <Arrow /></Link>
+        <Link href={""} className="font-semibold  flex items-center gap-2"> <span>{t('hero.learnMore')}</span> <Arrow /></Link>
       </div>
       {/* </div> */}
     </div>
