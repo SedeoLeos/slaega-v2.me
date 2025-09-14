@@ -8,6 +8,8 @@ type ProjectMeta = {
   tags:string [];
   categories:string[];
   image:string;
+  slug:string;
+  desc:string;
 }
 
 export async function getPost(slug: string) {
@@ -18,7 +20,7 @@ export async function getPost(slug: string) {
 
   return {
     content, // texte MDX sans le front-matter
-    meta: data, // { title, date, tags, ... }
+    meta: data as ProjectMeta
   };
 }
 
@@ -42,9 +44,17 @@ export async function getAllProjects (){
     .map((filename) => {
       const filePath = path.join(postsDirectory, filename);
       const fileContent = fs.readFileSync(filePath, "utf-8");
-      const { data } = matter(fileContent) as unknown as { data: ProjectMeta };
+      const { data ,content} = matter(fileContent) as unknown as { data: ProjectMeta,content: string };
+      // Extraire la description : premier paragraphe de texte (pas les titres)
+      const desc = content
+        .replace(/^#{1,6}\s+.*$/gm, '') // Supprimer les titres markdown
+        .replace(/^\s*$/gm, '') // Supprimer les lignes vides
+        .split('\n')
+        .find(line => line.trim().length > 0) // Premier paragraphe non vide
+        ?.trim() || ''
+        // .substring(0, 150) + '...' || ''; // Limiter à 150 caractères
       const slug = filename.replace(/\.mdx$/, "");
-      return { slug, ...data };
+      return {  ...data , slug, desc  };
     });
 
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

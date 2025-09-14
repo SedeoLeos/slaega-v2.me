@@ -48,6 +48,9 @@
     @apply h-80 p-5;
 
   }
+  .more {
+    background: linear-gradient(180deg, rgba(220, 222, 208, 0.00) -98.48%, #DCDED0 55.11%);
+  }
   /* Applique les styles à tout contenu Markdown dans <article.project> */
 
   /* Style global pour le contenu markdown dans un article */
@@ -140,6 +143,43 @@ article .project td {
 }
 
 
+.description {
+  /* Garder la taille de police normale */
+  font-size: inherit;
+  line-height: inherit;
+}
 
-  
+.description p {
+  margin: 0;
+  display: inline;
+}
+
+.description strong {
+  /* Strong sans augmenter la taille - juste une couleur légèrement différente */
+  font-weight: 500;
+  color: inherit;
+}
+
+.description em {
+  font-style: italic;
+  color: inherit;
+}
+
+.description code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.description a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+}
+
+.description a:hover {
+  text-decoration-color: currentColor;
+}
 }

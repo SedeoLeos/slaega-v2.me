@@ -1,12 +1,12 @@
-import Content from "@/components/Content/Content";
-import Arrow60 from "@/components/icons/arrow60";
+import ContentWrapper from "@/components/Content/ContentWrapper";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
+import ProjectItem from "@/components/Projects/ProjectItem";
 import { splitMarkdownByParagraphs } from "@/libs/matter";
-import { getAllPosts, getPost, getPostPath } from "@/libs/posts";
+import { getAllProjects, getPost, getPostPath } from "@/libs/posts";
 import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from 'next/image'
-import Link from "next/link";
 
 
 export async function generateStaticParams() {
@@ -27,50 +27,55 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const [previewRaw, fullRaw] = splitMarkdownByParagraphs(content, 5)
 
-  const previewSource = await serialize(previewRaw || '')
-  const fullSource = await serialize(fullRaw || '')
+  const data = await getAllProjects()
+  const currentIndex = data.findIndex((item) => item.slug === slug)
+  
+  // 1. D'abord filtrer par similarité (catégories/tags)
+  const similarProjects = data.filter((item) => item.slug !== slug)
+    .filter((item) => item.categories.some((it) => meta.categories.includes(it)) || item.tags.some((it) => meta.tags.includes(it)))
+  
+  // 2. Puis trier par proximité de position dans la liste originale
+  const sortByProximity = (projects: typeof similarProjects) => {
+    return projects
+      .map(project => {
+        const projectIndex = data.findIndex(p => p.slug === project.slug)
+        const distance = Math.min(
+          Math.abs(projectIndex - currentIndex),
+          data.length - Math.abs(projectIndex - currentIndex) // distance circulaire
+        )
+        return { project, distance }
+      })
+      .sort((a, b) => a.distance - b.distance)
+      .map(item => item.project)
+  }
+  
+  const posts = sortByProximity(similarProjects)
 
-  const posts = await getAllPosts()
 
-
-  return <article className="w-full  mx-auto  max-w-content min-h-screen p-2.5 lg:p-20 flex flex-col gap-5 lg:gap-10  items-center overflow-x-hidden">
+  return <article className="w-full  mx-auto  max-w-content min-h-screen px-2.5 py-20 lg:p-20 flex flex-col gap-5 lg:gap-10  items-center overflow-x-hidden">
     <div className="absolute lg:left-0 -left-3/5  opacity-30 lg:opacity-100">
       <IllustrationProject />
     </div>
     <div className="max-w-4xl w-full z-[2] flex flex-col gap-10">
-      <Image width={369} height={198} src={meta.image || '/img.jpg'} alt='img' className="w-full" />
-      <h1 className="text-4xl mb-4 pb-2  font-bold self-end lg:text-end">{meta.title}
+      <Image width={369} height={198} src={meta.image || '/img.jpg'} alt='img' className="w-full  rounded-md " />
+      <h1 className="text-4xl mb-4 pb-2  font-bold self-end lg:text-end">
         {meta.title}
       </h1>
     </div>
-    <Content previewSource={previewSource} fullSource={fullSource} />
-    <div className='grid md:grid-cols-2 xl:grid-cols-3  max-w-[1191px] gap-5'>
+    <ContentWrapper 
+      previewContent={<MDXRemote source={previewRaw} />}
+      fullContent={<MDXRemote source={fullRaw} />}
+    />
+    <div className='grid md:grid-cols-2 xl:grid-cols-3  max-w-content-blog gap-5'>
       {posts.slice(0, 3).map((item, index) =>
-        <div key={index} className='self-center  place-self-center  flex flex-col p-7 border-stone-900 relative  '>
-
-          <Image
-            width={369} height={198}
-            src={item.image || '/img.jpg'} alt='img'
-            placeholder={'data:image/img.jpg'}
-          />
-          <div className='bg-background -mt-7 mx-1 py-2 px-4 flex flex-col gap-5 shadow-[0_4px_8px_0_rgba(0,0,0,0.04)]'>
-            <div className='flex gap-2.5 text-neutral-600 font-light items-center'>
-              <span>{new Date(item.date || '2025-01-15').toDateString()}</span>
-              <span className='w-1.5 aspect-square bg-accent'></span>
-              <span>5min read</span>
-
-            </div>
-            <h4 className=''> {item.title || ''}</h4>
-            <div className='flex items-center w-5/6 justify-between'>
-              <Link href={`fr/project/${item.slug}`} className='text-accent'>Read More</Link>
-              <Link href={`fr/project/${item.slug}`} className='w-9 h-9 rounded-full bg-accent justify-center items-center flex'>
-                <Arrow60 />
-              </Link>
-            </div>
-
-          </div>
-
-        </div>)}
+        <ProjectItem
+          key={index}
+          src={item.image}
+          title={item.title}
+          slug={item.slug}
+          desc={item.desc}
+        />
+      )}
 
 
 

@@ -4,6 +4,7 @@ import React from "react";
 import CurvedText from "react-curved-text";
 import Arrow from "../icons/arrow";
 import Link from "next/link";
+import Image from "next/image";
 
 function CircleTextV() {
   return (
@@ -51,7 +52,10 @@ function Hero() {
       </div>
 
       <div className="h-[434px] w-full max-w-[353px]  flex flex-col ">
-        <div className=" w-[80%] sm:w-[271.87px]  h-[328.18px] bg-white  sm:ml-[78px] sm:-mb-[50%] self-end z-20 relative"></div>
+        <div className=" w-[80%] sm:w-[271.87px]  h-[328.18px] bg-white  sm:ml-[78px] sm:-mb-[50%] self-end z-20 relative justify-center items-center flex">
+          <Image objectFit="cover" src={'/images/me.jpg'} alt={'me'} width={500} height={500} className="border-background border-8 w-3/4 aspect-square rounded-full"  />
+
+        </div>
         <div className=" w-[80%] max-w-[271.87px]  sm:w-[271.87px]  h-[285.07px] bg-accent  self-start sm:mt-0 sm:ml-0  -mt-[180px] relative z-0"></div>
       </div>
 

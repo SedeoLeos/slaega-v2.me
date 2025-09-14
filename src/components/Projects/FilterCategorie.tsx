@@ -14,7 +14,7 @@ function FilterCategorie() {
     const t = useTranslations('categories');
     const searchParams = useSearchParams();
     const category = searchParams.get("category") || '';
-    const categoryList = category.split(',').filter(it=> it)
+    const categoryList = category.split(',').filter(it => it)
     const filter = (cat?: string) => {
         const params = new URLSearchParams(searchParams.toString());
         console.log(categoryList)
@@ -35,18 +35,19 @@ function FilterCategorie() {
     const handleClick = (cat?: string) => {
         const params = filter(cat)
         console.log(params);
-        if(params){
+        if (params) {
             router.replace(`${pathname}?category=${params}`, { scroll: false });
 
-        }else{
+        } else {
             router.replace(`${pathname}`, { scroll: false });
         }
     };
     return (
         <div className='flex gap-3.5 w-full  flex-wrap justify-center seba'>
             {categories && categories.map((item, index) =>
-                <button key={index} onClick={() => handleClick(item)} className={`group relative px-5 py-2.5 border hover:text-white  border-accent transition-all duration-300 ${categoryList.find((it => it === item)) ? 'text-white' : ''}`}>
-                    <span className={`absolute top-0 bg-accent left-0 bottom-0 w-0 group-hover:w-full transition-all duration-300 ${categoryList.find((it => it === item)) ? 'w-full' : ''}`} />
+                <button key={index} onClick={() => handleClick(item)}
+                    className={`group relative px-5 py-2.5 border  border-black/5 transition-all duration-300 ${categoryList.find((it => it === item)) ? 'hover:text-foreground' : 'text-foreground  '}`}>
+                    <span className={`absolute top-0 bg-black/5 left-0 bottom-0   transition-all duration-300 ${categoryList.find((it => it === item)) ? 'w-full group-hover:w-0 group-active:w-0' : 'w-0 group-hover:w-full'}`} />
                     <span className='z-[2] relative'>{t(item)}</span>
                 </button>
             )}

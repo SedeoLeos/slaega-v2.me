@@ -1,17 +1,50 @@
 'use client'
-import React from 'react'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Arrow60 from '../icons/arrow60'
 import FilterCategorie from './FilterCategorie'
 import { useProject } from '@/hooks/useProjects'
 import { useSearchParams } from 'next/navigation'
-function ProjectList() {
+import ProjectItem from './ProjectItem'
+type ProjectListProps = {
+    origin: 'home' | 'project'
+}
+function ProjectList(props: ProjectListProps) {
+
     const searchParams = useSearchParams();
     const category = searchParams.get("category");
     const categories = category?.split(',')
-    const {data, } = useProject({categories})
-    const projects = data?.pages.flat() || []
+    const { data, fetchNextPage, hasNextPage,isLoading } = useProject({ categories })
+    const [visiblePages, setVisiblePages] = useState(1)
+    
+    // Reset visible pages when categories change
+    useEffect(() => {
+        setVisiblePages(1)
+    }, [categories])
+    
+    // Get only the visible pages
+    const visibleProjects = data?.pages.slice(0, visiblePages).flat() || []
+    
+    const handleLoadMore = () => {
+        if (data && visiblePages < data.pages.length) {
+            // Show next page from already loaded data
+            setVisiblePages(prev => prev + 1)
+        } else if (hasNextPage) {
+            // Fetch new page
+            fetchNextPage().then(() => {
+                setVisiblePages(prev => prev + 1)
+            })
+        }
+    }
+    
+    const handleLoadLess = () => {
+        if (visiblePages > 1) {
+            setVisiblePages(prev => prev - 1)
+        }
+    }
+    
+    const canLoadMore = (data && visiblePages < data.pages.length) || hasNextPage
+    const canLoadLess = visiblePages > 1
+    
     return (
         <div className='w-full max-w-content flex py-20 px-10 md:px-20 flex-col gap-20 justify-center items-center self-center'>
 
@@ -22,41 +55,45 @@ function ProjectList() {
             <FilterCategorie />
 
             <div className='grid md:grid-cols-2 xl:grid-cols-3  max-w-[1191px] gap-5'>
-                {projects && projects.map((item, index) =>
-                    <div key={index} className='self-center  place-self-center  flex flex-col p-7 border-stone-900 relative w-full  lg:max-w-96'>
-
-                        <Image 
-                        width={369} height={198} 
-                        src={item.image || '/img.jpg'} alt='img'
-                        className='w-full'
-                        placeholder={'data:image/img.jpg'}
-                         />
-                        <div className='bg-background -mt-7 mx-1 py-2 px-4 flex flex-col gap-5 shadow-[0_4px_8px_0_rgba(0,0,0,0.04)]'>
-                            <div className='flex gap-2.5 text-neutral-600 font-light items-center'>
-                                <span>{new Date(item.date|| '2025-01-15').toDateString()}</span>
-                                <span className='w-1.5 aspect-square bg-accent'></span>
-                                <span>5min read</span>
-
+                {isLoading ? (
+                    // Loader avec des squelettes de cartes
+                    Array.from({ length: 6 }).map((_, index) => (
+                        <div key={index} className="min-w-[240px] relative w-full h-[200px] border border-solid border-white/50 bg-black/5  overflow-hidden animate-pulse">
+                            <div className="flex flex-col gap-1 px-6 py-5 w-full">
+                                <div className="flex items-center max-w-max pr-2.5">
+                                    <div className="h-4 bg-background rounded w-80"></div>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="h-3 bg-background rounded w-full"></div>
+                                    <div className="h-3 bg-background rounded w-3/4"></div>
+                                </div>
                             </div>
-                            <h4 className=''> {item.title || ''}</h4>
-                            <div className='flex items-center w-5/6 justify-between'>
-                            <Link href={`/fr/project/${item.slug}`}  className='text-accent'>Read More</Link>
-                            <Link href={`/fr/project/${item.slug}`} className='w-9 h-9 rounded-full bg-accent justify-center items-center flex'>
-                                <Arrow60/>
-                            </Link>
-                            </div>
-                           
+                            <div className="absolute top-[110px] -right-10 rotate-[-5deg] w-[300px] h-[200px] bg-background rounded-md"></div>
                         </div>
-
-                    </div>)}
-
-
-
+                    ))
+                ) : (
+                    visibleProjects && visibleProjects.map((item, index) =>
+                        <ProjectItem
+                            key={index}
+                            src={item.image || '/img.jpg'}
+                            title={item.title || ''}
+                            slug={item.slug}
+                            desc={item.desc || ''}
+                        />
+                    )
+                )}
             </div>
-
-            <Link href={""} className='bg-zinc-800 text-white py-4 px-8'>
+            <div className='flex justify-center items-center gap-8 w-full'>
+                {props.origin === 'home' && <Link href={"/project"} className='bg-zinc-800 text-white py-4 px-8'>
                     View All
-            </Link>
+                </Link>}
+                {props.origin === 'project' && <button onClick={handleLoadLess} className='bg-white text-zinc-800 py-4 px-8 disabled:opacity-25' disabled={!canLoadLess}>
+                    Load Less
+                </button>}
+                {props.origin === 'project' && <button onClick={handleLoadMore} className='bg-zinc-800 text-white py-4 px-8 disabled:opacity-25' disabled={!canLoadMore}>
+                    Load More
+                </button>}
+            </div>
         </div>
     )
 }

@@ -12,6 +12,10 @@ export const useProject = ({categories = []}: {categories?: string []}) => {
             if (lastPage.length < 6 ) return undefined;
             return allPages.length; 
           },
+        getPreviousPageParam: (firstPage, allPages) => {
+            if (allPages.length <= 1) return undefined;
+            return allPages.length - 2; 
+          },
 
     })
 }
