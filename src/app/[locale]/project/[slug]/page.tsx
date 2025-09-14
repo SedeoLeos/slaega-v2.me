@@ -4,7 +4,6 @@ import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
 import { splitMarkdownByParagraphs } from "@/libs/matter";
 import { getAllProjects, getPost, getPostPath } from "@/libs/posts";
-import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from 'next/image'
 

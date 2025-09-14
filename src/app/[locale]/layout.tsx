@@ -7,7 +7,6 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
-import { QueryClientProvider } from "@tanstack/react-query";
 import Store from "@/Provider/Store";
 
 const inter = Inter({

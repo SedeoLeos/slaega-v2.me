@@ -1,9 +1,6 @@
 "use client";
 import { useCategories } from '@/hooks/useCategories';
-import { getAllCategories } from '@/libs/posts';
 import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
 
@@ -18,7 +15,7 @@ function FilterCategorie() {
     const filter = (cat?: string) => {
         const params = new URLSearchParams(searchParams.toString());
         console.log(categoryList)
-        let currentCat = params.get('category')?.split(',') || []
+        const currentCat = params.get('category')?.split(',') || []
         if (!cat) {
             params.delete("category");
             return params.toString()

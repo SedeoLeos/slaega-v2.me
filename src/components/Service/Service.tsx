@@ -18,7 +18,7 @@ function Service() {
                 </div>
 
                 <div className='grid md:grid-cols-2 xl:grid-cols-3  max-w-[1044px] gap-7'>
-                    {t.raw('services.items').map((service: any, index: number) =>
+                    {t.raw('services.items').map((service: {title:string,description:string}, index: number) =>
                         <div key={index} className={`self-center  place-self-center gap-5 flex flex-col p-7 border-stone-900 relative  ${index===3 ? 'md:col-span-2 md:max-w-full md:h-full':'md:max-w-80'} `}>
                             <div className='aspect-square w-10 bg-accent flex justify-center items-center rounded-lg z-[2]'>
                                 <Light />
