@@ -84,9 +84,9 @@ export async function getAllCategories() {
 export async function  getPostPath (){
   const files = fs.readdirSync(path.join(process.cwd(), "src/content/project"))
 
-  return files.map((fileName) => ({
-    params: {
+  return files
+    .filter(fileName => fileName.endsWith('.mdx'))
+    .map((fileName) => ({
       slug: fileName.replace(/\.mdx$/, ''),
-    },
-  }))
+    }))
 }

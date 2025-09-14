@@ -9,13 +9,8 @@ import Image from 'next/image'
 
 
 export async function generateStaticParams() {
-
-  const paths = getPostPath()
-
-  return {
-    paths,
-    fallback: false,
-  }
+  const paths = await getPostPath()
+  return paths
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {

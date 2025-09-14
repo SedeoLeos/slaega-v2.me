@@ -5,7 +5,7 @@ const localePrefix: LocalePrefixMode = 'as-needed';
 // FIXME: Update this configuration file based on your project information
 export const AppConfig = {
     name: 'Slaega Me',
-    locales: ['fr','en','de'],
+    locales: ['fr','en'],
     defaultLocale: 'fr',
     localePrefix,
 };

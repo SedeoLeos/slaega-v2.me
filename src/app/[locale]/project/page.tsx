@@ -1,9 +1,11 @@
 import ProjectList from '@/components/Projects/ProjectList'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 function PojectPage() {
   return (
-    <ProjectList origin='project' />
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProjectList origin='project' />
+    </Suspense>
   )
 }
 
