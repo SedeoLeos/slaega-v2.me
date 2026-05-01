@@ -1,185 +1,177 @@
 @import "tailwindcss";
 
 :root {
-  --background: #DCDED0;
-  --foreground: #000000;
-  --secondary: hsl(0, 0%, 59%);
+  --background: #EEEEE6;
+  --foreground: #0E0E0E;
+  --secondary: hsl(0, 0%, 55%);
   --accent: hsl(79, 29%, 37%);
   --primary: hsl(79, 29%, 37%);
   --green-app: #05796B;
+  --card: #F5F5EE;
+  --border: rgba(14, 14, 14, 0.10);
 }
 
 @theme inline {
-  --spacing-content: 1457px;
-  --spacing-content-blog: 900px;
+  --spacing-content: 1320px;
+  --spacing-content-blog: 860px;
   --breakpoint-2lg: 1100px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  --font-inter: var(--font-inter);
-  --font-poppins: var(--font-poppins);
-
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-secondary: var(--secondary);
   --color-green-app: var(--green-app);
-}
+  --color-card: var(--card);
+  --color-border: var(--border);
 
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
+}
 
 @layer base {
   body {
     @apply bg-background text-foreground;
-    @apply font-poppins;
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
   }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
   a {
     @apply text-foreground no-underline;
   }
 
   input, textarea {
-    @apply bg-zinc-100 w-full;
-
+    @apply bg-background w-full border border-[var(--border)] rounded-xl;
+    font-family: inherit;
   }
-  input {
-    @apply h-20 p-5 w-full;
 
+  input {
+    @apply h-14 px-4 w-full;
+    font-size: 0.875rem;
   }
 
   textarea {
-    @apply h-80 p-5;
-
+    @apply h-48 p-4;
+    font-size: 0.875rem;
   }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   .more {
-    background: linear-gradient(180deg, rgba(220, 222, 208, 0.00) -98.48%, #DCDED0 55.11%);
+    background: linear-gradient(180deg, rgba(238, 238, 230, 0.00) -98.48%, #EEEEE6 55.11%);
   }
-  /* Applique les styles à tout contenu Markdown dans <article.project> */
 
-  /* Style global pour le contenu markdown dans un article */
-/* Arrière-plan global clair */
-article .project {
-  @apply text-[#1E1E1E] leading-relaxed;
-}
+  /* Markdown project content */
+  article .project {
+    @apply text-[#1E1E1E] leading-relaxed;
+  }
 
-/* Titres */
-article .project h1 {
-  @apply hidden;
-}
+  article .project h1 { @apply hidden; }
 
-article .project h2 {
-  @apply text-3xl font-bold text-[#111111] mt-5 lg:mt-10 mb-4;
-}
+  article .project h2 {
+    @apply text-2xl font-bold text-[#111111] mt-8 mb-4;
+  }
 
-article .project h3 {
-  @apply text-2xl font-semibold text-[#1E1E1E] mt-8 mb-4;
-}
+  article .project h3 {
+    @apply text-xl font-semibold text-[#1E1E1E] mt-6 mb-3;
+  }
 
-article .project h4 {
-  @apply text-xl font-semibold text-[#1E1E1E] mt-6 mb-3;
-}
+  article .project h4 {
+    @apply text-lg font-semibold text-[#1E1E1E] mt-5 mb-2;
+  }
 
-article .project h5,
-article .project h6 {
-  @apply text-lg font-semibold text-[#1E1E1E] mt-4 mb-2;
-}
+  article .project h5,
+  article .project h6 {
+    @apply text-base font-semibold text-[#1E1E1E] mt-4 mb-2;
+  }
 
-/* Paragraphes */
-article .project p {
-  @apply my-4 text-base leading-7 text-[#333333];
-}
+  article .project p {
+    @apply my-4 text-[15px] leading-7 text-[#333333];
+  }
 
-/* Listes */
-article .project ul {
-  @apply list-disc pl-6 my-4 text-[#333333];
-}
+  article .project ul {
+    @apply list-disc pl-6 my-4 text-[#333333];
+  }
 
-article .project ol {
-  @apply list-decimal pl-6 my-4 text-[#333333];
-}
+  article .project ol {
+    @apply list-decimal pl-6 my-4 text-[#333333];
+  }
 
-article .project li {
-  @apply mb-2;
-}
+  article .project li {
+    @apply mb-2 text-[15px];
+  }
 
-/* Liens */
-article .project a {
-  @apply text-[#0F766E] hover:text-[#0D5B56] underline transition-all duration-200;
-}
+  article .project a {
+    @apply text-[#05796B] hover:text-[#0D5B56] underline transition-all duration-200;
+  }
 
-/* HR */
-article .project hr {
-  @apply my-10 border-[#A0A0A0];
-}
+  article .project hr {
+    @apply my-8 border-[#D0D0C8];
+  }
 
-/* Blockquote */
-article .project blockquote {
-  @apply border-l-4 border-[#A0A0A0] pl-6 italic text-[#666666] my-6 bg-[#EBEBEB] py-3 rounded;
-}
+  article .project blockquote {
+    @apply border-l-4 border-[#05796B]/30 pl-5 italic text-[#555555] my-6 py-2;
+  }
 
-/* Code inline */
-article .project code {
-  @apply bg-[#E6E6E6] text-[#D97706] px-1.5 py-0.5 rounded font-mono text-sm;
-}
+  article .project code {
+    @apply bg-foreground/8 text-[#D97706] px-1.5 py-0.5 rounded font-mono text-[0.85em];
+  }
 
-/* Code block */
-article .project pre {
-  @apply bg-[#E6E6E6] text-[#1E1E1E] p-4 rounded-lg overflow-x-auto my-6 text-sm;
-}
+  article .project pre {
+    @apply bg-[#1E1E1E] text-[#E8E8E8] p-5 rounded-xl overflow-x-auto my-6 text-sm;
+  }
 
-/* Images */
-article .project img {
-  @apply rounded-lg my-6 max-w-full h-auto shadow-md;
-}
+  article .project img {
+    @apply rounded-xl my-6 max-w-full h-auto;
+  }
 
-/* Tables */
-article .project table {
-  @apply w-full text-left border-collapse my-6 text-sm;
-}
+  article .project table {
+    @apply w-full text-left border-collapse my-6 text-sm;
+  }
 
-article .project th {
-  @apply border-b border-[#999999] font-semibold px-4 py-2 text-[#111111];
-}
+  article .project th {
+    @apply border-b border-[#CCCCC4] font-semibold px-4 py-2.5 text-[#111111];
+  }
 
-article .project td {
-  @apply border-b border-[#CCCCCC] px-4 py-2 text-[#1E1E1E];
-}
+  article .project td {
+    @apply border-b border-[#E0E0D8] px-4 py-2.5 text-[#333333];
+  }
 
+  .description p {
+    margin: 0;
+    display: inline;
+    font-size: inherit;
+  }
 
-.description {
-  /* Garder la taille de police normale */
-  font-size: inherit;
-  line-height: inherit;
-}
+  .description strong {
+    font-weight: 500;
+    color: inherit;
+  }
 
-.description p {
-  margin: 0;
-  display: inline;
-}
+  .description em {
+    font-style: italic;
+    color: inherit;
+  }
 
-.description strong {
-  /* Strong sans augmenter la taille - juste une couleur légèrement différente */
-  font-weight: 500;
-  color: inherit;
-}
+  .description code {
+    background-color: rgba(0, 0, 0, 0.06);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 0.88em;
+    font-family: ui-monospace, monospace;
+  }
 
-.description em {
-  font-style: italic;
-  color: inherit;
-}
-
-.description code {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 1px 3px;
-  border-radius: 2px;
-  font-size: 0.9em;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-}
-
-.description a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: rgba(0, 0, 0, 0.3);
-}
-
-.description a:hover {
-  text-decoration-color: currentColor;
-}
+  /* Print styles for CV */
+  @media print {
+    body > *:not(#cv-print) { display: none; }
+    #cv-print { display: block !important; }
+  }
 }

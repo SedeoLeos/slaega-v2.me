@@ -1,18 +1,20 @@
 import Link from "next/link";
-import React from "react";
+
 export interface NavItemProps {
   href: string;
   text: string;
+  onClick?: () => void;
 }
-export default function NavItem(props: NavItemProps) {
+
+export default function NavItem({ href, text, onClick }: NavItemProps) {
   return (
-    <li >
-      <Link href={props.href} className="flex flex-col group drawer-group  gap-2 cursor-pointer">
-        {props.text}
-        <div className="relative w-full h-0.5">
-          <div className="bg-secondary h-0.5"></div>
-          <div className="top-0 absolute h-full w-0 group-hover:w-full bg-accent transition-all duration-300"></div>
-        </div>
+    <li>
+      <Link
+        href={href}
+        onClick={onClick}
+        className="flex items-center px-3 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-lg transition-all duration-200 group"
+      >
+        {text}
       </Link>
     </li>
   );

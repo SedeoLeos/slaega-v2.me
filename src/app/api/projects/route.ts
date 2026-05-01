@@ -1,7 +1,7 @@
+import { trackEvent } from '@/lib/monitoring/telemetry';
+import { NextResponse } from 'next/server';
 import fs from 'node:fs';
 import path from 'node:path';
-import { NextResponse } from 'next/server';
-import { trackEvent } from '@/lib/monitoring/telemetry';
 
 const PROJECTS_DIRECTORY = path.join(process.cwd(), 'src/content/project');
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const title = String(body?.title || '').trim();
   const date = String(body?.date || '').trim();
   const categories = Array.isArray(body?.categories) ? body.categories.map(String) : [];
-  const tags = Array.isArray(body?.tags) ? body.tags.map(String) : [];
+  const tags :string []= Array.isArray(body?.tags) ? body.tags.map(String) : [];
   const image = String(body?.image || '/img.jpg').trim();
   const content = String(body?.content || '').trim();
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: 'project already exists' }, { status: 409 });
   }
 
-  const frontmatter = `---\ntitle: "${title}"\ndate: "${date}"\ntags: [${tags.map((t) => `"${t}"`).join(', ')}]\ncategories: [${categories.map((c) => `"${c}"`).join(', ')}]\nimage: "${image}"\n---\n\n`;
+  const frontmatter = `---\ntitle: "${title}"\ndate: "${date}"\ntags: [${tags.map((t: string) => `"${t}"`).join(', ')}]\ncategories: [${categories.map((c: string) => `"${c}"`).join(', ')}]\nimage: "${image}"\n---\n\n`;
 
   fs.writeFileSync(filePath, `${frontmatter}${content}\n`, 'utf-8');
 

@@ -1,31 +1,37 @@
-import Link from 'next/link'
-import React from 'react'
-import { useTranslations } from 'next-intl'
+import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
+import FadeIn from '@/components/animations/FadeIn';
 
-export default function About() {
-    const t = useTranslations()
-    
-    return (
-        <div className='flex justify-center items-center flex-col max-w-content self-center w-full gap-10 p-10 font-poppins z-[2] relative'>
-            <div className='text-center space-y-1.5'>
-                <h2 className='text-5xl font-extrabold '>{t('about.title')}</h2>
-                <span className='text-sm font-semibold'>{t('about.subtitle')}</span>
-            </div>
-            <div className='max-w-3xl text-center space-y-5 text-base leading-7'>
-                <p>
-                    {t('about.paragraph1')}
-                </p>
-                <p>
-                    {t('about.paragraph2')}
-                </p>
-                <p>
-                    {t('about.paragraph3')}
-                </p>
-            </div>
+export default async function About() {
+  const t = await getTranslations();
 
-            <Link href={""} className='bg-zinc-800 text-white py-4 px-8'>
+  return (
+    <section className="w-full max-w-content self-center px-6 md:px-20 py-16 font-poppins">
+      <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <FadeIn>
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-green-app">{t('about.subtitle')}</span>
+            <h2 className="text-4xl sm:text-5xl font-bold mt-3 mb-0">{t('about.title')}</h2>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <div className="space-y-4 text-[15px] text-foreground/70 leading-relaxed">
+            <p>{t('about.paragraph1')}</p>
+            <p>{t('about.paragraph2')}</p>
+            <p>{t('about.paragraph3')}</p>
+
+            <div className="pt-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-foreground text-background font-semibold text-sm px-5 py-3 rounded-xl hover:opacity-80 transition-opacity"
+              >
                 {t('about.downloadResume')}
-            </Link>
-        </div>
-    )
+              </Link>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
 }

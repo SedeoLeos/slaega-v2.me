@@ -1,29 +1,25 @@
 {
     "header": {
         "navigation": {
-            "meetRaees": "Rencontrer Slaega",
-            "myWork": "Mes projets",
-            "caseStudies": "Études de cas",
-            "testimonials": "Témoignages",
-            "blog": "Blog",
-            "contactMe": "Me contacter",
             "home": "Accueil",
+            "myWork": "Projets",
+            "experience": "Expérience",
             "about": "À propos",
             "cvGenerator": "Générateur de CV",
-            "contentEditor": "Éditeur de contenu"
+            "contactMe": "Contact"
         },
         "social": {
-            "github": "Gt",
-            "youtube": "Yb",
-            "linkedin": "Lk"
+            "github": "GitHub",
+            "twitter": "Twitter",
+            "linkedin": "LinkedIn"
         }
     },
     "about": {
         "title": "À propos",
         "subtitle": "Apprenez à me connaître",
-        "paragraph1": "Salut ! Je suis Seba Gedeon, un ingénieur logiciel passionné spécialisé dans le développement d'applications complètes. Mon expertise couvre le développement mobile, web, backend, desktop, l'intégration de données, et le DevOps. Je me consacre à créer des solutions robustes et sécurisées qui répondent aux besoins complexes des entreprises modernes.",
-        "paragraph2": "J'apporte une expertise technique approfondie en sécurisation d'applications, systèmes de permissions et authentification. Que ce soit pour développer des applications mobiles performantes, des backends scalables, ou mettre en place des infrastructures DevOps sécurisées, je maîtrise l'ensemble de la chaîne de développement logiciel.",
-        "paragraph3": "Travaillons ensemble pour concrétiser vos projets technologiques avec des solutions sur mesure, sécurisées et performantes. Contactez-moi pour discuter de votre prochain défi technique !",
+        "paragraph1": "Salut ! Je suis Seba Gedeon, ingénieur logiciel full-stack passionné par la création d'applications robustes et évolutives. Mon expertise couvre le développement mobile, web, backend, desktop, l'intégration de données et le DevOps.",
+        "paragraph2": "J'apporte une expertise technique approfondie en sécurisation d'applications, systèmes de permissions et authentification. Que ce soit pour développer des apps mobiles performantes, des backends scalables, ou mettre en place des infrastructures DevOps sécurisées, je maîtrise l'ensemble de la chaîne de développement.",
+        "paragraph3": "Travaillons ensemble pour concrétiser vos projets avec des solutions sur mesure, sécurisées et performantes.",
         "downloadResume": "Télécharger le CV"
     },
     "services": {
@@ -32,43 +28,43 @@
         "items": [
             {
                 "title": "Développement Mobile & Web",
-                "description": "Création d'applications mobiles natives et cross-platform, ainsi que d'applications web modernes et responsives. Expertise en React Native, Flutter, React, Vue.js et technologies web avancées."
+                "description": "Applications mobiles natives et cross-platform, applications web modernes et responsives. Expertise en React Native, Flutter, React, Vue.js."
             },
             {
-                "title": "Développement Backend & API",
-                "description": "Conception et développement de backends robustes, APIs RESTful et GraphQL, microservices et architectures distribuées. Maîtrise de Node.js, Python, Java, et bases de données relationnelles/NoSQL."
+                "title": "Backend & API",
+                "description": "Backends robustes, APIs RESTful et GraphQL, microservices et architectures distribuées. Maîtrise de Node.js, Python, Java et bases de données."
             },
             {
-                "title": "Applications Desktop & Intégration",
-                "description": "Développement d'applications desktop multiplateformes et solutions d'intégration de données. Expertise en Electron, .NET, intégration d'APIs tierces et synchronisation de données."
+                "title": "Desktop & Intégration",
+                "description": "Applications desktop multiplateformes et solutions d'intégration de données. Expertise en Electron, .NET, intégration d'APIs tierces."
             },
             {
-                "title": "Sécurité & Authentification",
-                "description": "Implémentation de systèmes d'authentification sécurisés, gestion des permissions, OAuth, JWT, chiffrement et bonnes pratiques de sécurité applicative pour protéger vos données sensibles."
+                "title": "Sécurité & Auth",
+                "description": "Systèmes d'authentification sécurisés, gestion des permissions, OAuth, JWT, chiffrement et bonnes pratiques de sécurité applicative."
             },
             {
                 "title": "DevOps & Infrastructure",
-                "description": "Mise en place de pipelines CI/CD, containerisation Docker, orchestration Kubernetes, monitoring, et déploiement automatisé sur cloud (AWS, Azure, GCP) pour des applications scalables."
+                "description": "Pipelines CI/CD, Docker, Kubernetes, monitoring et déploiement automatisé sur cloud (AWS, Azure, GCP)."
             }
         ]
     },
     "contact": {
         "title": "Travaillons ensemble",
-        "description": "Vous avez un projet de développement logiciel ? Je serais ravi de discuter de la façon dont nous pouvons collaborer pour créer des solutions techniques innovantes et sécurisées. N'hésitez pas à me contacter pour explorer les possibilités.",
+        "description": "Un projet en tête ? Discutons de la façon dont nous pouvons collaborer pour créer des solutions techniques innovantes.",
         "form": {
             "email": "Email",
             "name": "Nom",
             "message": "Message",
             "submit": "Envoyer",
             "success": "Message envoyé avec succès.",
-            "error": "Impossible d’envoyer le message."
+            "error": "Impossible d'envoyer le message."
         },
         "social": {
-            "linkedin": "Lk",
-            "github": "Gh",
-            "facebook": "Fb",
-            "instagram": "It",
-            "twitter": "Tw"
+            "linkedin": "LinkedIn",
+            "github": "GitHub",
+            "twitter": "Twitter",
+            "facebook": "Facebook",
+            "instagram": "Instagram"
         }
     },
     "footer": {
@@ -76,7 +72,7 @@
             "title": "Travaillons\nEnsemble -",
             "email": "smatsoula19@gmail.com"
         },
-        "copyright": "© {year} Tous droits réservés.",
+        "copyright": "© {year} Seba Gedeon. Tous droits réservés.",
         "social": {
             "linkedin": "LinkedIn",
             "github": "GitHub",
@@ -90,12 +86,19 @@
         "tagline1": "pensons",
         "tagline2": "créatif",
         "name": "Je suis Seba Gedeon",
-        "description": "Un ingénieur logiciel qui développe des applications robustes et évolutives sur l'ensemble de la pile technologique. Je me spécialise dans le développement mobile, web et backend, avec une expertise en frameworks modernes, déploiement cloud et création de solutions sécurisées et performantes.",
+        "description": "Ingénieur logiciel full-stack qui construit des applications robustes et évolutives. Je me spécialise dans le mobile, le web et le backend, avec une expertise en frameworks modernes, cloud et solutions sécurisées.",
         "learnMore": "en savoir plus"
     },
     "projects": {
         "title": "Projets",
         "subtitle": "Quelques-uns de mes travaux"
+    },
+    "experience": {
+        "label": "Parcours",
+        "title": "Expériences",
+        "pageTitle": "Expérience — Slaega",
+        "subtitle": "Mon parcours professionnel et les postes que j'ai occupés au fil du temps.",
+        "empty": "Aucune expérience à afficher pour l'instant."
     },
     "categories": {
         "showcase-site": "Site vitrine",
@@ -120,30 +123,15 @@
     },
     "tools": {
         "cvGenerator": {
-            "title": "Générateur de CV à partir des offres",
-            "description": "Cet outil générera un CV ciblé selon une offre d’emploi sélectionnée. Après génération, le CV pourra être revu puis envoyé dans ma propre boîte pour validation.",
+            "title": "Générateur de CV",
+            "description": "Colle une offre d'emploi et génère automatiquement un CV ciblé qui met en avant tes expériences et projets les plus pertinents.",
+            "authRequired": "Connecte-toi avec GitHub pour accéder au générateur de CV.",
             "howItWorksTitle": "Fonctionnement",
             "steps": [
-                "Sélectionner ou coller une offre d’emploi.",
+                "Coller une offre d'emploi.",
                 "Générer un CV adapté aux compétences demandées.",
-                "Relire puis m’envoyer le brouillon généré pour traitement final."
+                "Imprimer ou exporter en PDF."
             ]
-        },
-        "contentEditor": {
-            "title": "Éditeur de contenu",
-            "description": "Une interface dédiée pour modifier le contenu du portfolio (projets, sections profil et contenus statiques) sans toucher directement aux fichiers source.",
-            "comingSoon": "Cet éditeur est en préparation et sera disponible dans une prochaine itération.",
-            "newProjectHint": "Utilisez le formulaire ci-dessous pour ajouter un nouveau projet depuis l’interface. Les actions sont suivies via télémétrie pour la fiabilité.",
-            "form": {
-                "titlePlaceholder": "Titre du projet",
-                "imagePlaceholder": "Chemin de l’image du projet (optionnel)",
-                "categoriesPlaceholder": "Catégories séparées par des virgules",
-                "tagsPlaceholder": "Tags séparés par des virgules",
-                "contentPlaceholder": "Contenu markdown du projet",
-                "submit": "Créer le projet",
-                "success": "Projet créé : {slug}",
-                "error": "Échec de création : {message}"
-            }
         }
     }
 }

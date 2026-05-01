@@ -1,0 +1,12 @@
+{
+  "id": "slaega-freelance",
+  "company": "Freelance / Slaega",
+  "role": "Ingénieur Logiciel Full-Stack",
+  "startDate": "2022-01",
+  "endDate": null,
+  "current": true,
+  "description": "Développement d'applications mobiles, web et backend pour divers clients. Conception d'architectures scalables, mise en place de systèmes d'authentification sécurisés, et déploiement sur infrastructure cloud. Livraison de solutions complètes de la conception à la production.",
+  "skills": ["React Native", "Next.js", "Node.js", "TypeScript", "Docker", "PostgreSQL", "AWS"],
+  "location": "Remote",
+  "companyUrl": ""
+}
