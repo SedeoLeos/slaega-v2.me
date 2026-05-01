@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #EEEEE6;
+  --background: #DCDED0;
   --foreground: #0E0E0E;
   --secondary: hsl(0, 0%, 55%);
   --accent: hsl(79, 29%, 37%);
@@ -66,7 +66,7 @@
   }
 
   .more {
-    background: linear-gradient(180deg, rgba(238, 238, 230, 0.00) -98.48%, #EEEEE6 55.11%);
+    background: linear-gradient(180deg, rgba(220, 222, 208, 0.00) -98.48%, #DCDED0 55.11%);
   }
 
   /* Markdown project content */
