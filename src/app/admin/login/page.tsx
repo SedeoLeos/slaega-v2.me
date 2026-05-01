@@ -1,10 +1,13 @@
 import { signIn } from '@/auth';
 
-export default function AdminLoginPage({
+// Login page has its own layout (no [locale] wrapper), CSS comes from admin/layout.tsx
+export default async function AdminLoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
+  const params = await searchParams;
+
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
@@ -15,9 +18,8 @@ export default function AdminLoginPage({
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
           <form
-            action={async (formData) => {
+            action={async () => {
               'use server';
-              const params = await searchParams;
               await signIn('github', {
                 redirectTo: params.callbackUrl ?? '/admin',
               });
@@ -34,6 +36,11 @@ export default function AdminLoginPage({
             </button>
           </form>
 
+          {params.error && (
+            <p className="text-center text-red-400 text-xs mt-4">
+              Accès refusé. Seul le propriétaire peut se connecter.
+            </p>
+          )}
           <p className="text-center text-zinc-500 text-xs mt-6">
             Accès limité au propriétaire du portfolio.
           </p>

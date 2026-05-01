@@ -2,6 +2,8 @@ import NextAuth from 'next-auth';
 import GitHub from 'next-auth/providers/github';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  // Required when running on non-standard ports (e.g. 8000) or behind a proxy
+  trustHost: true,
   providers: [
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID!,
