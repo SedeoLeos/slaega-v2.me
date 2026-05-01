@@ -6,7 +6,11 @@
             "caseStudies": "Études de cas",
             "testimonials": "Témoignages",
             "blog": "Blog",
-            "contactMe": "Me contacter"
+            "contactMe": "Me contacter",
+            "home": "Accueil",
+            "about": "À propos",
+            "cvGenerator": "Générateur de CV",
+            "contentEditor": "Éditeur de contenu"
         },
         "social": {
             "github": "Gt",
@@ -55,7 +59,9 @@
             "email": "Email",
             "name": "Nom",
             "message": "Message",
-            "submit": "Envoyer"
+            "submit": "Envoyer",
+            "success": "Message envoyé avec succès.",
+            "error": "Impossible d’envoyer le message."
         },
         "social": {
             "linkedin": "Lk",
@@ -70,7 +76,7 @@
             "title": "Travaillons\nEnsemble -",
             "email": "smatsoula19@gmail.com"
         },
-        "copyright": "© 2025 Tous droits réservés.",
+        "copyright": "© {year} Tous droits réservés.",
         "social": {
             "linkedin": "LinkedIn",
             "github": "GitHub",
@@ -91,7 +97,7 @@
         "title": "Projets",
         "subtitle": "Quelques-uns de mes travaux"
     },
-    "categories":{
+    "categories": {
         "showcase-site": "Site vitrine",
         "e-commerce": "E-commerce",
         "web-app": "Application web",
@@ -111,5 +117,33 @@
         "cloud-setup": "Configuration cloud",
         "monitoring-logging": "Monitoring & Logs",
         "reverse-proxy": "Proxy / Routage"
+    },
+    "tools": {
+        "cvGenerator": {
+            "title": "Générateur de CV à partir des offres",
+            "description": "Cet outil générera un CV ciblé selon une offre d’emploi sélectionnée. Après génération, le CV pourra être revu puis envoyé dans ma propre boîte pour validation.",
+            "howItWorksTitle": "Fonctionnement",
+            "steps": [
+                "Sélectionner ou coller une offre d’emploi.",
+                "Générer un CV adapté aux compétences demandées.",
+                "Relire puis m’envoyer le brouillon généré pour traitement final."
+            ]
+        },
+        "contentEditor": {
+            "title": "Éditeur de contenu",
+            "description": "Une interface dédiée pour modifier le contenu du portfolio (projets, sections profil et contenus statiques) sans toucher directement aux fichiers source.",
+            "comingSoon": "Cet éditeur est en préparation et sera disponible dans une prochaine itération.",
+            "newProjectHint": "Utilisez le formulaire ci-dessous pour ajouter un nouveau projet depuis l’interface. Les actions sont suivies via télémétrie pour la fiabilité.",
+            "form": {
+                "titlePlaceholder": "Titre du projet",
+                "imagePlaceholder": "Chemin de l’image du projet (optionnel)",
+                "categoriesPlaceholder": "Catégories séparées par des virgules",
+                "tagsPlaceholder": "Tags séparés par des virgules",
+                "contentPlaceholder": "Contenu markdown du projet",
+                "submit": "Créer le projet",
+                "success": "Projet créé : {slug}",
+                "error": "Échec de création : {message}"
+            }
+        }
     }
 }

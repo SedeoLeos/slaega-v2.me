@@ -1,92 +1,35 @@
 'use server';
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-type ProjectMeta = {
-  title:string;
-  date:Date;
-  tags:string [];
-  categories:string[];
-  image:string;
-  slug:string;
-  desc:string;
-}
 
-export async function getPost(slug: string) {
-  const filePath = path.join(process.cwd(), "src/content/project", `${slug}.mdx`);
-  const fileContent = fs.readFileSync(filePath, "utf-8");
+import type { Project } from "@/entities/project";
+import { getAllProjects, getProjectCategories, getProjects } from "@/features/projects/use-cases/get-projects.use-case";
+import { getProjectBySlug, getProjectPaths } from "@/features/projects/use-cases/get-project-by-slug.use-case";
 
-  const { content, data } = matter(fileContent);
-
-  return {
-    content, // texte MDX sans le front-matter
-    meta: data as ProjectMeta
-  };
-}
-
-
-const postsDirectory = path.join(process.cwd(), "src/content/project");
-
-/**
- * Récupère la liste de tous les posts MDX avec leurs métadonnées
- */
 type Params = {
   page: number;
   pageSize: number;
   categories?: string[];
 };
 
-export async function getAllProjects (){
-  const filenames = fs.readdirSync(postsDirectory);
-
-  const posts = filenames
-    .filter((name) => name.endsWith(".mdx"))
-    .map((filename) => {
-      const filePath = path.join(postsDirectory, filename);
-      const fileContent = fs.readFileSync(filePath, "utf-8");
-      const { data ,content} = matter(fileContent) as unknown as { data: ProjectMeta,content: string };
-      // Extraire la description : premier paragraphe de texte (pas les titres)
-      const desc = content
-        .replace(/^#{1,6}\s+.*$/gm, '') // Supprimer les titres markdown
-        .replace(/^\s*$/gm, '') // Supprimer les lignes vides
-        .split('\n')
-        .find(line => line.trim().length > 0) // Premier paragraphe non vide
-        ?.trim() || ''
-        // .substring(0, 150) + '...' || ''; // Limiter à 150 caractères
-      const slug = filename.replace(/\.mdx$/, "");
-      return {  ...data , slug, desc  };
-    });
-
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+export async function getPost(slug: string) {
+  return getProjectBySlug(slug);
 }
-
-export async function getProjects({ page, pageSize, categories }: Params): Promise<ProjectMeta[]> {
-  let projects = await  getAllProjects();
-  if (categories && categories.length > 0) {
-    projects = projects.filter((post) =>
-      post.categories?.some((cat) => categories.includes(cat))
-    );
-  }
-
-  const start = page * pageSize;
-  const end = start + pageSize;
-
-  return projects.slice(start, end);
-}
-
 
 export async function getAllCategories() {
-  const projects = await getAllProjects()
-  return [...new Set(projects.map(item => item.categories).flat())];
+  return getProjectCategories();
 }
 
-
-export async function  getPostPath (){
-  const files = fs.readdirSync(path.join(process.cwd(), "src/content/project"))
-
-  return files
-    .filter(fileName => fileName.endsWith('.mdx'))
-    .map((fileName) => ({
-      slug: fileName.replace(/\.mdx$/, ''),
-    }))
+export async function getPostPath() {
+  return getProjectPaths();
 }
+
+export async function getAllProjectsLegacy(): Promise<Project[]> {
+  return getAllProjects();
+}
+
+export async function getProjectsLegacy({ page, pageSize, categories }: Params): Promise<Project[]> {
+  return getProjects({ page, pageSize, categories });
+}
+
+// Backward-compatible alias used by current UI/hook imports.
+export const getAllProjects = getAllProjectsLegacy;
+export const getProjects = getProjectsLegacy;

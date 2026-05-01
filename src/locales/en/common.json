@@ -6,7 +6,11 @@
             "caseStudies": "Case Studies",
             "testimonials": "Testimonials",
             "blog": "Blog",
-            "contactMe": "Contact Me"
+            "contactMe": "Contact Me",
+            "home": "Home",
+            "about": "About me",
+            "cvGenerator": "CV Generator",
+            "contentEditor": "Content Editor"
         },
         "social": {
             "github": "Gt",
@@ -55,7 +59,9 @@
             "email": "Email",
             "name": "Name",
             "message": "Message",
-            "submit": "Submit"
+            "submit": "Submit",
+            "success": "Message sent successfully.",
+            "error": "Unable to send message."
         },
         "social": {
             "linkedin": "Lk",
@@ -70,7 +76,7 @@
             "title": "Let's\nWork Together -",
             "email": "smatsoula19@gmail.com"
         },
-        "copyright": "© 2025 All rights reserved.",
+        "copyright": "© {year} All rights reserved.",
         "social": {
             "linkedin": "Lk",
             "github": "Gh",
@@ -91,7 +97,7 @@
         "title": "Projects",
         "subtitle": "Some of my work"
     },
-    "categories":{
+    "categories": {
         "showcase-site": "Showcase Site",
         "e-commerce": "E-commerce",
         "web-app": "Web Application",
@@ -111,5 +117,33 @@
         "cloud-setup": "Cloud Setup",
         "monitoring-logging": "Monitoring & Logs",
         "reverse-proxy": "Proxy / Routing"
+    },
+    "tools": {
+        "cvGenerator": {
+            "title": "CV Generator from Job Offers",
+            "description": "This tool will create a tailored CV based on a selected job offer. After generation, the CV can be reviewed before being sent to my own inbox for validation.",
+            "howItWorksTitle": "How it works",
+            "steps": [
+                "Select or paste a job offer.",
+                "Generate a CV adapted to the required skills.",
+                "Review and send the generated CV draft to me for final processing."
+            ]
+        },
+        "contentEditor": {
+            "title": "Content Editor",
+            "description": "A dedicated interface to edit portfolio content (projects, profile blocks, and static sections) without touching source files directly.",
+            "comingSoon": "This editor is being prepared and will be available in an upcoming iteration.",
+            "newProjectHint": "Use the form below to add a new project directly from the UI. Actions are monitored through telemetry for reliability.",
+            "form": {
+                "titlePlaceholder": "Project title",
+                "imagePlaceholder": "Project cover image path (optional)",
+                "categoriesPlaceholder": "Categories separated by commas",
+                "tagsPlaceholder": "Tags separated by commas",
+                "contentPlaceholder": "Markdown content of the project",
+                "submit": "Create project",
+                "success": "Project created: {slug}",
+                "error": "Creation failed: {message}"
+            }
+        }
     }
 }
