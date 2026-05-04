@@ -14,7 +14,7 @@ export default async function EditExperiencePage({
   if (!exp) notFound();
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-8">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
@@ -51,7 +51,9 @@ export default async function EditExperiencePage({
         </div>
       </div>
 
-      <ExperienceForm mode="edit" id={id} initial={exp} />
+      <div className="max-w-5xl mx-auto">
+        <ExperienceForm mode="edit" id={id} initial={exp} />
+      </div>
     </div>
   );
 }

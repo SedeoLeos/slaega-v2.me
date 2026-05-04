@@ -3,7 +3,7 @@ import ServiceForm from "@/components/admin/ServiceForm";
 
 export default function NewServicePage() {
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div className="p-8">
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
           href="/admin/services"
@@ -25,7 +25,9 @@ export default function NewServicePage() {
         </p>
       </div>
 
-      <ServiceForm mode="create" />
+      <div className="max-w-3xl mx-auto">
+        <ServiceForm mode="create" />
+      </div>
     </div>
   );
 }

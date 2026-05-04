@@ -123,7 +123,9 @@ const PROFILE = {
 // Weights are tuned empirically.
 // ─────────────────────────────────────────────────────────────────
 
-const PAGE_CAPACITY = 248; // mm
+// Usable height per A4 page (297mm − 15mm top − 15mm bottom = 267mm).
+// Tuned slightly conservative to avoid bottom overflow.
+const PAGE_CAPACITY = 262; // mm
 
 type ExperienceItem = CVData["experiences"][number];
 type ProjectItem = CVData["projects"][number];
@@ -140,34 +142,38 @@ type Block =
 
 function estimateExperienceWeight(exp: ExperienceItem): number {
   const text = stripHtml(exp.description);
-  // Header (role + date) ~10mm + company line 5mm + ~5mm per ~120 chars of desc
-  const descMm = Math.ceil(text.length / 120) * 5;
-  return 16 + descMm;
+  // role+date row ~7mm, company line ~5mm, then ~4.3mm per ~120 chars of body.
+  const descMm = Math.ceil(text.length / 120) * 4.3;
+  return 13 + descMm;
 }
 
 function estimateProjectWeight(p: ProjectItem): number {
   const text = stripHtml(p.desc);
-  const descMm = Math.ceil(text.length / 120) * 5;
-  const tagsMm = p.tags.length > 0 ? 5 : 0;
-  return 12 + descMm + tagsMm;
+  const descMm = Math.ceil(text.length / 120) * 4.3;
+  const tagsMm = p.tags.length > 0 ? 4 : 0;
+  return 11 + descMm + tagsMm;
 }
 
 function estimateSkillsWeight(all: string[]): number {
-  // 3-column grid → ceil(N/3) rows × ~6mm row + heading
-  return 14 + Math.ceil(all.length / 3) * 6;
+  // 3-column grid → ~5mm per row.
+  return 6 + Math.ceil(all.length / 3) * 5;
 }
 
 function buildBlocks(cv: CVData, summary: string, capabilities: string[], L: typeof DEFAULT_FR): Block[] {
   const blocks: Block[] = [];
 
-  // Page-1 specific: header + bio + contact + capabilities are tied together.
-  blocks.push({ type: "header", weight: 60 });
-  blocks.push({ type: "bio", weight: 18, text: summary });
-  blocks.push({ type: "contact", weight: 18 });
+  // Header bundles tagline + name + photo (rendered on every page actually,
+  // but here we only count it once for page-1 layout).
+  blocks.push({ type: "header", weight: 52 });
+  // Bio: ~4.5mm per ~120 chars of summary, min 12mm.
+  const bioMm = Math.max(12, Math.ceil(summary.length / 120) * 4.5);
+  blocks.push({ type: "bio", weight: bioMm, text: summary });
+  // Contact row (single line of 3 columns): ~14mm.
+  blocks.push({ type: "contact", weight: 14 });
   if (capabilities.length > 0) {
     blocks.push({
       type: "capabilities",
-      weight: 14 + capabilities.length * 6,
+      weight: 10 + capabilities.length * 5,
       items: capabilities,
     });
   }
@@ -206,8 +212,8 @@ function paginate(blocks: Block[]): Block[][] {
 
   for (const block of blocks) {
     // Avoid orphan section titles at bottom: if a section-title would be the
-    // last thing on a page (less than ~40mm of room remaining), bump to next.
-    if (block.type === "section-title" && PAGE_CAPACITY - used < 40 && current.length > 0) {
+    // last thing on a page (less than ~25mm of room remaining), bump to next.
+    if (block.type === "section-title" && PAGE_CAPACITY - used < 25 && current.length > 0) {
       pages.push(current);
       current = [];
       used = 0;
@@ -707,14 +713,14 @@ function CVStyles() {
       .cv-content {
         position: relative;
         z-index: 1;
-        padding: 18mm 16mm 18mm 16mm;
+        padding: 15mm 15mm 15mm 15mm;
         height: 100%;
       }
 
       .cv-page-number {
         position: absolute;
-        bottom: 8mm;
-        right: 16mm;
+        bottom: 6mm;
+        right: 14mm;
         font-size: 8pt;
         color: #6b7a93;
         z-index: 2;
@@ -726,7 +732,7 @@ function CVStyles() {
         grid-template-columns: 1fr auto;
         gap: 16px;
         align-items: start;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
       .cv-header-left { padding-top: 4px; }
       .cv-tagline {
@@ -743,10 +749,10 @@ function CVStyles() {
         width: 70%;
         height: 1.5px;
         background: #1a2645;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
       .cv-name {
-        font-size: 30pt;
+        font-size: 29pt;
         font-weight: 800;
         line-height: 1;
         color: #0a1a35;
@@ -754,8 +760,8 @@ function CVStyles() {
         margin: 0;
       }
       .cv-photo-img {
-        width: 110px;
-        height: 110px;
+        width: 105px;
+        height: 105px;
         border-radius: 50%;
         object-fit: cover;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -767,7 +773,7 @@ function CVStyles() {
         font-size: 9.5pt;
         line-height: 1.55;
         color: #2a3a5a;
-        margin: 16px 0 18px 0;
+        margin: 14px 0 16px 0;
         max-width: 88%;
       }
 
@@ -776,7 +782,7 @@ function CVStyles() {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
       .cv-contact-label {
         font-size: 8pt;
@@ -794,7 +800,7 @@ function CVStyles() {
 
       /* Capabilities */
       .cv-capabilities {
-        margin-bottom: 22px;
+        margin-bottom: 18px;
       }
       .cv-mini-heading {
         font-size: 8.5pt;
@@ -809,7 +815,7 @@ function CVStyles() {
         color: #2a3a5a;
         padding-left: 14px;
         position: relative;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
         line-height: 1.5;
       }
       .cv-bullets li::before {
@@ -828,23 +834,23 @@ function CVStyles() {
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 14pt;
+        font-size: 13.5pt;
         font-weight: 700;
         color: #0a1a35;
         letter-spacing: 0.02em;
-        margin: 18px 0 14px 0;
+        margin: 16px 0 12px 0;
       }
       .cv-section-title-marker {
-        width: 5px;
-        height: 22px;
-        background: #ed5e3c;
+        width: 4px;
+        height: 19px;
+        background: #1a2645;
         flex-shrink: 0;
       }
 
       /* Job entries */
       .cv-job {
-        margin-bottom: 16px;
-        padding-left: 18px;
+        margin-bottom: 13px;
+        padding-left: 16px;
         border-left: 2px solid #e3e8f0;
         position: relative;
       }
@@ -861,15 +867,15 @@ function CVStyles() {
         gap: 8px;
       }
       .cv-job-marker {
-        width: 6px;
-        height: 6px;
-        background: #ed5e3c;
+        width: 5px;
+        height: 5px;
+        background: #1a2645;
         border-radius: 1px;
         flex-shrink: 0;
-        margin-left: -22px;
+        margin-left: -20px;
       }
       .cv-job-title {
-        font-size: 11pt;
+        font-size: 10.5pt;
         font-weight: 700;
         color: #0a1a35;
         margin: 0;
@@ -885,11 +891,11 @@ function CVStyles() {
         font-weight: 600;
         color: #4a5a78;
         letter-spacing: 0.04em;
-        margin: 2px 0 6px 0;
+        margin: 2px 0 5px 0;
       }
       .cv-job-desc {
         font-size: 9pt;
-        line-height: 1.55;
+        line-height: 1.5;
         color: #3a4a68;
         margin: 0;
       }
@@ -913,13 +919,13 @@ function CVStyles() {
         font-size: 9pt;
       }
       .cv-skill-marker {
-        width: 8px;
-        height: 8px;
-        background: #1a2645;
+        width: 7px;
+        height: 7px;
+        background: #cfd6e6;
         flex-shrink: 0;
       }
-      .cv-skill-marker.is-relevant { background: #ed5e3c; }
-      .cv-skill-label { color: #2a3a5a; }
+      .cv-skill-marker.is-relevant { background: #1a2645; }
+      .cv-skill-label { color: #4a5a78; }
       .cv-skill-label.is-relevant {
         font-weight: 700;
         color: #0a1a35;

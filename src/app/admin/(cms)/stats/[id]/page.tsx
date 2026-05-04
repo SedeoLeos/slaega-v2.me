@@ -14,7 +14,8 @@ export default async function EditStatPage({
   if (!stat) notFound();
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div className="p-8">
+      {/* Header — full width, left aligned */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
           href="/admin/stats"
@@ -39,7 +40,10 @@ export default async function EditStatPage({
         </div>
       </div>
 
-      <StatForm mode="edit" id={id} initial={stat} />
+      {/* Form — centered, wider */}
+      <div className="max-w-3xl mx-auto">
+        <StatForm mode="edit" id={id} initial={stat} />
+      </div>
     </div>
   );
 }

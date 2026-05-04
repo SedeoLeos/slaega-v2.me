@@ -13,20 +13,22 @@ export default async function AdminBannerAboutPage() {
 
   if (!current) {
     return (
-      <div className="p-8 max-w-3xl mx-auto">
+      <div className="p-8">
         <div className="mb-8 pb-6 border-b border-zinc-800/60">
           <h1 className="text-2xl font-bold text-white tracking-tight">Carte &quot;À propos&quot; du banner</h1>
           <p className="text-zinc-500 mt-1 text-sm">
             Petite carte affichée à droite des stats sur la page d&apos;accueil.
           </p>
         </div>
-        <BannerAboutForm mode="create" />
+        <div className="max-w-4xl mx-auto">
+          <BannerAboutForm mode="create" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <div className="p-8">
       <div className="flex items-start justify-between gap-4 mb-8 pb-6 border-b border-zinc-800/60">
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-bold text-white tracking-tight">Carte &quot;À propos&quot; du banner</h1>
@@ -49,7 +51,9 @@ export default async function AdminBannerAboutPage() {
         </div>
       </div>
 
-      <BannerAboutForm mode="edit" id={current.id} initial={current} />
+      <div className="max-w-4xl mx-auto">
+        <BannerAboutForm mode="edit" id={current.id} initial={current} />
+      </div>
     </div>
   );
 }

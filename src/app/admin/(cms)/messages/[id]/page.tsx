@@ -44,7 +44,7 @@ export default async function MessageDetailPage({
   const otherFields = Object.entries(submission.data).filter(([k]) => !knownKeys.has(k));
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <div className="p-8">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
@@ -96,8 +96,8 @@ export default async function MessageDetailPage({
         </div>
       </div>
 
-      {/* Content */}
-      <div className="space-y-5">
+      {/* Content — centered, wider */}
+      <div className="max-w-4xl mx-auto space-y-5">
         {/* Message body */}
         {submission.data.message && (
           <div>

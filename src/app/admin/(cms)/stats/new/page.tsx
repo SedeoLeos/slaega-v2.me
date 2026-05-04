@@ -3,7 +3,8 @@ import StatForm from "@/components/admin/StatForm";
 
 export default function NewStatPage() {
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div className="p-8">
+      {/* Header — full width, left aligned */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
           href="/admin/stats"
@@ -25,7 +26,10 @@ export default function NewStatPage() {
         </p>
       </div>
 
-      <StatForm mode="create" />
+      {/* Form — centered, wider */}
+      <div className="max-w-3xl mx-auto">
+        <StatForm mode="create" />
+      </div>
     </div>
   );
 }

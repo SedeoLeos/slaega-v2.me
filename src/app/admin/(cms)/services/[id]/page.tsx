@@ -14,7 +14,7 @@ export default async function EditServicePage({
   if (!service) notFound();
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div className="p-8">
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
           href="/admin/services"
@@ -39,7 +39,9 @@ export default async function EditServicePage({
         </div>
       </div>
 
-      <ServiceForm mode="edit" id={id} initial={service} />
+      <div className="max-w-3xl mx-auto">
+        <ServiceForm mode="edit" id={id} initial={service} />
+      </div>
     </div>
   );
 }

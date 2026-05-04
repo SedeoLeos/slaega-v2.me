@@ -8,7 +8,7 @@ export default async function AdminAboutPage() {
   const data = await aboutPageRepository.getOrCreate();
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <div className="p-8">
       <div className="mb-8 pb-6 border-b border-zinc-800/60">
         <h1 className="text-2xl font-bold text-white tracking-tight">Section &quot;À propos&quot;</h1>
         <p className="text-zinc-500 mt-1 text-sm">
@@ -16,7 +16,9 @@ export default async function AdminAboutPage() {
         </p>
       </div>
 
-      <AboutPageForm initial={data} />
+      <div className="max-w-4xl mx-auto">
+        <AboutPageForm initial={data} />
+      </div>
     </div>
   );
 }
