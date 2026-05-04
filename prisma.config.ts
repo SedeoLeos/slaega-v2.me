@@ -24,14 +24,23 @@ function readActiveProvider(): Provider {
 
 const provider = readActiveProvider();
 
+// `prisma migrate` / `prisma db push` need a real (non-pooled) connection.
+// Supabase: DATABASE_URL is the pgbouncer pooler (cannot run DDL), so we
+// fall back to DIRECT_URL when it's set. For SQLite/MySQL or plain Postgres
+// without a pooler, just keep DATABASE_URL.
+const migrateUrl = process.env.DIRECT_URL?.trim()
+  ? process.env.DIRECT_URL
+  : process.env.DATABASE_URL;
+
 export default defineConfig({
   // Active provider's schema folder (datasource + generator + models).
   schema: path.join("prisma", provider, "schema"),
 
   // Used by `prisma migrate` / `prisma db push` to talk to the actual DB.
-  // (At runtime the app uses driver adapters — see src/lib/db.ts.)
+  // (At runtime the app uses driver adapters — see src/lib/db.ts —
+  // which always read DATABASE_URL, i.e. the pooled URL on Supabase.)
   datasource: {
-    url: process.env.DATABASE_URL,
+    url: migrateUrl,
   },
 
   migrations: {

@@ -31,7 +31,8 @@ const ENV_HINTS: Record<Provider, string[]> = {
   sqlite: [`DATABASE_URL="file:./prisma/dev.db"`],
   postgresql: [
     `DATABASE_URL="postgresql://user:password@host:5432/dbname?schema=public"`,
-    `# Supabase  : postgresql://postgres.[REF]:[PASS]@aws-0-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true`,
+    `# Supabase pooled (runtime) : postgresql://postgres.[REF]:[PASS]@aws-0-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true`,
+    `DIRECT_URL="postgresql://postgres.[REF]:[PASS]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"   # Supabase migrations`,
     `# Neon      : postgresql://[user]:[pass]@ep-xxx.neon.tech/dbname?sslmode=require`,
   ],
   mysql: [
