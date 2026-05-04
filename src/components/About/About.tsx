@@ -37,7 +37,7 @@ export default async function About() {
 
       {/* Body — markdown content with collapse */}
       {data.body && (
-        <div className="max-w-3xl w-full mb-12">
+        <div className="about-body max-w-3xl w-full mb-12 text-center">
           <ContentRenderer content={data.body} collapseThreshold={2000} />
         </div>
       )}

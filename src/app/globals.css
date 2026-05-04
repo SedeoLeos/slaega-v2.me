@@ -85,6 +85,23 @@
   background-clip: padding-box;
 }
 
+/* About page body — center prose paragraphs */
+.about-body .prose p,
+.about-body .prose ul,
+.about-body .prose ol,
+.about-body .prose blockquote,
+.about-body .prose h1,
+.about-body .prose h2,
+.about-body .prose h3,
+.about-body .prose h4 {
+  text-align: center;
+}
+.about-body .prose ul,
+.about-body .prose ol {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
 @layer base {
   body {
     @apply bg-background text-foreground;

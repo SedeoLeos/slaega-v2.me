@@ -3,13 +3,15 @@ import { projectRepository } from "@/features/projects/repositories/project.repo
 import { experienceRepository } from "@/features/experience/repositories/experience.repository";
 import { statRepository } from "@/features/banner/repositories/banner.repository";
 import { contactFieldRepository } from "@/features/contact-fields/repositories/contact-field.repository";
+import { contactSubmissionRepository } from "@/features/contact-submissions/repositories/contact-submission.repository";
 
 export default async function AdminDashboard() {
-  const [projects, experiences, stats, contactFields] = await Promise.all([
+  const [projects, experiences, stats, contactFields, unreadMessages] = await Promise.all([
     projectRepository.getAll().catch(() => []),
     experienceRepository.getAll().catch(() => []),
     statRepository.getAll().catch(() => []),
     contactFieldRepository.getAll().catch(() => []),
+    contactSubmissionRepository.countUnread().catch(() => 0),
   ]);
 
   const published = projects.filter((p) => p.published).length;
@@ -30,9 +32,9 @@ export default async function AdminDashboard() {
         <Stat label="Projets publiés" value={published} color="green" />
         <Stat label="Brouillons" value={drafts} color="yellow" />
         <Stat label="Expériences" value={experiences.length} color="blue" />
+        <Stat label="Messages non lus" value={unreadMessages} color={unreadMessages > 0 ? "green" : "zinc"} />
         <Stat label="Stats banner" value={stats.length} color="zinc" />
         <Stat label="Champs contact" value={contactFields.length} color="zinc" />
-        <Stat label="Total projets" value={projects.length} color="zinc" />
       </div>
 
       {/* Quick actions */}
