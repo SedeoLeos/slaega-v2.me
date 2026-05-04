@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
 
 type MediaItem = {
   filename: string;
@@ -219,12 +218,12 @@ export default function MediaPicker({ open, onClose, onSelect }: MediaPickerProp
                   }}
                   className="group relative aspect-square rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-green-app hover:shadow-lg hover:shadow-green-app/20 transition-all"
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={item.url}
                     alt={item.filename}
-                    fill
-                    sizes="200px"
-                    className="object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
                   />
 
                   {/* Hover overlay */}

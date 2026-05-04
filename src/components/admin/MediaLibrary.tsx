@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
 
 type MediaItem = {
   filename: string;
@@ -214,12 +213,12 @@ export default function MediaLibrary() {
               className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800/60 hover:border-zinc-700 transition-colors"
             >
               <div className="aspect-square relative bg-zinc-950">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={item.url}
                   alt={item.filename}
-                  fill
-                  sizes="250px"
-                  className="object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
                 />
                 {/* Hover actions */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
