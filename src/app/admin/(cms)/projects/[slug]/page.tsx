@@ -16,7 +16,7 @@ export default async function EditProjectPage({
   const { meta, content } = project;
 
   return (
-    <div className="p-8 max-w-7xl">
+    <div className="p-8 max-w-7xl mx-auto">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link

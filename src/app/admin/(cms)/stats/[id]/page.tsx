@@ -14,7 +14,7 @@ export default async function EditStatPage({
   if (!stat) notFound();
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="p-8 max-w-2xl mx-auto">
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link
           href="/admin/stats"

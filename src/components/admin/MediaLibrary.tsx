@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { toast } from "sonner";
+import Pagination from "./Pagination";
 
 type MediaItem = {
   filename: string;
@@ -30,6 +31,8 @@ export default function MediaLibrary() {
   const [uploading, setUploading] = useState(false);
   const [filter, setFilter] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchItems = useCallback(async () => {
@@ -94,6 +97,18 @@ export default function MediaLibrary() {
   const filtered = filter
     ? items.filter((i) => i.filename.toLowerCase().includes(filter.toLowerCase()))
     : items;
+
+  // Reset to first page when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
+
+  const total = filtered.length;
+  const safePage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [filtered, safePage, pageSize]
+  );
 
   return (
     <div className="space-y-6">
@@ -207,7 +222,7 @@ export default function MediaLibrary() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {filtered.map((item) => (
+          {paged.map((item) => (
             <div
               key={item.filename}
               className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800/60 hover:border-zinc-700 transition-colors"
@@ -271,6 +286,21 @@ export default function MediaLibrary() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Pagination */}
+      {!loading && total > 0 && (
+        <Pagination
+          page={safePage}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={(s) => {
+            setPageSize(s);
+            setPage(1);
+          }}
+          pageSizeOptions={[20, 40, 80, 120]}
+        />
       )}
     </div>
   );

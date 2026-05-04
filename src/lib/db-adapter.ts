@@ -6,9 +6,12 @@
  *   • mysql:// / mariadb://        → MySQL       (mariadb)
  *
  * To switch DB:
- *   1. Run `pnpm db:use sqlite | postgresql | mysql` (swaps the datasource block)
+ *   1. Run `pnpm db:use sqlite | postgresql | mysql`
+ *      → writes prisma/.active-provider, syncs prisma/_shared/models.prisma
+ *        into prisma/<provider>/schema/, regenerates the client
  *   2. Update DATABASE_URL in .env accordingly
- *   3. Run `pnpm db:migrate` to apply schema on the new DB
+ *   3. Run `pnpm db:migrate` to create + apply migrations for that provider
+ *      (each provider has its own migrations dir at prisma/<provider>/migrations)
  */
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaPg } from "@prisma/adapter-pg";

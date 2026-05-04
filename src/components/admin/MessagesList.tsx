@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Pagination from "./Pagination";
 import type { ContactSubmission } from "@/entities/contact-submission";
 
 type Tab = "inbox" | "archived";
@@ -26,6 +27,8 @@ function timeAgo(iso: string): string {
 export default function MessagesList({ inbox, archived }: Props) {
   const [tab, setTab] = useState<Tab>("inbox");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
 
   const list = tab === "inbox" ? inbox : archived;
   const filtered = useMemo(() => {
@@ -39,6 +42,17 @@ export default function MessagesList({ inbox, archived }: Props) {
         Object.values(m.data).some((v) => v.toLowerCase().includes(q))
     );
   }, [list, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [tab, search]);
+
+  const total = filtered.length;
+  const safePage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [filtered, safePage, pageSize]
+  );
 
   return (
     <div className="space-y-5">
@@ -99,9 +113,9 @@ export default function MessagesList({ inbox, archived }: Props) {
       )}
 
       {/* List */}
-      {filtered.length > 0 && (
+      {paged.length > 0 && (
         <div className="border border-zinc-800/60 rounded-xl overflow-hidden divide-y divide-zinc-800/40">
-          {filtered.map((m) => (
+          {paged.map((m) => (
             <Link
               key={m.id}
               href={`/admin/messages/${m.id}`}
@@ -149,6 +163,19 @@ export default function MessagesList({ inbox, archived }: Props) {
           ))}
         </div>
       )}
+
+      {/* Pagination */}
+      <Pagination
+        page={safePage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => {
+          setPageSize(s);
+          setPage(1);
+        }}
+        pageSizeOptions={[15, 25, 50, 100]}
+      />
     </div>
   );
 }

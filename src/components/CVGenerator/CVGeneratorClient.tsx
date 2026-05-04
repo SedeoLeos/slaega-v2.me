@@ -341,11 +341,21 @@ export default function CVGeneratorClient() {
               .cv-paper {
                 width: 210mm;
                 min-height: 297mm;
+                max-height: 297mm;
                 position: relative;
                 font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
                 color: #1a2645;
                 background: #ffffff;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                overflow: hidden;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+              }
+              /* Multiple pages container - adds gap between pages in preview */
+              #cv-print {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                background: #f0f0f0;
+                padding: 20px;
               }
 
               /* Background pattern - positioned on the LEFT side with contain */
@@ -371,7 +381,7 @@ export default function CVGeneratorClient() {
               }
 
               .cv-content {
-                padding: 16mm 18mm 16mm 45mm; /* Left padding for background image */
+                padding: 16mm 18mm 16mm 16mm; /* Left padding for background image */
                 position: relative;
                 z-index: 1;
               }
@@ -603,32 +613,39 @@ export default function CVGeneratorClient() {
                   left: 0;
                   top: 0;
                   width: 210mm;
-                  box-shadow: none !important;
+                  display: block;
+                  gap: 0;
+                  background: white !important;
+                  padding: 0 !important;
                   margin: 0 !important;
                 }
                 .cv-paper {
                   width: 210mm;
-                  min-height: 297mm;
-                  height: auto;
+                  height: 297mm;
+                  max-height: 297mm;
                   page-break-after: always;
                   position: relative;
-                  overflow: visible !important;
+                  overflow: hidden;
+                  box-shadow: none !important;
+                  background: #ffffff !important;
                 }
                 .cv-paper:last-child {
                   page-break-after: auto;
                 }
-                /* Background repeats on each page */
+                /* Background on each page */
                 .cv-bg-pattern {
-                  position: fixed;
+                  position: absolute;
                   top: 0;
                   left: 0;
                   width: 35%;
-                  height: 297mm;
+                  height: 100%;
                 }
                 .cv-content {
                   position: relative;
                   z-index: 1;
-                  padding-left: 45mm; /* Make room for the left background */
+                  padding-left: 16mm;
+                  height: 100%;
+                  overflow: hidden;
                 }
                 * {
                   -webkit-print-color-adjust: exact !important;

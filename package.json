@@ -7,14 +7,14 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:reset": "prisma migrate reset",
-    "db:studio": "prisma studio",
+    "db:generate": "tsx scripts/db.ts generate",
+    "db:migrate": "tsx scripts/db.ts migrate dev",
+    "db:deploy": "tsx scripts/db.ts migrate deploy",
+    "db:reset": "tsx scripts/db.ts migrate reset",
+    "db:studio": "tsx scripts/db.ts studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:use": "tsx scripts/db-use.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "tsx scripts/db.ts generate"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",

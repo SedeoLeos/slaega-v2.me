@@ -44,7 +44,7 @@ export default async function MessageDetailPage({
   const otherFields = Object.entries(submission.data).filter(([k]) => !knownKeys.has(k));
 
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-8 max-w-3xl mx-auto">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link

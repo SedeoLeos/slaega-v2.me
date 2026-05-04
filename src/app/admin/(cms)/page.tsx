@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
   const drafts = projects.length - published;
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-8 max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white tracking-tight">Bonjour 👋</h1>

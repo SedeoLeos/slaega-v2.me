@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
+import Pagination from "./Pagination";
 import type { Experience } from "@/entities/experience";
 
 type View = "list" | "grid";
@@ -26,6 +27,8 @@ export default function ExperiencesManager({ experiences }: ExperiencesManagerPr
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
   const [skill, setSkill] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const skills = useMemo(() => {
     const set = new Set<string>();
@@ -51,6 +54,17 @@ export default function ExperiencesManager({ experiences }: ExperiencesManagerPr
   }, [experiences, search, status, skill]);
 
   const hasActiveFilter = search || status !== "all" || skill;
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, status, skill, view]);
+
+  const total = filtered.length;
+  const safePage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [filtered, safePage, pageSize]
+  );
 
   return (
     <div className="space-y-5">
@@ -148,8 +162,19 @@ export default function ExperiencesManager({ experiences }: ExperiencesManagerPr
         </div>
       )}
 
-      {filtered.length > 0 && view === "list" && <ListView experiences={filtered} />}
-      {filtered.length > 0 && view === "grid" && <GridView experiences={filtered} />}
+      {paged.length > 0 && view === "list" && <ListView experiences={paged} />}
+      {paged.length > 0 && view === "grid" && <GridView experiences={paged} />}
+
+      <Pagination
+        page={safePage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => {
+          setPageSize(s);
+          setPage(1);
+        }}
+      />
     </div>
   );
 }

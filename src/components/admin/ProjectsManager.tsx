@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import DeleteButton from "./DeleteButton";
+import Pagination from "./Pagination";
 import type { Project } from "@/entities/project";
 
 type View = "list" | "grid";
@@ -18,6 +19,8 @@ export default function ProjectsManager({ projects }: ProjectsManagerProps) {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
   const [category, setCategory] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // All available categories from the data
   const categories = useMemo(() => {
@@ -38,6 +41,19 @@ export default function ProjectsManager({ projects }: ProjectsManagerProps) {
   }, [projects, search, status, category]);
 
   const hasActiveFilter = search || status !== "all" || category;
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, status, category, view]);
+
+  // Paginated slice
+  const total = filtered.length;
+  const safePage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [filtered, safePage, pageSize]
+  );
 
   return (
     <div className="space-y-5">
@@ -142,10 +158,22 @@ export default function ProjectsManager({ projects }: ProjectsManagerProps) {
       )}
 
       {/* ── List view ─────────────────────────────────────────── */}
-      {filtered.length > 0 && view === "list" && <ListView projects={filtered} />}
+      {paged.length > 0 && view === "list" && <ListView projects={paged} />}
 
       {/* ── Grid view ─────────────────────────────────────────── */}
-      {filtered.length > 0 && view === "grid" && <GridView projects={filtered} />}
+      {paged.length > 0 && view === "grid" && <GridView projects={paged} />}
+
+      {/* ── Pagination ────────────────────────────────────────── */}
+      <Pagination
+        page={safePage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => {
+          setPageSize(s);
+          setPage(1);
+        }}
+      />
     </div>
   );
 }

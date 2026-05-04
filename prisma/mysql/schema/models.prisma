@@ -1,0 +1,115 @@
+// Shared models — used by all providers (sqlite | postgresql | mysql).
+//
+// JSON-as-string columns (`tags`, `categories`, `skills`, `options`) are
+// represented as String for cross-DB compatibility (SQLite has no native
+// JSON type). The repositories handle (de)serialization.
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  date        String
+  tags        String   @default("[]")
+  categories  String   @default("[]")
+  image       String   @default("/img.jpg")
+  description String   @default("")
+  content     String   @default("")
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id
+  company     String
+  role        String
+  startDate   String
+  endDate     String?
+  current     Boolean  @default(false)
+  description String
+  skills      String   @default("[]")
+  location    String   @default("")
+  companyUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String   @default("light")
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactField {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  label       String
+  type        String   @default("text")
+  placeholder String   @default("")
+  required    Boolean  @default(true)
+  options     String   @default("[]")
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Stat {
+  id        String   @id @default(cuid())
+  value     String   // "1434+", "17", "2B+"…
+  label     String   // "Projets livrés"
+  color     String   @default("green") // green | rose | amber | dark | sky
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AboutBlock {
+  id        String   @id @default(cuid())
+  label     String   @default("À propos de moi")
+  body      String
+  ctaText   String   @default("En savoir plus")
+  ctaHref   String   @default("/about")
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Stored entries from the public contact form.
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  // The user-submitted payload, JSON-encoded (string keys → string values),
+  // so it adapts to any ContactField config.
+  data      String   @default("{}")
+  // Convenience fields surfaced from the payload for sorting / search.
+  name      String   @default("")
+  email     String   @default("")
+  subject   String   @default("")
+  read      Boolean  @default(false)
+  archived  Boolean  @default(false)
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+// Single-record model — content of the public /about section.
+model AboutPage {
+  id         String   @id @default(cuid())
+  label      String   @default("Apprenez à me connaître")
+  title      String   @default("À propos")
+  intro      String   @default("")
+  body       String   @default("") // Markdown / rich text
+  highlights String   @default("[]") // JSON: [{title, items: string[]}]
+  ctaText    String   @default("Télécharger le CV")
+  ctaHref    String   @default("/cv.pdf")
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
