@@ -19,7 +19,7 @@ export default async function AdminProjectsPage() {
         </div>
         <Link
           href="/admin/projects/new"
-          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-zinc-950 font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors"
+          className="inline-flex items-center gap-2 bg-green-app hover:bg-green-app/85 text-white font-semibold px-5 py-2.5 rounded-full text-sm transition-colors shadow-sm shadow-green-app/30"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -41,7 +41,7 @@ export default async function AdminProjectsPage() {
           <p className="text-zinc-600 text-sm mt-1">Commencez par créer votre premier projet.</p>
           <Link
             href="/admin/projects/new"
-            className="inline-block mt-4 text-sm text-green-400 hover:text-green-300 transition-colors"
+            className="inline-block mt-4 text-sm text-green-app hover:text-green-app/80 transition-colors"
           >
             Créer un projet →
           </Link>
@@ -82,11 +82,11 @@ export default async function AdminProjectsPage() {
                   <span
                     className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium ${
                       p.published
-                        ? "bg-green-500/15 text-green-400"
+                        ? "bg-green-app/15 text-green-app"
                         : "bg-yellow-500/15 text-yellow-400"
                     }`}
                   >
-                    <span className={`w-1 h-1 rounded-full ${p.published ? "bg-green-400" : "bg-yellow-400"}`} />
+                    <span className={`w-1 h-1 rounded-full ${p.published ? "bg-green-app/90" : "bg-yellow-400"}`} />
                     {p.published ? "Publié" : "Brouillon"}
                   </span>
                 </div>

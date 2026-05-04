@@ -82,7 +82,7 @@ export default async function AdminDashboard() {
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span
-                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${p.published ? "bg-green-400" : "bg-yellow-400"}`}
+                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${p.published ? "bg-green-app/90" : "bg-yellow-400"}`}
                   />
                   <span className="text-sm text-zinc-200 truncate">{p.title}</span>
                 </div>
@@ -106,7 +106,7 @@ export default async function AdminDashboard() {
 
 function Stat({ label, value, color }: { label: string; value: number; color: string }) {
   const colors: Record<string, string> = {
-    green: "text-green-400 bg-green-500/10 border-green-500/20",
+    green: "text-green-app bg-green-app/10 border-green-app/20",
     yellow: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
     blue: "text-blue-400 bg-blue-500/10 border-blue-500/20",
     zinc: "text-zinc-300 bg-zinc-800/50 border-zinc-700/50",
@@ -130,7 +130,7 @@ function QuickAction({
 }) {
   const iconColors: Record<string, string> = {
     blue: "bg-blue-500/15 text-blue-400",
-    green: "bg-green-500/15 text-green-400",
+    green: "bg-green-app/15 text-green-app",
   };
   return (
     <Link

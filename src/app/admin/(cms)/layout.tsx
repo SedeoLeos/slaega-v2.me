@@ -32,8 +32,8 @@ export default async function AdminCmsLayout({
           <aside className="w-64 flex-shrink-0 flex flex-col bg-zinc-900 border-r border-zinc-800/60">
             {/* Logo */}
             <div className="px-5 py-5 border-b border-zinc-800/60 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center flex-shrink-0">
-                <span className="text-zinc-950 font-bold text-sm">S</span>
+              <div className="w-8 h-8 rounded-xl bg-green-app flex items-center justify-center flex-shrink-0 shadow-sm shadow-green-app/30">
+                <span className="text-white font-bold text-sm">S</span>
               </div>
               <div>
                 <p className="text-white font-semibold text-sm leading-none">Slaega</p>

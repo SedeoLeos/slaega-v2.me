@@ -278,7 +278,7 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
             <button
               type="button"
               onClick={setLink}
-              className="text-xs bg-green-500/20 text-green-400 hover:bg-green-500/30 px-2.5 py-1 rounded-md transition-colors"
+              className="text-xs bg-green-app/20 text-green-app hover:bg-green-app/30 px-2.5 py-1 rounded-md transition-colors"
             >
               Insérer
             </button>

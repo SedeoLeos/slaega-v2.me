@@ -25,7 +25,12 @@ type SocialLinkProps = {
 function SocialLinK(props: SocialLinkProps) {
   const Icon = MapIcon[props.icon];
   return (
-    <Link href={props.href} className='rounded-full border-zinc-900 border aspect-square justify-center items-center flex w-10' target='_blank'>
+    <Link
+      href={props.href}
+      className='rounded-full border border-foreground/15 hover:border-foreground/40 hover:bg-foreground/5 aspect-square justify-center items-center flex w-10 transition-all duration-200'
+      target='_blank'
+      rel='noopener noreferrer'
+    >
       <Icon />
     </Link>
   );

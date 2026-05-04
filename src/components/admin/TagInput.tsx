@@ -35,7 +35,7 @@ export default function TagInput({ value, onChange, placeholder = "Appuyer sur E
       {label && (
         <label className="block text-xs font-medium text-zinc-400 mb-1.5">{label}</label>
       )}
-      <div className="min-h-[42px] flex flex-wrap gap-1.5 items-center px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg focus-within:border-green-500 focus-within:ring-1 focus-within:ring-green-500/30 transition-colors">
+      <div className="min-h-[42px] flex flex-wrap gap-1.5 items-center px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg focus-within:border-green-app focus-within:ring-1 focus-within:ring-green-app/30 transition-colors">
         {value.map((tag) => (
           <span
             key={tag}

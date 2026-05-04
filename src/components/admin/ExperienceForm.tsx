@@ -136,7 +136,7 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
           <button
             type="button"
             onClick={() => setCurrent((v) => !v)}
-            className={`relative w-9 flex-shrink-0 rounded-full transition-colors ${current ? "bg-green-500" : "bg-zinc-700"}`}
+            className={`relative w-9 flex-shrink-0 rounded-full transition-colors ${current ? "bg-green-app" : "bg-zinc-700"}`}
             style={{ height: "20px" }}
           >
             <span
@@ -169,7 +169,7 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 disabled:opacity-60 disabled:cursor-not-allowed text-zinc-950 font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+          className="inline-flex items-center gap-2 bg-green-app hover:bg-green-app/85 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-colors shadow-sm shadow-green-app/30"
         >
           {loading ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -205,8 +205,8 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .input-base:focus {
-          border-color: #22c55e;
-          box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+          border-color: #05796B;
+          box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
         }
         .input-base::placeholder { color: #52525b; }
         .input-base:disabled { cursor: not-allowed; }

@@ -15,7 +15,9 @@ function FilterCategorie() {
   const nextValue = (cat?: string) => {
     if (!cat) return "";
     const currentCat = searchParams.get('category')?.split(',').filter(Boolean) || [];
-    return currentCat.includes(cat) ? currentCat.filter((it) => it !== cat).join(',') : [...currentCat, cat].join(',');
+    return currentCat.includes(cat)
+      ? currentCat.filter((it) => it !== cat).join(',')
+      : [...currentCat, cat].join(',');
   };
 
   const handleClick = (cat?: string) => {
@@ -24,17 +26,23 @@ function FilterCategorie() {
   };
 
   return (
-    <div className='flex gap-3.5 w-full flex-wrap justify-center'>
+    <div className='flex gap-2.5 w-full flex-wrap justify-center'>
       {categories?.map((item, index) => {
         const isActive = categoryList.includes(item);
         return (
           <button
             key={index}
             onClick={() => handleClick(item)}
-            className={`group relative overflow-hidden rounded-full px-5 py-2.5 border transition-all duration-300 ease-out transform active:scale-95 ${isActive ? 'border-foreground text-foreground shadow-md shadow-black/10 -translate-y-0.5' : 'border-black/10 hover:border-foreground/40 hover:-translate-y-0.5'}`}
+            className={`
+              relative overflow-hidden rounded-full px-5 py-2 text-sm font-medium
+              border transition-all duration-200 ease-out active:scale-95
+              ${isActive
+                ? 'bg-foreground text-background border-foreground shadow-sm'
+                : 'bg-transparent text-foreground/60 border-foreground/15 hover:border-foreground/35 hover:text-foreground'
+              }
+            `}
           >
-            <span className={`absolute inset-0 transition-transform duration-300 ease-out ${isActive ? 'bg-foreground/10 scale-100' : 'bg-black/5 scale-0 group-hover:scale-100'}`} />
-            <span className='relative z-[2]'>{t(item)}</span>
+            {t(item)}
           </button>
         );
       })}

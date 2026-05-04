@@ -125,7 +125,7 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
               onClick={() => toggleCategory(c)}
               className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
                 categories.includes(c)
-                  ? "bg-green-500/20 border-green-500/40 text-green-400"
+                  ? "bg-green-app/20 border-green-app/40 text-green-app"
                   : "bg-zinc-800/50 border-zinc-700/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600"
               }`}
             >
@@ -158,7 +158,7 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           type="button"
           onClick={() => setPublished((v) => !v)}
           className={`relative w-10 h-5.5 rounded-full transition-colors ${
-            published ? "bg-green-500" : "bg-zinc-700"
+            published ? "bg-green-app" : "bg-zinc-700"
           }`}
           style={{ height: "22px" }}
         >
@@ -175,7 +175,7 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 disabled:opacity-60 disabled:cursor-not-allowed text-zinc-950 font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+          className="inline-flex items-center gap-2 bg-green-app hover:bg-green-app/85 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-colors shadow-sm shadow-green-app/30"
         >
           {loading ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -211,8 +211,8 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .input-base:focus {
-          border-color: #22c55e;
-          box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+          border-color: #05796B;
+          box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
         }
         .input-base::placeholder { color: #52525b; }
       `}</style>

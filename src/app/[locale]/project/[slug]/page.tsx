@@ -78,6 +78,7 @@ export default async function ProjectPage({
             title={item.title}
             slug={item.slug}
             desc={item.desc}
+            date={item.date}
           />
         ))}
       </div>
