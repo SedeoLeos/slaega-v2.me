@@ -17,41 +17,56 @@ export default async function EditProjectPage({
 
   return (
     <div className="p-8 max-w-3xl">
-      {/* Breadcrumb + actions */}
-      <div className="flex items-center justify-between mb-6">
-        <nav className="flex items-center gap-2 text-sm text-zinc-600">
-          <Link href="/admin/projects" className="hover:text-zinc-300 transition-colors">
-            Projets
-          </Link>
-          <span>/</span>
-          <span className="text-zinc-300 truncate max-w-xs">{meta.title}</span>
-        </nav>
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-xs font-medium mb-4">
+        <Link
+          href="/admin/projects"
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Projets
+        </Link>
+        <span className="text-zinc-700">/</span>
+        <span className="text-zinc-500 truncate">Édition</span>
+      </nav>
 
-        <div className="flex items-center gap-4">
+      {/* Header — title + actions in one block */}
+      <div className="flex items-start justify-between gap-4 mb-8 pb-6 border-b border-zinc-800/60">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl font-bold text-white tracking-tight truncate">
+            {meta.title}
+          </h1>
+          <p className="text-zinc-500 text-sm mt-1">
+            Modifiez les informations du projet.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 flex-shrink-0">
           <Link
             href={`/project/${slug}`}
             target="_blank"
-            className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1.5"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-300 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 px-3 py-2 rounded-lg transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
             </svg>
             Voir
           </Link>
-          <DeleteButton
-            url={`/api/projects?slug=${slug}`}
-            label="Supprimer"
-            redirect="/admin/projects"
-          />
+          <div className="inline-flex items-center bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 px-3 py-2 rounded-lg transition-colors">
+            <DeleteButton
+              url={`/api/projects?slug=${slug}`}
+              label="Supprimer"
+              redirect="/admin/projects"
+            />
+          </div>
         </div>
-      </div>
-
-      <div className="mb-7">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Éditer le projet</h1>
-        <p className="text-zinc-500 text-sm mt-1">
-          Modifiez les informations du projet.
-        </p>
       </div>
 
       <ProjectForm

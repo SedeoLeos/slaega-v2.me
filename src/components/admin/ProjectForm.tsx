@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TagInput from "./TagInput";
 import RichEditor from "./RichEditor";
+import DatePicker from "./DatePicker";
+import ImageInput from "./ImageInput";
 import type { Project } from "@/entities/project";
 
 const CATEGORIES = [
@@ -83,12 +85,10 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           />
         </Field>
         <Field label="Date de publication *">
-          <input
-            type="date"
+          <DatePicker
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={setDate}
             required
-            className="input-base"
           />
         </Field>
       </div>
@@ -105,13 +105,8 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
       </Field>
 
       {/* Image */}
-      <Field label="URL de l'image">
-        <input
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          placeholder="/projects/mon-projet.jpg"
-          className="input-base"
-        />
+      <Field label="Image de couverture">
+        <ImageInput value={image} onChange={setImage} />
       </Field>
 
       {/* Categories */}
@@ -156,15 +151,17 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
         </div>
         <button
           type="button"
+          role="switch"
+          aria-checked={published}
+          aria-label="Publier le projet"
           onClick={() => setPublished((v) => !v)}
-          className={`relative w-10 h-5.5 rounded-full transition-colors ${
+          className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
             published ? "bg-green-app" : "bg-zinc-700"
           }`}
-          style={{ height: "22px" }}
         >
           <span
-            className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-              published ? "translate-x-5" : "translate-x-0.5"
+            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+              published ? "translate-x-5" : "translate-x-0"
             }`}
           />
         </button>
@@ -201,20 +198,30 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
       <style>{`
         .input-base {
           width: 100%;
+          height: 40px;
           background: #18181b;
           border: 1px solid #3f3f46;
           border-radius: 0.5rem;
-          padding: 0.5rem 0.75rem;
+          padding: 0 0.75rem;
           font-size: 0.875rem;
+          line-height: 1.4;
           color: #e4e4e7;
           outline: none;
           transition: border-color 0.15s, box-shadow 0.15s;
+          font-family: inherit;
+        }
+        textarea.input-base {
+          height: auto;
+          min-height: 80px;
+          padding: 0.625rem 0.75rem;
+          line-height: 1.5;
         }
         .input-base:focus {
           border-color: #05796B;
           box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
         }
         .input-base::placeholder { color: #52525b; }
+        .input-base:disabled { cursor: not-allowed; opacity: 0.5; }
       `}</style>
     </form>
   );

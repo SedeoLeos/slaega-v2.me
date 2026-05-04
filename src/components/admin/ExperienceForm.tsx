@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TagInput from "./TagInput";
 import RichEditor from "./RichEditor";
+import MonthPicker from "./MonthPicker";
 import type { Experience } from "@/entities/experience";
 
 interface ExperienceFormProps {
@@ -135,13 +136,14 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
         <div className="flex items-center gap-3 pb-1">
           <button
             type="button"
+            role="switch"
+            aria-checked={current}
+            aria-label="En poste actuellement"
             onClick={() => setCurrent((v) => !v)}
-            className={`relative w-9 flex-shrink-0 rounded-full transition-colors ${current ? "bg-green-app" : "bg-zinc-700"}`}
-            style={{ height: "20px" }}
+            className={`relative w-11 h-6 flex-shrink-0 rounded-full transition-colors ${current ? "bg-green-app" : "bg-zinc-700"}`}
           >
             <span
-              className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full shadow transition-transform ${current ? "translate-x-4.5" : "translate-x-0.5"}`}
-              style={{ transform: current ? "translateX(18px)" : "translateX(2px)" }}
+              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${current ? "translate-x-5" : "translate-x-0"}`}
             />
           </button>
           <span className="text-sm text-zinc-400">En poste actuellement</span>
@@ -195,21 +197,30 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
       <style>{`
         .input-base {
           width: 100%;
+          height: 40px;
           background: #18181b;
           border: 1px solid #3f3f46;
           border-radius: 0.5rem;
-          padding: 0.5rem 0.75rem;
+          padding: 0 0.75rem;
           font-size: 0.875rem;
+          line-height: 1.4;
           color: #e4e4e7;
           outline: none;
           transition: border-color 0.15s, box-shadow 0.15s;
+          font-family: inherit;
+        }
+        textarea.input-base {
+          height: auto;
+          min-height: 80px;
+          padding: 0.625rem 0.75rem;
+          line-height: 1.5;
         }
         .input-base:focus {
           border-color: #05796B;
           box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
         }
         .input-base::placeholder { color: #52525b; }
-        .input-base:disabled { cursor: not-allowed; }
+        .input-base:disabled { cursor: not-allowed; opacity: 0.5; }
       `}</style>
     </form>
   );

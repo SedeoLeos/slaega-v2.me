@@ -1,30 +1,82 @@
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { aboutPageRepository } from '@/features/about/repositories/about-page.repository';
+import ContentRenderer from '@/components/Content/ContentRenderer';
 
 export default async function About() {
-  const t = await getTranslations();
+  const about = await aboutPageRepository.getCurrent().catch(() => null);
+
+  // Fallback when DB has no record yet
+  const data = about ?? {
+    label: 'Apprenez à me connaître',
+    title: 'À propos',
+    intro: '',
+    body: '',
+    highlights: [],
+    ctaText: 'Me contacter',
+    ctaHref: '/contact',
+  };
+
+  const hasHighlights = data.highlights.length > 0;
 
   return (
-    <div className='flex justify-center items-center flex-col max-w-content self-center w-full gap-10 px-10 py-20 lg:px-20 font-poppins z-[2] relative'>
-      {/* Heading */}
-      <div className='text-center space-y-2'>
-        <h2 className='text-5xl font-extrabold'>{t('about.title')}</h2>
-        <span className='text-sm font-medium text-foreground/50'>{t('about.subtitle')}</span>
+    <section className="w-full max-w-content self-center px-10 md:px-20 py-24 font-poppins flex flex-col items-center">
+      {/* Centered header */}
+      <div className="text-center mb-12 max-w-2xl mx-auto">
+        <span className="text-xs font-semibold uppercase tracking-widest text-green-app">
+          {data.label}
+        </span>
+        <h2 className="text-5xl sm:text-6xl font-extrabold mt-3 leading-tight">{data.title}</h2>
       </div>
 
-      {/* Body */}
-      <div className='max-w-3xl text-center space-y-5 text-base leading-7 text-foreground/75'>
-        <p>{t('about.paragraph1')}</p>
-        <p>{t('about.paragraph2')}</p>
-        <p>{t('about.paragraph3')}</p>
-      </div>
+      {/* Intro paragraph — centered, big */}
+      {data.intro && (
+        <p className="max-w-3xl text-center text-lg leading-relaxed text-foreground/80 mb-10">
+          {data.intro}
+        </p>
+      )}
+
+      {/* Body — markdown content with collapse */}
+      {data.body && (
+        <div className="max-w-3xl w-full mb-12">
+          <ContentRenderer content={data.body} collapseThreshold={2000} />
+        </div>
+      )}
+
+      {/* Highlights grid */}
+      {hasHighlights && (
+        <div className="max-w-5xl w-full grid sm:grid-cols-2 gap-5 mb-12">
+          {data.highlights.map((group, i) => (
+            <div
+              key={i}
+              className="bg-card border border-foreground/5 rounded-2xl p-6 hover:border-foreground/15 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1 h-5 rounded-full bg-green-app" />
+                <h3 className="text-sm font-bold uppercase tracking-widest text-foreground">
+                  {group.title}
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="text-xs font-medium text-foreground/70 bg-foreground/5 border border-foreground/10 px-3 py-1.5 rounded-full"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* CTA */}
       <Link
-        href='/contact'
-        className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 transition-colors'
+        href={data.ctaHref}
+        className="inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/85 transition-colors"
       >
-        {t('about.downloadResume')}
+        {data.ctaText}
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path
             fillRule="evenodd"
@@ -34,6 +86,6 @@ export default async function About() {
           />
         </svg>
       </Link>
-    </div>
+    </section>
   );
 }

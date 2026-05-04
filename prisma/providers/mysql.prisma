@@ -1,0 +1,7 @@
+// Template datasource for MySQL / MariaDB (PlanetScale, self-hosted, etc.).
+// Usage: pnpm db:use mysql
+//
+// .env  →  DATABASE_URL="mysql://user:password@host:3306/dbname"
+datasource db {
+  provider = "mysql"
+}

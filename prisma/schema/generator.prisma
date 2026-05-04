@@ -1,0 +1,7 @@
+// Prisma client generator (Prisma 7 — TypeScript-first, driver-adapter based).
+generator client {
+  provider     = "prisma-client"
+  output       = "../../src/generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}

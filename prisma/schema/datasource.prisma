@@ -1,0 +1,5 @@
+// Active datasource — DO NOT EDIT MANUALLY.
+// Use `pnpm db:use <sqlite|postgresql|mysql>` to switch.
+datasource db {
+  provider = "sqlite"
+}

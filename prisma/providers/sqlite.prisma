@@ -1,0 +1,7 @@
+// Template datasource for SQLite (local file DB).
+// Usage: pnpm db:use sqlite
+//
+// .env  →  DATABASE_URL="file:./prisma/dev.db"
+datasource db {
+  provider = "sqlite"
+}

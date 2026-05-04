@@ -72,6 +72,7 @@ function ProjectList({ origin }: ProjectListProps) {
                 slug={item.slug}
                 desc={item.desc || ''}
                 date={item.date}
+                categories={item.categories}
               />
             ))}
       </div>

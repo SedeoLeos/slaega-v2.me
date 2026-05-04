@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import About from "@/components/About/About";
 import Banner from "@/components/Banner/Banner";
 import Contact from "@/components/Contact/Contact";
@@ -13,7 +14,11 @@ export default function Home() {
       <FadeIn delay={0.1}><Banner /></FadeIn>
       <FadeIn delay={0.05}><About /></FadeIn>
       <FadeIn><Service /></FadeIn>
-      <FadeIn><ProjectList origin="home" /></FadeIn>
+      <FadeIn>
+        <Suspense fallback={null}>
+          <ProjectList origin="home" />
+        </Suspense>
+      </FadeIn>
       <FadeIn><Contact /></FadeIn>
     </>
   );

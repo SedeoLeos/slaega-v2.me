@@ -11,6 +11,7 @@ import Highlight from "@tiptap/extension-highlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { createLowlight, common } from "lowlight";
 import { useEffect, useCallback, useState } from "react";
+import MediaPicker from "./MediaPicker";
 
 const lowlight = createLowlight(common);
 
@@ -89,6 +90,7 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
   const [charCount, setCharCount] = useState(0);
   const [linkUrl, setLinkUrl] = useState("");
   const [showLinkInput, setShowLinkInput] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -145,10 +147,14 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
     setShowLinkInput(false);
   }, [editor, linkUrl]);
 
-  const addImage = useCallback(() => {
-    const url = window.prompt("URL de l'image");
-    if (url) editor?.chain().focus().setImage({ src: url }).run();
-  }, [editor]);
+  const addImage = useCallback(() => setShowMediaPicker(true), []);
+
+  const handleImagePick = useCallback(
+    (url: string) => {
+      if (url) editor?.chain().focus().setImage({ src: url }).run();
+    },
+    [editor]
+  );
 
   if (!editor) return null;
 
@@ -355,6 +361,13 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
         .hljs-strong{font-weight:bold}
         .hljs-link{text-decoration:underline}
       `}</style>
+
+      {/* Media picker for inline images */}
+      <MediaPicker
+        open={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={handleImagePick}
+      />
     </div>
   );
 }

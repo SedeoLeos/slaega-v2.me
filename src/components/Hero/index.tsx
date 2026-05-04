@@ -38,77 +38,84 @@ function Hero() {
   const t = useTranslations();
 
   return (
-    <div className="flex w-full max-w-content self-center font-poppins flex-wrap justify-center gap-10 lg:gap-0 lg:justify-between md:px-20 px-10 py-10">
-      {/* Circle — original size, with slow rotation animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="flex lg:min-w-full"
-      >
-        <div className="relative justify-center lg:-ml-10 items-center flex">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+    <section className="w-full max-w-content self-center font-poppins px-10 md:px-20 py-16">
+      <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-10 lg:gap-16 items-center">
+        {/* Left: rotating circle text + tagline */}
+        <motion.div
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          className="flex flex-col gap-8 items-center lg:items-start"
+        >
+          {/* Rotating circle */}
+          <div className="relative justify-center items-center flex">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            >
+              <CircleTextV />
+            </motion.div>
+            <div className="w-[50px] h-[50px] bg-green-app rounded-full absolute" />
+          </div>
+
+          {/* Tagline */}
+          <div className="flex flex-col gap-3 max-w-sm">
+            <div className="flex gap-3 items-center uppercase">
+              <p className="text-xs font-semibold tracking-widest text-foreground/60">
+                {t("hero.greeting")}
+              </p>
+              <div className="w-16 h-0.5 bg-foreground" />
+            </div>
+            <h1 className="text-6xl sm:text-7xl font-extrabold leading-[0.95]">
+              <span className="block">{t("hero.tagline1")}</span>
+              <span className="block text-green-app">{t("hero.tagline2")}</span>
+            </h1>
+          </div>
+        </motion.div>
+
+        {/* Center: Photo with clean frame */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative w-[280px] h-[360px] mx-auto"
+        >
+          {/* Olive accent block (offset) */}
+          <div className="absolute -bottom-4 -right-4 w-full h-full bg-accent rounded-3xl z-0" />
+          {/* White photo container */}
+          <div className="relative w-full h-full bg-white rounded-3xl flex items-center justify-center z-10 overflow-hidden shadow-md">
+            <Image
+              src="/images/me.jpg"
+              alt="Seba Gedeon"
+              width={500}
+              height={500}
+              priority
+              className="w-[78%] aspect-square object-cover rounded-full border-8 border-background shadow-sm"
+            />
+          </div>
+        </motion.div>
+
+        {/* Right: Bio */}
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          className="flex flex-col gap-6 max-w-sm lg:items-start items-center text-center lg:text-left"
+        >
+          <h2 className="text-3xl font-extrabold leading-tight">{t("hero.name")}</h2>
+          <p className="text-foreground/70 leading-relaxed text-sm">
+            {t("hero.description")}
+          </p>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 font-bold text-foreground hover:gap-3 transition-all"
           >
-            <CircleTextV />
-          </motion.div>
-          <div className="w-[50px] h-[50px] bg-green-app rounded-full absolute" />
-        </div>
-      </motion.div>
-
-      {/* Tagline — original typography */}
-      <motion.div
-        initial={{ opacity: 0, x: -16 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.15 }}
-        className="flex-col w-[320px] self-end"
-      >
-        <div className="flex gap-2 items-center uppercase">
-          <p>{t("hero.greeting")}</p>
-          <div className="w-24 h-1 bg-black" />
-        </div>
-        <p className="text-7xl">
-          <span>{t("hero.tagline1")}</span>{" "}
-          <span className="text-green-app">{t("hero.tagline2")}</span>
-        </p>
-      </motion.div>
-
-      {/* Photo — original exact dimensions */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="h-[434px] w-full max-w-[353px] flex flex-col"
-      >
-        <div className="w-[80%] sm:w-[271.87px] h-[328.18px] bg-white sm:ml-[78px] sm:-mb-[50%] self-end z-20 relative justify-center items-center flex">
-          <Image
-            objectFit="cover"
-            src="/images/me.jpg"
-            alt="Seba Gedeon"
-            width={500}
-            height={500}
-            className="border-background border-8 w-3/4 aspect-square rounded-full"
-          />
-        </div>
-        <div className="w-[80%] max-w-[271.87px] sm:w-[271.87px] h-[285.07px] bg-accent self-start sm:mt-0 sm:ml-0 -mt-[180px] relative z-0" />
-      </motion.div>
-
-      {/* Bio — original layout */}
-      <motion.div
-        initial={{ opacity: 0, x: 16 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.25 }}
-        className="w-md flex flex-col gap-8 lg:-mr-10"
-      >
-        <h2 className="text-3xl font-bold">{t("hero.name")}</h2>
-        <p>{t("hero.description")}</p>
-        <Link href="/about" className="font-semibold flex items-center gap-2">
-          <span>{t("hero.learnMore")}</span>
-          <Arrow />
-        </Link>
-      </motion.div>
-    </div>
+            <span>{t("hero.learnMore")}</span>
+            <Arrow />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 

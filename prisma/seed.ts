@@ -6,9 +6,12 @@ import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { PrismaClient } from "../src/generated/prisma";
+import { PrismaClient } from "../src/generated/prisma/client";
+import { buildAdapter } from "../src/lib/db-adapter";
 
-const db = new PrismaClient();
+const db = new PrismaClient({
+  adapter: buildAdapter(process.env.DATABASE_URL!),
+});
 
 const slugify = (v: string) =>
   v.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
