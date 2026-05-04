@@ -7,10 +7,10 @@ export const SiteConfig = {
     twitter: 'https://twitter.com/slaega',
     facebook: '#',
     instagram: '#',
-    youtube: '#',
+    youtube: 'https://www.youtube.com/@slaega',
   },
   navLinks: [
-    { href: '/', i18nKey: 'header.navigation.home' },
+    { href: '/', i18nKey: 'header.navigation.home', icon: 'home' as const },
     { href: '/project', i18nKey: 'header.navigation.myWork' },
     { href: '/experience', i18nKey: 'header.navigation.experience' },
     { href: '/about', i18nKey: 'header.navigation.about' },

@@ -7,6 +7,11 @@ import ProjectList from "@/components/Projects/ProjectList";
 import Service from "@/components/Service/Service";
 import FadeIn from "@/components/animations/FadeIn";
 
+// Always render fresh — the homepage reads CMS data (Banner stats, About preview,
+// Services, Projects) that admins update at runtime.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <>

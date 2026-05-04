@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 interface ContentRendererProps {
   content: string;
@@ -12,10 +13,15 @@ interface ContentRendererProps {
 }
 
 /**
- * Smart renderer:
- * - HTML (Tiptap output)  → dangerouslySetInnerHTML + prose styles
- * - Markdown (legacy MDX) → react-markdown + GFM
- * - Long content auto-collapses with "Lire plus / Lire moins"
+ * Universal content renderer.
+ *
+ * Uses react-markdown + remark-gfm + rehype-raw so it handles ALL of:
+ *   • pure markdown
+ *   • pure HTML (Tiptap output)
+ *   • mixed: HTML containing markdown text (e.g. Tiptap-wrapped legacy content
+ *     where `### heading` is inside a <p>)
+ *
+ * Long content auto-collapses with a "Lire plus / Lire moins" toggle.
  */
 export default function ContentRenderer({
   content,
@@ -24,8 +30,7 @@ export default function ContentRenderer({
 }: ContentRendererProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const trimmed = content?.trim() ?? "";
-  const isHtml = trimmed.startsWith("<");
+  const trimmed = (content ?? "").trim();
 
   // Plain text length to decide if we collapse
   const plainLength = useMemo(
@@ -34,78 +39,64 @@ export default function ContentRenderer({
   );
   const shouldCollapse = plainLength > collapseThreshold;
 
-  // For collapsed state: pick a safe truncation (first chunks for markdown,
-  // first paragraph for HTML)
-  const collapsedHtml = useMemo(() => {
-    if (!isHtml || !shouldCollapse) return trimmed;
-    // Stop at the end of the second paragraph or at threshold characters
-    const stopIdx = (() => {
-      const p2 = (() => {
-        let count = 0;
-        let pos = 0;
-        const re = /<\/p>/gi;
-        let m: RegExpExecArray | null;
-        while ((m = re.exec(trimmed))) {
-          count += 1;
-          if (count === 2) {
-            pos = m.index + 4;
-            return pos;
-          }
-        }
-        return -1;
-      })();
-      return p2 > 0 ? p2 : Math.min(trimmed.length, collapseThreshold);
-    })();
-    return trimmed.slice(0, stopIdx);
-  }, [trimmed, isHtml, shouldCollapse, collapseThreshold]);
-
-  const collapsedMd = useMemo(() => {
-    if (isHtml || !shouldCollapse) return trimmed;
-    // Cut at first sentence boundary near threshold
+  const collapsedContent = useMemo(() => {
+    if (!shouldCollapse) return trimmed;
     const slice = trimmed.slice(0, collapseThreshold);
     const lastBreak = Math.max(
       slice.lastIndexOf("\n\n"),
       slice.lastIndexOf(". "),
-      slice.lastIndexOf("! "),
-      slice.lastIndexOf("? ")
+      slice.lastIndexOf("!"),
+      slice.lastIndexOf("?"),
+      slice.lastIndexOf("</p>"),
+      slice.lastIndexOf("</li>")
     );
     return slice.slice(0, lastBreak > 200 ? lastBreak + 1 : slice.length);
-  }, [trimmed, isHtml, shouldCollapse, collapseThreshold]);
+  }, [trimmed, shouldCollapse, collapseThreshold]);
 
-  const proseStyle = {
-    "--tw-prose-body": "#3a3a3a",
-    "--tw-prose-headings": "#0E0E0E",
-    "--tw-prose-links": "#05796B",
-    "--tw-prose-bold": "#0E0E0E",
-    "--tw-prose-counters": "#71717a",
-    "--tw-prose-bullets": "#52525b",
-    "--tw-prose-hr": "#d0d0c8",
-    "--tw-prose-quotes": "#71717a",
-    "--tw-prose-quote-borders": "rgba(5,121,107,0.3)",
-    "--tw-prose-code": "#05796B",
-    "--tw-prose-pre-code": "#e4e4e7",
-    "--tw-prose-pre-bg": "#1E1E1E",
-  } as React.CSSProperties;
-
-  const wrapperClass = `prose prose-base max-w-none relative ${className}`;
-  const collapseWrapClass = !expanded && shouldCollapse ? "max-h-[640px] overflow-hidden" : "";
+  const rendered = !expanded && shouldCollapse ? collapsedContent : trimmed;
 
   return (
-    <div className={`${wrapperClass}`}>
-      <div className={collapseWrapClass} style={proseStyle}>
-        {isHtml ? (
-          <div
-            className="article-html"
-            dangerouslySetInnerHTML={{
-              __html: !expanded && shouldCollapse ? collapsedHtml : trimmed,
-            }}
-          />
-        ) : (
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {!expanded && shouldCollapse ? collapsedMd : trimmed}
-          </ReactMarkdown>
-        )}
-      </div>
+    <div className={`relative ${className}`}>
+      <article
+        className={`prose prose-base max-w-none article-content ${
+          !expanded && shouldCollapse ? "max-h-[640px] overflow-hidden" : ""
+        }`}
+        style={
+          {
+            "--tw-prose-body": "#3a3a3a",
+            "--tw-prose-headings": "#0e0e0e",
+            "--tw-prose-links": "#05796b",
+            "--tw-prose-bold": "#0e0e0e",
+            "--tw-prose-counters": "#71717a",
+            "--tw-prose-bullets": "#52525b",
+            "--tw-prose-hr": "#d0d0c8",
+            "--tw-prose-quotes": "#71717a",
+            "--tw-prose-quote-borders": "rgba(5,121,107,0.3)",
+            "--tw-prose-code": "#05796b",
+            "--tw-prose-pre-code": "#e4e4e7",
+            "--tw-prose-pre-bg": "#1e1e1e",
+          } as React.CSSProperties
+        }
+      >
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          // Handle empty paragraphs from Tiptap gracefully
+          components={{
+            // Trim empty paragraphs that Tiptap sometimes emits
+            p: ({ children, ...props }) => {
+              const content = Array.isArray(children) ? children : [children];
+              const isEmpty = content.every(
+                (c) => typeof c === "string" && c.trim() === ""
+              );
+              if (isEmpty) return null;
+              return <p {...props}>{children}</p>;
+            },
+          }}
+        >
+          {rendered}
+        </ReactMarkdown>
+      </article>
 
       {/* Fade-out when collapsed */}
       {shouldCollapse && !expanded && (

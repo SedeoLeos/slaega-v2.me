@@ -100,7 +100,7 @@ function Hero() {
           initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="flex flex-col gap-6 max-w-sm lg:items-start items-center text-center lg:text-left"
+          className="flex flex-col gap-6 max-w-sm mx-auto lg:items-start items-center text-center lg:text-left"
         >
           <h2 className="text-3xl font-extrabold leading-tight">{t("hero.name")}</h2>
           <p className="text-foreground/70 leading-relaxed text-sm">

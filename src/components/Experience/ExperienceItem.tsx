@@ -1,4 +1,5 @@
 import type { Experience } from '@/entities/experience';
+import ContentRenderer from '@/components/Content/ContentRenderer';
 
 function formatPeriod(start: string, end: string | null, current: boolean): string {
   const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
@@ -16,12 +17,16 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
     <div className="relative flex gap-6 sm:gap-8">
       {/* Timeline line */}
       <div className="flex flex-col items-center">
-        <div className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${exp.current ? 'bg-green-app ring-4 ring-green-app/20' : 'bg-foreground/30'}`} />
+        <div
+          className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${
+            exp.current ? 'bg-green-app ring-4 ring-green-app/20' : 'bg-foreground/30'
+          }`}
+        />
         {!isLast && <div className="w-px flex-1 bg-foreground/10 mt-2 min-h-[2rem]" />}
       </div>
 
       {/* Content */}
-      <div className="pb-10">
+      <div className="pb-10 flex-1 min-w-0">
         <div className="flex flex-wrap items-start gap-x-3 gap-y-1 mb-1">
           <h3 className="font-semibold text-base text-foreground">{exp.role}</h3>
           {exp.current && (
@@ -32,22 +37,42 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
         </div>
         <p className="text-sm text-foreground/60 mb-1">
           {exp.companyUrl ? (
-            <a href={exp.companyUrl} target="_blank" rel="noopener noreferrer" className="hover:text-green-app transition-colors">
+            <a
+              href={exp.companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-green-app transition-colors"
+            >
               {exp.company}
             </a>
-          ) : exp.company} · {exp.location}
+          ) : (
+            exp.company
+          )}
+          {exp.location && ` · ${exp.location}`}
         </p>
         <p className="text-xs text-foreground/40 mb-3 font-mono">
           {formatPeriod(exp.startDate, exp.endDate, exp.current)}
         </p>
-        <p className="text-sm text-foreground/70 leading-relaxed max-w-xl">{exp.description}</p>
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {exp.skills.map((s) => (
-            <span key={s} className="text-xs bg-foreground/5 border border-foreground/10 text-foreground/60 px-2.5 py-0.5 rounded-full">
-              {s}
-            </span>
-          ))}
-        </div>
+
+        {/* Rich description (HTML / Markdown) — uses the same renderer as projects */}
+        {exp.description && (
+          <div className="text-foreground/70 leading-relaxed max-w-3xl experience-desc">
+            <ContentRenderer content={exp.description} collapseThreshold={600} />
+          </div>
+        )}
+
+        {exp.skills.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-4">
+            {exp.skills.map((s) => (
+              <span
+                key={s}
+                className="text-xs bg-foreground/5 border border-foreground/10 text-foreground/60 px-2.5 py-0.5 rounded-full"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

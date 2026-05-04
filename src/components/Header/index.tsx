@@ -22,7 +22,12 @@ const Header = () => {
         <nav className='2lg:flex hidden'>
           <ul className='flex text-sm font-medium gap-7'>
             {SiteConfig.navLinks.map((item, index) => (
-              <NavItem key={index} href={item.href} text={t(item.i18nKey)} />
+              <NavItem
+                key={index}
+                href={item.href}
+                text={t(item.i18nKey)}
+                icon={"icon" in item ? item.icon : undefined}
+              />
             ))}
           </ul>
         </nav>
@@ -72,7 +77,13 @@ const Header = () => {
             <div className={`2lg:hidden absolute right-0 top-8 w-max ${!menu ? 'hidden' : 'flex'}`}>
               <ul className='flex flex-col p-4 mt-4 rounded-2xl border border-foreground/10 bg-background/95 backdrop-blur-xl shadow-xl gap-1 min-w-[180px]'>
                 {SiteConfig.navLinks.map((item, index) => (
-                  <NavItem key={index} href={item.href} text={t(item.i18nKey)} onClick={() => setMenu(false)} />
+                  <NavItem
+                    key={index}
+                    href={item.href}
+                    text={t(item.i18nKey)}
+                    icon={"icon" in item ? item.icon : undefined}
+                    onClick={() => setMenu(false)}
+                  />
                 ))}
               </ul>
             </div>

@@ -14,7 +14,7 @@ export default async function EditExperiencePage({
   if (!exp) notFound();
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="p-8 max-w-5xl">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-medium mb-4">
         <Link

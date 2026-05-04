@@ -33,7 +33,7 @@ export default async function ExperiencePage({ params }: Props) {
       {experiences.length === 0 ? (
         <p className="text-foreground/50">{t('empty')}</p>
       ) : (
-        <div className="w-full max-w-2xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           {experiences.map((exp, i) => (
             <ExperienceItem
               key={exp.id}

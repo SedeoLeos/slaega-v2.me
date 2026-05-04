@@ -72,9 +72,9 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Title + Date */}
-      <div className="grid sm:grid-cols-[1fr_160px] gap-4">
+    <form onSubmit={handleSubmit} className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+      {/* ═════════ MAIN COLUMN ═════════ */}
+      <div className="space-y-6 min-w-0">
         <Field label="Titre *">
           <input
             value={title}
@@ -84,116 +84,96 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
             className="input-base"
           />
         </Field>
-        <Field label="Date de publication *">
-          <DatePicker
-            value={date}
-            onChange={setDate}
-            required
+
+        <Field label="Description courte">
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            placeholder="Résumé en une phrase…"
+            className="input-base resize-none"
           />
         </Field>
+
+        <RichEditor
+          value={content}
+          onChange={setContent}
+          label="Contenu"
+          placeholder="Décrivez votre projet — contexte, stack, défis, résultats…"
+        />
+
+        <div className="flex items-center gap-3 pt-2 lg:hidden">
+          <SubmitBlock loading={loading} mode={mode} />
+        </div>
       </div>
 
-      {/* Description */}
-      <Field label="Description courte">
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={2}
-          placeholder="Résumé en une phrase..."
-          className="input-base resize-none"
-        />
-      </Field>
-
-      {/* Image */}
-      <Field label="Image de couverture">
-        <ImageInput value={image} onChange={setImage} />
-      </Field>
-
-      {/* Categories */}
-      <div>
-        <label className="block text-xs font-medium text-zinc-400 mb-2">Catégories</label>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((c) => (
+      {/* ═════════ SIDEBAR ═════════ */}
+      <aside className="space-y-5 lg:sticky lg:top-8">
+        {/* Publish status — call to action */}
+        <SidebarCard>
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-sm font-medium text-zinc-200">Publié</p>
+              <p className="text-xs text-zinc-500 mt-0.5">Visible sur le portfolio</p>
+            </div>
             <button
-              key={c}
               type="button"
-              onClick={() => toggleCategory(c)}
-              className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
-                categories.includes(c)
-                  ? "bg-green-app/20 border-green-app/40 text-green-app"
-                  : "bg-zinc-800/50 border-zinc-700/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600"
+              role="switch"
+              aria-checked={published}
+              aria-label="Publier le projet"
+              onClick={() => setPublished((v) => !v)}
+              className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
+                published ? "bg-green-app" : "bg-zinc-700"
               }`}
             >
-              {c}
+              <span
+                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                  published ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
             </button>
-          ))}
-        </div>
-      </div>
+          </div>
+          <div className="hidden lg:block">
+            <SubmitBlock loading={loading} mode={mode} fullWidth />
+          </div>
+        </SidebarCard>
 
-      {/* Tags */}
-      <TagInput value={tags} onChange={setTags} label="Tags" placeholder="React, Node.js, …" />
+        <SidebarCard title="Métadonnées">
+          <Field label="Date de publication *">
+            <DatePicker value={date} onChange={setDate} required />
+          </Field>
+        </SidebarCard>
 
-      {/* Content */}
-      <RichEditor
-        value={content}
-        onChange={setContent}
-        label="Contenu"
-        placeholder="Décrivez votre projet — contexte, stack, défis, résultats…"
-      />
+        <SidebarCard title="Image de couverture">
+          <ImageInput value={image} onChange={setImage} />
+        </SidebarCard>
 
-      {/* Published toggle */}
-      <div className="flex items-center justify-between py-3 px-4 bg-zinc-900 border border-zinc-800/60 rounded-xl">
-        <div>
-          <p className="text-sm font-medium text-zinc-200">Publié</p>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            Visible sur le portfolio public
-          </p>
-        </div>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={published}
-          aria-label="Publier le projet"
-          onClick={() => setPublished((v) => !v)}
-          className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
-            published ? "bg-green-app" : "bg-zinc-700"
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${
-              published ? "translate-x-5" : "translate-x-0"
-            }`}
-          />
-        </button>
-      </div>
+        <SidebarCard title="Catégories">
+          <div className="flex flex-wrap gap-1.5">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => toggleCategory(c)}
+                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                  categories.includes(c)
+                    ? "bg-green-app/20 border-green-app/40 text-green-app"
+                    : "bg-zinc-800/50 border-zinc-700/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </SidebarCard>
 
-      {/* Submit */}
-      <div className="flex items-center gap-3 pt-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center gap-2 bg-green-app hover:bg-green-app/85 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-colors shadow-sm shadow-green-app/30"
-        >
-          {loading ? (
-            <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-          ) : (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-          {loading ? "Enregistrement…" : mode === "edit" ? "Mettre à jour" : "Créer le projet"}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
-        >
-          Annuler
-        </button>
-      </div>
+        <SidebarCard>
+          <TagInput value={tags} onChange={setTags} label="Tags" placeholder="React, Node.js, …" />
+        </SidebarCard>
+      </aside>
+
+      {/* Hidden submit so Enter still triggers form submit on inputs */}
+      <button type="submit" className="hidden" aria-hidden="true" tabIndex={-1} />
 
       <style>{`
         .input-base {
@@ -233,5 +213,67 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <label className="block text-xs font-medium text-zinc-400 mb-1.5">{label}</label>
       {children}
     </div>
+  );
+}
+
+function SidebarCard({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-4">
+      {title && (
+        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3">
+          {title}
+        </p>
+      )}
+      {children}
+    </div>
+  );
+}
+
+function SubmitBlock({
+  loading,
+  mode,
+  fullWidth,
+}: {
+  loading: boolean;
+  mode: "create" | "edit";
+  fullWidth?: boolean;
+}) {
+  return (
+    <button
+      type="submit"
+      disabled={loading}
+      className={`inline-flex items-center justify-center gap-2 bg-green-app hover:bg-green-app/85 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-colors shadow-sm shadow-green-app/30 ${
+        fullWidth ? "w-full" : ""
+      }`}
+    >
+      {loading ? (
+        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          />
+        </svg>
+      ) : (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      )}
+      {loading ? "Enregistrement…" : mode === "edit" ? "Mettre à jour" : "Créer le projet"}
+    </button>
   );
 }
