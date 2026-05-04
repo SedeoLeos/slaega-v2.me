@@ -1,43 +1,75 @@
-import { trackEvent } from '@/lib/monitoring/telemetry';
-import { NextResponse } from 'next/server';
-import fs from 'node:fs';
-import path from 'node:path';
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth";
+import { projectRepository } from "@/features/projects/repositories/project.repository";
+import type { CreateProjectInput, UpdateProjectInput } from "@/entities/project";
 
-const PROJECTS_DIRECTORY = path.join(process.cwd(), 'src/content/project');
+// ─── GET /api/projects ────────────────────────────────────────────────────────
+// Public: published projects. With ?admin=1 + auth: all projects (incl. drafts)
+export async function GET(req: NextRequest) {
+  const isAdmin = req.nextUrl.searchParams.get("admin") === "1";
 
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  const title = String(body?.title || '').trim();
-  const date = String(body?.date || '').trim();
-  const categories = Array.isArray(body?.categories) ? body.categories.map(String) : [];
-  const tags :string []= Array.isArray(body?.tags) ? body.tags.map(String) : [];
-  const image = String(body?.image || '/img.jpg').trim();
-  const content = String(body?.content || '').trim();
-
-  if (!title || !date || !content) {
-    return NextResponse.json({ ok: false, message: 'title, date and content are required' }, { status: 400 });
+  if (isAdmin) {
+    const session = await auth();
+    if (!session) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+    const projects = await projectRepository.getAll();
+    return NextResponse.json(projects);
   }
 
-  const slug = slugify(title);
-  const filePath = path.join(PROJECTS_DIRECTORY, `${slug}.mdx`);
+  const projects = await projectRepository.getPublished();
+  return NextResponse.json(projects);
+}
 
-  if (fs.existsSync(filePath)) {
-    return NextResponse.json({ ok: false, message: 'project already exists' }, { status: 409 });
+// ─── POST /api/projects ───────────────────────────────────────────────────────
+export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+
+  const body = (await req.json()) as CreateProjectInput;
+  const { title, date, categories = [], tags = [], image, content, description, published } = body;
+
+  if (!title?.trim() || !date?.trim() || !content?.trim()) {
+    return NextResponse.json({ message: "title, date et content sont requis" }, { status: 400 });
   }
 
-  const frontmatter = `---\ntitle: "${title}"\ndate: "${date}"\ntags: [${tags.map((t: string) => `"${t}"`).join(', ')}]\ncategories: [${categories.map((c: string) => `"${c}"`).join(', ')}]\nimage: "${image}"\n---\n\n`;
+  const project = await projectRepository.create({
+    title: title.trim(),
+    date: date.trim(),
+    tags,
+    categories,
+    image,
+    content,
+    description,
+    published: published ?? true,
+  });
 
-  fs.writeFileSync(filePath, `${frontmatter}${content}\n`, 'utf-8');
+  return NextResponse.json(project, { status: 201 });
+}
 
-  await trackEvent({ event: 'project_created', page: '/tools/content-editor', payload: { slug, title } });
+// ─── PUT /api/projects?slug=xxx ───────────────────────────────────────────────
+export async function PUT(req: NextRequest) {
+  const session = await auth();
+  if (!session) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
 
-  return NextResponse.json({ ok: true, slug });
+  const slug = req.nextUrl.searchParams.get("slug");
+  if (!slug) return NextResponse.json({ message: "slug requis" }, { status: 400 });
+
+  const body = (await req.json()) as UpdateProjectInput;
+  const updated = await projectRepository.update(slug, body);
+  if (!updated) return NextResponse.json({ message: "Projet introuvable" }, { status: 404 });
+
+  return NextResponse.json(updated);
+}
+
+// ─── DELETE /api/projects?slug=xxx ────────────────────────────────────────────
+export async function DELETE(req: NextRequest) {
+  const session = await auth();
+  if (!session) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+
+  const slug = req.nextUrl.searchParams.get("slug");
+  if (!slug) return NextResponse.json({ message: "slug requis" }, { status: 400 });
+
+  const deleted = await projectRepository.delete(slug);
+  return deleted
+    ? NextResponse.json({ ok: true })
+    : NextResponse.json({ message: "Projet introuvable" }, { status: 404 });
 }

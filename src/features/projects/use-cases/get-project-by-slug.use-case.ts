@@ -1,7 +1,7 @@
 import type { ProjectContent } from "@/entities/project";
 import { projectRepository } from "@/features/projects/repositories/project.repository";
 
-export const getProjectBySlug = async (slug: string): Promise<ProjectContent> => {
+export const getProjectBySlug = async (slug: string): Promise<ProjectContent | null> => {
   return projectRepository.getBySlug(slug);
 };
 

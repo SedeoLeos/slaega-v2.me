@@ -10,3 +10,6 @@ export type Experience = {
   location: string;
   companyUrl?: string;
 };
+
+export type CreateExperienceInput = Omit<Experience, "id">;
+export type UpdateExperienceInput = Partial<CreateExperienceInput>;

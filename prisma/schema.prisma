@@ -1,0 +1,46 @@
+// Prisma schema — database-agnostic
+// Switch DATABASE_URL for any backend:
+//   SQLite (dev)          DATABASE_URL="file:./prisma/dev.db"
+//   PostgreSQL / Supabase DATABASE_URL="postgresql://user:pass@host:5432/db"
+//   MySQL                 DATABASE_URL="mysql://user:pass@host:3306/db"
+// Also update provider below to match: "sqlite" | "postgresql" | "mysql"
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  date        String
+  tags        String   @default("[]")
+  categories  String   @default("[]")
+  image       String   @default("/img.jpg")
+  description String   @default("")
+  content     String   @default("")
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id
+  company     String
+  role        String
+  startDate   String
+  endDate     String?
+  current     Boolean  @default(false)
+  description String
+  skills      String   @default("[]")
+  location    String   @default("")
+  companyUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
