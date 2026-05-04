@@ -105,6 +105,58 @@ async function main() {
     console.log(`↪ ${fieldsCount} contact field(s) already present, skipping`);
   }
 
+  // ── Services ────────────────────────────────────────────────
+  const servicesCount = await db.service.count();
+  if (servicesCount === 0) {
+    await db.service.createMany({
+      data: [
+        {
+          title: "Développement Mobile & Web",
+          description:
+            "Applications mobiles natives et cross-platform, applications web modernes et responsives. Expertise en React Native, Flutter, React, Vue.js.",
+          icon: "device",
+          order: 0,
+          published: true,
+        },
+        {
+          title: "Backend & API",
+          description:
+            "Backends robustes, APIs RESTful et GraphQL, microservices et architectures distribuées. Maîtrise de Node.js, Python, Java et bases de données.",
+          icon: "code",
+          order: 1,
+          published: true,
+        },
+        {
+          title: "Desktop & Intégration",
+          description:
+            "Applications desktop multiplateformes et solutions d'intégration de données. Expertise en Electron, .NET, intégration d'APIs tierces.",
+          icon: "cog",
+          order: 2,
+          published: true,
+        },
+        {
+          title: "Sécurité & Auth",
+          description:
+            "Systèmes d'authentification sécurisés, gestion des permissions, OAuth, JWT, chiffrement et bonnes pratiques de sécurité applicative.",
+          icon: "shield",
+          order: 3,
+          published: true,
+        },
+        {
+          title: "DevOps & Infrastructure",
+          description:
+            "Pipelines CI/CD, Docker, Kubernetes, monitoring et déploiement automatisé sur cloud (AWS, Azure, GCP).",
+          icon: "cloud",
+          order: 4,
+          published: true,
+        },
+      ],
+    });
+    console.log("✓ 5 services created");
+  } else {
+    console.log(`↪ ${servicesCount} service(s) already present, skipping`);
+  }
+
   console.log("Done.");
 }
 
