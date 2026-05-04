@@ -3,6 +3,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TagInput from "./TagInput";
+import RichEditor from "./RichEditor";
 import type { Experience } from "@/entities/experience";
 
 interface ExperienceFormProps {
@@ -148,16 +149,12 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
       </div>
 
       {/* Description */}
-      <Field label="Description *">
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          rows={4}
-          placeholder="Décrivez vos missions, réalisations, responsabilités..."
-          className="input-base resize-y"
-        />
-      </Field>
+      <RichEditor
+        value={description}
+        onChange={setDescription}
+        label="Description *"
+        placeholder="Décrivez vos missions, réalisations, responsabilités…"
+      />
 
       {/* Skills */}
       <TagInput

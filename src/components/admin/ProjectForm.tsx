@@ -3,7 +3,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TagInput from "./TagInput";
-import MarkdownEditor from "./MarkdownEditor";
+import RichEditor from "./RichEditor";
 import type { Project } from "@/entities/project";
 
 const CATEGORIES = [
@@ -139,7 +139,12 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
       <TagInput value={tags} onChange={setTags} label="Tags" placeholder="React, Node.js, …" />
 
       {/* Content */}
-      <MarkdownEditor value={content} onChange={setContent} rows={22} />
+      <RichEditor
+        value={content}
+        onChange={setContent}
+        label="Contenu"
+        placeholder="Décrivez votre projet — contexte, stack, défis, résultats…"
+      />
 
       {/* Published toggle */}
       <div className="flex items-center justify-between py-3 px-4 bg-zinc-900 border border-zinc-800/60 rounded-xl">

@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
-import ContentWrapper from "@/components/Content/ContentWrapper";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
-import { splitMarkdownByParagraphs } from "@/libs/matter";
+import ContentRenderer from "@/components/Content/ContentRenderer";
 import { getAllProjects, getPost, getPostPath } from "@/libs/posts";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from "next/image";
 
 export async function generateStaticParams() {
@@ -22,7 +20,6 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { content, meta } = project;
-  const [previewRaw, fullRaw] = splitMarkdownByParagraphs(content, 5);
 
   const data = await getAllProjects();
   const currentIndex = data.findIndex((item) => item.slug === slug);
@@ -69,10 +66,9 @@ export default async function ProjectPage({
         </h1>
       </div>
 
-      <ContentWrapper
-        previewContent={<MDXRemote source={previewRaw} />}
-        fullContent={<MDXRemote source={fullRaw} />}
-      />
+      <div className="max-w-4xl w-full z-[2]">
+        <ContentRenderer content={content} />
+      </div>
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 max-w-content-blog gap-5">
         {posts.slice(0, 3).map((item, index) => (
