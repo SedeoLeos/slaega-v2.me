@@ -11,6 +11,37 @@
     "showLess": "Show less",
     "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   },
+  "emptyState": {
+    "projects": {
+      "title": "No projects yet",
+      "description": "New projects will appear here as soon as they're ready to be shared.",
+      "ctaLabel": "Get in touch",
+      "ctaHref": "/contact"
+    },
+    "projectsFiltered": {
+      "title": "No projects match",
+      "description": "Nothing matches this filter. Try another category or browse all projects.",
+      "ctaLabel": "View all projects",
+      "ctaHref": "/project"
+    },
+    "experience": {
+      "title": "Career history coming soon",
+      "description": "Professional experiences will be added shortly. Check back soon!",
+      "ctaLabel": "Get in touch",
+      "ctaHref": "/contact"
+    }
+  },
+  "feedback": {
+    "contact": {
+      "successTitle": "Message sent!",
+      "successDescription": "Thanks for reaching out — I'll get back to you as soon as possible.",
+      "successAction": "Send another message",
+      "errorTitle": "Sending failed",
+      "errorDescription": "We couldn't send your message right now. Check your connection and try again, or email me directly.",
+      "errorAction": "Try again",
+      "errorSecondary": "Send email instead"
+    }
+  },
   "header": {
     "navigation": {
       "home": "Home",

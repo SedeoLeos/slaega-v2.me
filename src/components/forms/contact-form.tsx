@@ -2,16 +2,19 @@
 
 import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
+import FeedbackState from "@/components/ui/FeedbackState";
+import { SiteConfig } from "@/shared/config/site-config";
+
+type Status = "idle" | "submitting" | "success" | "error";
 
 export default function ContactForm() {
   const t = useTranslations("contact.form");
-  const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const tFeedback = useTranslations("feedback.contact");
+  const [status, setStatus] = useState<Status>("idle");
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitting(true);
-    setStatus(null);
+    setStatus("submitting");
 
     const formData = new FormData(event.currentTarget);
     const payload = {
@@ -30,17 +33,49 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       });
       if (!response.ok) {
-        setStatus({ type: "error", text: t("error") });
+        setStatus("error");
         return;
       }
-      setStatus({ type: "success", text: t("success") });
-      event.currentTarget.reset();
+      setStatus("success");
     } catch {
-      setStatus({ type: "error", text: t("error") });
-    } finally {
-      setSubmitting(false);
+      setStatus("error");
     }
   };
+
+  // ── Post-submit states swap the form for a card ──────────────
+  if (status === "success") {
+    return (
+      <FeedbackState
+        variant="success"
+        title={tFeedback("successTitle")}
+        description={tFeedback("successDescription")}
+        action={{
+          label: tFeedback("successAction"),
+          onClick: () => setStatus("idle"),
+        }}
+      />
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <FeedbackState
+        variant="error"
+        title={tFeedback("errorTitle")}
+        description={tFeedback("errorDescription")}
+        action={{
+          label: tFeedback("errorAction"),
+          onClick: () => setStatus("idle"),
+        }}
+        secondaryAction={{
+          label: tFeedback("errorSecondary"),
+          onClick: () => {
+            window.location.href = `mailto:${SiteConfig.email}`;
+          },
+        }}
+      />
+    );
+  }
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4 flex-1 max-w-xl w-full">
@@ -114,10 +149,10 @@ export default function ContactForm() {
 
       <button
         type="submit"
-        disabled={submitting}
+        disabled={status === "submitting"}
         className="self-start inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 disabled:opacity-60 transition-colors mt-2"
       >
-        {submitting ? (
+        {status === "submitting" ? (
           <>
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -139,16 +174,6 @@ export default function ContactForm() {
           </>
         )}
       </button>
-
-      {status && (
-        <p
-          className={`text-sm font-medium ${
-            status.type === "success" ? "text-green-app" : "text-red-500"
-          }`}
-        >
-          {status.text}
-        </p>
-      )}
 
       <style>{`
         .contact-input {

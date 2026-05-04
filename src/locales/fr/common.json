@@ -11,6 +11,37 @@
     "showLess": "Voir moins",
     "monthsShort": ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"]
   },
+  "emptyState": {
+    "projects": {
+      "title": "Aucun projet pour le moment",
+      "description": "De nouveaux projets seront publiés ici dès qu'ils seront prêts à être partagés.",
+      "ctaLabel": "Me contacter",
+      "ctaHref": "/contact"
+    },
+    "projectsFiltered": {
+      "title": "Aucun projet ne correspond",
+      "description": "Aucun projet ne correspond à ce filtre. Essaie une autre catégorie ou vois la liste complète.",
+      "ctaLabel": "Voir tous les projets",
+      "ctaHref": "/project"
+    },
+    "experience": {
+      "title": "Parcours en construction",
+      "description": "Les expériences professionnelles seront ajoutées prochainement. Reviens bientôt !",
+      "ctaLabel": "Me contacter",
+      "ctaHref": "/contact"
+    }
+  },
+  "feedback": {
+    "contact": {
+      "successTitle": "Message envoyé !",
+      "successDescription": "Merci pour ton message. Je reviens vers toi dans les meilleurs délais.",
+      "successAction": "Envoyer un autre message",
+      "errorTitle": "L'envoi a échoué",
+      "errorDescription": "Impossible d'envoyer le message pour le moment. Vérifie ta connexion et réessaie, ou écris-moi directement.",
+      "errorAction": "Réessayer",
+      "errorSecondary": "Écrire un email"
+    }
+  },
   "header": {
     "navigation": {
       "home": "Accueil",

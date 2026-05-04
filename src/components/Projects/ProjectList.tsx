@@ -5,6 +5,7 @@ import FilterCategorie from './FilterCategorie';
 import { useProject } from '@/hooks/useProjects';
 import { useSearchParams } from 'next/navigation';
 import ProjectItem from './ProjectItem';
+import EmptyState from '@/components/ui/EmptyState';
 import { useTranslations } from 'next-intl';
 
 type ProjectListProps = {
@@ -48,37 +49,64 @@ function ProjectList({ origin }: ProjectListProps) {
 
       <FilterCategorie />
 
-      <div className='grid md:grid-cols-2 xl:grid-cols-3 max-w-[1191px] gap-5 w-full'>
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className='flex flex-col bg-card rounded-2xl overflow-hidden border border-black/5 animate-pulse'>
-                <div className='w-full aspect-[16/9] bg-foreground/8' />
-                <div className='flex flex-col gap-3 p-5'>
-                  <div className='h-3 bg-foreground/8 rounded w-1/3' />
-                  <div className='h-4 bg-foreground/8 rounded w-3/4' />
-                  <div className='h-4 bg-foreground/8 rounded w-1/2' />
-                  <div className='flex items-center gap-3 pt-1'>
-                    <div className='h-3 bg-foreground/8 rounded w-20' />
-                    <div className='w-8 h-8 rounded-full bg-foreground/8' />
+      {!isLoading && visibleProjects.length === 0 ? (
+        <EmptyState
+          variant={categories && categories.length > 0 ? 'search' : 'default'}
+          title={
+            categories && categories.length > 0
+              ? t('emptyState.projectsFiltered.title')
+              : t('emptyState.projects.title')
+          }
+          description={
+            categories && categories.length > 0
+              ? t('emptyState.projectsFiltered.description')
+              : t('emptyState.projects.description')
+          }
+          cta={
+            categories && categories.length > 0
+              ? {
+                  label: t('emptyState.projectsFiltered.ctaLabel'),
+                  href: t('emptyState.projectsFiltered.ctaHref'),
+                }
+              : {
+                  label: t('emptyState.projects.ctaLabel'),
+                  href: t('emptyState.projects.ctaHref'),
+                }
+          }
+        />
+      ) : (
+        <div className='grid md:grid-cols-2 xl:grid-cols-3 max-w-[1191px] gap-5 w-full'>
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className='flex flex-col bg-card rounded-2xl overflow-hidden border border-black/5 animate-pulse'>
+                  <div className='w-full aspect-[16/9] bg-foreground/8' />
+                  <div className='flex flex-col gap-3 p-5'>
+                    <div className='h-3 bg-foreground/8 rounded w-1/3' />
+                    <div className='h-4 bg-foreground/8 rounded w-3/4' />
+                    <div className='h-4 bg-foreground/8 rounded w-1/2' />
+                    <div className='flex items-center gap-3 pt-1'>
+                      <div className='h-3 bg-foreground/8 rounded w-20' />
+                      <div className='w-8 h-8 rounded-full bg-foreground/8' />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          : visibleProjects.map((item, index) => (
-              <ProjectItem
-                key={index}
-                src={item.image || '/img.jpg'}
-                title={item.title || ''}
-                slug={item.slug}
-                desc={item.desc || ''}
-                date={item.date}
-                categories={item.categories}
-              />
-            ))}
-      </div>
+              ))
+            : visibleProjects.map((item, index) => (
+                <ProjectItem
+                  key={index}
+                  src={item.image || '/img.jpg'}
+                  title={item.title || ''}
+                  slug={item.slug}
+                  desc={item.desc || ''}
+                  date={item.date}
+                  categories={item.categories}
+                />
+              ))}
+        </div>
+      )}
 
       <div className='flex justify-center items-center gap-4 w-full pt-4'>
-        {origin === 'home' && (
+        {origin === 'home' && visibleProjects.length > 0 && (
           <Link
             href='/project'
             className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 transition-colors'
