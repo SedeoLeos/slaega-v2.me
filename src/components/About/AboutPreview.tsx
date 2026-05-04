@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { aboutPageRepository } from '@/features/about/repositories/about-page.repository';
 
 /**
@@ -6,7 +7,10 @@ import { aboutPageRepository } from '@/features/about/repositories/about-page.re
  * shows only label, title, intro paragraph and a CTA towards /about.
  */
 export default async function AboutPreview() {
-  const about = await aboutPageRepository.getCurrent().catch(() => null);
+  const [about, t] = await Promise.all([
+    aboutPageRepository.getCurrent().catch(() => null),
+    getTranslations('aboutPreview'),
+  ]);
   if (!about) return null;
 
   return (
@@ -27,7 +31,7 @@ export default async function AboutPreview() {
           href="/about"
           className="inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/85 transition-colors mt-4"
         >
-          En savoir plus
+          {t('cta')}
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path
               fillRule="evenodd"

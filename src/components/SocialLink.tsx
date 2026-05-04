@@ -1,17 +1,17 @@
 import Link from 'next/link';
-import Linkden from './icons/linkden';
+import Linkedin from './icons/linkedin';
 import Facebook from './icons/facebook';
 import Instagram from './icons/instagram';
 import Sport from './icons/sport';
-import Tweeter from './icons/tweeter';
+import Twitter from './icons/twitter';
 import Youtube from './icons/youtube';
 import Github from './icons/github';
 
 const MapIcon = {
-  linkedin: Linkden,
+  linkedin: Linkedin,
   facebook: Facebook,
   instagram: Instagram,
-  twitter: Tweeter,
+  twitter: Twitter,
   github: Github,
   youtube: Youtube,
   sport: Sport,
@@ -22,7 +22,7 @@ type SocialLinkProps = {
   href: string;
 };
 
-function SocialLinK(props: SocialLinkProps) {
+function SocialLink(props: SocialLinkProps) {
   const Icon = MapIcon[props.icon];
   return (
     <Link
@@ -36,4 +36,4 @@ function SocialLinK(props: SocialLinkProps) {
   );
 }
 
-export default SocialLinK;
+export default SocialLink;

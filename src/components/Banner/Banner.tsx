@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import type { StatColor } from "@/entities/stat";
 import {
   aboutBlockRepository,
@@ -24,9 +25,10 @@ const COLOR_TXT: Record<StatColor, string> = {
 const STRIP_WIDTHS_PX = [380, 310, 260, 175];
 
 export default async function Banner() {
-  const [stats, about] = await Promise.all([
+  const [stats, about, t] = await Promise.all([
     statRepository.getPublished().catch(() => []),
     aboutBlockRepository.getFirstPublished().catch(() => null),
+    getTranslations("banner"),
   ]);
 
   if (stats.length === 0 && !about) return null;
@@ -65,7 +67,7 @@ export default async function Banner() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-app" />
                 </span>
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">
-                  {about.label || "Status"}
+                  {about.label || t("statusFallback")}
                 </span>
               </div>
             </div>

@@ -1,18 +1,23 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import type { Experience } from '@/entities/experience';
 import ContentRenderer from '@/components/Content/ContentRenderer';
-
-function formatPeriod(start: string, end: string | null, current: boolean): string {
-  const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-  const fmt = (d: string) => {
-    const [y, m] = d.split('-');
-    return `${months[parseInt(m) - 1]} ${y}`;
-  };
-  return `${fmt(start)} — ${current ? "Aujourd'hui" : (end ? fmt(end) : '?')}`;
-}
 
 type Props = { experience: Experience; isLast?: boolean };
 
 export default function ExperienceItem({ experience: exp, isLast }: Props) {
+  const t = useTranslations();
+  const months = t.raw('common.monthsShort') as string[];
+
+  const fmt = (d: string) => {
+    const [y, m] = d.split('-');
+    return `${months[parseInt(m) - 1]} ${y}`;
+  };
+  const period = `${fmt(exp.startDate)} — ${
+    exp.current ? t('experience.present') : exp.endDate ? fmt(exp.endDate) : '?'
+  }`;
+
   return (
     <div className="relative flex gap-6 sm:gap-8">
       {/* Timeline line */}
@@ -31,7 +36,7 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
           <h3 className="font-semibold text-base text-foreground">{exp.role}</h3>
           {exp.current && (
             <span className="text-xs bg-green-app/10 text-green-app border border-green-app/20 px-2 py-0.5 rounded-full font-medium">
-              En poste
+              {t('experience.currentBadge')}
             </span>
           )}
         </div>
@@ -50,9 +55,7 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
           )}
           {exp.location && ` · ${exp.location}`}
         </p>
-        <p className="text-xs text-foreground/40 mb-3 font-mono">
-          {formatPeriod(exp.startDate, exp.endDate, exp.current)}
-        </p>
+        <p className="text-xs text-foreground/40 mb-3 font-mono">{period}</p>
 
         {/* Rich description (HTML / Markdown) — uses the same renderer as projects */}
         {exp.description && (

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Linkden({size= 16}:{size?:number}) {
+function Linkedin({size= 16}:{size?:number}) {
   return (
     <svg width={size} height={size} viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0.873047 5.60962H4.57571V15.2711H0.873047V5.60962Z" fill="#484E53"/>
@@ -12,4 +12,4 @@ function Linkden({size= 16}:{size?:number}) {
   )
 }
 
-export default Linkden
+export default Linkedin

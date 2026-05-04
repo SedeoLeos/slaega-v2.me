@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import SocialLinK from '../SocialLinK';
+import SocialLink from '../SocialLink';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
 
@@ -41,11 +41,11 @@ function Footer() {
       <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4'>
         <span className='text-sm text-foreground/50'>{t('footer.copyright', { year: currentYear })}</span>
         <div className='flex gap-5'>
-          <SocialLinK href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
-          <SocialLinK href={SiteConfig.socialLinks.github} icon='github' />
-          <SocialLinK href={SiteConfig.socialLinks.facebook} icon='facebook' />
-          <SocialLinK href={SiteConfig.socialLinks.instagram} icon='instagram' />
-          <SocialLinK href={SiteConfig.socialLinks.twitter} icon='twitter' />
+          <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
+          <SocialLink href={SiteConfig.socialLinks.github} icon='github' />
+          <SocialLink href={SiteConfig.socialLinks.facebook} icon='facebook' />
+          <SocialLink href={SiteConfig.socialLinks.instagram} icon='instagram' />
+          <SocialLink href={SiteConfig.socialLinks.twitter} icon='twitter' />
         </div>
       </div>
     </footer>

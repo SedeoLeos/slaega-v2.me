@@ -3,7 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/libs/i18n/routing';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
@@ -21,13 +21,21 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Slaega — Seba Gedeon",
-    template: "%s — Slaega",
-  },
-  description: "Ingénieur logiciel full-stack spécialisé en mobile, web, backend et DevOps.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: {
+      default: t("siteTitle"),
+      template: t("titleTemplate"),
+    },
+    description: t("description"),
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

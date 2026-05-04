@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 
 type ProjectItemProps = {
   src: string;
@@ -11,10 +14,12 @@ type ProjectItemProps = {
 };
 
 export default function ProjectItem({ src, title, desc, slug, date, categories }: ProjectItemProps) {
+  const t = useTranslations('projects');
+  const locale = useLocale();
   const cleanDesc = desc?.replace(/<[^>]*>/g, '') ?? '';
   const readTime = Math.max(1, Math.ceil(cleanDesc.length / 200));
   const formattedDate = date
-    ? new Intl.DateTimeFormat('fr-FR', { month: 'short', year: 'numeric' }).format(
+    ? new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'fr-FR', { month: 'short', year: 'numeric' }).format(
         new Date(date.includes('-') ? date : `${date}-01-01`)
       )
     : null;
@@ -67,7 +72,7 @@ export default function ProjectItem({ src, title, desc, slug, date, categories }
         <div className="flex items-center gap-2 text-[11px] text-foreground/45 font-semibold uppercase tracking-widest">
           {formattedDate && <span>{formattedDate}</span>}
           {formattedDate && <span className="w-1 h-1 rounded-full bg-foreground/25" />}
-          <span>{readTime} min</span>
+          <span>{t('minReadShort', { count: readTime })}</span>
         </div>
 
         {/* Title */}
@@ -84,7 +89,7 @@ export default function ProjectItem({ src, title, desc, slug, date, categories }
 
         {/* Bottom inline link */}
         <div className="flex items-center gap-1.5 mt-auto pt-2 text-sm font-bold text-foreground/70 group-hover:text-green-app group-hover:gap-2.5 transition-all duration-300">
-          <span>Découvrir</span>
+          <span>{t('discover')}</span>
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path
               fillRule="evenodd"

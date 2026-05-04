@@ -1,5 +1,5 @@
 import IllustrationContact from '../Illustration/IllustrationContact';
-import SocialLinK from '../SocialLinK';
+import SocialLink from '../SocialLink';
 import { useTranslations } from 'next-intl';
 import ContactForm from '../forms/contact-form';
 import { SiteConfig } from '@/shared/config/site-config';
@@ -22,13 +22,13 @@ function Contact() {
           </div>
 
           <div className='space-y-3'>
-            <p className='text-xs font-semibold uppercase tracking-widest text-foreground/40'>Find me on</p>
+            <p className='text-xs font-semibold uppercase tracking-widest text-foreground/40'>{t('contact.findMeOn')}</p>
             <div className='flex gap-4'>
-              <SocialLinK href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
-              <SocialLinK href={SiteConfig.socialLinks.github} icon='github' />
-              <SocialLinK href={SiteConfig.socialLinks.facebook} icon='facebook' />
-              <SocialLinK href={SiteConfig.socialLinks.instagram} icon='instagram' />
-              <SocialLinK href={SiteConfig.socialLinks.twitter} icon='twitter' />
+              <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
+              <SocialLink href={SiteConfig.socialLinks.github} icon='github' />
+              <SocialLink href={SiteConfig.socialLinks.facebook} icon='facebook' />
+              <SocialLink href={SiteConfig.socialLinks.instagram} icon='instagram' />
+              <SocialLink href={SiteConfig.socialLinks.twitter} icon='twitter' />
             </div>
           </div>
 

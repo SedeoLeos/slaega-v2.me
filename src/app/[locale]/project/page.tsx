@@ -1,12 +1,12 @@
-import ProjectList from '@/components/Projects/ProjectList'
-import React, { Suspense } from 'react'
+import { getTranslations } from 'next-intl/server';
+import ProjectList from '@/components/Projects/ProjectList';
+import { Suspense } from 'react';
 
-function PojectPage() {
+export default async function ProjectPage() {
+  const t = await getTranslations('common');
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ProjectList origin='project' />
+    <Suspense fallback={<div className="py-32 text-center text-foreground/50">{t('loading')}</div>}>
+      <ProjectList origin="project" />
     </Suspense>
-  )
+  );
 }
-
-export default PojectPage

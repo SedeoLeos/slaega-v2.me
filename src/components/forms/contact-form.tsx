@@ -85,17 +85,17 @@ export default function ContactForm() {
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-semibold text-foreground/50 uppercase tracking-wide">
-          Sujet
+          {t("subjectLabel")}
         </label>
         <select name="subject" className="contact-input" defaultValue="">
           <option value="" disabled>
-            Choisir un sujet
+            {t("subjectPlaceholder")}
           </option>
-          <option value="Mission freelance">Mission freelance</option>
-          <option value="Conseil technique">Conseil technique</option>
-          <option value="Recrutement">Recrutement</option>
-          <option value="Question générale">Question générale</option>
-          <option value="Autre">Autre</option>
+          <option value="freelance">{t("subjects.freelance")}</option>
+          <option value="consulting">{t("subjects.consulting")}</option>
+          <option value="hiring">{t("subjects.hiring")}</option>
+          <option value="general">{t("subjects.general")}</option>
+          <option value="other">{t("subjects.other")}</option>
         </select>
       </div>
 
@@ -123,7 +123,7 @@ export default function ContactForm() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Envoi…
+            {t("submitting")}
           </>
         ) : (
           <>

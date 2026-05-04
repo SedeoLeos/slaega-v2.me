@@ -83,7 +83,7 @@ function ProjectList({ origin }: ProjectListProps) {
             href='/project'
             className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 transition-colors'
           >
-            View All Projects
+            {t('projects.viewAll')}
           </Link>
         )}
         {origin === 'project' && (
@@ -93,14 +93,14 @@ function ProjectList({ origin }: ProjectListProps) {
               className='py-3.5 px-8 rounded-full border border-foreground/20 text-sm font-semibold text-foreground/60 hover:text-foreground hover:border-foreground/50 disabled:opacity-25 transition-colors'
               disabled={!canLoadLess}
             >
-              Load Less
+              {t('projects.loadLess')}
             </button>
             <button
               onClick={handleLoadMore}
               className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 disabled:opacity-25 transition-colors'
               disabled={!canLoadMore}
             >
-              Load More
+              {t('projects.loadMore')}
             </button>
           </>
         )}

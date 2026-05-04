@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
@@ -12,18 +13,13 @@ export async function generateStaticParams() {
 }
 export const dynamicParams = true;
 
-const MONTHS = [
-  "Jan", "Fév", "Mar", "Avr", "Mai", "Juin",
-  "Juil", "Août", "Sep", "Oct", "Nov", "Déc",
-];
-
-function formatDate(d: string): string {
+function formatDate(d: string, months: string[]): string {
   if (!d) return "";
   const parts = d.split("-");
   if (parts.length >= 2) {
     const m = parseInt(parts[1]);
     const y = parts[0];
-    if (!isNaN(m) && m >= 1 && m <= 12) return `${MONTHS[m - 1]} ${y}`;
+    if (!isNaN(m) && m >= 1 && m <= 12) return `${months[m - 1]} ${y}`;
   }
   return d;
 }
@@ -36,6 +32,9 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = await getPost(slug);
   if (!project) notFound();
+
+  const t = await getTranslations();
+  const months = t.raw("common.monthsShort") as string[];
 
   const { content, meta } = project;
 
@@ -90,7 +89,7 @@ export default async function ProjectPage({
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Tous les projets
+          {t("projectPage.breadcrumbAll")}
         </Link>
       </nav>
 
@@ -116,9 +115,9 @@ export default async function ProjectPage({
         </h1>
 
         <div className="flex items-center gap-3 text-xs font-medium text-foreground/50">
-          {meta.date && <span>{formatDate(meta.date)}</span>}
+          {meta.date && <span>{formatDate(meta.date, months)}</span>}
           {meta.date && <span className="w-1 h-1 rounded-full bg-foreground/30" />}
-          <span>{readMin} min de lecture</span>
+          <span>{t("projects.minRead", { count: readMin })}</span>
         </div>
       </header>
 
@@ -152,9 +151,9 @@ export default async function ProjectPage({
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-green-app mb-1">
-                Technologies
+                {t("projectPage.techLabel")}
               </p>
-              <h2 className="text-2xl font-extrabold">Stack du projet</h2>
+              <h2 className="text-2xl font-extrabold">{t("projectPage.techTitle")}</h2>
             </div>
             <div className="flex flex-wrap gap-2 sm:justify-end sm:max-w-[60%]">
               {meta.tags.map((t) => (
@@ -178,10 +177,10 @@ export default async function ProjectPage({
           <SectionDivider />
           <div className="text-center mt-10 mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-green-app mb-2">
-              À explorer aussi
+              {t("projectPage.similarLabel")}
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-              Projets similaires
+              {t("projectPage.similarTitle")}
             </h2>
           </div>
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -203,7 +202,7 @@ export default async function ProjectPage({
               href="/project"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-foreground/20 text-sm font-semibold text-foreground hover:border-foreground/50 hover:bg-foreground/5 transition-all"
             >
-              Voir tous les projets
+              {t("projectPage.viewAll")}
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <path
                   fillRule="evenodd"

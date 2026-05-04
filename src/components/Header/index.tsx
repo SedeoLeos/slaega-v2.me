@@ -68,7 +68,7 @@ const Header = () => {
               className='2lg:hidden flex text-3xl group'
               type='button'
               onClick={() => setMenu((prev) => !prev)}
-              aria-label='Toggle menu'
+              aria-label={t('header.toggleMenu')}
             >
               <Drawer size={26} />
             </button>

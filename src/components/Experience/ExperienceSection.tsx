@@ -1,9 +1,13 @@
+import { getTranslations } from 'next-intl/server';
 import { getExperiences } from '@/features/experience/use-cases/get-experiences.use-case';
 import ExperienceItem from './ExperienceItem';
 import Link from 'next/link';
 
 export default async function ExperienceSection() {
-  const experiences = await getExperiences().catch(() => []);
+  const [experiences, t] = await Promise.all([
+    getExperiences().catch(() => []),
+    getTranslations('experience'),
+  ]);
   const preview = experiences.slice(0, 3);
 
   if (preview.length === 0) return null;
@@ -13,9 +17,9 @@ export default async function ExperienceSection() {
       {/* Centered header */}
       <div className="text-center mb-12 max-w-2xl mx-auto">
         <span className="text-xs font-semibold uppercase tracking-widest text-green-app">
-          Parcours
+          {t('label')}
         </span>
-        <h2 className="text-4xl sm:text-5xl font-extrabold mt-2">Expériences</h2>
+        <h2 className="text-4xl sm:text-5xl font-extrabold mt-2">{t('title')}</h2>
       </div>
 
       {/* Centered timeline */}
@@ -34,7 +38,7 @@ export default async function ExperienceSection() {
           href="/experience"
           className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full border border-foreground/20 text-sm font-semibold text-foreground hover:border-foreground/50 hover:bg-foreground/5 transition-all"
         >
-          Voir toutes les expériences ({experiences.length})
+          {t('viewAll', { count: experiences.length })}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

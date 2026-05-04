@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -29,6 +30,7 @@ export default function ContentRenderer({
   collapseThreshold = 1200,
 }: ContentRendererProps) {
   const [expanded, setExpanded] = useState(false);
+  const t = useTranslations("common");
 
   const trimmed = (content ?? "").trim();
 
@@ -118,7 +120,7 @@ export default function ContentRenderer({
             className="inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-full text-sm font-bold hover:bg-foreground/85 transition-all hover:gap-3"
             aria-expanded={expanded}
           >
-            {expanded ? "Lire moins" : "Lire plus"}
+            {expanded ? t("readLess") : t("readMore")}
             <svg
               width="14"
               height="14"

@@ -1,18 +1,22 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { aboutPageRepository } from '@/features/about/repositories/about-page.repository';
 import ContentRenderer from '@/components/Content/ContentRenderer';
 
 export default async function About() {
-  const about = await aboutPageRepository.getCurrent().catch(() => null);
+  const [about, t] = await Promise.all([
+    aboutPageRepository.getCurrent().catch(() => null),
+    getTranslations('about'),
+  ]);
 
-  // Fallback when DB has no record yet
+  // Fallback when DB has no record yet — uses i18n strings
   const data = about ?? {
-    label: 'Apprenez à me connaître',
-    title: 'À propos',
+    label: t('subtitle'),
+    title: t('title'),
     intro: '',
     body: '',
     highlights: [],
-    ctaText: 'Me contacter',
+    ctaText: t('contactCta'),
     ctaHref: '/contact',
   };
 

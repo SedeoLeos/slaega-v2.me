@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type CVData = {
   keywords: string[];
@@ -108,6 +109,7 @@ function BackgroundPattern() {
 }
 
 export default function CVGeneratorClient() {
+  const t = useTranslations('tools.cvGenerator');
   const [jobOffer, setJobOffer] = useState('');
   const [cv, setCv] = useState<CVData | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
@@ -116,7 +118,7 @@ export default function CVGeneratorClient() {
 
   const generate = async () => {
     if (jobOffer.trim().length < 50) {
-      setError("L'offre est trop courte (min 50 caractères)");
+      setError(t('errors.tooShort'));
       return;
     }
     setStatus('loading');
@@ -131,7 +133,7 @@ export default function CVGeneratorClient() {
       setCv(data.cv);
       setStatus('idle');
     } else {
-      setError(data.message ?? 'Erreur');
+      setError(data.message ?? t('errors.generic'));
       setStatus('error');
     }
   };
@@ -145,11 +147,11 @@ export default function CVGeneratorClient() {
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Input panel */}
       <div>
-        <label className="block text-sm font-semibold mb-2">Offre d&apos;emploi</label>
+        <label className="block text-sm font-semibold mb-2">{t('form.jobOfferLabel')}</label>
         <textarea
           value={jobOffer}
           onChange={(e) => setJobOffer(e.target.value)}
-          placeholder="Colle ici l'offre d'emploi complète..."
+          placeholder={t('form.jobOfferPlaceholder')}
           rows={16}
           className="w-full bg-background border border-foreground/15 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-green-app transition-colors resize-y font-mono"
         />
@@ -159,7 +161,7 @@ export default function CVGeneratorClient() {
             disabled={status === 'loading'}
             className="bg-green-app text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:opacity-80 disabled:opacity-40 transition-opacity"
           >
-            {status === 'loading' ? 'Génération...' : 'Générer le CV'}
+            {status === 'loading' ? t('actions.generating') : t('actions.generate')}
           </button>
           {cv && (
             <button
@@ -174,7 +176,7 @@ export default function CVGeneratorClient() {
                   d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
                 />
               </svg>
-              PDF
+              {t('actions.pdf')}
             </button>
           )}
         </div>
@@ -182,11 +184,11 @@ export default function CVGeneratorClient() {
         {cv && (
           <div className="mt-4 space-y-3">
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-foreground/50">Langue:</span>
-              <span className="text-foreground font-medium">{lang === 'fr' ? 'Français' : 'English'}</span>
+              <span className="text-foreground/50">{t('meta.language')} :</span>
+              <span className="text-foreground font-medium">{lang === 'fr' ? t('meta.langFr') : t('meta.langEn')}</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              <span className="text-xs text-foreground/50">Mots-clés détectés ({cv.keywords.length}):</span>
+              <span className="text-xs text-foreground/50">{t('meta.keywordsDetected', { count: cv.keywords.length })} :</span>
               {cv.keywords.map((k) => (
                 <span
                   key={k}
@@ -198,11 +200,11 @@ export default function CVGeneratorClient() {
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2 bg-foreground/5 rounded-lg">
-                <p className="text-foreground/50">Expériences</p>
+                <p className="text-foreground/50">{t('meta.experiences')}</p>
                 <p className="text-foreground font-bold text-base">{cv.experiences.length}</p>
               </div>
               <div className="p-2 bg-foreground/5 rounded-lg">
-                <p className="text-foreground/50">Projets</p>
+                <p className="text-foreground/50">{t('meta.projects')}</p>
                 <p className="text-foreground font-bold text-base">{cv.projects.length}</p>
               </div>
             </div>
@@ -214,7 +216,7 @@ export default function CVGeneratorClient() {
       <div className="overflow-auto">
         {!cv ? (
           <div className="h-full min-h-[600px] border border-dashed border-foreground/15 rounded-xl flex items-center justify-center">
-            <p className="text-foreground/30 text-sm">Le CV généré apparaîtra ici</p>
+            <p className="text-foreground/30 text-sm">{t('preview.empty')}</p>
           </div>
         ) : (
           <div id="cv-print" ref={printRef} className="cv-paper">
