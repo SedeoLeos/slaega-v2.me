@@ -269,10 +269,8 @@ export default function CVGenerator() {
           </div>
         ) : (
           <div id="cv-print" ref={printRef} className="cv-paper bg-white text-[#1a2645] mx-auto shadow-2xl">
-            {/* Decorative pattern (top-left) */}
+            {/* Decorative pattern on left side - repeats on each page */}
             <GeoPattern position="top" />
-            {/* Decorative pattern (bottom-left of last page area) */}
-            <GeoPattern position="bottom" />
 
             <div className="cv-content relative z-[1]">
               {/* ─── Header ─── */}
@@ -401,7 +399,7 @@ export default function CVGenerator() {
                 color: #1a2645;
               }
               .cv-content {
-                padding: 18mm 16mm 18mm 16mm;
+                padding: 18mm 16mm 18mm 45mm; /* Left padding for background image */
               }
 
               /* Header */
@@ -626,11 +624,17 @@ export default function CVGenerator() {
                 color: #0a1a35;
               }
 
-              /* Geo pattern background image preferred (drop /public/cv-bg.png) */
+              /* Geo pattern background image - LEFT side with contain */
               .cv-geo-pattern-img {
                 position: absolute;
                 pointer-events: none;
                 z-index: 0;
+                left: 0;
+                top: 0;
+                width: 35%;
+                height: 100%;
+                object-fit: contain;
+                object-position: top left;
               }
 
               /* ───────── PRINT (multi-page support) ───────── */
@@ -647,18 +651,33 @@ export default function CVGenerator() {
                   left: 0;
                   top: 0;
                   width: 210mm;
-                  /* let height grow — content paginates naturally */
-                  min-height: 297mm;
                   box-shadow: none !important;
                   margin: 0 !important;
                 }
                 .cv-paper {
-                  /* allow content to flow on multiple pages */
-                  min-height: 0 !important;
-                  height: auto !important;
+                  width: 210mm;
+                  min-height: 297mm;
+                  height: auto;
+                  page-break-after: always;
+                  position: relative;
                   overflow: visible !important;
                 }
-                .cv-content { overflow: visible !important; }
+                .cv-paper:last-child {
+                  page-break-after: auto;
+                }
+                /* Background repeats on each page */
+                .cv-geo-pattern-img {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 35%;
+                  height: 297mm;
+                }
+                .cv-content {
+                  position: relative;
+                  z-index: 1;
+                  padding-left: 45mm;
+                }
                 /* Print-friendly colors */
                 * {
                   -webkit-print-color-adjust: exact !important;
@@ -686,37 +705,32 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 // Decorative geometric pattern.
 // Tries to use /cv-bg.png if available (matches the user's CV template exactly),
-// Positioned on the RIGHT side as per the final CV design.
+// Positioned on the LEFT side with contain for multi-page PDF.
 function GeoPattern({ position }: { position: "top" | "bottom" }) {
-  const styleTop: React.CSSProperties = {
+  // Single style for left-side contain image
+  const styleLeft: React.CSSProperties = {
     top: 0,
-    right: 0,
-    width: "45%",
+    left: 0,
+    width: "35%",
     height: "100%",
-    objectFit: "cover",
-    objectPosition: "top right",
+    objectFit: "contain",
+    objectPosition: "top left",
+    opacity: 0.95,
   };
-  const styleBottom: React.CSSProperties = {
-    bottom: 0,
-    right: 0,
-    width: "45%",
-    height: "50%",
-    objectFit: "cover",
-    objectPosition: "bottom right",
-    transform: "scaleY(-1)",
-    opacity: 0.7,
-  };
+
+  // Only render for "top" position, "bottom" is not used with left-side contain
+  if (position === "bottom") return null;
 
   return (
     <>
-      {/* Try the user-provided image first; if missing, the <img> just won't render */}
+      {/* User-provided cv-bg.png on the left side */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/cv-bg.png"
         alt=""
         aria-hidden="true"
         className="cv-geo-pattern-img"
-        style={position === "top" ? styleTop : styleBottom}
+        style={styleLeft}
         onError={(e) => {
           // Hide the broken image so the SVG fallback (sibling) is visible
           (e.currentTarget as HTMLImageElement).style.display = "none";
@@ -731,6 +745,9 @@ function GeoPattern({ position }: { position: "top" | "bottom" }) {
 }
 
 function SvgGeoFallback({ position }: { position: "top" | "bottom" }) {
+  // Only render for top position (left side pattern)
+  if (position === "bottom") return null;
+
   // Dense brick layout of skewed parallelograms
   const SKEW = 6;
   const rows = 9;
@@ -766,20 +783,13 @@ function SvgGeoFallback({ position }: { position: "top" | "bottom" }) {
   const parallelogram = (x: number, y: number) =>
     `M${x + SKEW},${y} L${x + tileW + SKEW},${y} L${x + tileW},${y + tileH} L${x},${y + tileH} Z`;
 
-  const styleTop: React.CSSProperties = {
+  // Positioned on the LEFT side (35% width)
+  const styleLeft: React.CSSProperties = {
     top: 0,
-    right: 0,
-    width: "45%",
+    left: 0,
+    width: "35%",
     height: "100%",
     display: "none", // hidden by default; <img>.onError reveals
-  };
-  const styleBottom: React.CSSProperties = {
-    bottom: 0,
-    right: 0,
-    width: "45%",
-    height: "50%",
-    transform: "scaleY(-1)",
-    display: "none",
   };
 
   return (
@@ -789,7 +799,7 @@ function SvgGeoFallback({ position }: { position: "top" | "bottom" }) {
         position: "absolute",
         pointerEvents: "none",
         overflow: "hidden",
-        ...(position === "top" ? styleTop : styleBottom),
+        ...styleLeft,
       }}
     >
       <svg viewBox="0 0 110 130" preserveAspectRatio="none" className="w-full h-full">

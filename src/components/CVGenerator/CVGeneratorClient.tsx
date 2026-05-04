@@ -348,12 +348,12 @@ export default function CVGeneratorClient() {
                 box-shadow: 0 4px 20px rgba(0,0,0,0.1);
               }
 
-              /* Background pattern - positioned on the RIGHT side */
+              /* Background pattern - positioned on the LEFT side with contain */
               .cv-bg-pattern {
                 position: absolute;
                 top: 0;
-                right: 0;
-                width: 45%;
+                left: 0;
+                width: 35%;
                 height: 100%;
                 overflow: hidden;
                 z-index: 0;
@@ -362,16 +362,16 @@ export default function CVGeneratorClient() {
               .cv-bg-image {
                 position: absolute;
                 top: 0;
-                right: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
-                object-fit: cover;
-                object-position: top right;
-                opacity: 0.9;
+                object-fit: contain;
+                object-position: top left;
+                opacity: 0.95;
               }
 
               .cv-content {
-                padding: 16mm 18mm 16mm 16mm;
+                padding: 16mm 18mm 16mm 45mm; /* Left padding for background image */
                 position: relative;
                 z-index: 1;
               }
@@ -590,7 +590,7 @@ export default function CVGeneratorClient() {
                 color: #0a1a35;
               }
 
-              /* Print styles */
+              /* Print styles - multi-page with background on each page */
               @media print {
                 @page {
                   size: A4;
@@ -603,16 +603,33 @@ export default function CVGeneratorClient() {
                   left: 0;
                   top: 0;
                   width: 210mm;
-                  min-height: 297mm;
                   box-shadow: none !important;
                   margin: 0 !important;
                 }
                 .cv-paper {
-                  min-height: 0 !important;
-                  height: auto !important;
+                  width: 210mm;
+                  min-height: 297mm;
+                  height: auto;
+                  page-break-after: always;
+                  position: relative;
                   overflow: visible !important;
                 }
-                .cv-content { overflow: visible !important; }
+                .cv-paper:last-child {
+                  page-break-after: auto;
+                }
+                /* Background repeats on each page */
+                .cv-bg-pattern {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 35%;
+                  height: 297mm;
+                }
+                .cv-content {
+                  position: relative;
+                  z-index: 1;
+                  padding-left: 45mm; /* Make room for the left background */
+                }
                 * {
                   -webkit-print-color-adjust: exact !important;
                   print-color-adjust: exact !important;
