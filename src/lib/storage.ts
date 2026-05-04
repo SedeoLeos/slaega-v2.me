@@ -21,14 +21,14 @@
  *   STORAGE_FORCE_PATH_STYLE  "true" for MinIO/local-S3 setups (default false for AWS/R2)
  */
 
-import { mkdir, writeFile, readdir, stat, unlink } from "node:fs/promises";
-import path from "node:path";
 import {
-  S3Client,
-  PutObjectCommand,
-  ListObjectsV2Command,
-  DeleteObjectCommand,
+    DeleteObjectCommand,
+    ListObjectsV2Command,
+    PutObjectCommand,
+    S3Client,
 } from "@aws-sdk/client-s3";
+import { mkdir, readdir, stat, unlink, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 export type StorageProvider = "local" | "s3";
 
@@ -58,7 +58,8 @@ const localDriver: StorageDriver = {
   async put(filename, buffer) {
     await mkdir(LOCAL_DIR, { recursive: true });
     await writeFile(path.join(LOCAL_DIR, filename), buffer);
-    return { url: `/uploads/${filename}` };
+    // Serve via API route for immediate availability (no rebuild needed)
+    return { url: `/api/uploads/${filename}` };
   },
 
   async list() {
@@ -71,7 +72,7 @@ const localDriver: StorageDriver = {
             const s = await stat(path.join(LOCAL_DIR, filename));
             return {
               filename,
-              url: `/uploads/${filename}`,
+              url: `/api/uploads/${filename}`,
               size: s.size,
               createdAt: s.birthtimeMs || s.mtimeMs,
             };

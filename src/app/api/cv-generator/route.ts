@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-case";
-import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
 import { aboutPageRepository } from "@/features/about/repositories/about-page.repository";
+import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
+import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-case";
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
+import { NextRequest, NextResponse } from "next/server";
 
 // ── Helpers ────────────────────────────────────────────────────────
 function stripHtml(s: string): string {
@@ -70,6 +70,7 @@ function extractJobTitle(text: string): string {
 
 // ── AI tailoring ───────────────────────────────────────────────────
 type TailoredOutput = {
+  language: 'fr' | 'en';
   tagline: string;
   summary: string;
   jobTitle: string;
@@ -121,17 +122,16 @@ CRITICAL — Language detection:
 1. Detect the dominant language of the JOB OFFER (French OR English).
 2. Write ALL output fields (tagline, summary, jobTitle, capabilities, experience descriptions, project descriptions) in THAT detected language. Always.
 3. If the offer is in French, write the CV in French. If in English, in English.
-4. The "language" field in your output MUST be "fr" or "en".
 
 Strict rules:
 - Reply ONLY with a valid JSON object. No text before/after. No markdown fence.
 - "language": "fr" or "en" (detected from the job offer).
 - "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate vs the offer. Example FR: "INGÉNIEUR FULL-STACK SPÉCIALISÉ EN APIS DISTRIBUÉES ET DEVOPS CLOUD". Example EN: "FULL-STACK ENGINEER FOCUSED ON DISTRIBUTED APIS AND CLOUD DEVOPS".
-- "summary": 2-3 concise sentences (~50 words max) rewriting the bio to match the offer. Do NOT copy the bio verbatim. Emphasize the relevant skills.
+- "summary": 2-3 concise sentences (~60 words max) rewriting the bio to match the offer. Include KEY METRICS and ACHIEVEMENTS when possible (years of experience, number of projects delivered, systems scaled, users impacted, performance improvements). Do NOT copy the bio verbatim. Focus on business impact and measurable results.
 - "jobTitle": job title coherent with the offer, in the detected language.
 - "capabilities": 4-6 short bullets (5-12 words each) listing what the candidate brings to this role, business-value oriented, in detected language.
-- "experiences": ONLY pick the experiences relevant to this offer (3-5 max). Rewrite each description as 2-3 concise result-oriented sentences in detected language. ID must match an input id.
-- "projects": ONLY pick relevant projects (3-5 max). Rewrite as 1-2 impact sentences in detected language. SLUG must match an input slug.
+- "experiences": ONLY pick the experiences relevant to this offer (3-5 max). Rewrite each description as 2-3 concise result-oriented sentences in detected language. Include quantifiable achievements where possible. ID must match an input id.
+- "projects": ONLY pick relevant projects (3-5 max). Rewrite as 1-2 impact sentences in detected language. Mention scale, users, or business outcomes if applicable. SLUG must match an input slug.
 - "relevantSkills": 8-15 key skills (strictly from the portfolio) that match the offer. Skills can stay in their natural form (tech names like "Spring Boot" don't translate).
 
 Strict JSON format:
@@ -235,7 +235,12 @@ Strict JSON format:
         };
       });
 
+    // Inline language detection (isEnglish defined later in file)
+    const detectedLanguage: 'fr' | 'en' = parsed.language ?? (args.jobOffer.match(/\b(we are looking for|job description|requirements|engineer|developer)\b/gi)?.length ?? 0) >
+      (args.jobOffer.match(/\b(nous recherchons|description du poste|profil recherché|ingénieur|développeur)\b/gi)?.length ?? 0) ? 'en' : 'fr';
+
     return {
+      language: detectedLanguage,
       tagline: parsed.tagline ?? "",
       summary: parsed.summary ?? "",
       jobTitle: parsed.jobTitle ?? extractJobTitle(args.jobOffer),
@@ -273,6 +278,7 @@ function tailorHeuristic(args: {
     slug: string;
   }>;
   keywords: string[];
+  lang: 'fr' | 'en';
 }): TailoredOutput {
   const exps = args.experiences
     .map((e) => ({
@@ -306,6 +312,7 @@ function tailorHeuristic(args: {
   );
 
   return {
+    language: args.lang,
     tagline: "",
     summary: stripHtml(args.about?.intro ?? ""),
     jobTitle: extractJobTitle(args.jobOffer),
@@ -358,6 +365,11 @@ export async function POST(req: NextRequest) {
     keywords,
   });
 
+  // Inline language detection
+  const enMatches = (jobOffer.match(/\b(we are looking for|job description|requirements|engineer|developer|architect|senior|junior|software)\b/gi) || []).length;
+  const frMatches = (jobOffer.match(/\b(nous recherchons|description du poste|profil recherché|ingénieur|développeur|architecte|senior|junior|logiciel)\b/gi) || []).length;
+  const detectedLang: 'fr' | 'en' = enMatches > frMatches ? 'en' : 'fr';
+
   const tailored =
     aiResult ??
     tailorHeuristic({
@@ -366,6 +378,7 @@ export async function POST(req: NextRequest) {
       experiences: allExperiences,
       projects: projectsForAi,
       keywords,
+      lang: detectedLang,
     });
 
   // Hydrate experience metadata (company, location, dates) from source
@@ -415,6 +428,7 @@ export async function POST(req: NextRequest) {
 
   const cv = {
     keywords,
+    language: tailored.language,
     tagline: tailored.tagline,
     summary: tailored.summary,
     jobTitle: tailored.jobTitle,

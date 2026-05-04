@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 type CVData = {
   keywords: string[];
@@ -686,25 +686,25 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 // Decorative geometric pattern.
 // Tries to use /cv-bg.png if available (matches the user's CV template exactly),
-// else falls back to an SVG of skewed parallelograms that approximates it.
+// Positioned on the RIGHT side as per the final CV design.
 function GeoPattern({ position }: { position: "top" | "bottom" }) {
   const styleTop: React.CSSProperties = {
     top: 0,
-    left: 0,
-    width: "55%",
-    height: "42%",
+    right: 0,
+    width: "45%",
+    height: "100%",
     objectFit: "cover",
-    objectPosition: "top left",
+    objectPosition: "top right",
   };
   const styleBottom: React.CSSProperties = {
     bottom: 0,
-    left: 0,
-    width: "40%",
-    height: "30%",
+    right: 0,
+    width: "45%",
+    height: "50%",
     objectFit: "cover",
-    objectPosition: "bottom left",
+    objectPosition: "bottom right",
     transform: "scaleY(-1)",
-    opacity: 0.6,
+    opacity: 0.7,
   };
 
   return (
@@ -768,16 +768,16 @@ function SvgGeoFallback({ position }: { position: "top" | "bottom" }) {
 
   const styleTop: React.CSSProperties = {
     top: 0,
-    left: 0,
-    width: "55%",
-    height: "42%",
+    right: 0,
+    width: "45%",
+    height: "100%",
     display: "none", // hidden by default; <img>.onError reveals
   };
   const styleBottom: React.CSSProperties = {
     bottom: 0,
-    left: 0,
-    width: "40%",
-    height: "30%",
+    right: 0,
+    width: "45%",
+    height: "50%",
     transform: "scaleY(-1)",
     display: "none",
   };
