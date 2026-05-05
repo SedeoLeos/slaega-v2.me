@@ -10,7 +10,32 @@ import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { createLowlight, common } from "lowlight";
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
+import { marked } from "marked";
+
+// ── Markdown detection ───────────────────────────────────────────────────────
+function looksLikeMarkdown(text: string): boolean {
+  const patterns = [
+    /^#{1,6}\s+\S/m,          // headings: ## Title
+    /\*\*[^*\n]+\*\*/,        // bold: **text**
+    /\*[^*\n]+\*/,            // italic: *text*
+    /^\s*[-*+]\s+\S/m,        // unordered list: - item
+    /^\s*\d+\.\s+\S/m,        // ordered list: 1. item
+    /`[^`\n]+`/,              // inline code: `code`
+    /^```/m,                  // code block
+    /^\s*>/m,                 // blockquote: > text
+    /\[.+?\]\(.+?\)/,         // link: [text](url)
+    /^---+\s*$/m,             // horizontal rule
+  ];
+  // Require at least 2 patterns to avoid false positives
+  return patterns.filter((p) => p.test(text)).length >= 2;
+}
+
+// Clipboard HTML from real websites has semantic elements.
+// Tiptap-generated clipboard HTML is just <p> wrappers — treat as plain text.
+function hasRealHtmlFormatting(html: string): boolean {
+  return /<(strong|b|em|i|h[1-6]|ul|ol|li|blockquote|pre|table)\b/i.test(html);
+}
 import MediaPicker from "./MediaPicker";
 
 const lowlight = createLowlight(common);
@@ -91,6 +116,10 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
   const [linkUrl, setLinkUrl] = useState("");
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showMdImport, setShowMdImport] = useState(false);
+  const [mdImportText, setMdImportText] = useState("");
+
+  const editorRef = useRef<ReturnType<typeof useEditor>>(null);
 
   const editor = useEditor({
     extensions: [
@@ -123,6 +152,48 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
     },
     immediatelyRender: false,
   });
+
+  // Keep ref in sync so paste handler can access the editor instance
+  useEffect(() => {
+    if (editor) (editorRef as React.MutableRefObject<typeof editor>).current = editor;
+  }, [editor]);
+
+  // ── Smart paste: Markdown → HTML ────────────────────────────────────────────
+  useEffect(() => {
+    if (!editor) return;
+    editor.setOptions({
+      editorProps: {
+        ...editor.options.editorProps,
+        handlePaste(_view, event) {
+          const html = event.clipboardData?.getData("text/html") ?? "";
+          const text = event.clipboardData?.getData("text/plain") ?? "";
+
+          // If clipboard carries real HTML formatting (from a website), let
+          // Tiptap handle it natively — it strips irrelevant styles cleanly.
+          if (hasRealHtmlFormatting(html)) return false;
+
+          // If plain text looks like Markdown, convert to HTML and insert.
+          if (looksLikeMarkdown(text)) {
+            event.preventDefault();
+            const converted = marked.parse(text, { async: false }) as string;
+            editorRef.current?.commands.insertContent(converted);
+            return true;
+          }
+
+          return false; // default paste behaviour
+        },
+      },
+    });
+  }, [editor]);
+
+  // ── Import Markdown panel ───────────────────────────────────────────────────
+  const insertMarkdown = useCallback(() => {
+    if (!mdImportText.trim() || !editor) return;
+    const html = marked.parse(mdImportText, { async: false }) as string;
+    editor.commands.insertContent(html);
+    setMdImportText("");
+    setShowMdImport(false);
+  }, [editor, mdImportText]);
 
   // Sync external value changes (edit mode initial load)
   useEffect(() => {
@@ -265,7 +336,56 @@ export default function RichEditor({ value, onChange, label, placeholder }: Rich
           <ToolBtn title="Séparateur" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
             <I.Hr />
           </ToolBtn>
+
+          <Divider />
+
+          {/* Markdown import */}
+          <ToolBtn
+            title="Importer du Markdown"
+            active={showMdImport}
+            onClick={() => setShowMdImport((v) => !v)}
+          >
+            <span className="text-[10px] font-bold tracking-tight font-mono">MD</span>
+          </ToolBtn>
         </div>
+
+        {/* Markdown import panel */}
+        {showMdImport && (
+          <div className="border-b border-zinc-800/80 bg-zinc-950/60 p-3 space-y-2">
+            <p className="text-[11px] text-zinc-500 leading-snug">
+              Colle ton contenu Markdown ou copié d&apos;un site web ici.
+              Il sera converti automatiquement.
+            </p>
+            <textarea
+              autoFocus
+              value={mdImportText}
+              onChange={(e) => setMdImportText(e.target.value)}
+              rows={6}
+              placeholder={"# Titre\n\n**Texte en gras**, *italique*...\n\n- item 1\n- item 2"}
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg text-xs text-zinc-200 font-mono p-3 outline-none resize-y placeholder:text-zinc-600 focus:border-zinc-500 transition-colors"
+            />
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={insertMarkdown}
+                disabled={!mdImportText.trim()}
+                className="text-xs bg-green-app/20 text-green-app hover:bg-green-app/30 disabled:opacity-40 px-3 py-1.5 rounded-md transition-colors font-medium"
+              >
+                Insérer dans l&apos;éditeur
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowMdImport(false); setMdImportText(""); }}
+                className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+              >
+                Annuler
+              </button>
+              <span className="text-[10px] text-zinc-700 ml-auto">
+                Le contenu sera ajouté à la position du curseur
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Link input */}
         {showLinkInput && (

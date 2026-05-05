@@ -13,14 +13,70 @@ interface ContentRendererProps {
   collapseThreshold?: number;
 }
 
+// ── Content normalizer ────────────────────────────────────────────────────────
+/**
+ * Detects "Markdown pasted into Tiptap" — raw Markdown text wrapped inside
+ * plain <p> tags with no real HTML formatting elements inside.
+ *
+ * Example of bad content: "<p>## Title</p><p>**bold** text</p>"
+ * → strips HTML wrappers so react-markdown can process the inner Markdown.
+ *
+ * Proper Tiptap HTML (has <strong>, <h2>, <ul>, etc.) is left untouched.
+ */
+function normalizeContent(raw: string): string {
+  const trimmed = (raw ?? "").trim();
+  if (!trimmed) return trimmed;
+
+  // If content has real HTML formatting elements → it's proper Tiptap HTML, keep as-is
+  const hasRealHtml = /<(strong|b|em|i|h[1-6]|ul|ol|li|blockquote|pre|code|a[\s>]|table)\b/i
+    .test(trimmed);
+  if (hasRealHtml) return trimmed;
+
+  // If content starts with HTML tags but contains Markdown patterns inside →
+  // it's Markdown that Tiptap wrapped in <p> tags. Strip the wrappers.
+  const isHtmlWrapped = /^<[a-z]/i.test(trimmed);
+  const hasMarkdown = [
+    /^#{1,6}\s+\S/m,      // ## heading
+    /\*\*[^*\n]+\*\*/,    // **bold**
+    /\*[^*\n]+\*/,        // *italic*
+    /^\s*[-*+]\s+\S/m,    // - list
+    /^\s*\d+\.\s+\S/m,    // 1. ordered
+    /`[^`\n]+`/,          // `code`
+    /^```/m,              // code block
+    /^\s*>/m,             // > blockquote
+    /\[.+?\]\(.+?\)/,     // [link](url)
+  ].some((p) => p.test(trimmed));
+
+  if (isHtmlWrapped && hasMarkdown) {
+    // Strip HTML wrappers while preserving newlines for Markdown structure
+    return trimmed
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<\/h[1-6]>/gi, "\n\n")
+      .replace(/<\/blockquote>/gi, "\n\n")
+      .replace(/<\/pre>/gi, "\n\n")
+      .replace(/<[^>]+>/g, "")         // strip all remaining tags
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\n{3,}/g, "\n\n")      // collapse triple+ newlines
+      .trim();
+  }
+
+  return trimmed;
+}
+
 /**
  * Universal content renderer.
  *
- * Uses react-markdown + remark-gfm + rehype-raw so it handles ALL of:
- *   • pure markdown
- *   • pure HTML (Tiptap output)
- *   • mixed: HTML containing markdown text (e.g. Tiptap-wrapped legacy content
- *     where `### heading` is inside a <p>)
+ * Handles ALL of:
+ *   • pure Markdown
+ *   • proper HTML from Tiptap (strong, em, h2, ul, etc.)
+ *   • "broken" content: Markdown text wrapped in bare <p> tags by Tiptap
+ *     when the user pasted raw Markdown before the smart-paste fix
  *
  * Long content auto-collapses with a "Lire plus / Lire moins" toggle.
  */
@@ -32,7 +88,7 @@ export default function ContentRenderer({
   const [expanded, setExpanded] = useState(false);
   const t = useTranslations("common");
 
-  const trimmed = (content ?? "").trim();
+  const trimmed = useMemo(() => normalizeContent(content), [content]);
 
   // Plain text length to decide if we collapse
   const plainLength = useMemo(
