@@ -73,12 +73,18 @@ function TemplateCard({
 }
 
 // ── Section row ───────────────────────────────────────────────────────────────
+/** Payload returned by the section API for array-based sections */
+type SectionRegenResult =
+  | { text: string }
+  | { experiences: CVData['experiences'] }
+  | { projects: CVData['projects'] };
+
 function SectionRow({
   def,
   override,
   onToggle,
   onTextChange,
-  onRegenerate,
+  onRegenResult,
   jobOffer,
   cv,
 }: {
@@ -86,7 +92,8 @@ function SectionRow({
   override: CVSections[SectionKey];
   onToggle: () => void;
   onTextChange: (t: string) => void;
-  onRegenerate: () => void;
+  /** Called with the raw API result so the parent can merge array sections */
+  onRegenResult: (result: SectionRegenResult) => void;
   jobOffer: string;
   cv: CVData | null;
 }) {
@@ -105,17 +112,22 @@ function SectionRow({
         body: JSON.stringify({ section: def.key, jobOffer, cv }),
       });
       const data = await res.json();
-      if (res.ok && data.text) {
+      if (!res.ok) {
+        setRegenError(data.message ?? 'Erreur');
+        return;
+      }
+      if (data.text) {
         onTextChange(data.text);
       } else {
-        setRegenError(data.message ?? 'Erreur');
+        // experience / projects → delegate to parent
+        onRegenResult(data as SectionRegenResult);
       }
     } catch {
       setRegenError('Erreur réseau');
     } finally {
       setRegenLoading(false);
     }
-  }, [cv, jobOffer, def.key, onTextChange]);
+  }, [cv, jobOffer, def.key, onTextChange, onRegenResult]);
 
   return (
     <div className={`rounded-lg border transition-colors ${override.visible ? 'border-zinc-700' : 'border-zinc-800 opacity-50'}`}>
@@ -222,6 +234,15 @@ export default function CVGeneratorClient() {
       ...prev,
       [key]: { ...prev[key], text: text || undefined },
     }));
+  }, []);
+
+  /** Merge experience / project arrays rewritten by the section AI back into cv */
+  const handleRegenResult = useCallback((result: SectionRegenResult) => {
+    if ('experiences' in result) {
+      setCv((prev) => prev ? { ...prev, experiences: result.experiences } : prev);
+    } else if ('projects' in result) {
+      setCv((prev) => prev ? { ...prev, projects: result.projects } : prev);
+    }
   }, []);
 
   // ── Generate CV
@@ -344,7 +365,7 @@ export default function CVGeneratorClient() {
                   override={sections[def.key]}
                   onToggle={() => toggleSection(def.key)}
                   onTextChange={(text) => updateSectionText(def.key, text)}
-                  onRegenerate={() => {}}
+                  onRegenResult={handleRegenResult}
                   jobOffer={jobOffer}
                   cv={cv}
                 />
