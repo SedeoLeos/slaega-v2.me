@@ -1,13 +1,11 @@
 /**
  * Template KRONOS — Template de base (PDF de référence)
  *
- * Design : fond watermark bleu géométrique (cv-bg.png) côté gauche
- * Layout monocolonne :
- *   Header  → titre small-caps + nom très grand + photo circulaire
- *   Contact → 3 colonnes (EMAIL | TÉLÉPHONE | LINKEDIN)
- *   Section → CE QUE JE PEUX RÉALISER
- *   Section → EXPÉRIENCE (marqueur carré bleu)
- *   Section → PROJETS
+ * Fixes :
+ *   - watermark réduit (35%, opacity 0.35) — plus discret
+ *   - toutes les polices augmentées (~+1.5pt)
+ *   - suppression du border/elevation sur la photo
+ *   - sections capabilities + experience + projets bien visibles
  */
 import {
   Page,
@@ -41,112 +39,107 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
   const s = StyleSheet.create({
     page: { backgroundColor: "#ffffff", fontFamily: "Helvetica" },
 
-    /* ── Background watermark (absolute, gauche) ── */
+    /* ── Watermark (réduit, discret) ── */
     bgWrap: {
       position: "absolute",
       top: 0,
       left: 0,
-      width: "42%",
+      width: "35%",
       height: "100%",
+      opacity: 0.35,
     },
     bgImg: { width: "100%", height: "100%", objectFit: "cover" },
 
-    /* ── Content ── */
-    content: {
-      paddingHorizontal: 36,
-      paddingTop: 22,
-      paddingBottom: 24,
-    },
+    /* ── Contenu principal ── */
+    content: { paddingHorizontal: 36, paddingTop: 22, paddingBottom: 24 },
 
-    /* ── Top thin line + job title + thin line ── */
-    topLine: { height: 0.6, backgroundColor: DIVIDER, marginBottom: 5 },
+    /* ── Header : ligne fine + titre + ligne ── */
+    topLine: { height: 0.8, backgroundColor: DIVIDER, marginBottom: 6 },
     bottomLine: {
-      height: 0.6,
+      height: 0.8,
       backgroundColor: DIVIDER,
-      marginTop: 5,
-      marginBottom: 12,
+      marginTop: 6,
+      marginBottom: 14,
     },
     jobTitleText: {
-      fontSize: 7.5,
+      fontSize: 9,
       color: ACC,
       letterSpacing: 0.8,
       textTransform: "uppercase",
       textAlign: "center",
     },
 
-    /* ── Name + photo ── */
+    /* ── Nom + photo ── */
     namePhotoRow: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-start",
     },
-    nameBlock: { flex: 1, paddingRight: 12 },
+    nameBlock: { flex: 1, paddingRight: 14 },
     nameText: {
       fontSize: 34,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       letterSpacing: -0.8,
-      lineHeight: 1.08,
+      lineHeight: 1.1,
     },
+    /* Photo sans border/elevation — simple circle crop */
     photoWrap: {
-      width: 74,
-      height: 74,
-      borderRadius: 37,
+      width: 72,
+      height: 72,
+      borderRadius: 36,
       overflow: "hidden",
-      borderWidth: 2.5,
-      borderColor: ACC,
-      borderStyle: "solid",
       flexShrink: 0,
     },
-    photo: { width: 74, height: 74, objectFit: "cover" },
+    photo: { width: 72, height: 72, objectFit: "cover" },
 
-    /* ── Summary ── */
+    /* ── Résumé ── */
     summaryText: {
-      fontSize: 8,
+      fontSize: 9.5,
       color: TEXT,
       lineHeight: 1.65,
-      marginTop: 10,
-      marginBottom: 14,
+      marginTop: 12,
+      marginBottom: 16,
     },
 
     /* ── Contact ── */
-    contactDivider: { height: 0.6, backgroundColor: DIVIDER, marginBottom: 8 },
-    contactRow: { flexDirection: "row", marginBottom: 8 },
+    contactDivider: { height: 0.8, backgroundColor: DIVIDER, marginBottom: 10 },
+    contactRow: { flexDirection: "row", marginBottom: 10 },
     contactCol: { flex: 1 },
     contactLabel: {
-      fontSize: 6.5,
+      fontSize: 7.5,
       fontFamily: "Helvetica-Bold",
       color: MUTED,
       letterSpacing: 1,
       textTransform: "uppercase",
-      marginBottom: 1.5,
+      marginBottom: 2,
     },
-    contactValue: { fontSize: 7.5, color: TEXT },
+    contactValue: { fontSize: 8.5, color: TEXT },
 
-    /* ── Capabilities ── */
+    /* ── Capacités ── */
     capsTitle: {
-      fontSize: 8,
+      fontSize: 9,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       textTransform: "uppercase",
       letterSpacing: 0.5,
-      marginBottom: 6,
-      marginTop: 10,
+      marginBottom: 7,
+      marginTop: 12,
     },
     capItem: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 3,
+      marginBottom: 4,
     },
-    capDot: { fontSize: 8, color: ACC, marginRight: 5 },
-    capText: { fontSize: 8, color: TEXT, flex: 1, lineHeight: 1.45 },
+    capDot: { fontSize: 9, color: ACC, marginRight: 6 },
+    capText: { fontSize: 9, color: TEXT, flex: 1, lineHeight: 1.5 },
 
-    /* ── Section header ── */
+    /* ── En-tête de section ── */
     secRow: {
       flexDirection: "row",
       alignItems: "center",
-      marginTop: 14,
-      marginBottom: 2,
+      marginTop: 16,
+      marginBottom: 3,
     },
     secTitle: {
       fontSize: 14,
@@ -161,20 +154,20 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       marginLeft: 8,
       marginTop: 3,
     },
-    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 10 },
+    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 12 },
 
-    /* ── Experience item ── */
+    /* ── Expérience ── */
     expItem: {
-      marginBottom: 11,
+      marginBottom: 12,
       flexDirection: "row",
       alignItems: "flex-start",
     },
     expSquare: {
-      width: 6,
-      height: 6,
+      width: 7,
+      height: 7,
       backgroundColor: ACC,
-      marginRight: 8,
-      marginTop: 2.5,
+      marginRight: 9,
+      marginTop: 3,
       flexShrink: 0,
     },
     expContent: { flex: 1 },
@@ -184,50 +177,54 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       alignItems: "flex-start",
     },
     expTitle: {
-      fontSize: 9.5,
+      fontSize: 10.5,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       flex: 1,
     },
     expDate: {
-      fontSize: 7.5,
+      fontSize: 8.5,
       color: MUTED,
       fontFamily: "Helvetica-Oblique",
       flexShrink: 0,
       marginLeft: 6,
     },
-    expCompany: { fontSize: 7.5, color: MUTED, marginBottom: 3 },
+    expCompany: { fontSize: 8.5, color: MUTED, marginBottom: 4 },
     expBullet: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 2,
+      marginBottom: 2.5,
     },
-    expBulletDot: { fontSize: 8, color: TEXT, marginRight: 4 },
-    expBulletText: { fontSize: 7.5, color: TEXT, flex: 1, lineHeight: 1.4 },
+    expBulletDot: { fontSize: 9, color: TEXT, marginRight: 5 },
+    expBulletText: { fontSize: 8.5, color: TEXT, flex: 1, lineHeight: 1.5 },
 
-    /* ── Project item ── */
-    projItem: { marginBottom: 7 },
-    projTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: DARK },
-    projDesc: { fontSize: 7.5, color: TEXT, lineHeight: 1.45, marginTop: 1 },
-    projTags: { fontSize: 6.5, color: ACC, marginTop: 2 },
+    /* ── Projets ── */
+    projItem: { marginBottom: 9 },
+    projTitle: {
+      fontSize: 10,
+      fontFamily: "Helvetica-Bold",
+      color: DARK,
+    },
+    projDesc: { fontSize: 8.5, color: TEXT, lineHeight: 1.5, marginTop: 1.5 },
+    projTags: { fontSize: 7.5, color: ACC, marginTop: 2.5 },
   });
 
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        {/* ── Background watermark ── */}
+        {/* ── Watermark ── */}
         <View style={s.bgWrap}>
           <Image src="/cv-bg.png" style={s.bgImg} />
         </View>
 
-        {/* ── All content ── */}
+        {/* ── Contenu ── */}
         <View style={s.content}>
-          {/* Thin line + job title + thin line */}
+          {/* Ligne + titre + ligne */}
           <View style={s.topLine} />
           <Text style={s.jobTitleText}>{tagline}</Text>
           <View style={s.bottomLine} />
 
-          {/* Name + circular photo */}
+          {/* Nom + photo (sans border) */}
           <View style={s.namePhotoRow}>
             <View style={s.nameBlock}>
               <Text style={s.nameText}>
@@ -241,12 +238,12 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </View>
           </View>
 
-          {/* Summary */}
+          {/* Résumé */}
           {sections.summary.visible && summary ? (
             <Text style={s.summaryText}>{summary}</Text>
           ) : null}
 
-          {/* Contact bar */}
+          {/* Contact */}
           {sections.contact.visible && (
             <>
               <View style={s.contactDivider} />
@@ -268,7 +265,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </>
           )}
 
-          {/* Capabilities */}
+          {/* Capacités */}
           {sections.capabilities.visible && caps.length > 0 && (
             <>
               <Text style={s.capsTitle}>{L.canDo}</Text>
@@ -281,7 +278,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </>
           )}
 
-          {/* Experience */}
+          {/* Expérience */}
           {sections.experience.visible && data.experiences.length > 0 && (
             <>
               <View style={s.secRow}>
@@ -293,7 +290,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                 const raw = stripHtml(exp.description);
                 const bullets = raw
                   .split(/(?:\r?\n)+/)
-                  .map((s) => s.trim())
+                  .map((b) => b.trim())
                   .filter(Boolean);
                 return (
                   <View key={exp.id} style={s.expItem}>
@@ -316,7 +313,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                         {exp.location ? `  ·  ${exp.location}` : ""}
                       </Text>
                       {(bullets.length > 1 ? bullets : [raw])
-                        .slice(0, 6)
+                        .slice(0, 5)
                         .map((b, i) => (
                           <View key={i} style={s.expBullet}>
                             <Text style={s.expBulletDot}>•</Text>
@@ -330,7 +327,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </>
           )}
 
-          {/* Projects */}
+          {/* Projets */}
           {sections.projects.visible && data.projects.length > 0 && (
             <>
               <View style={s.secRow}>

@@ -16,6 +16,7 @@ import TemplateSupra from "./templates/TemplateSupra";
 import TemplateHello from "./templates/TemplateHello";
 import TemplateMosaic from "./templates/TemplateMosaic";
 import TemplateJulien from "./templates/TemplateJulien";
+import TemplateBright from "./templates/TemplateBright";
 
 type Props = {
   data: CVData;
@@ -50,5 +51,7 @@ export default function CVDocumentRenderer({
     return <TemplateMosaic data={data} sections={sections} />;
   if (template === "julien")
     return <TemplateJulien data={data} palette={palette} sections={sections} />;
+  if (template === "bright")
+    return <TemplateBright data={data} palette={palette} sections={sections} />;
   return <TemplateKronos data={data} palette={palette} sections={sections} />;
 }

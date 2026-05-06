@@ -76,7 +76,8 @@ export type CVTemplateId =
   | "supra"
   | "hello"
   | "mosaic"
-  | "julien";
+  | "julien"
+  | "bright";
 
 export type CVTemplateInfo = {
   id: CVTemplateId;
@@ -115,6 +116,11 @@ export const CV_TEMPLATES: CVTemplateInfo[] = [
     id: "julien",
     label: "Julien",
     description: "Card bicolonne, hashtags, timeline",
+  },
+  {
+    id: "bright",
+    label: "Bright",
+    description: "Sidebar accent vive, projets 2-col",
   },
 ];
 

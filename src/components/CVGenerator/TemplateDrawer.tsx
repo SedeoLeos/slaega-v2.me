@@ -1138,6 +1138,134 @@ function PreviewMosaic() {
   );
 }
 
+/** Bright — sidebar couleur accent vive + main blanc */
+function PreviewBright({ p }: { p: CVPalette }) {
+  return (
+    <div className="w-full h-full flex overflow-hidden">
+      {/* Sidebar accent */}
+      <div
+        className="w-[38%] flex flex-col items-center pt-2 gap-[3px] px-1.5"
+        style={{ backgroundColor: p.accent }}
+      >
+        <div
+          className="w-8 h-8 rounded-full mb-1"
+          style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+        />
+        <div
+          className="h-[5px] w-12 rounded"
+          style={{ backgroundColor: "rgba(255,255,255,0.9)" }}
+        />
+        <div
+          className="h-[3px] w-8 rounded"
+          style={{ backgroundColor: "rgba(255,255,255,0.6)" }}
+        />
+        <div
+          className="h-[0.5px] w-full my-[3px]"
+          style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+        />
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="w-full flex items-center gap-1">
+            <div
+              className="w-[3px] h-[3px] rounded-full"
+              style={{ backgroundColor: "rgba(255,255,255,0.8)" }}
+            />
+            <div
+              className="h-[2.5px] flex-1 rounded"
+              style={{ backgroundColor: "rgba(255,255,255,0.35)" }}
+            />
+          </div>
+        ))}
+        <div
+          className="h-[0.5px] w-full my-[2px]"
+          style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+        />
+        <div className="flex flex-wrap gap-[2px] w-full">
+          {[14, 18, 12, 16, 10, 20].map((w, i) => (
+            <div
+              key={i}
+              className="h-[4px] rounded"
+              style={{
+                width: w + "px",
+                backgroundColor:
+                  i < 2 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+      {/* Main blanc */}
+      <div className="flex-1 flex flex-col p-1.5 gap-[3px] bg-white">
+        <div
+          className="h-[3.5px] w-16 rounded"
+          style={{ backgroundColor: p.accent + "88" }}
+        />
+        <div
+          className="h-[0.5px] my-[2px]"
+          style={{ backgroundColor: "#F0F0F0" }}
+        />
+        {["EXP", "PROJ"].map((sec) => (
+          <div key={sec} className="flex flex-col gap-[2px]">
+            <div className="flex items-center gap-1">
+              <div
+                className="w-[4px] h-[4px] rounded-full"
+                style={{ backgroundColor: p.accent }}
+              />
+              <div
+                className="h-[3px] w-8 rounded"
+                style={{ backgroundColor: p.primary + "99" }}
+              />
+              <div
+                className="flex-1 h-[0.5px]"
+                style={{ backgroundColor: "#EBEBEB" }}
+              />
+            </div>
+            {[1, 2].map((i) => (
+              <div
+                key={i}
+                className="pl-1.5 flex flex-col gap-[1.5px]"
+                style={{
+                  borderLeft: `1.5px solid ${p.accent}`,
+                }}
+              >
+                <div
+                  className="h-[3.5px] w-14 rounded"
+                  style={{ backgroundColor: p.primary }}
+                />
+                <div
+                  className="h-[2.5px] rounded"
+                  style={{ backgroundColor: "#E0E0E0" }}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+        {/* Projets 2-col */}
+        <div className="flex gap-[3px] mt-[2px]">
+          {[1, 2].map((i) => (
+            <div
+              key={i}
+              className="flex-1 rounded p-[3px] flex flex-col gap-[2px]"
+              style={{
+                backgroundColor: "#FAFAFA",
+                borderTop: `1.5px solid ${p.accent}`,
+              }}
+            >
+              <div
+                className="h-[3px] w-8 rounded"
+                style={{ backgroundColor: p.primary }}
+              />
+              <div
+                className="h-[2px] rounded"
+                style={{ backgroundColor: "#DDD" }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const PREVIEW_MAP: Record<CVTemplateId, (p: CVPalette) => React.ReactNode> = {
   kronos: (p) => <PreviewKronos p={p} />,
   nexus: (p) => <PreviewNexus p={p} />,
@@ -1150,6 +1278,7 @@ const PREVIEW_MAP: Record<CVTemplateId, (p: CVPalette) => React.ReactNode> = {
   hello: (p) => <PreviewHello p={p} />,
   mosaic: (_) => <PreviewMosaic />,
   julien: (p) => <PreviewJulien p={p} />,
+  bright: (p) => <PreviewBright p={p} />,
 };
 
 // ── Drawer ────────────────────────────────────────────────────────────────────
