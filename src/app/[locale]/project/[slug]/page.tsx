@@ -189,7 +189,7 @@ export default async function ProjectPage({
             height={900}
             src={meta.image || "/img.jpg"}
             alt={meta.title}
-            className="w-full aspect-[16/9] object-cover"
+            className="w-full h-auto"
             priority
           />
         </div>
