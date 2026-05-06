@@ -3,6 +3,28 @@ import { auth } from "@/auth";
 import { trackEvent } from "@/lib/monitoring/telemetry";
 import { contactSubmissionRepository } from "@/features/contact-submissions/repositories/contact-submission.repository";
 
+// ── Cloudflare Turnstile server-side verification ─────────────────
+async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  // If secret key not configured (local dev), skip verification
+  if (!secret) return true;
+
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip) body.append("remoteip", ip);
+
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      { method: "POST", body }
+    );
+    const data = (await res.json()) as { success: boolean };
+    return data.success === true;
+  } catch {
+    // On network error, fail open (don't block legitimate users)
+    return true;
+  }
+}
+
 // ── Public: submit a new contact message ──────────────────────────
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -30,6 +52,28 @@ export async function POST(req: NextRequest) {
   // Honeypot anti-spam: if the field "website" is filled, drop silently.
   if ((data.website ?? "").length > 0) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Cloudflare Turnstile verification
+  const turnstileToken = data.turnstileToken ?? "";
+  if (process.env.TURNSTILE_SECRET_KEY && !turnstileToken) {
+    return NextResponse.json(
+      { ok: false, message: "Vérification anti-bot manquante" },
+      { status: 400 }
+    );
+  }
+  if (turnstileToken) {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("x-real-ip") ??
+      null;
+    const valid = await verifyTurnstile(turnstileToken, ip);
+    if (!valid) {
+      return NextResponse.json(
+        { ok: false, message: "Vérification anti-bot échouée" },
+        { status: 403 }
+      );
+    }
   }
 
   try {

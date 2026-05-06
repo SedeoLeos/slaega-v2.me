@@ -1,22 +1,29 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import FeedbackState from "@/components/ui/FeedbackState";
+import CustomSelect from "@/components/ui/CustomSelect";
 import { SiteConfig } from "@/shared/config/site-config";
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 export default function ContactForm() {
   const t = useTranslations("contact.form");
   const tFeedback = useTranslations("feedback.contact");
   const [status, setStatus] = useState<Status>("idle");
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("submitting");
 
     const formData = new FormData(event.currentTarget);
+    const turnstileToken = formData.get("cf-turnstile-response") as string | null;
+
     const payload = {
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
@@ -24,6 +31,8 @@ export default function ContactForm() {
       message: String(formData.get("message") ?? ""),
       // Honeypot — bots fill it, humans don't
       website: String(formData.get("website") ?? ""),
+      // Cloudflare Turnstile token
+      ...(turnstileToken ? { turnstileToken } : {}),
     };
 
     try {
@@ -34,15 +43,16 @@ export default function ContactForm() {
       });
       if (!response.ok) {
         setStatus("error");
+        turnstileRef.current?.reset();
         return;
       }
       setStatus("success");
     } catch {
       setStatus("error");
+      turnstileRef.current?.reset();
     }
   };
 
-  // ── Post-submit states swap the form for a card ──────────────
   if (status === "success") {
     return (
       <FeedbackState
@@ -69,9 +79,7 @@ export default function ContactForm() {
         }}
         secondaryAction={{
           label: tFeedback("errorSecondary"),
-          onClick: () => {
-            window.location.href = `mailto:${SiteConfig.email}`;
-          },
+          onClick: () => { window.location.href = `mailto:${SiteConfig.email}`; },
         }}
       />
     );
@@ -92,8 +100,7 @@ export default function ContactForm() {
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-semibold text-foreground/50 uppercase tracking-wide">
-            {t("name")}
-            <span className="text-red-500 ml-1">*</span>
+            {t("name")}<span className="text-red-500 ml-1">*</span>
           </label>
           <input
             type="text"
@@ -105,8 +112,7 @@ export default function ContactForm() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-semibold text-foreground/50 uppercase tracking-wide">
-            {t("email")}
-            <span className="text-red-500 ml-1">*</span>
+            {t("email")}<span className="text-red-500 ml-1">*</span>
           </label>
           <input
             type="email"
@@ -122,22 +128,22 @@ export default function ContactForm() {
         <label className="text-xs font-semibold text-foreground/50 uppercase tracking-wide">
           {t("subjectLabel")}
         </label>
-        <select name="subject" className="contact-input" defaultValue="">
-          <option value="" disabled>
-            {t("subjectPlaceholder")}
-          </option>
-          <option value="freelance">{t("subjects.freelance")}</option>
-          <option value="consulting">{t("subjects.consulting")}</option>
-          <option value="hiring">{t("subjects.hiring")}</option>
-          <option value="general">{t("subjects.general")}</option>
-          <option value="other">{t("subjects.other")}</option>
-        </select>
+        <CustomSelect
+          name="subject"
+          placeholder={t("subjectPlaceholder")}
+          options={[
+            { value: "freelance",  label: t("subjects.freelance") },
+            { value: "consulting", label: t("subjects.consulting") },
+            { value: "hiring",     label: t("subjects.hiring") },
+            { value: "general",    label: t("subjects.general") },
+            { value: "other",      label: t("subjects.other") },
+          ]}
+        />
       </div>
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-semibold text-foreground/50 uppercase tracking-wide">
-          {t("message")}
-          <span className="text-red-500 ml-1">*</span>
+          {t("message")}<span className="text-red-500 ml-1">*</span>
         </label>
         <textarea
           name="message"
@@ -146,6 +152,15 @@ export default function ContactForm() {
           className="contact-input resize-none !h-40"
         />
       </div>
+
+      {/* Cloudflare Turnstile — only rendered when site key is configured */}
+      {TURNSTILE_SITE_KEY && (
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={TURNSTILE_SITE_KEY}
+          options={{ theme: "light", size: "normal" }}
+        />
+      )}
 
       <button
         type="submit"
@@ -189,7 +204,6 @@ export default function ContactForm() {
           transition: border-color 0.15s, box-shadow 0.15s;
           height: auto;
         }
-        select.contact-input { padding-right: 2.5rem; }
         .contact-input:focus {
           border-color: #05796b;
           box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
