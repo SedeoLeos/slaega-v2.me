@@ -44,13 +44,14 @@ export default function ProjectItem({
       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-green-app scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-500 ease-out z-20" />
 
       {/* ── Image ── */}
-      <div className="relative w-full aspect-video overflow-hidden bg-foreground/5">
+      <div className="relative w-full overflow-hidden bg-foreground/5">
         <Image
           src={src || "/img.jpg"}
           alt={title}
-          fill
+          width={800}
+          height={600}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          className="w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.05]"
         />
 
         {/* Bottom scrim */}
