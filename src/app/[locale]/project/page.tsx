@@ -2,6 +2,8 @@ import { getTranslations } from 'next-intl/server';
 import ProjectList from '@/components/Projects/ProjectList';
 import { Suspense } from 'react';
 
+export const dynamic = "force-dynamic";
+
 export default async function ProjectPage() {
   const t = await getTranslations('common');
   return (

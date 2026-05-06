@@ -5,13 +5,10 @@ import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
 import ContentRenderer from "@/components/Content/ContentRenderer";
-import { getAllProjects, getPost, getPostPath } from "@/libs/posts";
+import { getAllProjects, getPost } from "@/libs/posts";
 import Image from "next/image";
 
-export async function generateStaticParams() {
-  return getPostPath();
-}
-export const dynamicParams = true;
+export const dynamic = "force-dynamic";
 
 function formatDate(d: string, months: string[]): string {
   if (!d) return "";

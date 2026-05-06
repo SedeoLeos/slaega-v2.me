@@ -23,16 +23,16 @@ interface ContentRendererProps {
  *
  * Proper Tiptap HTML (has <strong>, <h2>, <ul>, etc.) is left untouched.
  */
-function normalizeContent(raw: string): string {
+function normalizeContent(raw: string): { text: string; isHtml: boolean } {
   const trimmed = (raw ?? "").trim();
-  if (!trimmed) return trimmed;
+  if (!trimmed) return { text: trimmed, isHtml: false };
 
   // If content has real HTML formatting elements → it's proper Tiptap HTML, keep as-is
   const hasRealHtml =
     /<(strong|b|em|i|h[1-6]|ul|ol|li|blockquote|pre|code|a[\s>]|table|svg|figure|div)\b/i.test(
       trimmed,
     );
-  if (hasRealHtml) return trimmed;
+  if (hasRealHtml) return { text: trimmed, isHtml: true };
 
   // If content starts with HTML tags but contains Markdown patterns inside →
   // it's Markdown that Tiptap wrapped in <p> tags. Strip the wrappers.
@@ -51,7 +51,7 @@ function normalizeContent(raw: string): string {
 
   if (isHtmlWrapped && hasMarkdown) {
     // Strip HTML wrappers while preserving newlines for Markdown structure
-    return trimmed
+    const stripped = trimmed
       .replace(/<br\s*\/?>/gi, "\n")
       .replace(/<\/p>/gi, "\n\n")
       .replace(/<\/li>/gi, "\n")
@@ -66,10 +66,27 @@ function normalizeContent(raw: string): string {
       .replace(/&#39;/g, "'")
       .replace(/\n{3,}/g, "\n\n") // collapse triple+ newlines
       .trim();
+    return { text: stripped, isHtml: false };
   }
 
-  return trimmed;
+  return { text: trimmed, isHtml: false };
 }
+
+/** Shared inline styles for prose CSS variables */
+const proseVars = {
+  "--tw-prose-body": "#3a3a3a",
+  "--tw-prose-headings": "#0e0e0e",
+  "--tw-prose-links": "#05796b",
+  "--tw-prose-bold": "#0e0e0e",
+  "--tw-prose-counters": "#71717a",
+  "--tw-prose-bullets": "#52525b",
+  "--tw-prose-hr": "#d0d0c8",
+  "--tw-prose-quotes": "#71717a",
+  "--tw-prose-quote-borders": "rgba(5,121,107,0.3)",
+  "--tw-prose-code": "#05796b",
+  "--tw-prose-pre-code": "#e4e4e7",
+  "--tw-prose-pre-bg": "#1e1e1e",
+} as React.CSSProperties;
 
 /**
  * Universal content renderer.
@@ -79,6 +96,10 @@ function normalizeContent(raw: string): string {
  *   • proper HTML from Tiptap (strong, em, h2, ul, etc.)
  *   • "broken" content: Markdown text wrapped in bare <p> tags by Tiptap
  *     when the user pasted raw Markdown before the smart-paste fix
+ *
+ * HTML content (from Tiptap) is rendered via dangerouslySetInnerHTML so that
+ * SVG elements (circles, paths, gradients, defs …) are parsed natively by
+ * the browser and never mangled by ReactMarkdown's JSX component system.
  *
  * Long content auto-collapses with a "Lire plus / Lire moins" toggle.
  */
@@ -90,7 +111,10 @@ export default function ContentRenderer({
   const [expanded, setExpanded] = useState(false);
   const t = useTranslations("common");
 
-  const trimmed = useMemo(() => normalizeContent(content), [content]);
+  const { text: trimmed, isHtml } = useMemo(
+    () => normalizeContent(content),
+    [content],
+  );
 
   // Plain text length to decide if we collapse
   const plainLength = useMemo(
@@ -115,63 +139,51 @@ export default function ContentRenderer({
 
   const rendered = !expanded && shouldCollapse ? collapsedContent : trimmed;
 
+  const articleClass = `prose prose-base max-w-none article-content ${
+    !expanded && shouldCollapse ? "max-h-[640px] overflow-hidden" : ""
+  }`;
+
   return (
     <div className={`relative ${className}`}>
-      <article
-        className={`prose prose-base max-w-none article-content ${
-          !expanded && shouldCollapse ? "max-h-[640px] overflow-hidden" : ""
-        }`}
-        style={
-          {
-            "--tw-prose-body": "#3a3a3a",
-            "--tw-prose-headings": "#0e0e0e",
-            "--tw-prose-links": "#05796b",
-            "--tw-prose-bold": "#0e0e0e",
-            "--tw-prose-counters": "#71717a",
-            "--tw-prose-bullets": "#52525b",
-            "--tw-prose-hr": "#d0d0c8",
-            "--tw-prose-quotes": "#71717a",
-            "--tw-prose-quote-borders": "rgba(5,121,107,0.3)",
-            "--tw-prose-code": "#05796b",
-            "--tw-prose-pre-code": "#e4e4e7",
-            "--tw-prose-pre-bg": "#1e1e1e",
-          } as React.CSSProperties
-        }
-      >
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            // Trim empty paragraphs that Tiptap sometimes emits
-            p: ({ children, ...props }) => {
-              const nodes = Array.isArray(children) ? children : [children];
-              const isEmpty = nodes.every(
-                (c) => typeof c === "string" && c.trim() === "",
-              );
-              if (isEmpty) return null;
-              return <p {...props}>{children}</p>;
-            },
-            // Force SVG elements to always be visible.
-            // The Tailwind prose plugin can hide SVGs via CSS after hydration;
-            // wrapping in a not-prose span guarantees prose never touches them.
-            svg: ({ node, ...props }) => (
-              <span className="not-prose inline-block align-middle">
-                <svg
-                  {...props}
-                  style={{
-                    display: "block",
-                    maxWidth: "100%",
-                    overflow: "visible",
-                    ...(props.style as React.CSSProperties | undefined),
-                  }}
-                />
-              </span>
-            ),
-          }}
-        >
-          {rendered}
-        </ReactMarkdown>
-      </article>
+      {isHtml ? (
+        /*
+         * HTML content (Tiptap) — rendered via dangerouslySetInnerHTML.
+         * This is the only reliable way to preserve SVGs with gradients,
+         * defs, complex paths, etc., because the browser parses them
+         * natively without any React JSX attribute-casing transformation.
+         */
+        <article
+          className={articleClass}
+          style={proseVars}
+          dangerouslySetInnerHTML={{ __html: rendered }}
+        />
+      ) : (
+        /*
+         * Markdown content — processed by ReactMarkdown + rehypeRaw.
+         * Inline SVGs written as raw HTML in Markdown still render because
+         * rehypeRaw passes them through, and the browser parses them inside
+         * the dangerouslySetInnerHTML that ReactMarkdown ultimately uses.
+         */
+        <article className={articleClass} style={proseVars}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              // Trim empty paragraphs that Tiptap sometimes emits
+              p: ({ children, ...props }) => {
+                const nodes = Array.isArray(children) ? children : [children];
+                const isEmpty = nodes.every(
+                  (c) => typeof c === "string" && c.trim() === "",
+                );
+                if (isEmpty) return null;
+                return <p {...props}>{children}</p>;
+              },
+            }}
+          >
+            {rendered}
+          </ReactMarkdown>
+        </article>
+      )}
 
       {/* Fade-out when collapsed */}
       {shouldCollapse && !expanded && (
