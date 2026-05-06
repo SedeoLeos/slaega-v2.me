@@ -70,10 +70,10 @@ export default async function ProjectPage({
     <div className="relative w-full overflow-x-hidden">
       {/* Decorative illustrations — live here, outside the max-w article,
           so they can bleed to the edge of the screen */}
-      <div className="absolute left-0 top-0 opacity-15 lg:opacity-50 pointer-events-none -z-10">
+      <div className="absolute left-0 top-0 opacity-15 lg:opacity-50 pointer-events-none">
         <IllustrationProject />
       </div>
-      <div className="absolute top-1/2 right-0 opacity-15 lg:opacity-50 pointer-events-none -z-10">
+      <div className="absolute top-1/2 right-0 opacity-15 lg:opacity-50 pointer-events-none">
         <IllustrationBody />
       </div>
 
