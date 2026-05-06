@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
 import Store from "@/Provider/Store";
 import PageTransition from "@/components/animations/PageTransition";
+import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -57,8 +58,23 @@ export default async function RootLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // ── Dynamic theme: read from DB, inject as CSS custom properties ────────────
+  const theme = await siteConfigRepository.getTheme().catch(() => null);
+  const themeCss = theme
+    ? `:root {
+        --background: ${theme.background};
+        --foreground: ${theme.foreground};
+        --green-app:  ${theme.greenApp};
+        --card:       ${theme.card};
+        --accent:     ${theme.accent};
+        --primary:    ${theme.accent};
+        --secondary:  ${theme.secondary};
+      }`
+    : "";
+
   return (
     <html lang={locale}>
+      {themeCss && <style dangerouslySetInnerHTML={{ __html: themeCss }} />}
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Store>
           <body className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
