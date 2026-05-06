@@ -81,13 +81,23 @@ export default async function ProjectPage({
       {/* ═════════════════════════════════════════════════════════
           1. BREADCRUMB
           ═════════════════════════════════════════════════════════ */}
-      <nav className="w-full max-w-3xl mx-auto px-6 lg:px-0 pt-12 lg:pt-20 mb-10 flex items-center gap-2 text-xs font-medium relative z-[2]">
+      <nav className="w-full max-w-5xl mx-auto px-6 lg:px-0 pt-12 lg:pt-20 mb-10 flex items-center gap-2 text-xs font-medium relative z-[2]">
         <Link
           href="/project"
           className="inline-flex items-center gap-1.5 text-foreground/50 hover:text-foreground transition-colors"
         >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           {t("projectPage.breadcrumbAll")}
         </Link>
@@ -96,7 +106,7 @@ export default async function ProjectPage({
       {/* ═════════════════════════════════════════════════════════
           2. HERO — categories + title + meta + cover image
           ═════════════════════════════════════════════════════════ */}
-      <header className="w-full max-w-3xl mx-auto px-6 lg:px-0 flex flex-col items-center text-center gap-6 mb-14 relative z-[2]">
+      <header className="w-full max-w-5xl mx-auto px-6 lg:px-0 flex flex-col items-center text-center gap-6 mb-14 relative z-[2]">
         {meta.categories.length > 0 && (
           <div className="flex flex-wrap gap-2 justify-center">
             {meta.categories.map((c) => (
@@ -110,19 +120,21 @@ export default async function ProjectPage({
           </div>
         )}
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight max-w-3xl">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight max-w-4xl">
           {meta.title}
         </h1>
 
         <div className="flex items-center gap-3 text-xs font-medium text-foreground/50">
           {meta.date && <span>{formatDate(meta.date, months)}</span>}
-          {meta.date && <span className="w-1 h-1 rounded-full bg-foreground/30" />}
+          {meta.date && (
+            <span className="w-1 h-1 rounded-full bg-foreground/30" />
+          )}
           <span>{t("projects.minRead", { count: readMin })}</span>
         </div>
       </header>
 
       {/* Cover image — full container width, lifted off the page */}
-      <div className="w-full max-w-4xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
+      <div className="w-full max-w-5xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
         <div className="rounded-3xl overflow-hidden shadow-2xl shadow-foreground/10 border border-foreground/5 bg-card">
           <Image
             width={1600}
@@ -138,7 +150,7 @@ export default async function ProjectPage({
       {/* ═════════════════════════════════════════════════════════
           3. BODY — markdown / rich content
           ═════════════════════════════════════════════════════════ */}
-      <div className="w-full max-w-3xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
+      <div className="w-full max-w-5xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
         <ContentRenderer content={content} collapseThreshold={3000} />
       </div>
 
@@ -146,14 +158,16 @@ export default async function ProjectPage({
           4. TAGS — stack used in the project
           ═════════════════════════════════════════════════════════ */}
       {meta.tags.length > 0 && (
-        <div className="w-full max-w-3xl mx-auto px-6 lg:px-0 mb-24 relative z-[2]">
+        <div className="w-full max-w-5xl mx-auto px-6 lg:px-0 mb-24 relative z-[2]">
           <SectionDivider />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-green-app mb-1">
                 {t("projectPage.techLabel")}
               </p>
-              <h2 className="text-2xl font-extrabold">{t("projectPage.techTitle")}</h2>
+              <h2 className="text-2xl font-extrabold">
+                {t("projectPage.techTitle")}
+              </h2>
             </div>
             <div className="flex flex-wrap gap-2 sm:justify-end sm:max-w-[60%]">
               {meta.tags.map((t) => (

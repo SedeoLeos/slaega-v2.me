@@ -28,23 +28,25 @@ function normalizeContent(raw: string): string {
   if (!trimmed) return trimmed;
 
   // If content has real HTML formatting elements → it's proper Tiptap HTML, keep as-is
-  const hasRealHtml = /<(strong|b|em|i|h[1-6]|ul|ol|li|blockquote|pre|code|a[\s>]|table)\b/i
-    .test(trimmed);
+  const hasRealHtml =
+    /<(strong|b|em|i|h[1-6]|ul|ol|li|blockquote|pre|code|a[\s>]|table|svg|figure|div)\b/i.test(
+      trimmed,
+    );
   if (hasRealHtml) return trimmed;
 
   // If content starts with HTML tags but contains Markdown patterns inside →
   // it's Markdown that Tiptap wrapped in <p> tags. Strip the wrappers.
   const isHtmlWrapped = /^<[a-z]/i.test(trimmed);
   const hasMarkdown = [
-    /^#{1,6}\s+\S/m,      // ## heading
-    /\*\*[^*\n]+\*\*/,    // **bold**
-    /\*[^*\n]+\*/,        // *italic*
-    /^\s*[-*+]\s+\S/m,    // - list
-    /^\s*\d+\.\s+\S/m,    // 1. ordered
-    /`[^`\n]+`/,          // `code`
-    /^```/m,              // code block
-    /^\s*>/m,             // > blockquote
-    /\[.+?\]\(.+?\)/,     // [link](url)
+    /^#{1,6}\s+\S/m, // ## heading
+    /\*\*[^*\n]+\*\*/, // **bold**
+    /\*[^*\n]+\*/, // *italic*
+    /^\s*[-*+]\s+\S/m, // - list
+    /^\s*\d+\.\s+\S/m, // 1. ordered
+    /`[^`\n]+`/, // `code`
+    /^```/m, // code block
+    /^\s*>/m, // > blockquote
+    /\[.+?\]\(.+?\)/, // [link](url)
   ].some((p) => p.test(trimmed));
 
   if (isHtmlWrapped && hasMarkdown) {
@@ -56,13 +58,13 @@ function normalizeContent(raw: string): string {
       .replace(/<\/h[1-6]>/gi, "\n\n")
       .replace(/<\/blockquote>/gi, "\n\n")
       .replace(/<\/pre>/gi, "\n\n")
-      .replace(/<[^>]+>/g, "")         // strip all remaining tags
+      .replace(/<[^>]+>/g, "") // strip all remaining tags
       .replace(/&amp;/g, "&")
       .replace(/&lt;/g, "<")
       .replace(/&gt;/g, ">")
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'")
-      .replace(/\n{3,}/g, "\n\n")      // collapse triple+ newlines
+      .replace(/\n{3,}/g, "\n\n") // collapse triple+ newlines
       .trim();
   }
 
@@ -93,7 +95,7 @@ export default function ContentRenderer({
   // Plain text length to decide if we collapse
   const plainLength = useMemo(
     () => trimmed.replace(/<[^>]*>/g, "").replace(/[#*_`>\-]/g, "").length,
-    [trimmed]
+    [trimmed],
   );
   const shouldCollapse = plainLength > collapseThreshold;
 
@@ -106,7 +108,7 @@ export default function ContentRenderer({
       slice.lastIndexOf("!"),
       slice.lastIndexOf("?"),
       slice.lastIndexOf("</p>"),
-      slice.lastIndexOf("</li>")
+      slice.lastIndexOf("</li>"),
     );
     return slice.slice(0, lastBreak > 200 ? lastBreak + 1 : slice.length);
   }, [trimmed, shouldCollapse, collapseThreshold]);
@@ -145,7 +147,7 @@ export default function ContentRenderer({
             p: ({ children, ...props }) => {
               const content = Array.isArray(children) ? children : [children];
               const isEmpty = content.every(
-                (c) => typeof c === "string" && c.trim() === ""
+                (c) => typeof c === "string" && c.trim() === "",
               );
               if (isEmpty) return null;
               return <p {...props}>{children}</p>;

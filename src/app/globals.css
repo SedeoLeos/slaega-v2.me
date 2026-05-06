@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #DCDED0;
-  --foreground: #0E0E0E;
+  --background: #dcded0;
+  --foreground: #0e0e0e;
   --secondary: hsl(0, 0%, 55%);
   --accent: hsl(79, 29%, 37%);
   --primary: hsl(79, 29%, 37%);
-  --green-app: #05796B;
-  --card: #F5F5EE;
-  --border: rgba(14, 14, 14, 0.10);
+  --green-app: #05796b;
+  --card: #f5f5ee;
+  --border: rgba(14, 14, 14, 0.1);
 }
 
 @theme inline {
@@ -44,16 +44,16 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #05796B;
+  background: #05796b;
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background: #05796B;
+  background: #05796b;
 }
 
 *::-webkit-scrollbar-corner {
@@ -82,7 +82,7 @@
 }
 
 .dark-scroll::-webkit-scrollbar-thumb:hover {
-  background: #05796B;
+  background: #05796b;
 }
 
 .dark-scroll::-webkit-scrollbar-thumb:active {
@@ -92,18 +92,17 @@
 /* Project / blog article — rich typography that lives & breathes. */
 .article-content {
   color: #2a2a2a;
-  line-height: 1.75;
-  font-size: 1.0625rem; /* 17px — slightly larger for readability */
+  line-height: 1.72;
+  font-size: 1rem; /* 16px */
   font-family: var(--font-poppins), system-ui, sans-serif;
 }
 
-/* H1 — only used at the top; the page already has its own H1, so style this
-   like a section opener with strong visual weight. */
+/* H1 — section opener with strong visual weight. */
 .article-content h1 {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #0e0e0e;
-  margin: 3rem 0 1.25rem;
+  margin: 2.5rem 0 1rem;
   letter-spacing: -0.025em;
   line-height: 1.15;
   position: relative;
@@ -112,58 +111,61 @@
 .article-content h1::after {
   content: "";
   display: block;
-  width: 56px;
+  width: 48px;
   height: 3px;
   background: #05796b;
-  margin-top: 0.75rem;
+  margin-top: 0.65rem;
   border-radius: 2px;
 }
 
-/* H2 — sections with a left accent bar (CV-template style). */
+/* H2 — sections with a left accent bar. */
 .article-content h2 {
-  font-size: 1.65rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: #0e0e0e;
-  margin: 3.25rem 0 1.25rem;
+  margin: 2.75rem 0 1rem;
   letter-spacing: -0.018em;
   line-height: 1.2;
   position: relative;
   padding-left: 1rem;
-  border-left: 4px solid #05796b;
+  border-left: 3px solid #05796b;
 }
-.article-content h2:first-child { margin-top: 0; }
+.article-content h2:first-child {
+  margin-top: 0;
+}
 
-/* H3 — sub-sections, lighter emphasis */
+/* H3 — sub-sections */
 .article-content h3 {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 2.25rem 0 0.75rem;
+  margin: 1.75rem 0 0.6rem;
   letter-spacing: -0.01em;
   line-height: 1.3;
 }
 
 /* H4 */
 .article-content h4 {
-  font-size: 1.1rem;
   font-weight: 700;
   color: #2a2a2a;
-  margin: 1.75rem 0 0.5rem;
+  margin: 1.25rem 0 0.4rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
-/* Paragraphs — generous line-height, comfortable margins */
+/* Paragraphs */
 .article-content p {
-  margin: 1.15rem 0;
+  margin: 1rem 0;
   color: #2a2a2a;
 }
-.article-content p:first-child { margin-top: 0; }
+.article-content p:first-child {
+  margin-top: 0;
+}
 
-/* Lead paragraph (first paragraph after a heading or root) — bigger */
+/* Lead paragraph */
 .article-content > p:first-of-type {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   color: #1a1a1a;
   font-weight: 500;
   line-height: 1.65;
@@ -173,7 +175,9 @@
   font-weight: 700;
   color: #0e0e0e;
 }
-.article-content em { font-style: italic; }
+.article-content em {
+  font-style: italic;
+}
 
 .article-content a {
   color: #05796b;
@@ -183,53 +187,79 @@
   font-weight: 500;
   transition: color 0.15s;
 }
-.article-content a:hover { color: #044f47; }
+.article-content a:hover {
+  color: #044f47;
+}
 
-/* Lists — clean bullets with subtle accent */
+/* Lists — clean bullets with subtle accent, compact vertical rhythm */
 .article-content ul,
 .article-content ol {
-  margin: 1.25rem 0;
-  padding-left: 1.5rem;
+  margin: 0.85rem 0;
+  padding-left: 2rem;
+  font-size: 0.9375rem; /* 15px — slightly smaller than body */
 }
-.article-content ul { list-style: none; }
-.article-content ol { list-style: decimal; }
+.article-content ul {
+  list-style: none;
+}
+.article-content ol {
+  list-style: decimal;
+}
 .article-content ul li,
 .article-content ol li {
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
+  line-height: 1.6;
   position: relative;
 }
 .article-content ul li::before {
   content: "";
   position: absolute;
-  left: -1.1rem;
-  top: 0.7em;
-  width: 0.4rem;
-  height: 0.4rem;
+  left: -1.25rem;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #05796b;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 .article-content ol li::marker {
   color: #05796b;
   font-weight: 600;
 }
+/* Nested lists — tighter indent */
 .article-content li > ul,
 .article-content li > ol {
-  margin: 0.4rem 0;
+  margin: 0.25rem 0;
+  padding-left: 1.5rem;
+  font-size: inherit;
+}
+.article-content li > ul li::before {
+  width: 4px;
+  height: 4px;
+  opacity: 0.45;
+  background: #05796b;
+}
+/* Immediately after heading → less top gap */
+.article-content h2 + ul,
+.article-content h2 + ol,
+.article-content h3 + ul,
+.article-content h3 + ol {
+  margin-top: 0.5rem;
 }
 
 /* Blockquote — pulled, with accent */
 .article-content blockquote {
-  border-left: 4px solid #05796b;
-  padding: 0.5rem 0 0.5rem 1.25rem;
-  margin: 2rem 0;
+  border-left: 3px solid #05796b;
+  padding: 0.4rem 0 0.4rem 1.1rem;
+  margin: 1.25rem 0;
   font-style: italic;
-  color: #444;
-  font-size: 1.05rem;
+  color: #555;
+  font-size: 0.9625rem;
   background: rgba(5, 121, 107, 0.04);
   border-radius: 0 0.5rem 0.5rem 0;
 }
-.article-content blockquote p { margin: 0.4rem 0; }
+.article-content blockquote p {
+  margin: 0.3rem 0;
+}
 
 /* Inline code */
 .article-content code {
@@ -246,12 +276,12 @@
 .article-content pre {
   background: #1a1a1a;
   color: #e4e4e7;
-  padding: 1.25rem 1.5rem;
-  border-radius: 0.875rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
   overflow-x: auto;
-  margin: 1.75rem 0;
-  font-size: 0.875rem;
-  line-height: 1.65;
+  margin: 1.25rem 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
@@ -275,7 +305,7 @@
     rgba(14, 14, 14, 0.15) 80%,
     transparent 100%
   );
-  margin: 3rem 0;
+  margin: 2rem 0;
 }
 
 /* Images */
@@ -285,6 +315,32 @@
   height: auto;
   margin: 2rem 0;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── SVG graphics (charts, diagrams, icons embedded in content) ── */
+.article-content svg {
+  display: inline-block !important;
+  vertical-align: middle;
+  max-width: 100%;
+  overflow: visible;
+}
+/* Centered block SVGs (standalone, not inline) */
+.article-content p > svg:only-child,
+.article-content figure > svg {
+  display: block !important;
+  margin: 1.5rem auto;
+}
+/* Don't let Tailwind prose or CSS resets hide SVG children */
+.article-content svg circle,
+.article-content svg path,
+.article-content svg rect,
+.article-content svg ellipse,
+.article-content svg line,
+.article-content svg polyline,
+.article-content svg polygon,
+.article-content svg text {
+  /* inherit fill/stroke from the SVG element's own attributes */
+  vector-effect: non-scaling-stroke;
 }
 
 /* Tables */
@@ -337,9 +393,13 @@
   font-size: 0.95rem;
   margin: 1rem 0 0.35rem;
 }
-.experience-desc .article-content p { margin: 0.6rem 0; }
+.experience-desc .article-content p {
+  margin: 0.6rem 0;
+}
 .experience-desc .article-content ul,
-.experience-desc .article-content ol { margin: 0.6rem 0; }
+.experience-desc .article-content ol {
+  margin: 0.6rem 0;
+}
 
 /* About page body — center prose paragraphs */
 .about-body .prose p,
@@ -366,7 +426,10 @@
     line-height: 1.6;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     letter-spacing: -0.02em;
     line-height: 1.15;
   }
@@ -375,7 +438,8 @@
     @apply text-foreground no-underline;
   }
 
-  input, textarea {
+  input,
+  textarea {
     @apply bg-background w-full border border-[var(--border)] rounded-xl;
     font-family: inherit;
   }
@@ -396,7 +460,11 @@
   }
 
   .more {
-    background: linear-gradient(180deg, rgba(220, 222, 208, 0.00) -98.48%, #DCDED0 55.11%);
+    background: linear-gradient(
+      180deg,
+      rgba(220, 222, 208, 0) -98.48%,
+      #dcded0 55.11%
+    );
   }
 
   /* Markdown project content */
@@ -404,7 +472,9 @@
     @apply text-[#1E1E1E] leading-relaxed;
   }
 
-  article .project h1 { @apply hidden; }
+  article .project h1 {
+    @apply hidden;
+  }
 
   article .project h2 {
     @apply text-2xl font-bold text-[#111111] mt-8 mb-4;
@@ -501,8 +571,12 @@
 
   /* Print styles for CV */
   @media print {
-    body > *:not(#cv-print) { display: none; }
-    #cv-print { display: block !important; }
+    body > *:not(#cv-print) {
+      display: none;
+    }
+    #cv-print {
+      display: block !important;
+    }
   }
 }
 
@@ -525,13 +599,13 @@
   background-color: #f1f5f9 !important;
 }
 [data-admin-theme="light"] .bg-zinc-800\/50 {
-  background-color: rgba(241,245,249,.7) !important;
+  background-color: rgba(241, 245, 249, 0.7) !important;
 }
 [data-admin-theme="light"] .bg-zinc-800\/60 {
-  background-color: rgba(241,245,249,.8) !important;
+  background-color: rgba(241, 245, 249, 0.8) !important;
 }
 [data-admin-theme="light"] .bg-zinc-800\/80 {
-  background-color: rgba(226,232,240,.9) !important;
+  background-color: rgba(226, 232, 240, 0.9) !important;
 }
 
 /* Sidebar */
@@ -545,7 +619,7 @@
   border-color: #e2e8f0 !important;
 }
 [data-admin-theme="light"] .border-zinc-800\/60 {
-  border-color: rgba(226,232,240,.8) !important;
+  border-color: rgba(226, 232, 240, 0.8) !important;
 }
 [data-admin-theme="light"] .border-zinc-700 {
   border-color: #cbd5e1 !important;
@@ -597,10 +671,10 @@
 
 /* Active nav items (keep green-app accent untouched) */
 [data-admin-theme="light"] .bg-green-app\/10 {
-  background-color: rgba(5,121,107,.08) !important;
+  background-color: rgba(5, 121, 107, 0.08) !important;
 }
 [data-admin-theme="light"] .border-green-app\/20 {
-  border-color: rgba(5,121,107,.2) !important;
+  border-color: rgba(5, 121, 107, 0.2) !important;
 }
 
 /* Logo badge */
@@ -610,8 +684,8 @@
 
 /* Dark scrollbars → light in light mode */
 [data-admin-theme="light"] * {
-  scrollbar-color: rgba(0,0,0,.15) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
 [data-admin-theme="light"] *::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.12);
+  background: rgba(0, 0, 0, 0.12);
 }
