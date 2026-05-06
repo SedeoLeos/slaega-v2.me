@@ -66,15 +66,18 @@ export default async function ProjectPage({
   const readMin = Math.max(1, Math.ceil(plain.length / 1100));
 
   return (
-    <article className="relative w-full mx-auto max-w-content min-h-screen overflow-x-hidden">
-      {/* Decorative illustrations */}
-      <div className="absolute lg:left-0 -left-3/5 top-0 opacity-15 lg:opacity-50 pointer-events-none -z-10">
+    /* Outer wrapper: full viewport width, positioning context for illustrations */
+    <div className="relative w-full overflow-x-hidden">
+      {/* Decorative illustrations — live here, outside the max-w article,
+          so they can bleed to the edge of the screen */}
+      <div className="absolute left-0 top-0 opacity-15 lg:opacity-50 pointer-events-none -z-10">
         <IllustrationProject />
       </div>
-      <div className="absolute top-1/2 -right-3/5 opacity-15 lg:opacity-50 lg:right-0 pointer-events-none -z-10">
+      <div className="absolute top-1/2 right-0 opacity-15 lg:opacity-50 pointer-events-none -z-10">
         <IllustrationBody />
       </div>
 
+    <article className="relative w-full mx-auto max-w-content min-h-screen">
       {/* ═════════════════════════════════════════════════════════
           1. BREADCRUMB
           ═════════════════════════════════════════════════════════ */}
@@ -275,6 +278,7 @@ export default async function ProjectPage({
         </section>
       )}
     </article>
+    </div>
   );
 }
 
