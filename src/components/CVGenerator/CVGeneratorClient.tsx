@@ -8,6 +8,7 @@ import { defaultSections, CV_TEMPLATES } from './cv-types';
 import { CV_PALETTES, DEFAULT_PALETTE } from './cv-palettes';
 import type { CVPalette } from './cv-palettes';
 import CVDocumentRenderer from './CVDocumentRenderer';
+import TemplateDrawer from './TemplateDrawer';
 
 // ── i18n-free label map (component used in admin without NextIntlClientProvider)
 const L = {
@@ -42,35 +43,14 @@ function PaletteSwatch({ p, active, onClick }: { p: CVPalette; active: boolean; 
       type="button"
       onClick={onClick}
       title={p.label}
-      className={`relative w-8 h-8 rounded-full border-2 overflow-hidden transition-all ${
+      className={`w-8 h-8 rounded-full border-2 transition-all ${
         active ? 'border-white scale-110 shadow-lg' : 'border-transparent hover:scale-105'
       }`}
-    >
-      <span className="absolute inset-0 top-0 left-0 right-0 bottom-1/2" style={{ backgroundColor: p.sidebar }} />
-      <span className="absolute inset-0 top-1/2 left-0 right-0 bottom-0" style={{ backgroundColor: p.accent }} />
-    </button>
+      style={{ background: `linear-gradient(135deg, ${p.accent} 50%, ${p.sidebar} 50%)` }}
+    />
   );
 }
 
-// ── Template card ─────────────────────────────────────────────────────────────
-function TemplateCard({
-  id, label, description, active, onClick,
-}: { id: string; label: string; description: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex-1 min-w-0 rounded-xl px-3 py-2.5 text-left border transition-all ${
-        active
-          ? 'border-green-app bg-green-app/10 text-green-app'
-          : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-200'
-      }`}
-    >
-      <p className="text-xs font-bold">{label}</p>
-      <p className="text-[10px] opacity-70 mt-0.5 truncate">{description}</p>
-    </button>
-  );
-}
 
 // ── Section row ───────────────────────────────────────────────────────────────
 /** Payload returned by the section API for array-based sections */
@@ -136,9 +116,13 @@ function SectionRow({
         <button
           type="button"
           onClick={onToggle}
-          className={`w-8 h-4 rounded-full transition-colors flex-shrink-0 relative ${override.visible ? 'bg-green-app' : 'bg-zinc-700'}`}
+          className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ${
+            override.visible ? 'bg-green-app' : 'bg-zinc-600'
+          }`}
         >
-          <span className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${override.visible ? 'translate-x-4' : 'translate-x-0.5'}`} />
+          <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+            override.visible ? 'translate-x-4' : 'translate-x-0'
+          }`} />
         </button>
         <span className="flex-1 text-xs text-zinc-300 font-medium">{def.label}</span>
 
@@ -217,9 +201,10 @@ export default function CVGeneratorClient() {
   const [error,     setError]     = useState('');
 
   // ── Customisation state
-  const [templateId, setTemplateId] = useState<CVTemplateId>('kronos');
-  const [palette,    setPalette]    = useState<CVPalette>(DEFAULT_PALETTE);
-  const [sections,   setSections]   = useState<CVSections>(defaultSections());
+  const [templateId,     setTemplateId]     = useState<CVTemplateId>('kronos');
+  const [palette,        setPalette]        = useState<CVPalette>(DEFAULT_PALETTE);
+  const [sections,       setSections]       = useState<CVSections>(defaultSections());
+  const [drawerOpen,     setDrawerOpen]     = useState(false);
 
   // ── Toggle / update helpers
   const toggleSection = useCallback((key: SectionKey) => {
@@ -278,10 +263,21 @@ export default function CVGeneratorClient() {
   const lang: 'fr' | 'en' = cv?.language ?? 'fr';
 
   return (
-    // h-full + overflow-hidden → le panneau droit reste figé, le gauche défile
+    <>
+    {/* Template drawer */}
+    {drawerOpen && (
+      <TemplateDrawer
+        current={templateId}
+        palette={palette}
+        onSelect={(id) => { setTemplateId(id); setDrawerOpen(false); }}
+        onClose={() => setDrawerOpen(false)}
+      />
+    )}
+
+    {/* h-full + overflow-hidden → le panneau droit reste figé, le gauche défile */}
     <div className="grid lg:grid-cols-[320px_1fr] gap-6 h-full overflow-hidden">
       {/* ── Left: controls — scrollable ──────────────────── */}
-      <div className="flex flex-col gap-4 overflow-y-auto pr-1 pb-4">
+      <div className="flex flex-col gap-4 overflow-y-auto pr-1 pb-4 dark-scroll">
 
         {/* Job offer */}
         <div>
@@ -305,19 +301,36 @@ export default function CVGeneratorClient() {
           {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
         </div>
 
-        {/* Template picker */}
+        {/* Template picker — drawer trigger */}
         <div>
           <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2 font-medium">Template</p>
-          <div className="flex gap-2">
-            {CV_TEMPLATES.map((tpl) => (
-              <TemplateCard
-                key={tpl.id}
-                {...tpl}
-                active={templateId === tpl.id}
-                onClick={() => setTemplateId(tpl.id)}
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="w-full flex items-center justify-between px-3 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-500 rounded-xl transition-all group"
+          >
+            <div className="flex items-center gap-3">
+              {/* Mini palette swatch */}
+              <span
+                className="w-5 h-5 rounded-md flex-shrink-0"
+                style={{ background: `linear-gradient(135deg, ${palette.accent} 50%, ${palette.sidebar} 50%)` }}
               />
-            ))}
-          </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-zinc-200">
+                  {CV_TEMPLATES.find(t => t.id === templateId)?.label ?? 'Kronos'}
+                </p>
+                <p className="text-[10px] text-zinc-500">
+                  {CV_TEMPLATES.find(t => t.id === templateId)?.description}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 text-zinc-500 group-hover:text-zinc-300 transition-colors">
+              <span className="text-[10px]">{CV_TEMPLATES.length} templates</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </div>
+          </button>
         </div>
 
         {/* Palette picker */}
@@ -449,5 +462,6 @@ export default function CVGeneratorClient() {
         )}
       </div>
     </div>
+    </>
   );
 }

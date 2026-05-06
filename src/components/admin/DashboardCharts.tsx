@@ -122,7 +122,7 @@ export default function DashboardCharts({
         )}
       </div>
 
-      {/* ── Row 2 : activité globale (area) + projets par an ── */}
+      {/* ── Row 2 : activité + complétion (toujours côte à côte) ── */}
       <div className="grid sm:grid-cols-2 gap-4">
 
         <Card>
@@ -152,71 +152,71 @@ export default function DashboardCharts({
           </ResponsiveContainer>
         </Card>
 
-        {projectsByYear.length > 0 && (
-          <Card>
-            <Title>Projets par année</Title>
-            <ResponsiveContainer width="100%" height={165}>
-              <BarChart data={projectsByYear} barCategoryGap="30%" barGap={3}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                <XAxis dataKey="year" tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} width={24} />
-                <Tooltip {...TT} content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '11px', color: '#71717a', paddingTop: '8px' }} />
-                <Bar dataKey="published" name="Publiés"    fill={G} radius={[4, 4, 0, 0]} />
-                <Bar dataKey="draft"     name="Brouillons" fill={Y} radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
+        <Card>
+          <Title>Complétion du portfolio</Title>
+          <ResponsiveContainer width="100%" height={165}>
+            <RadarChart data={contentCompletion} outerRadius={60}>
+              <PolarGrid stroke="#27272a" />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: '#71717a', fontSize: 10 }} />
+              <Radar name="Rempli" dataKey="value" stroke={G} fill={G} fillOpacity={0.2} strokeWidth={2} />
+              <Tooltip {...TT} content={<CustomTooltip />} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </Card>
       </div>
 
-      {/* ── Row 3 : radar (répartition) + radial (complétion) ── */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      {/* ── Row 3 : projets par an + répartition catégories (conditionnels) ── */}
+      {(projectsByYear.length > 0 || projectsByCategory.length > 0) && (
+        <div className="grid sm:grid-cols-2 gap-4">
 
-        {contentCompletion.length > 0 && (
-          <Card>
-            <Title>Complétion du portfolio</Title>
-            <ResponsiveContainer width="100%" height={200}>
-              <RadarChart data={contentCompletion} outerRadius={70}>
-                <PolarGrid stroke="#27272a" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: '#71717a', fontSize: 10 }} />
-                <Radar name="Rempli" dataKey="value" stroke={G} fill={G} fillOpacity={0.2} strokeWidth={2} />
-                <Tooltip {...TT} content={<CustomTooltip />} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
+          {projectsByYear.length > 0 && (
+            <Card>
+              <Title>Projets par année</Title>
+              <ResponsiveContainer width="100%" height={165}>
+                <BarChart data={projectsByYear} barCategoryGap="30%" barGap={3}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                  <XAxis dataKey="year" tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} width={24} />
+                  <Tooltip {...TT} content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ fontSize: '11px', color: '#71717a', paddingTop: '8px' }} />
+                  <Bar dataKey="published" name="Publiés"    fill={G} radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="draft"     name="Brouillons" fill={Y} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+          )}
 
-        {projectsByCategory.length > 0 && (
-          <Card>
-            <Title>Répartition catégories</Title>
-            <ResponsiveContainer width="100%" height={200}>
-              <RadialBarChart
-                innerRadius="20%"
-                outerRadius="90%"
-                data={projectsByCategory.slice(0, 6).map((d, i) => ({
-                  ...d,
-                  fill: COLORS[i % COLORS.length],
-                }))}
-                startAngle={180}
-                endAngle={0}
-              >
-                <RadialBar
-                  dataKey="count"
-                  cornerRadius={4}
-                  label={{ position: 'insideStart', fill: 'rgba(255,255,255,0.6)', fontSize: 9 }}
-                />
-                <Tooltip {...TT} content={<CustomTooltip />} />
-                <Legend
-                  iconSize={8}
-                  wrapperStyle={{ fontSize: '10px', color: '#71717a', paddingTop: '4px' }}
-                  formatter={(value) => value}
-                />
-              </RadialBarChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
-      </div>
+          {projectsByCategory.length > 0 && (
+            <Card>
+              <Title>Répartition catégories</Title>
+              <ResponsiveContainer width="100%" height={165}>
+                <RadialBarChart
+                  innerRadius="20%"
+                  outerRadius="90%"
+                  data={projectsByCategory.slice(0, 6).map((d, i) => ({
+                    ...d,
+                    fill: COLORS[i % COLORS.length],
+                  }))}
+                  startAngle={180}
+                  endAngle={0}
+                >
+                  <RadialBar
+                    dataKey="count"
+                    cornerRadius={4}
+                    label={{ position: 'insideStart', fill: 'rgba(255,255,255,0.6)', fontSize: 9 }}
+                  />
+                  <Tooltip {...TT} content={<CustomTooltip />} />
+                  <Legend
+                    iconSize={8}
+                    wrapperStyle={{ fontSize: '10px', color: '#71717a', paddingTop: '4px' }}
+                    formatter={(value) => value}
+                  />
+                </RadialBarChart>
+              </ResponsiveContainer>
+            </Card>
+          )}
+        </div>
+      )}
 
       {/* ── Row 4 : top tags (horizontal bar) ── */}
       {topTags.length > 0 && (

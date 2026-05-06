@@ -28,15 +28,15 @@
   --font-poppins: var(--font-poppins);
 }
 
-/* ── Custom scrollbar (non-native) ───────────────────────── */
+/* ── Custom scrollbar — slim & stylée ────────────────────── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(14, 14, 14, 0.25) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
 }
 
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 4px;
+  height: 4px;
 }
 
 *::-webkit-scrollbar-track {
@@ -44,45 +44,49 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(14, 14, 14, 0.18);
+  background: rgba(255, 255, 255, 0.10);
   border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  transition: background 0.2s;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(5, 121, 107, 0.6);
-  background-clip: padding-box;
-  border: 2px solid transparent;
+  background: #05796B;
 }
 
 *::-webkit-scrollbar-thumb:active {
   background: #05796B;
-  background-clip: padding-box;
-  border: 2px solid transparent;
 }
 
 *::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-/* Dark surfaces (admin) */
-.dark-scroll, .dark-scroll * {
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+/* Dark surfaces (admin panels, CV generator left col, sidebar) */
+.dark-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
-.dark-scroll::-webkit-scrollbar-thumb,
-.dark-scroll *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  background-clip: padding-box;
-  border: 2px solid transparent;
+.dark-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 
-.dark-scroll::-webkit-scrollbar-thumb:hover,
-.dark-scroll *::-webkit-scrollbar-thumb:hover {
-  background: rgba(5, 121, 107, 0.7);
-  background-clip: padding-box;
+.dark-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb:hover {
+  background: #05796B;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb:active {
+  background: #059669;
 }
 
 /* Project / blog article — rich typography that lives & breathes. */

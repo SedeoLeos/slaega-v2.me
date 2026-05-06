@@ -65,7 +65,7 @@ export const defaultSections = (): CVSections => ({
 });
 
 // ─── Templates ───────────────────────────────────────────────────────────────
-export type CVTemplateId = "kronos" | "nexus" | "prism";
+export type CVTemplateId = "kronos" | "nexus" | "prism" | "duo" | "orbit" | "nova" | "pulse" | "supra" | "hello" | "mosaic" | "ivoire" | "verde";
 
 export type CVTemplateInfo = {
   id: CVTemplateId;
@@ -74,21 +74,18 @@ export type CVTemplateInfo = {
 };
 
 export const CV_TEMPLATES: CVTemplateInfo[] = [
-  {
-    id: "kronos",
-    label: "Kronos",
-    description: "Motif graphique, nom impactant",
-  },
-  {
-    id: "nexus",
-    label: "Nexus",
-    description: "Sidebar sombre, icônes vectorielles",
-  },
-  {
-    id: "prism",
-    label: "Prism",
-    description: "Bandeau coloré, ultra minimaliste",
-  },
+  { id: "kronos", label: "Kronos", description: "Barre accent, grille compétences" },
+  { id: "nexus",  label: "Nexus",  description: "Sidebar sombre, icônes" },
+  { id: "prism",  label: "Prism",  description: "Bandeau coloré, minimaliste" },
+  { id: "duo",    label: "Duo",    description: "Sidebar + dot ratings" },
+  { id: "orbit",  label: "Orbit",  description: "Globe géométrique, bicolonnes" },
+  { id: "nova",   label: "Nova",   description: "Header bold + décoration" },
+  { id: "pulse",  label: "Pulse",  description: "Cards arrondies, hashtags colorés" },
+  { id: "supra",  label: "Supra",  description: "Photo pleine + sidebar + projets" },
+  { id: "hello",  label: "Hello",  description: "Photo hero + progress bars" },
+  { id: "mosaic",  label: "Mosaic",  description: "Mosaïque bleue fixe (no thème)" },
+  { id: "ivoire",  label: "Ivoire",  description: "Sidebar sombre + accents crème" },
+  { id: "verde",   label: "Verde",   description: "Forêt verte + cyan, bande sage" },
 ];
 
 // ─── Profile ─────────────────────────────────────────────────────────────────

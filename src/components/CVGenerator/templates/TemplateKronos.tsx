@@ -1,11 +1,13 @@
 /**
  * Template KRONOS — react-pdf version
  *
- * Layout: full-page with a decorative geometric pattern on the left (~35%),
- * bold oversized name, accent bars on section titles.
+ * Design fidèle au template HTML original : layout single-colonne,
+ * barre d'accent sur les titres de section, border-left sur les jobs,
+ * grille 3 colonnes pour les compétences.
+ * Pas de SVG en position absolue (cause des artefacts dans react-pdf).
  */
 import {
-  Page, Document, View, Text, Image, StyleSheet, Svg, Path, G, Rect,
+  Page, Document, View, Text, Image, StyleSheet, Svg, Path, Rect,
 } from "@react-pdf/renderer";
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
@@ -39,41 +41,6 @@ function IconLinkedin({ color }: { color: string }) {
   );
 }
 
-// ── Decorative geometric background ─────────────────────────────────────────
-function GeometricBg({ palette }: { palette: CVPalette }) {
-  const c1 = palette.sidebar;
-  const c2 = palette.accent;
-  return (
-    <Svg
-      width={215}
-      height={842}
-      viewBox="0 0 215 842"
-      style={{ position: "absolute", top: 0, left: 0 }}
-    >
-      {/* Base rect */}
-      <Rect x={0} y={0} width={215} height={842} fill={c1} opacity={0.06} />
-      {/* Large diagonal shape */}
-      <Path d={`M0,0 L180,0 L215,60 L215,842 L0,842 Z`} fill={c1} opacity={0.07} />
-      {/* Accent triangle top */}
-      <Path d={`M0,0 L140,0 L0,180 Z`} fill={c1} opacity={0.12} />
-      {/* Small accent dots */}
-      <Path d="M30 40 m0 0 a6 6 0 1 0 0.001 0" fill={c2} opacity={0.5} />
-      <Path d="M55 75 m0 0 a4 4 0 1 0 0.001 0" fill={c2} opacity={0.4} />
-      <Path d="M15 120 m0 0 a3 3 0 1 0 0.001 0" fill={c2} opacity={0.3} />
-      {/* Vertical accent line */}
-      <Rect x={190} y={0} width={3} height={842} fill={c2} opacity={0.15} />
-      {/* Bottom geometric */}
-      <Path d={`M0,740 L215,690 L215,842 L0,842 Z`} fill={c1} opacity={0.08} />
-      {/* Grid dots pattern */}
-      {[60, 100, 140, 180, 220, 260, 300, 340, 380, 420, 460, 500, 540, 580, 620, 660, 700].map((y, i) =>
-        [30, 70, 110, 150].map((x, j) => (
-          <Rect key={`d-${i}-${j}`} x={x} y={y} width={2} height={2} fill={c1} opacity={0.15} rx={1} />
-        ))
-      )}
-    </Svg>
-  );
-}
-
 // ── Main document ─────────────────────────────────────────────────────────────
 type Props = {
   data: CVData;
@@ -85,76 +52,84 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
   const lang: "fr" | "en" = data.language ?? "fr";
   const L = CV_LABELS[lang];
 
-  const tagline  = sections.tagline.text      ?? data.tagline  ?? "";
-  const summary  = sections.summary.text      ?? stripHtml(data.summary ?? "");
-  const caps     = sections.capabilities.text
+  const tagline = sections.tagline.text ?? data.tagline ?? "";
+  const summary = sections.summary.text ?? stripHtml(data.summary ?? "");
+  const caps    = sections.capabilities.text
     ? [sections.capabilities.text]
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page:  { backgroundColor: palette.paper, fontFamily: "Helvetica", position: "relative" },
-    body:  { paddingTop: 28, paddingBottom: 24, paddingLeft: 30, paddingRight: 32 },
+    page: { backgroundColor: palette.paper, fontFamily: "Helvetica" },
+    body: { padding: 36 },
 
-    // Header
-    header:     { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 },
-    headerLeft: { flex: 1 },
-    tagline:    { fontSize: 7.5, color: palette.primary, fontFamily: "Helvetica-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
-    divider:    { width: "60%", height: 1.5, backgroundColor: palette.accent, marginBottom: 10 },
-    name:       { fontSize: 24, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: -0.5, lineHeight: 1.1 },
-    photo:      { width: 72, height: 72, borderRadius: 36, objectFit: "cover" },
+    // ── Accent top bar (décoratif, in-flow)
+    topBar: { height: 4, backgroundColor: palette.accent, marginBottom: 22, borderRadius: 2 },
 
-    // Bio
-    bio:  { fontSize: 8.5, color: palette.body, lineHeight: 1.55, marginTop: 10, marginBottom: 10, maxWidth: "72%" },
+    // ── Header
+    header:      { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 },
+    headerLeft:  { flex: 1 },
+    jobTitle:    { fontSize: 8, fontFamily: "Helvetica-Bold", color: palette.accent, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6 },
+    divider:     { width: 48, height: 1.5, backgroundColor: palette.accent, marginBottom: 8 },
+    name:        { fontSize: 22, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: -0.3, lineHeight: 1.1 },
+    photo:       { width: 68, height: 68, borderRadius: 4, objectFit: "cover" },
 
-    // Contact row
-    contactRow:   { flexDirection: "row", marginBottom: 14, gap: 8 },
-    contactItem:  { flex: 1 },
-    contactIcon:  { marginBottom: 2 },
-    contactLabel: { fontSize: 6.5, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 1, textTransform: "uppercase", marginBottom: 1 },
+    // ── Bio
+    bio: { fontSize: 8.5, color: palette.body, lineHeight: 1.6, marginTop: 12, marginBottom: 12, maxWidth: "80%" },
+
+    // ── Contact row
+    contactRow:   { flexDirection: "row", gap: 0, marginBottom: 16, borderTopWidth: 1, borderTopColor: palette.border, borderTopStyle: "solid", paddingTop: 10 },
+    contactItem:  { flex: 1, paddingRight: 8 },
+    contactLabel: { fontSize: 6, fontFamily: "Helvetica-Bold", color: palette.muted, letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 2, marginTop: 3 },
     contactVal:   { fontSize: 7.5, color: palette.body },
 
-    // Capabilities
-    caps:      { marginBottom: 14 },
-    miniHead:  { fontSize: 7, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 5 },
+    // ── Capabilities
+    caps:      { marginBottom: 16 },
+    miniHead:  { fontSize: 6.5, fontFamily: "Helvetica-Bold", color: palette.muted, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6 },
     capItem:   { flexDirection: "row", alignItems: "flex-start", marginBottom: 3 },
-    capBullet: { width: 4, height: 4, backgroundColor: palette.accent, borderRadius: 2, marginTop: 2.5, marginRight: 6, flexShrink: 0 },
-    capText:   { fontSize: 8, color: palette.body, flex: 1, lineHeight: 1.4 },
+    capBullet: { width: 3.5, height: 3.5, backgroundColor: palette.accent, borderRadius: 1, marginTop: 3, marginRight: 7, flexShrink: 0 },
+    capText:   { fontSize: 8, color: palette.body, flex: 1, lineHeight: 1.45 },
 
-    // Section
-    section:      { marginTop: 12 },
-    sectionTitle: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
-    sectionBar:   { width: 3, height: 14, backgroundColor: palette.accent, marginRight: 7, borderRadius: 1.5 },
-    sectionLabel: { fontSize: 10, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 0.5 },
+    // ── Section title (barre accent + label)
+    section:      { marginTop: 14 },
+    sectionHead:  { flexDirection: "row", alignItems: "center", marginBottom: 9 },
+    sectionBar:   { width: 4, height: 19, backgroundColor: palette.primary, marginRight: 8, borderRadius: 1 },
+    sectionLabel: { fontSize: 10.5, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 0.3 },
 
-    // Jobs
-    job:          { marginBottom: 10, paddingLeft: 12, borderLeftWidth: 1.5, borderLeftColor: palette.border, borderLeftStyle: "solid", position: "relative" },
-    jobHeader:    { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
-    jobTitleRow:  { flexDirection: "row", alignItems: "center", flex: 1 },
-    jobDot:       { width: 5, height: 5, backgroundColor: palette.accent, borderRadius: 1, marginLeft: -14.5, marginRight: 6, flexShrink: 0 },
-    jobTitle:     { fontSize: 9, fontFamily: "Helvetica-Bold", color: palette.primary, flex: 1 },
-    jobDate:      { fontSize: 7, color: palette.muted, fontFamily: "Helvetica-Oblique" },
-    jobCompany:   { fontSize: 7.5, fontFamily: "Helvetica-Bold", color: palette.muted, letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 3 },
-    jobDesc:      { fontSize: 7.5, color: palette.body, lineHeight: 1.5 },
-    jobTags:      { fontSize: 6.5, color: palette.muted, fontFamily: "Helvetica-Oblique", marginTop: 2 },
+    // ── Job entries (border-left fidèle à l'original)
+    job:         { marginBottom: 13, paddingLeft: 16, borderLeftWidth: 2, borderLeftColor: palette.border, borderLeftStyle: "solid" },
+    jobRow:      { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
+    jobTitleRow: { flexDirection: "row", alignItems: "center", flex: 1 },
+    jobDot:      { width: 5, height: 5, backgroundColor: palette.primary, borderRadius: 1, marginLeft: -19.5, marginRight: 7, flexShrink: 0 },
+    jobName:     { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: palette.primary, flex: 1 },
+    jobDate:     { fontSize: 7, color: palette.muted, fontFamily: "Helvetica-Oblique", flexShrink: 0 },
+    jobCompany:  { fontSize: 7.5, fontFamily: "Helvetica-Bold", color: palette.muted, letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 3, marginTop: 1 },
+    jobDesc:     { fontSize: 7.5, color: palette.body, lineHeight: 1.5 },
+    jobTags:     { fontSize: 6.5, color: palette.muted, fontFamily: "Helvetica-Oblique", marginTop: 3 },
 
-    // Skills
-    skillsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
-    skillChip:  { paddingHorizontal: 7, paddingVertical: 2.5, borderRadius: 3, marginRight: 4, marginBottom: 4 },
-    skillText:  { fontSize: 7 },
+    // ── Skills grid (3 colonnes via flexWrap)
+    skillsGrid: { flexDirection: "row", flexWrap: "wrap" },
+    skillItem:  { width: "33%", flexDirection: "row", alignItems: "center", marginBottom: 5, paddingRight: 8 },
+    skillDot:   { width: 4, height: 4, borderRadius: 1, marginRight: 5, flexShrink: 0 },
+    skillText:  { fontSize: 7.5, color: palette.body },
+    skillBold:  { fontSize: 7.5, color: palette.primary, fontFamily: "Helvetica-Bold" },
   });
 
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        <GeometricBg palette={palette} />
-
         <View style={s.body}>
-          {/* Header */}
+
+          {/* Barre décorative en haut (in-flow, pas de position absolue) */}
+          <View style={s.topBar} />
+
+          {/* Header : nom + accroche + photo */}
           <View style={s.header}>
             <View style={s.headerLeft}>
               {sections.tagline.visible && tagline ? (
-                <Text style={s.tagline}>{tagline}</Text>
-              ) : null}
+                <Text style={s.jobTitle}>{tagline}</Text>
+              ) : (
+                <Text style={s.jobTitle}>{data.jobTitle}</Text>
+              )}
               <View style={s.divider} />
               <Text style={s.name}>
                 {CV_PROFILE.name}{"\n"}{CV_PROFILE.surname}
@@ -172,24 +147,24 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
           {sections.contact.visible ? (
             <View style={s.contactRow}>
               <View style={s.contactItem}>
-                <View style={s.contactIcon}><IconEmail color={palette.accent} /></View>
+                <IconEmail color={palette.accent} />
                 <Text style={s.contactLabel}>{L.email}</Text>
                 <Text style={s.contactVal}>{CV_PROFILE.email}</Text>
               </View>
               <View style={s.contactItem}>
-                <View style={s.contactIcon}><IconPhone color={palette.accent} /></View>
+                <IconPhone color={palette.accent} />
                 <Text style={s.contactLabel}>{L.phone}</Text>
                 <Text style={s.contactVal}>{CV_PROFILE.phone}</Text>
               </View>
               <View style={s.contactItem}>
-                <View style={s.contactIcon}><IconLinkedin color={palette.accent} /></View>
+                <IconLinkedin color={palette.accent} />
                 <Text style={s.contactLabel}>{L.linkedin}</Text>
                 <Text style={s.contactVal}>{CV_PROFILE.linkedin}</Text>
               </View>
             </View>
           ) : null}
 
-          {/* Capabilities */}
+          {/* Ce que j'apporte */}
           {sections.capabilities.visible && caps.length > 0 ? (
             <View style={s.caps}>
               <Text style={s.miniHead}>{L.canDo}</Text>
@@ -202,26 +177,26 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </View>
           ) : null}
 
-          {/* Experience */}
+          {/* Expériences */}
           {sections.experience.visible && data.experiences.length > 0 ? (
             <View style={s.section}>
-              <View style={s.sectionTitle}>
+              <View style={s.sectionHead}>
                 <View style={s.sectionBar} />
                 <Text style={s.sectionLabel}>{L.experience}</Text>
               </View>
               {data.experiences.map((exp) => (
                 <View key={exp.id} style={s.job}>
-                  <View style={s.jobHeader}>
+                  <View style={s.jobRow}>
                     <View style={s.jobTitleRow}>
                       <View style={s.jobDot} />
-                      <Text style={s.jobTitle}>{exp.role}</Text>
+                      <Text style={s.jobName}>{exp.role}</Text>
                     </View>
                     <Text style={s.jobDate}>
                       {formatMonth(exp.startDate, false, lang, L.present)} – {formatMonth(exp.endDate, exp.current, lang, L.present)}
                     </Text>
                   </View>
                   <Text style={s.jobCompany}>
-                    {exp.company.toUpperCase()}{exp.location ? `, ${exp.location.toUpperCase()}` : ""}
+                    {exp.company.toUpperCase()}{exp.location ? ` · ${exp.location}` : ""}
                   </Text>
                   <Text style={s.jobDesc}>{stripHtml(exp.description)}</Text>
                 </View>
@@ -229,19 +204,19 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </View>
           ) : null}
 
-          {/* Projects */}
+          {/* Projets */}
           {sections.projects.visible && data.projects.length > 0 ? (
             <View style={s.section}>
-              <View style={s.sectionTitle}>
+              <View style={s.sectionHead}>
                 <View style={s.sectionBar} />
                 <Text style={s.sectionLabel}>{L.projects}</Text>
               </View>
               {data.projects.slice(0, 5).map((p) => (
                 <View key={p.slug} style={s.job}>
-                  <View style={s.jobHeader}>
+                  <View style={s.jobRow}>
                     <View style={s.jobTitleRow}>
                       <View style={s.jobDot} />
-                      <Text style={s.jobTitle}>{p.title}</Text>
+                      <Text style={s.jobName}>{p.title}</Text>
                     </View>
                   </View>
                   <Text style={s.jobDesc}>{stripHtml(p.desc)}</Text>
@@ -253,10 +228,10 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </View>
           ) : null}
 
-          {/* Skills */}
+          {/* Compétences — grille 3 colonnes */}
           {sections.skills.visible && data.allSkills.length > 0 ? (
             <View style={s.section}>
-              <View style={s.sectionTitle}>
+              <View style={s.sectionHead}>
                 <View style={s.sectionBar} />
                 <Text style={s.sectionLabel}>{L.skills}</Text>
               </View>
@@ -264,16 +239,16 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                 {data.allSkills.map((sk) => {
                   const relevant = data.relevantSkills.includes(sk);
                   return (
-                    <View key={sk} style={[s.skillChip, { backgroundColor: relevant ? palette.accentLight : palette.border }]}>
-                      <Text style={[s.skillText, { color: relevant ? palette.accent : palette.muted, fontFamily: relevant ? "Helvetica-Bold" : "Helvetica" }]}>
-                        {sk}
-                      </Text>
+                    <View key={sk} style={s.skillItem}>
+                      <View style={[s.skillDot, { backgroundColor: relevant ? palette.primary : palette.border }]} />
+                      <Text style={relevant ? s.skillBold : s.skillText}>{sk}</Text>
                     </View>
                   );
                 })}
               </View>
             </View>
           ) : null}
+
         </View>
       </Page>
     </Document>

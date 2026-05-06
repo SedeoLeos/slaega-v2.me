@@ -47,7 +47,7 @@ export default async function AdminCmsLayout({
               </div>
 
               {/* Nav */}
-              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+              <nav className="flex-1 overflow-y-auto dark-scroll px-3 py-4 space-y-0.5">
                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest px-3 mb-2 font-medium">
                   Contenu
                 </p>
