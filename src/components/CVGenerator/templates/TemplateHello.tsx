@@ -1,13 +1,19 @@
 /**
- * Template HELLO — Photo hero + "Hello," large text overlay
+ * Template HELLO — Photo sombre + "Hello," overlay + contenu deux colonnes
  *
- * Header: full-width photo with "Hello," overlaid in large bold text + name/contact right side
- * Accent band: quote / tagline
- * Body left (40%): Personal values, Languages (progress bars), Skills 2-col list
- * Body right (60%): Education timeline, Work Experience list with bullet points
+ * Inspiré du design A4-1.jpg (Julien vander Woerd / Hello template)
+ *
+ * Layout A4 :
+ *   Gauche (42%) : photo pleine hauteur, "Hello," en overlay, éducation timeline
+ *   Droite (58%) : nom, job title, social icons, bio, skills hashtags, intérêts, contact
  */
 import {
-  Page, Document, View, Text, Image, StyleSheet, Svg, Rect,
+  Page,
+  Document,
+  View,
+  Text,
+  Image,
+  StyleSheet,
 } from "@react-pdf/renderer";
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
@@ -17,297 +23,365 @@ type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
 export default function TemplateHello({ data, palette, sections }: Props) {
   const lang = data.language ?? "fr";
-  const L    = CV_LABELS[lang];
+  const L = CV_LABELS[lang];
 
-  const tagline = sections.tagline.text ?? data.tagline ?? "";
+  const ACC = palette.accent;
+  const DARK = palette.sidebar; // côté gauche sombre
+  const LIGHT = palette.onDark; // texte sur fond sombre
+  const TEXT = "#1a1a1a";
+  const MUTED = "#6B7280";
+  const BG = "#F9FAFB";
+
+  const tagline = sections.tagline.text ?? data.tagline ?? data.jobTitle;
   const summary = sections.summary.text ?? stripHtml(data.summary ?? "");
-  const caps    = sections.capabilities.text
+  const caps = sections.capabilities.text
     ? [sections.capabilities.text]
     : (data.capabilities ?? []);
 
-  const ACC  = palette.accent;
-  const NAVY = palette.primary;
-  const BG   = "#f5f5f5";
-  const CARD = "#ffffff";
+  /* Skills groupés : relevant = accent, autres = muted */
+  const skills = data.allSkills.slice(0, 18);
 
   const s = StyleSheet.create({
     page: { backgroundColor: BG, fontFamily: "Helvetica" },
 
-    /* ── Hero header ── */
-    hero: { flexDirection: "row", height: 130 },
-    heroPhotoWrap: { width: "42%", position: "relative", overflow: "hidden" },
-    heroPhoto: { width: "100%", height: 130, objectFit: "cover" },
-    /* "Hello," overlay — in-flow positioned View on top using absolute */
-    helloOverlay: {
-      position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-      justifyContent: "flex-end", paddingLeft: 10, paddingBottom: 8,
+    /* ── Deux colonnes côte-à-côte ── */
+    columns: { flexDirection: "row", height: "100%" },
+
+    /* ── Colonne gauche ── */
+    left: { width: "42%", backgroundColor: DARK, position: "relative" },
+    leftPhoto: { width: "100%", height: "100%", objectFit: "cover" },
+    /* Overlay dégradé sombre bas */
+    leftOverlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: DARK,
+    },
+    helloWrap: {
+      position: "absolute",
+      top: 20,
+      left: 14,
     },
     helloText: {
-      fontSize: 44, fontFamily: "Helvetica-Bold", color: CARD,
-      opacity: 0.92, lineHeight: 1, letterSpacing: -1,
+      fontSize: 42,
+      fontFamily: "Helvetica-Bold",
+      color: "#ffffff",
+      opacity: 0.95,
+      lineHeight: 1,
     },
-    heroRight: {
-      flex: 1, backgroundColor: CARD,
-      paddingHorizontal: 20, paddingTop: 18, paddingBottom: 10,
-      justifyContent: "center",
-    },
-    heroName: {
-      fontSize: 18, fontFamily: "Helvetica-Bold",
-      color: NAVY, letterSpacing: -0.3, lineHeight: 1.15, marginBottom: 2,
-    },
-    heroJobTitle: {
-      fontSize: 10, fontFamily: "Helvetica-Bold",
-      color: ACC, letterSpacing: 0.3, marginBottom: 8,
-    },
-    heroContactRow: { flexDirection: "row", alignItems: "center", gap: 3, marginBottom: 3 },
-    heroContactDot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: ACC },
-    heroContactText: { fontSize: 7.5, color: "#555" },
-
-    /* ── Accent band ── */
-    band: {
-      backgroundColor: ACC, paddingHorizontal: 24, paddingVertical: 7,
-      flexDirection: "row", alignItems: "center",
-    },
-    bandQuote: { fontSize: 8, color: "#fff", fontFamily: "Helvetica-Oblique", flex: 1 },
-
-    /* ── Body ── */
-    body: { flexDirection: "row", flex: 1 },
-
-    /* Left col */
-    bodyLeft: {
-      width: "38%", backgroundColor: CARD,
-      borderRightWidth: 1, borderRightColor: "#ebebeb", borderRightStyle: "solid",
-      paddingTop: 16, paddingHorizontal: 16, paddingBottom: 16,
+    helloAccent: {
+      width: 32,
+      height: 3,
+      backgroundColor: ACC,
+      marginTop: 4,
     },
 
-    /* Right col */
-    bodyRight: {
-      flex: 1, paddingTop: 16, paddingHorizontal: 18, paddingBottom: 16,
+    /* Expériences dans la col gauche (bas) */
+    leftContent: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      paddingHorizontal: 14,
+      paddingBottom: 18,
+      paddingTop: 10,
+    },
+    leftSecTitle: {
+      fontSize: 7,
+      fontFamily: "Helvetica-Bold",
+      color: ACC,
+      letterSpacing: 1.5,
+      textTransform: "uppercase",
+      marginBottom: 8,
+    },
+    expItem: { marginBottom: 9 },
+    expHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+    },
+    expTitle: {
+      fontSize: 8,
+      fontFamily: "Helvetica-Bold",
+      color: "#fff",
+      flex: 1,
+    },
+    expDate: {
+      fontSize: 6.5,
+      color: "rgba(255,255,255,0.55)",
+      flexShrink: 0,
+      marginLeft: 4,
+    },
+    expComp: { fontSize: 7, color: ACC, marginBottom: 2 },
+    expDesc: { fontSize: 6.5, color: "rgba(255,255,255,0.7)", lineHeight: 1.4 },
+
+    /* ── Colonne droite ── */
+    right: {
+      flex: 1,
+      backgroundColor: "#ffffff",
+      paddingTop: 28,
+      paddingHorizontal: 18,
+      paddingBottom: 18,
     },
 
-    /* Section title */
-    secTitle: {
-      fontSize: 8, fontFamily: "Helvetica-Bold", color: NAVY,
-      textTransform: "uppercase", letterSpacing: 1.5,
-      marginBottom: 7, marginTop: 10,
+    /* Identity block */
+    identName: {
+      fontSize: 19,
+      fontFamily: "Helvetica-Bold",
+      color: TEXT,
+      letterSpacing: -0.3,
+      lineHeight: 1.1,
     },
-    secDivider: { height: 0.5, backgroundColor: "#e0e0e0", marginBottom: 8 },
+    identJob: {
+      fontSize: 8.5,
+      color: ACC,
+      fontFamily: "Helvetica-Bold",
+      letterSpacing: 0.5,
+      marginTop: 2,
+      marginBottom: 10,
+    },
 
-    /* Personal values — 2 columns */
-    valuesGrid: { flexDirection: "row", gap: 4 },
-    valCol: { flex: 1, flexDirection: "column", gap: 3 },
-    valText: { fontSize: 7, color: "#555" },
+    /* Tagline */
+    taglineText: {
+      fontSize: 7.5,
+      color: MUTED,
+      fontFamily: "Helvetica-Oblique",
+      lineHeight: 1.5,
+      marginBottom: 10,
+    },
 
-    /* Languages with progress bars */
-    langRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 5 },
-    langName: { fontSize: 7.5, color: NAVY, width: 50 },
-    langBarBg: { flex: 1, height: 4, backgroundColor: "#e0e0e0", borderRadius: 2 },
-    langBarFill: { height: 4, backgroundColor: ACC, borderRadius: 2 },
+    /* Contact pills */
+    contactWrap: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 4,
+      marginBottom: 10,
+    },
+    contactPill: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 3,
+      borderWidth: 0.5,
+      borderColor: "#E5E7EB",
+      borderStyle: "solid",
+      borderRadius: 20,
+      paddingHorizontal: 6,
+      paddingVertical: 2.5,
+    },
+    contactDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: ACC },
+    contactText: { fontSize: 6.5, color: MUTED },
 
-    /* Skills list — 2 columns */
-    skillsGrid: { flexDirection: "row", gap: 8 },
-    skillCol: { flex: 1, flexDirection: "column", gap: 2.5 },
-    skillItem: { fontSize: 7, color: "#555" },
-    skillItemRel: { fontSize: 7, color: ACC, fontFamily: "Helvetica-Bold" },
+    /* Divider */
+    divider: { height: 0.5, backgroundColor: "#E5E7EB", marginVertical: 8 },
+
+    /* Summary */
+    summaryText: {
+      fontSize: 7.5,
+      color: TEXT,
+      lineHeight: 1.6,
+      marginBottom: 8,
+    },
+
+    /* Section label */
+    secLabel: {
+      fontSize: 6.5,
+      fontFamily: "Helvetica-Bold",
+      color: MUTED,
+      letterSpacing: 1.5,
+      textTransform: "uppercase",
+      marginBottom: 6,
+      marginTop: 10,
+    },
 
     /* Capabilities */
-    capItem: { flexDirection: "row", alignItems: "flex-start", marginBottom: 3 },
-    capDot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: ACC, marginTop: 3, marginRight: 5, flexShrink: 0 },
-    capText: { fontSize: 7.5, color: "#555", flex: 1, lineHeight: 1.45 },
+    capItem: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 3,
+    },
+    capDot: {
+      width: 3,
+      height: 3,
+      borderRadius: 1.5,
+      backgroundColor: ACC,
+      marginTop: 2.5,
+      marginRight: 5,
+      flexShrink: 0,
+    },
+    capText: { fontSize: 7.5, color: TEXT, flex: 1, lineHeight: 1.4 },
 
-    /* Right: Education */
-    eduItem: { marginBottom: 9 },
-    eduType:   { fontSize: 6.5, color: "#999", textTransform: "uppercase", letterSpacing: 1 },
-    eduTitle:  { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: NAVY, lineHeight: 1.3 },
-    eduSchool: { fontSize: 7, color: ACC, marginBottom: 1 },
-    eduDate:   { fontSize: 6.5, color: "#aaa" },
-
-    /* Right: Experience */
-    expItem: { marginBottom: 9 },
-    expHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
-    expTitle:  { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: NAVY, flex: 1 },
-    expDate:   { fontSize: 6.5, color: "#aaa", fontFamily: "Helvetica-Oblique", flexShrink: 0, marginLeft: 4 },
-    expCompany: { fontSize: 7, color: ACC, fontFamily: "Helvetica-Bold", marginBottom: 2 },
-    expDesc:   { fontSize: 7, color: "#555", lineHeight: 1.5 },
-
-    /* Right: Projects */
-    projItem: { marginBottom: 6, paddingLeft: 8, borderLeftWidth: 2, borderLeftColor: ACC, borderLeftStyle: "solid" },
-    projTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: NAVY },
-    projDesc:  { fontSize: 7, color: "#555", lineHeight: 1.4 },
-    projTags:  { fontSize: 6.5, color: "#aaa", marginTop: 1 },
+    /* Skills hashtags */
+    skillsWrap: { flexDirection: "row", flexWrap: "wrap", gap: 3 },
+    skillChip: {
+      borderRadius: 3,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+      marginBottom: 2,
+    },
+    skillChipRel: {
+      backgroundColor: ACC,
+      borderRadius: 3,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+      marginBottom: 2,
+    },
+    skillText: { fontSize: 6.5, color: MUTED },
+    skillTextRel: {
+      fontSize: 6.5,
+      color: "#ffffff",
+      fontFamily: "Helvetica-Bold",
+    },
   });
-
-  /* Language "fluency" mapped from keyword matching */
-  const langLevels = [
-    { name: "Français", level: 1.0 },
-    { name: "Anglais",  level: 0.75 },
-    { name: "Espagnol", level: 0.45 },
-  ];
-
-  /* Split skills into two columns */
-  const half = Math.ceil(data.allSkills.length / 2);
-  const skillLeft  = data.allSkills.slice(0, half);
-  const skillRight = data.allSkills.slice(half);
-
-  /* Split caps into two value columns */
-  const capsHalf = Math.ceil(caps.length / 2);
-  const capsLeft  = caps.slice(0, capsHalf);
-  const capsRight = caps.slice(capsHalf);
 
   return (
     <Document>
       <Page size="A4" style={s.page}>
+        <View style={s.columns}>
+          {/* ══ Colonne gauche ══ */}
+          <View style={s.left}>
+            {/* Photo pleine */}
+            <Image src={CV_PROFILE.photo} style={s.leftPhoto} />
+            {/* Overlay sombre */}
+            <View style={[s.leftOverlay, { opacity: 0.45 }]} />
 
-        {/* ═══ HERO ═══ */}
-        <View style={s.hero}>
-          {/* Photo + Hello overlay */}
-          <View style={s.heroPhotoWrap}>
-            <Image src={CV_PROFILE.photo} style={s.heroPhoto} />
-            <View style={s.helloOverlay}>
+            {/* "Hello," en haut à gauche */}
+            <View style={s.helloWrap}>
               <Text style={s.helloText}>Hello,</Text>
+              <View style={s.helloAccent} />
             </View>
-          </View>
 
-          {/* Name + contact */}
-          <View style={s.heroRight}>
-            <Text style={s.heroName}>{CV_PROFILE.name}{"\n"}{CV_PROFILE.surname}</Text>
-            <Text style={s.heroJobTitle}>
-              {sections.tagline.visible && tagline ? tagline : data.jobTitle}
-            </Text>
-            <View style={s.heroContactRow}>
-              <View style={s.heroContactDot} />
-              <Text style={s.heroContactText}>{CV_PROFILE.email}</Text>
-            </View>
-            <View style={s.heroContactRow}>
-              <View style={s.heroContactDot} />
-              <Text style={s.heroContactText}>{CV_PROFILE.phone}</Text>
-            </View>
-            <View style={s.heroContactRow}>
-              <View style={s.heroContactDot} />
-              <Text style={s.heroContactText}>{CV_PROFILE.linkedin}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* ═══ ACCENT BAND ═══ */}
-        <View style={s.band}>
-          <Text style={s.bandQuote}>
-            {summary ? `" ${summary.slice(0, 100)}${summary.length > 100 ? "…" : ""} "` : `" ${data.jobTitle} "`}
-          </Text>
-        </View>
-
-        {/* ═══ BODY ═══ */}
-        <View style={s.body}>
-
-          {/* ── Left col ── */}
-          <View style={s.bodyLeft}>
-
-            {/* Capabilities as "values" */}
-            {sections.capabilities.visible && caps.length > 0 && (
-              <>
-                <Text style={s.secTitle}>{L.canDo}</Text>
-                <View style={s.secDivider} />
-                <View style={s.valuesGrid}>
-                  <View style={s.valCol}>
-                    {capsLeft.map((c, i) => (
-                      <View key={i} style={s.capItem}>
-                        <View style={s.capDot} />
-                        <Text style={s.valText}>{c}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={s.valCol}>
-                    {capsRight.map((c, i) => (
-                      <View key={i} style={s.capItem}>
-                        <View style={s.capDot} />
-                        <Text style={s.valText}>{c}</Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-              </>
-            )}
-
-            {/* Languages */}
-            <Text style={[s.secTitle, { marginTop: 12 }]}>Langues</Text>
-            <View style={s.secDivider} />
-            {langLevels.map((l) => (
-              <View key={l.name} style={s.langRow}>
-                <Text style={s.langName}>{l.name}</Text>
-                <View style={s.langBarBg}>
-                  <View style={[s.langBarFill, { width: `${l.level * 100}%` }]} />
-                </View>
-              </View>
-            ))}
-
-            {/* Skills */}
-            {sections.skills.visible && data.allSkills.length > 0 && (
-              <>
-                <Text style={[s.secTitle, { marginTop: 12 }]}>{L.skills}</Text>
-                <View style={s.secDivider} />
-                <View style={s.skillsGrid}>
-                  <View style={s.skillCol}>
-                    {skillLeft.map((sk) => {
-                      const rel = data.relevantSkills.includes(sk);
-                      return <Text key={sk} style={rel ? s.skillItemRel : s.skillItem}>· {sk}</Text>;
-                    })}
-                  </View>
-                  <View style={s.skillCol}>
-                    {skillRight.map((sk) => {
-                      const rel = data.relevantSkills.includes(sk);
-                      return <Text key={sk} style={rel ? s.skillItemRel : s.skillItem}>· {sk}</Text>;
-                    })}
-                  </View>
-                </View>
-              </>
-            )}
-          </View>
-
-          {/* ── Right col ── */}
-          <View style={s.bodyRight}>
-
-            {/* Experience */}
+            {/* Expériences en bas */}
             {sections.experience.visible && data.experiences.length > 0 && (
-              <>
-                <Text style={s.secTitle}>{L.experience}</Text>
-                <View style={s.secDivider} />
-                {data.experiences.map((exp) => (
+              <View style={s.leftContent}>
+                <Text style={s.leftSecTitle}>{L.experience}</Text>
+                {data.experiences.slice(0, 3).map((exp) => (
                   <View key={exp.id} style={s.expItem}>
                     <View style={s.expHeader}>
                       <Text style={s.expTitle}>{exp.role}</Text>
                       <Text style={s.expDate}>
-                        {formatMonth(exp.startDate, false, lang, L.present)} – {formatMonth(exp.endDate, exp.current, lang, L.present)}
+                        {formatMonth(exp.startDate, false, lang, L.present)}
                       </Text>
                     </View>
-                    <Text style={s.expCompany}>
-                      {exp.company}{exp.location ? `  ·  ${exp.location}` : ""}
+                    <Text style={s.expComp}>{exp.company}</Text>
+                    <Text style={s.expDesc}>
+                      {stripHtml(exp.description).slice(0, 100)}
                     </Text>
-                    <Text style={s.expDesc}>{stripHtml(exp.description)}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+
+          {/* ══ Colonne droite ══ */}
+          <View style={s.right}>
+            {/* Nom + job */}
+            <Text style={s.identName}>
+              {CV_PROFILE.name}
+              {"\n"}
+              {CV_PROFILE.surname}
+            </Text>
+            <Text style={s.identJob}>{data.jobTitle}</Text>
+
+            {/* Tagline */}
+            {sections.tagline.visible && tagline ? (
+              <Text style={s.taglineText}>{tagline}</Text>
+            ) : null}
+
+            {/* Contact pills */}
+            {sections.contact.visible && (
+              <View style={s.contactWrap}>
+                {[CV_PROFILE.email, CV_PROFILE.phone, CV_PROFILE.linkedin].map(
+                  (v, i) => (
+                    <View key={i} style={s.contactPill}>
+                      <View style={s.contactDot} />
+                      <Text style={s.contactText}>{v}</Text>
+                    </View>
+                  ),
+                )}
+              </View>
+            )}
+
+            <View style={s.divider} />
+
+            {/* Summary */}
+            {sections.summary.visible && summary ? (
+              <Text style={s.summaryText}>
+                {summary.slice(0, 300)}
+                {summary.length > 300 ? "…" : ""}
+              </Text>
+            ) : null}
+
+            {/* Capabilities */}
+            {sections.capabilities.visible && caps.length > 0 && (
+              <>
+                <Text style={s.secLabel}>{L.canDo}</Text>
+                {caps.slice(0, 5).map((c, i) => (
+                  <View key={i} style={s.capItem}>
+                    <View style={s.capDot} />
+                    <Text style={s.capText}>{c}</Text>
                   </View>
                 ))}
               </>
             )}
 
-            {/* Projects */}
+            {/* Skills hashtags */}
+            {sections.skills.visible && skills.length > 0 && (
+              <>
+                <Text style={s.secLabel}>{L.skills}</Text>
+                <View style={s.skillsWrap}>
+                  {skills.map((sk) => {
+                    const rel = data.relevantSkills.includes(sk);
+                    return (
+                      <View key={sk} style={rel ? s.skillChipRel : s.skillChip}>
+                        <Text style={rel ? s.skillTextRel : s.skillText}>
+                          {rel ? "#" : ""}
+                          {sk}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </>
+            )}
+
+            {/* Projets */}
             {sections.projects.visible && data.projects.length > 0 && (
               <>
-                <Text style={[s.secTitle, { marginTop: 4 }]}>{L.projects}</Text>
-                <View style={s.secDivider} />
-                {data.projects.slice(0, 4).map((p) => (
-                  <View key={p.slug} style={s.projItem}>
-                    <Text style={s.projTitle}>{p.title}</Text>
-                    <Text style={s.projDesc}>{stripHtml(p.desc)}</Text>
+                <Text style={s.secLabel}>{L.projects}</Text>
+                {data.projects.slice(0, 3).map((p) => (
+                  <View key={p.slug} style={{ marginBottom: 5 }}>
+                    <Text
+                      style={{
+                        fontSize: 8,
+                        fontFamily: "Helvetica-Bold",
+                        color: TEXT,
+                      }}
+                    >
+                      {p.title}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 7,
+                        color: MUTED,
+                        lineHeight: 1.4,
+                        marginTop: 1,
+                      }}
+                    >
+                      {stripHtml(p.desc).slice(0, 80)}
+                    </Text>
                     {p.tags.length > 0 && (
-                      <Text style={s.projTags}>{p.tags.slice(0, 5).join(" · ")}</Text>
+                      <Text style={{ fontSize: 6.5, color: ACC, marginTop: 1 }}>
+                        {p.tags.slice(0, 4).join(" · ")}
+                      </Text>
                     )}
                   </View>
                 ))}
               </>
             )}
-
           </View>
         </View>
-
       </Page>
     </Document>
   );

@@ -55,17 +55,28 @@ export type CVSections = {
 };
 
 export const defaultSections = (): CVSections => ({
-  tagline:      { visible: true },
-  summary:      { visible: true },
+  tagline: { visible: true },
+  summary: { visible: true },
   capabilities: { visible: true },
-  experience:   { visible: true },
-  projects:     { visible: true },
-  skills:       { visible: true },
-  contact:      { visible: true },
+  experience: { visible: true },
+  projects: { visible: true },
+  skills: { visible: true },
+  contact: { visible: true },
 });
 
 // ─── Templates ───────────────────────────────────────────────────────────────
-export type CVTemplateId = "kronos" | "nexus" | "prism" | "duo" | "orbit" | "nova" | "pulse" | "supra" | "hello" | "mosaic" | "ivoire" | "verde";
+export type CVTemplateId =
+  | "kronos"
+  | "nexus"
+  | "prism"
+  | "duo"
+  | "orbit"
+  | "nova"
+  | "pulse"
+  | "supra"
+  | "hello"
+  | "mosaic"
+  | "julien";
 
 export type CVTemplateInfo = {
   id: CVTemplateId;
@@ -74,18 +85,37 @@ export type CVTemplateInfo = {
 };
 
 export const CV_TEMPLATES: CVTemplateInfo[] = [
-  { id: "kronos", label: "Kronos", description: "Barre accent, grille compétences" },
-  { id: "nexus",  label: "Nexus",  description: "Sidebar sombre, icônes" },
-  { id: "prism",  label: "Prism",  description: "Bandeau coloré, minimaliste" },
-  { id: "duo",    label: "Duo",    description: "Sidebar + dot ratings" },
-  { id: "orbit",  label: "Orbit",  description: "Globe géométrique, bicolonnes" },
-  { id: "nova",   label: "Nova",   description: "Header bold + décoration" },
-  { id: "pulse",  label: "Pulse",  description: "Cards arrondies, hashtags colorés" },
-  { id: "supra",  label: "Supra",  description: "Photo pleine + sidebar + projets" },
-  { id: "hello",  label: "Hello",  description: "Photo hero + progress bars" },
-  { id: "mosaic",  label: "Mosaic",  description: "Mosaïque bleue fixe (no thème)" },
-  { id: "ivoire",  label: "Ivoire",  description: "Sidebar sombre + accents crème" },
-  { id: "verde",   label: "Verde",   description: "Forêt verte + cyan, bande sage" },
+  {
+    id: "kronos",
+    label: "Kronos",
+    description: "Barre accent, grille compétences",
+  },
+  { id: "nexus", label: "Nexus", description: "Sidebar sombre, icônes" },
+  { id: "prism", label: "Prism", description: "Bandeau coloré, minimaliste" },
+  { id: "duo", label: "Duo", description: "Sidebar + dot ratings" },
+  { id: "orbit", label: "Orbit", description: "Globe géométrique, bicolonnes" },
+  { id: "nova", label: "Nova", description: "Header bold + décoration" },
+  {
+    id: "pulse",
+    label: "Pulse",
+    description: "Cards arrondies, hashtags colorés",
+  },
+  {
+    id: "supra",
+    label: "Supra",
+    description: "Photo pleine + sidebar + projets",
+  },
+  { id: "hello", label: "Hello", description: "Photo hero + progress bars" },
+  {
+    id: "mosaic",
+    label: "Mosaic",
+    description: "Mosaïque bleue fixe (no thème)",
+  },
+  {
+    id: "julien",
+    label: "Julien",
+    description: "Card bicolonne, hashtags, timeline",
+  },
 ];
 
 // ─── Profile ─────────────────────────────────────────────────────────────────
@@ -125,14 +155,40 @@ export const CV_LABELS = {
 } as const;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-const MONTHS_FR = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
-const MONTHS_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS_FR = [
+  "Jan",
+  "Fév",
+  "Mar",
+  "Avr",
+  "Mai",
+  "Juin",
+  "Juil",
+  "Août",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Déc",
+];
+const MONTHS_EN = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export function formatMonth(
   date: string | null,
   current: boolean,
   lang: "fr" | "en",
-  presentLabel: string
+  presentLabel: string,
 ): string {
   if (current) return presentLabel;
   if (!date) return "";
@@ -143,7 +199,10 @@ export function formatMonth(
 
 export function stripHtml(s: string): string {
   return (s ?? "")
-    .replace(/<\/?(p|br|div|h[1-6]|li|ul|ol|strong|em|a|u|span|table|tr|td|th|img|hr)[^>]*>/gi, " ")
+    .replace(
+      /<\/?(p|br|div|h[1-6]|li|ul|ol|strong|em|a|u|span|table|tr|td|th|img|hr)[^>]*>/gi,
+      " ",
+    )
     .replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
