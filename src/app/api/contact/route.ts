@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { trackEvent } from "@/lib/monitoring/telemetry";
+import { rateLimit } from "@/lib/rate-limit";
 import { contactSubmissionRepository } from "@/features/contact-submissions/repositories/contact-submission.repository";
 
 // ── Cloudflare Turnstile server-side verification ─────────────────
@@ -27,6 +28,26 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
 
 // ── Public: submit a new contact message ──────────────────────────
 export async function POST(req: NextRequest) {
+  // Rate limiting: max 5 submissions per 10 minutes per IP
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown";
+  const rl = rateLimit(`contact:${ip}`, 5, 10 * 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { ok: false, message: "Trop de tentatives. Réessaie dans quelques minutes." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": "5",
+          "X-RateLimit-Remaining": "0",
+        },
+      },
+    );
+  }
+
   const body = await req.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ ok: false, message: "Body invalide" }, { status: 400 });
@@ -63,11 +84,7 @@ export async function POST(req: NextRequest) {
     );
   }
   if (turnstileToken) {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      req.headers.get("x-real-ip") ??
-      null;
-    const valid = await verifyTurnstile(turnstileToken, ip);
+    const valid = await verifyTurnstile(turnstileToken, ip === "unknown" ? null : ip);
     if (!valid) {
       return NextResponse.json(
         { ok: false, message: "Vérification anti-bot échouée" },
@@ -77,10 +94,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      req.headers.get("x-real-ip") ??
-      null;
+    const clientIp = ip === "unknown" ? null : ip;
     const userAgent = req.headers.get("user-agent") ?? null;
 
     await contactSubmissionRepository.create({
@@ -88,7 +102,7 @@ export async function POST(req: NextRequest) {
       name,
       email,
       subject: data.subject ?? "",
-      ip,
+      ip: clientIp,
       userAgent,
     });
 
