@@ -8,6 +8,8 @@ export type Project = {
   slug: string;
   desc: string;
   published: boolean;
+  projectUrl?: string | null;
+  githubUrl?: string | null;
 };
 
 export type ProjectContent = {
@@ -24,6 +26,8 @@ export type CreateProjectInput = {
   content: string;
   description?: string;
   published?: boolean;
+  projectUrl?: string;
+  githubUrl?: string;
 };
 
 export type UpdateProjectInput = Partial<CreateProjectInput>;

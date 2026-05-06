@@ -317,20 +317,26 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* ── SVG graphics (charts, diagrams, icons embedded in content) ── */
-.article-content svg {
+/* ── SVG graphics (charts, diagrams, icons embedded in content) ──
+   Use high-specificity selectors so we beat both prose layer CSS
+   and any other utility that may set display:none on svg elements. */
+.article-content svg,
+.article-content .not-prose svg,
+article .article-content svg {
   display: inline-block !important;
+  visibility: visible !important;
   vertical-align: middle;
   max-width: 100%;
-  overflow: visible;
+  overflow: visible !important;
 }
-/* Centered block SVGs (standalone, not inline) */
+/* Centered standalone SVGs */
 .article-content p > svg:only-child,
-.article-content figure > svg {
+.article-content figure > svg,
+.article-content .not-prose > svg {
   display: block !important;
   margin: 1.5rem auto;
 }
-/* Don't let Tailwind prose or CSS resets hide SVG children */
+/* Ensure SVG primitives are never hidden */
 .article-content svg circle,
 .article-content svg path,
 .article-content svg rect,
@@ -338,9 +344,16 @@
 .article-content svg line,
 .article-content svg polyline,
 .article-content svg polygon,
-.article-content svg text {
-  /* inherit fill/stroke from the SVG element's own attributes */
+.article-content svg text,
+.article-content svg g {
+  visibility: visible !important;
   vector-effect: non-scaling-stroke;
+}
+/* Override prose plugin's potential svg { display:none } rule */
+.prose.article-content svg,
+.prose .not-prose svg {
+  display: inline-block !important;
+  visibility: visible !important;
 }
 
 /* Tables */

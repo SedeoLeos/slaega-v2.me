@@ -9,8 +9,16 @@ import ImageInput from "./ImageInput";
 import type { Project } from "@/entities/project";
 
 const CATEGORIES = [
-  "Web", "Mobile", "FullStack", "Backend", "Frontend",
-  "DevOps", "API", "Design", "SaaS", "Open Source",
+  "Web",
+  "Mobile",
+  "FullStack",
+  "Backend",
+  "Frontend",
+  "DevOps",
+  "API",
+  "Design",
+  "SaaS",
+  "Open Source",
 ];
 
 interface ProjectFormProps {
@@ -24,17 +32,23 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState(initial?.title ?? "");
-  const [date, setDate] = useState(initial?.date ?? new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(
+    initial?.date ?? new Date().toISOString().split("T")[0],
+  );
   const [image, setImage] = useState(initial?.image ?? "");
   const [description, setDescription] = useState(initial?.desc ?? "");
   const [tags, setTags] = useState<string[]>(initial?.tags ?? []);
-  const [categories, setCategories] = useState<string[]>(initial?.categories ?? []);
+  const [categories, setCategories] = useState<string[]>(
+    initial?.categories ?? [],
+  );
   const [content, setContent] = useState(initial?.content ?? "");
   const [published, setPublished] = useState(initial?.published ?? true);
+  const [projectUrl, setProjectUrl] = useState(initial?.projectUrl ?? "");
+  const [githubUrl, setGithubUrl] = useState(initial?.githubUrl ?? "");
 
   const toggleCategory = (c: string) =>
     setCategories((prev) =>
-      prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
+      prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c],
     );
 
   const handleSubmit = async (e: FormEvent) => {
@@ -46,13 +60,25 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
 
     setLoading(true);
     try {
-      const url = mode === "edit" ? `/api/projects?slug=${slug}` : "/api/projects";
+      const url =
+        mode === "edit" ? `/api/projects?slug=${slug}` : "/api/projects";
       const method = mode === "edit" ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, date, image, description, tags, categories, content, published }),
+        body: JSON.stringify({
+          title,
+          date,
+          image,
+          description,
+          tags,
+          categories,
+          content,
+          published,
+          projectUrl: projectUrl || undefined,
+          githubUrl: githubUrl || undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -72,7 +98,10 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+    <form
+      onSubmit={handleSubmit}
+      className="grid lg:grid-cols-[1fr_320px] gap-6 items-start"
+    >
       {/* ═════════ MAIN COLUMN ═════════ */}
       <div className="space-y-6 min-w-0">
         <Field label="Titre *">
@@ -114,7 +143,9 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm font-medium text-zinc-200">Publié</p>
-              <p className="text-xs text-zinc-500 mt-0.5">Visible sur le portfolio</p>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                Visible sur le portfolio
+              </p>
             </div>
             <button
               type="button"
@@ -148,6 +179,29 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           <ImageInput value={image} onChange={setImage} />
         </SidebarCard>
 
+        <SidebarCard title="Liens du projet">
+          <Field label="URL du projet (live)">
+            <input
+              value={projectUrl}
+              onChange={(e) => setProjectUrl(e.target.value)}
+              placeholder="https://monprojet.com"
+              type="url"
+              className="input-base"
+            />
+          </Field>
+          <div className="mt-3">
+            <Field label="GitHub (si public)">
+              <input
+                value={githubUrl}
+                onChange={(e) => setGithubUrl(e.target.value)}
+                placeholder="https://github.com/user/repo"
+                type="url"
+                className="input-base"
+              />
+            </Field>
+          </div>
+        </SidebarCard>
+
         <SidebarCard title="Catégories">
           <div className="flex flex-wrap gap-1.5">
             {CATEGORIES.map((c) => (
@@ -168,12 +222,22 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
         </SidebarCard>
 
         <SidebarCard>
-          <TagInput value={tags} onChange={setTags} label="Tags" placeholder="React, Node.js, …" />
+          <TagInput
+            value={tags}
+            onChange={setTags}
+            label="Tags"
+            placeholder="React, Node.js, …"
+          />
         </SidebarCard>
       </aside>
 
       {/* Hidden submit so Enter still triggers form submit on inputs */}
-      <button type="submit" className="hidden" aria-hidden="true" tabIndex={-1} />
+      <button
+        type="submit"
+        className="hidden"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
 
       <style>{`
         .input-base {
@@ -207,10 +271,18 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <label className="block text-xs font-medium text-zinc-400 mb-1.5">{label}</label>
+      <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+        {label}
+      </label>
       {children}
     </div>
   );
@@ -269,11 +341,25 @@ function SubmitBlock({
           />
         </svg>
       ) : (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
         </svg>
       )}
-      {loading ? "Enregistrement…" : mode === "edit" ? "Mettre à jour" : "Créer le projet"}
+      {loading
+        ? "Enregistrement…"
+        : mode === "edit"
+          ? "Mettre à jour"
+          : "Créer le projet"}
     </button>
   );
 }

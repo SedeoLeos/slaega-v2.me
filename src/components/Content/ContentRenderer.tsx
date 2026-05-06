@@ -141,17 +141,32 @@ export default function ContentRenderer({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
-          // Handle empty paragraphs from Tiptap gracefully
           components={{
             // Trim empty paragraphs that Tiptap sometimes emits
             p: ({ children, ...props }) => {
-              const content = Array.isArray(children) ? children : [children];
-              const isEmpty = content.every(
+              const nodes = Array.isArray(children) ? children : [children];
+              const isEmpty = nodes.every(
                 (c) => typeof c === "string" && c.trim() === "",
               );
               if (isEmpty) return null;
               return <p {...props}>{children}</p>;
             },
+            // Force SVG elements to always be visible.
+            // The Tailwind prose plugin can hide SVGs via CSS after hydration;
+            // wrapping in a not-prose span guarantees prose never touches them.
+            svg: ({ node, ...props }) => (
+              <span className="not-prose inline-block align-middle">
+                <svg
+                  {...props}
+                  style={{
+                    display: "block",
+                    maxWidth: "100%",
+                    overflow: "visible",
+                    ...(props.style as React.CSSProperties | undefined),
+                  }}
+                />
+              </span>
+            ),
           }}
         >
           {rendered}

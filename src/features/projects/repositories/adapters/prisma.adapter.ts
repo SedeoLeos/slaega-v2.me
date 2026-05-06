@@ -1,5 +1,10 @@
 import { db } from "@/lib/db";
-import type { Project, ProjectContent, CreateProjectInput, UpdateProjectInput } from "@/entities/project";
+import type {
+  Project,
+  ProjectContent,
+  CreateProjectInput,
+  UpdateProjectInput,
+} from "@/entities/project";
 import type { ProjectQuery } from "@/features/projects/types/project-query";
 
 const slugify = (value: string) =>
@@ -20,6 +25,8 @@ function mapRow(row: {
   image: string;
   description: string;
   published: boolean;
+  projectUrl?: string | null;
+  githubUrl?: string | null;
 }): Project {
   return {
     id: row.id,
@@ -31,6 +38,8 @@ function mapRow(row: {
     image: row.image,
     desc: row.description,
     published: row.published,
+    projectUrl: row.projectUrl ?? null,
+    githubUrl: row.githubUrl ?? null,
   };
 }
 
@@ -54,7 +63,11 @@ export const prismaProjectAdapter = {
     return { content: row.content, meta: mapRow(row) };
   },
 
-  async findPaginated({ page, pageSize, categories }: ProjectQuery): Promise<Project[]> {
+  async findPaginated({
+    page,
+    pageSize,
+    categories,
+  }: ProjectQuery): Promise<Project[]> {
     const where = categories?.length
       ? {
           published: true,
@@ -72,9 +85,7 @@ export const prismaProjectAdapter = {
     // Post-filter for multi-category match (SQLite doesn't support array operators)
     const all = rows.map(mapRow);
     if (!categories?.length) return all;
-    return all.filter((p) =>
-      p.categories.some((c) => categories.includes(c))
-    );
+    return all.filter((p) => p.categories.some((c) => categories.includes(c)));
   },
 
   async getAllCategories(): Promise<string[]> {
@@ -82,7 +93,9 @@ export const prismaProjectAdapter = {
       where: { published: true },
       select: { categories: true },
     });
-    const all = rows.flatMap((r) => JSON.parse(r.categories || "[]") as string[]);
+    const all = rows.flatMap(
+      (r) => JSON.parse(r.categories || "[]") as string[],
+    );
     return [...new Set(all)];
   },
 
@@ -106,12 +119,17 @@ export const prismaProjectAdapter = {
         description: data.description ?? "",
         content: data.content,
         published: data.published ?? true,
+        projectUrl: data.projectUrl ?? null,
+        githubUrl: data.githubUrl ?? null,
       },
     });
     return mapRow(row);
   },
 
-  async update(slug: string, data: UpdateProjectInput): Promise<Project | null> {
+  async update(
+    slug: string,
+    data: UpdateProjectInput,
+  ): Promise<Project | null> {
     const existing = await db.project.findUnique({ where: { slug } });
     if (!existing) return null;
     const row = await db.project.update({
@@ -120,11 +138,21 @@ export const prismaProjectAdapter = {
         ...(data.title !== undefined && { title: data.title }),
         ...(data.date !== undefined && { date: data.date }),
         ...(data.tags !== undefined && { tags: JSON.stringify(data.tags) }),
-        ...(data.categories !== undefined && { categories: JSON.stringify(data.categories) }),
+        ...(data.categories !== undefined && {
+          categories: JSON.stringify(data.categories),
+        }),
         ...(data.image !== undefined && { image: data.image }),
-        ...(data.description !== undefined && { description: data.description }),
+        ...(data.description !== undefined && {
+          description: data.description,
+        }),
         ...(data.content !== undefined && { content: data.content }),
         ...(data.published !== undefined && { published: data.published }),
+        ...(data.projectUrl !== undefined && {
+          projectUrl: data.projectUrl || null,
+        }),
+        ...(data.githubUrl !== undefined && {
+          githubUrl: data.githubUrl || null,
+        }),
       },
     });
     return mapRow(row);

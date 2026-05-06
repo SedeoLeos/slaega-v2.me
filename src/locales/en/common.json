@@ -9,7 +9,20 @@
     "readMore": "Read more",
     "readLess": "Read less",
     "showLess": "Show less",
-    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    "monthsShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
   },
   "emptyState": {
     "projects": {
@@ -167,7 +180,9 @@
     "techTitle": "Project stack",
     "similarLabel": "Also explore",
     "similarTitle": "Similar projects",
-    "viewAll": "View all projects"
+    "viewAll": "View all projects",
+    "viewLive": "View project",
+    "viewGithub": "GitHub"
   },
   "experience": {
     "label": "Career",
@@ -198,7 +213,17 @@
     "ci-cd": "CI/CD",
     "cloud-setup": "Cloud setup",
     "monitoring-logging": "Monitoring & logs",
-    "reverse-proxy": "Reverse proxy / routing"
+    "reverse-proxy": "Reverse proxy / routing",
+    "Web": "Web",
+    "Mobile": "Mobile",
+    "FullStack": "Full Stack",
+    "Backend": "Backend",
+    "Frontend": "Frontend",
+    "DevOps": "DevOps",
+    "API": "API",
+    "Design": "Design",
+    "SaaS": "SaaS",
+    "Open Source": "Open Source"
   },
   "tools": {
     "cvGenerator": {
