@@ -1,4 +1,6 @@
-import CVGeneratorClient from "@/components/CVGenerator/CVGeneratorClient";
+// CVGeneratorNoSSR is a client component that wraps CVGeneratorClient with
+// `dynamic + ssr:false` — the App Router only allows that pattern in client components.
+import CVGeneratorNoSSR from "@/components/CVGenerator/CVGeneratorNoSSR";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Générateur de CV — Admin" };
@@ -22,7 +24,7 @@ export default function AdminCVGeneratorPage() {
       </div>
 
       <div className="flex-1 min-h-0">
-        <CVGeneratorClient />
+        <CVGeneratorNoSSR />
       </div>
     </div>
   );

@@ -191,7 +191,7 @@ export default function CoverLetterGenerator() {
   });
 
   return (
-    <div className="grid lg:grid-cols-[440px_1fr] gap-6">
+    <div className="grid lg:grid-cols-[440px_1fr] gap-6 items-start">
       {/* ── Editor panel ── */}
       <div className="space-y-4">
         {/* Job offer */}
@@ -586,9 +586,11 @@ function Styles() {
         background: #2b2d31;
         border-radius: 12px;
         padding: 24px;
-        max-height: calc(100vh - 200px);
+        max-height: calc(100vh - 160px);
         overflow-y: auto;
         border: 1px solid rgba(255,255,255,0.06);
+        position: sticky;
+        top: 24px;
       }
       .cl-pages {
         display: flex;

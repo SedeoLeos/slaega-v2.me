@@ -3,20 +3,98 @@ import { projectRepository } from "@/features/projects/repositories/project.repo
 import { experienceRepository } from "@/features/experience/repositories/experience.repository";
 import { statRepository } from "@/features/banner/repositories/banner.repository";
 import { contactSubmissionRepository } from "@/features/contact-submissions/repositories/contact-submission.repository";
+import type { DashboardChartsProps } from "@/components/admin/DashboardCharts";
+import DashboardCharts from "@/components/admin/DashboardChartsNoSSR";
 
+// ── Data helpers ──────────────────────────────────────────────────────────────
+function buildChartData(
+  projects: Awaited<ReturnType<typeof projectRepository.getAll>>,
+  messages: Awaited<ReturnType<typeof contactSubmissionRepository.getAll>>,
+): DashboardChartsProps {
+  // 1. Projects by category
+  const catMap = new Map<string, number>();
+  for (const p of projects) {
+    for (const c of p.categories) {
+      catMap.set(c, (catMap.get(c) ?? 0) + 1);
+    }
+  }
+  const projectsByCategory = [...catMap.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([category, count]) => ({ category, count }));
+
+  // 2. Project status
+  const published = projects.filter((p) => p.published).length;
+  const draft = projects.length - published;
+  const projectStatus = [
+    { name: 'Publiés', value: published },
+    { name: 'Brouillons', value: draft },
+  ];
+
+  // 3. Projects by year
+  const yearMap = new Map<string, { published: number; draft: number }>();
+  for (const p of projects) {
+    const year = (p.date ?? '').slice(0, 4) || 'N/A';
+    const entry = yearMap.get(year) ?? { published: 0, draft: 0 };
+    if (p.published) entry.published += 1;
+    else entry.draft += 1;
+    yearMap.set(year, entry);
+  }
+  const projectsByYear = [...yearMap.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([year, v]) => ({ year, ...v }));
+
+  // 4. Messages over last 6 months
+  const now = new Date();
+  const months: { month: string; ts: number }[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({
+      ts: d.getTime(),
+      month: d.toLocaleString('fr-FR', { month: 'short', year: '2-digit' }),
+    });
+  }
+  const messagesByMonth = months.map(({ month, ts }) => {
+    const end = new Date(ts);
+    end.setMonth(end.getMonth() + 1);
+    const count = messages.filter((m) => {
+      const t = new Date(m.createdAt).getTime();
+      return t >= ts && t < end.getTime();
+    }).length;
+    return { month, messages: count };
+  });
+
+  // 5. Top tags
+  const tagMap = new Map<string, number>();
+  for (const p of projects) {
+    for (const tag of p.tags) {
+      tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
+    }
+  }
+  const topTags = [...tagMap.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([tag, count]) => ({ tag, count }));
+
+  return { projectsByCategory, projectsByYear, messagesByMonth, projectStatus, topTags };
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 export default async function AdminDashboard() {
-  const [projects, experiences, stats, unreadMessages] = await Promise.all([
+  const [projects, experiences, stats, unreadMessages, messages] = await Promise.all([
     projectRepository.getAll().catch(() => []),
     experienceRepository.getAll().catch(() => []),
     statRepository.getAll().catch(() => []),
     contactSubmissionRepository.countUnread().catch(() => 0),
+    contactSubmissionRepository.getAll().catch(() => []),
   ]);
 
   const published = projects.filter((p) => p.published).length;
   const drafts = projects.length - published;
+  const chartData = buildChartData(projects, messages);
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white tracking-tight">Bonjour 👋</h1>
@@ -32,6 +110,11 @@ export default async function AdminDashboard() {
         <Stat label="Expériences" value={experiences.length} color="blue" />
         <Stat label="Messages non lus" value={unreadMessages} color={unreadMessages > 0 ? "green" : "zinc"} />
         <Stat label="Stats banner" value={stats.length} color="zinc" />
+      </div>
+
+      {/* Charts */}
+      <div className="mb-8">
+        <DashboardCharts {...chartData} />
       </div>
 
       {/* Quick actions */}

@@ -501,3 +501,113 @@
     #cv-print { display: block !important; }
   }
 }
+
+/* ── Admin light theme overrides ──────────────────────────────────────────── */
+/* Applied via data-admin-theme="light" on the AdminThemeProvider wrapper.    */
+/* Overrides the hardcoded zinc-* classes used throughout the admin UI.       */
+
+[data-admin-theme="light"] {
+  color-scheme: light;
+}
+
+/* Body / html backgrounds */
+[data-admin-theme="light"] .bg-zinc-950 {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .bg-zinc-900 {
+  background-color: #ffffff !important;
+}
+[data-admin-theme="light"] .bg-zinc-800 {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/50 {
+  background-color: rgba(241,245,249,.7) !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/60 {
+  background-color: rgba(241,245,249,.8) !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/80 {
+  background-color: rgba(226,232,240,.9) !important;
+}
+
+/* Sidebar */
+[data-admin-theme="light"] aside.bg-zinc-900 {
+  background-color: #ffffff !important;
+  border-right-color: #e2e8f0 !important;
+}
+
+/* Borders */
+[data-admin-theme="light"] .border-zinc-800 {
+  border-color: #e2e8f0 !important;
+}
+[data-admin-theme="light"] .border-zinc-800\/60 {
+  border-color: rgba(226,232,240,.8) !important;
+}
+[data-admin-theme="light"] .border-zinc-700 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text */
+[data-admin-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+[data-admin-theme="light"] .text-zinc-200 {
+  color: #1e293b !important;
+}
+[data-admin-theme="light"] .text-zinc-300 {
+  color: #334155 !important;
+}
+[data-admin-theme="light"] .text-zinc-400 {
+  color: #475569 !important;
+}
+[data-admin-theme="light"] .text-zinc-500 {
+  color: #64748b !important;
+}
+[data-admin-theme="light"] .text-zinc-600 {
+  color: #94a3b8 !important;
+}
+[data-admin-theme="light"] .text-zinc-700 {
+  color: #94a3b8 !important;
+}
+
+/* Inputs */
+[data-admin-theme="light"] input,
+[data-admin-theme="light"] textarea,
+[data-admin-theme="light"] select {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+[data-admin-theme="light"] input::placeholder,
+[data-admin-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Hover states */
+[data-admin-theme="light"] .hover\:bg-zinc-800:hover {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .hover\:bg-zinc-800\/80:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Active nav items (keep green-app accent untouched) */
+[data-admin-theme="light"] .bg-green-app\/10 {
+  background-color: rgba(5,121,107,.08) !important;
+}
+[data-admin-theme="light"] .border-green-app\/20 {
+  border-color: rgba(5,121,107,.2) !important;
+}
+
+/* Logo badge */
+[data-admin-theme="light"] .bg-zinc-700 {
+  background-color: #e2e8f0 !important;
+}
+
+/* Dark scrollbars → light in light mode */
+[data-admin-theme="light"] * {
+  scrollbar-color: rgba(0,0,0,.15) transparent;
+}
+[data-admin-theme="light"] *::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.12);
+}

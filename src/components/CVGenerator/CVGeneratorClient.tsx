@@ -1,27 +1,27 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import dynamic from 'next/dynamic';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { useTranslations } from 'next-intl';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import type { CVData, CVSections, CVTemplateId } from './cv-types';
+// (no useTranslations — this component renders in admin without NextIntlClientProvider)
 import { defaultSections, CV_TEMPLATES } from './cv-types';
 import { CV_PALETTES, DEFAULT_PALETTE } from './cv-palettes';
 import type { CVPalette } from './cv-palettes';
 import CVDocumentRenderer from './CVDocumentRenderer';
 
-// ── PDFViewer is browser-only → dynamic import ───────────────────────────────
-const PDFViewer = dynamic(
-  () => import('@react-pdf/renderer').then((m) => m.PDFViewer),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex items-center justify-center text-zinc-500 text-sm animate-pulse">
-        Chargement du rendu PDF…
-      </div>
-    ),
-  }
-);
+// ── i18n-free label map (component used in admin without NextIntlClientProvider)
+const L = {
+  jobOfferLabel:    'Offre d\'emploi',
+  jobOfferPh:       'Colle le texte complet de l\'offre d\'emploi…',
+  tooShort:         'L\'offre est trop courte (min 50 caractères)',
+  generic:          'Une erreur est survenue',
+  generating:       'Génération en cours…',
+  generate:         'Générer le CV',
+  download:         'Télécharger le PDF',
+  preparing:        'Préparation…',
+  empty:            'Le CV apparaîtra ici après génération',
+  keywords:         (n: number) => `${n} mots-clés détectés`,
+} as const;
 
 // ── Section meta ─────────────────────────────────────────────────────────────
 type SectionKey = keyof CVSections;
@@ -208,7 +208,7 @@ function SectionRow({
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function CVGeneratorClient() {
-  const t = useTranslations('tools.cvGenerator');
+  // t replaced by L constant (admin has no NextIntlClientProvider)
 
   // ── Core state
   const [jobOffer,  setJobOffer]  = useState('');
@@ -248,7 +248,7 @@ export default function CVGeneratorClient() {
   // ── Generate CV
   const generate = async () => {
     if (jobOffer.trim().length < 50) {
-      setError(t('errors.tooShort'));
+      setError(L.tooShort);
       return;
     }
     setStatus('loading');
@@ -264,7 +264,7 @@ export default function CVGeneratorClient() {
       setSections(defaultSections()); // reset overrides on new generation
       setStatus('idle');
     } else {
-      setError(data.message ?? t('errors.generic'));
+      setError(data.message ?? L.generic);
       setStatus('error');
     }
   };
@@ -278,19 +278,20 @@ export default function CVGeneratorClient() {
   const lang: 'fr' | 'en' = cv?.language ?? 'fr';
 
   return (
-    <div className="flex gap-6 min-h-0">
-      {/* ── Left: controls ───────────────────────────────── */}
-      <div className="w-80 flex-shrink-0 flex flex-col gap-4 overflow-y-auto pr-1">
+    // items-start → chaque colonne a sa propre hauteur (indispensable pour sticky)
+    <div className="grid lg:grid-cols-[320px_1fr] gap-6 items-start">
+      {/* ── Left: controls — scrollable ──────────────────── */}
+      <div className="flex flex-col gap-4">
 
         {/* Job offer */}
         <div>
           <label className="block text-xs font-semibold text-zinc-300 mb-1.5">
-            {t('form.jobOfferLabel')}
+            {L.jobOfferLabel}
           </label>
           <textarea
             value={jobOffer}
             onChange={(e) => setJobOffer(e.target.value)}
-            placeholder={t('form.jobOfferPlaceholder')}
+            placeholder={L.jobOfferPh}
             rows={10}
             className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app transition-colors resize-none font-mono"
           />
@@ -299,7 +300,7 @@ export default function CVGeneratorClient() {
             disabled={status === 'loading'}
             className="mt-2 w-full bg-green-app text-white font-semibold py-2.5 rounded-lg text-sm hover:opacity-80 disabled:opacity-40 transition-opacity"
           >
-            {status === 'loading' ? t('actions.generating') : t('actions.generate')}
+            {status === 'loading' ? L.generating : L.generate}
           </button>
           {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
         </div>
@@ -339,7 +340,7 @@ export default function CVGeneratorClient() {
         {cv && (
           <div>
             <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2 font-medium">
-              {t('meta.keywordsDetected', { count: cv.keywords.length })}
+              {L.keywords(cv.keywords.length)}
             </p>
             <div className="flex flex-wrap gap-1">
               {cv.keywords.map((k) => (
@@ -396,7 +397,7 @@ export default function CVGeneratorClient() {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    {t('actions.pdf')}
+                    {L.download}
                   </>
                 )
               }
@@ -405,19 +406,19 @@ export default function CVGeneratorClient() {
         )}
       </div>
 
-      {/* ── Right: PDF preview ──────────────────────────── */}
-      <div className="flex-1 min-w-0 flex flex-col gap-3">
+      {/* ── Right: PDF preview — sticky ─────────────────── */}
+      <div className="sticky top-6 flex flex-col gap-3">
         {!cv ? (
           /* Empty state — A4 proportions */
           <div
-            className="w-full border border-dashed border-zinc-700 rounded-xl flex items-center justify-center"
+            className="w-full border border-dashed border-zinc-700 rounded-xl flex items-center justify-center bg-zinc-900/40"
             style={{ aspectRatio: '210/297' }}
           >
             <div className="text-center">
               <svg className="w-10 h-10 mx-auto mb-3 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-zinc-500 text-sm">{t('preview.empty')}</p>
+              <p className="text-zinc-500 text-sm">{L.empty}</p>
             </div>
           </div>
         ) : docNode ? (
