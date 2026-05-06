@@ -51,7 +51,7 @@ export default function ProjectItem({
           width={800}
           height={600}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          className="w-full h-auto min-h-[200px] transition-transform duration-700 ease-out group-hover:scale-[1.05]"
         />
 
         {/* Bottom scrim */}
