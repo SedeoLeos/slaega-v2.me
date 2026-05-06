@@ -80,6 +80,8 @@ export default async function EditProjectPage({
           tags: meta.tags,
           categories: meta.categories,
           published: meta.published,
+          projectUrl: meta.projectUrl ?? "",
+          githubUrl: meta.githubUrl ?? "",
           content,
         }}
       />
