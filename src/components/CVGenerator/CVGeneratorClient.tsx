@@ -278,10 +278,10 @@ export default function CVGeneratorClient() {
   const lang: 'fr' | 'en' = cv?.language ?? 'fr';
 
   return (
-    // items-start → chaque colonne a sa propre hauteur (indispensable pour sticky)
-    <div className="grid lg:grid-cols-[320px_1fr] gap-6 items-start">
+    // h-full + overflow-hidden → le panneau droit reste figé, le gauche défile
+    <div className="grid lg:grid-cols-[320px_1fr] gap-6 h-full overflow-hidden">
       {/* ── Left: controls — scrollable ──────────────────── */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 overflow-y-auto pr-1 pb-4">
 
         {/* Job offer */}
         <div>
@@ -406,14 +406,11 @@ export default function CVGeneratorClient() {
         )}
       </div>
 
-      {/* ── Right: PDF preview — sticky ─────────────────── */}
-      <div className="sticky top-6 flex flex-col gap-3">
+      {/* ── Right: PDF preview — hauteur fixe, ne défile pas ── */}
+      <div className="flex flex-col gap-3 h-full overflow-hidden">
         {!cv ? (
-          /* Empty state — A4 proportions */
-          <div
-            className="w-full border border-dashed border-zinc-700 rounded-xl flex items-center justify-center bg-zinc-900/40"
-            style={{ aspectRatio: '210/297' }}
-          >
+          /* Empty state */
+          <div className="flex-1 border border-dashed border-zinc-700 rounded-xl flex items-center justify-center bg-zinc-900/40">
             <div className="text-center">
               <svg className="w-10 h-10 mx-auto mb-3 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -422,8 +419,8 @@ export default function CVGeneratorClient() {
             </div>
           </div>
         ) : docNode ? (
-          /* PDF Viewer — real A4 iframe, proper proportions */
-          <div className="w-full rounded-xl overflow-hidden shadow-2xl" style={{ aspectRatio: '210/297' }}>
+          /* PDF Viewer — remplit toute la hauteur disponible */
+          <div className="flex-1 min-h-0 rounded-xl overflow-hidden shadow-2xl">
             <PDFViewer width="100%" height="100%" showToolbar={false}>
               {docNode}
             </PDFViewer>

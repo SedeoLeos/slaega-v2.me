@@ -5,6 +5,40 @@ import { EMAIL_TEMPLATES } from '@/lib/email/templates';
 import type { EmailTemplateId, EmailContext } from '@/lib/email/templates';
 import { buildEmailHtml } from '@/lib/email/templates';
 
+// ── SVG icons per template ────────────────────────────────────────────────────
+const TEMPLATE_ICONS: Record<string, React.ReactNode> = {
+  application: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  ),
+  'follow-up': (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+    </svg>
+  ),
+  networking: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  'thank-you': (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  custom: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  ),
+};
+
 // ── Profile defaults (user can override in the form) ─────────────────────────
 const DEFAULT_PROFILE = {
   senderName: 'Gedeon Leos',
@@ -135,24 +169,31 @@ export default function EmailComposer() {
         {/* Template picker */}
         <Card title="Template">
           <div className="grid grid-cols-1 gap-2">
-            {EMAIL_TEMPLATES.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => applyTemplate(t.id)}
-                className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
-                  templateId === t.id
-                    ? 'border-green-app/60 bg-green-app/10 text-white'
-                    : 'border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                <span className="text-lg leading-none mt-0.5">{t.icon}</span>
-                <div>
-                  <p className="text-sm font-semibold leading-none">{t.label}</p>
-                  <p className="text-xs text-zinc-500 mt-1">{t.desc}</p>
-                </div>
-              </button>
-            ))}
+            {EMAIL_TEMPLATES.map((t) => {
+              const active = templateId === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => applyTemplate(t.id)}
+                  className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
+                    active
+                      ? 'border-green-app/60 bg-green-app/10 text-white'
+                      : 'border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    active ? 'bg-green-app/20 text-green-app' : 'bg-zinc-800 text-zinc-400'
+                  }`}>
+                    {TEMPLATE_ICONS[t.id]}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold leading-none">{t.label}</p>
+                    <p className="text-xs text-zinc-500 mt-1">{t.desc}</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </Card>
 
@@ -226,13 +267,31 @@ export default function EmailComposer() {
               key={t}
               type="button"
               onClick={() => setTab(t)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 tab === t
                   ? 'bg-zinc-800 text-white shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
-              {t === 'compose' ? '✏️  Composer' : '👁  Aperçu'}
+              {t === 'compose' ? (
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Composer
+                </>
+              ) : (
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Aperçu
+                </>
+              )}
             </button>
           ))}
         </div>
@@ -306,7 +365,12 @@ export default function EmailComposer() {
               }`}
             >
               {sendStatus === 'sent' ? (
-                <>✅ Email envoyé !</>
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Email envoyé !
+                </>
               ) : sendStatus === 'sending' ? (
                 <>
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

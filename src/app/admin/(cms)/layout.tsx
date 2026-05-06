@@ -6,7 +6,6 @@ import Toaster from "@/components/admin/Toaster";
 import AdminNavItem from "@/components/admin/AdminNavItem";
 import { AdminThemeProvider } from "@/components/admin/AdminThemeProvider";
 import AdminThemeToggle from "@/components/admin/AdminThemeToggle";
-import CongoBadge from "@/components/admin/CongoBadge";
 
 export const metadata = { title: "Admin — Slaega" };
 
@@ -33,7 +32,7 @@ export default async function AdminCmsLayout({
         <AdminThemeProvider>
           <div className="flex h-full">
             {/* ── Sidebar ── */}
-            <aside className="w-64 flex-shrink-0 flex flex-col bg-zinc-900 border-r border-zinc-800/60 relative overflow-hidden">
+            <aside className="w-64 flex-shrink-0 flex flex-col bg-zinc-900 border-r border-zinc-800/60">
               {/* Logo + theme toggle */}
               <div className="px-5 py-5 border-b border-zinc-800/60 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-green-app flex items-center justify-center flex-shrink-0 shadow-sm shadow-green-app/30">
@@ -48,7 +47,7 @@ export default async function AdminCmsLayout({
               </div>
 
               {/* Nav */}
-              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5 pb-44">
+              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest px-3 mb-2 font-medium">
                   Contenu
                 </p>
@@ -240,8 +239,6 @@ export default async function AdminCmsLayout({
                 </form>
               </div>
 
-              {/* ── Congo flag/map badge — decorative, partially visible ── */}
-              <CongoBadge />
             </aside>
 
             {/* ── Main ── */}

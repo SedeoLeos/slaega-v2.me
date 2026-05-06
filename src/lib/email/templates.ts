@@ -10,7 +10,6 @@ export interface EmailTemplateInfo {
   id: EmailTemplateId;
   label: string;
   desc: string;
-  icon: string;
   defaultSubject: (ctx: EmailContext) => string;
   systemPrompt: (ctx: EmailContext) => string;
 }
@@ -31,7 +30,6 @@ export const EMAIL_TEMPLATES: EmailTemplateInfo[] = [
     id: 'application',
     label: 'Candidature',
     desc: 'Postuler à une offre d\'emploi',
-    icon: '📩',
     defaultSubject: (c) => `Candidature — ${c.jobTitle ?? 'Développeur'} chez ${c.company ?? 'votre entreprise'}`,
     systemPrompt: (c) => `Tu rédiges un email de candidature professionnel.
 Expéditeur : ${c.senderName} (${c.senderTitle}).
@@ -46,7 +44,6 @@ Rédige un email en français, sans objet (juste le corps), avec une accroche fo
     id: 'follow-up',
     label: 'Relance',
     desc: 'Relancer après candidature ou entretien',
-    icon: '🔔',
     defaultSubject: (c) => `Relance — ${c.jobTitle ?? 'ma candidature'} chez ${c.company ?? 'votre entreprise'}`,
     systemPrompt: (c) => `Tu rédiges un email de relance professionnel et poli.
 Expéditeur : ${c.senderName} (${c.senderTitle}).
@@ -60,7 +57,6 @@ ${c.extraContext ? `Contexte : ${c.extraContext}` : ''}
     id: 'networking',
     label: 'Networking',
     desc: 'Prise de contact professionnelle',
-    icon: '🤝',
     defaultSubject: (c) => `Prise de contact — ${c.senderName}`,
     systemPrompt: (c) => `Tu rédiges un email de networking professionnel.
 Expéditeur : ${c.senderName} (${c.senderTitle}).
@@ -74,7 +70,6 @@ Rédige en français, sans objet, une prise de contact naturelle et humaine qui 
     id: 'thank-you',
     label: 'Remerciement',
     desc: 'Après un entretien',
-    icon: '🙏',
     defaultSubject: (c) => `Merci pour l'entretien — ${c.jobTitle ?? 'votre temps'} chez ${c.company ?? 'votre entreprise'}`,
     systemPrompt: (c) => `Tu rédiges un email de remerciement post-entretien.
 Expéditeur : ${c.senderName} (${c.senderTitle}).
@@ -87,7 +82,6 @@ Rédige en français, sans objet, un email de remerciement sincère (max 120 mot
     id: 'custom',
     label: 'Personnalisé',
     desc: 'Email libre, ton propre contexte',
-    icon: '✏️',
     defaultSubject: (_c) => '',
     systemPrompt: (c) => `Tu rédiges un email professionnel.
 Expéditeur : ${c.senderName} (${c.senderTitle}).

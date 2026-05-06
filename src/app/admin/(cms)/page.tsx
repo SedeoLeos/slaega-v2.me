@@ -9,6 +9,8 @@ import DashboardCharts from "@/components/admin/DashboardChartsNoSSR";
 // ── Data helpers ──────────────────────────────────────────────────────────────
 function buildChartData(
   projects: Awaited<ReturnType<typeof projectRepository.getAll>>,
+  experiences: Awaited<ReturnType<typeof experienceRepository.getAll>>,
+  stats: Awaited<ReturnType<typeof statRepository.getAll>>,
   messages: Awaited<ReturnType<typeof contactSubmissionRepository.getAll>>,
 ): DashboardChartsProps {
   // 1. Projects by category
@@ -76,7 +78,36 @@ function buildChartData(
     .slice(0, 8)
     .map(([tag, count]) => ({ tag, count }));
 
-  return { projectsByCategory, projectsByYear, messagesByMonth, projectStatus, topTags };
+  // 6. Content completion (radar) — how filled is the portfolio
+  const contentCompletion = [
+    { subject: 'Projets',      fullMark: 10, value: Math.min(projects.length, 10) },
+    { subject: 'Expériences',  fullMark: 10, value: Math.min(experiences.length, 10) },
+    { subject: 'Stats',        fullMark: 10, value: Math.min(stats.length, 10) },
+    { subject: 'Catégories',   fullMark: 10, value: Math.min(catMap.size, 10) },
+    { subject: 'Tags',         fullMark: 10, value: Math.min(tagMap.size, 10) },
+    { subject: 'Messages',     fullMark: 10, value: Math.min(messages.length, 10) },
+  ];
+
+  // 7. Activity by month (area chart — projects created + messages)
+  const now2 = new Date();
+  const months2: { month: string; ts: number }[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now2.getFullYear(), now2.getMonth() - i, 1);
+    months2.push({ ts: d.getTime(), month: d.toLocaleString('fr-FR', { month: 'short', year: '2-digit' }) });
+  }
+  const activityByMonth = months2.map(({ month, ts }) => {
+    const end = new Date(ts); end.setMonth(end.getMonth() + 1);
+    const msgs = messages.filter((m) => { const t = new Date(m.createdAt).getTime(); return t >= ts && t < end.getTime(); }).length;
+    // Projects don't have createdAt — use date field (YYYY-MM-DD)
+    const projs = projects.filter((p) => {
+      if (!p.date) return false;
+      const t = new Date(p.date).getTime();
+      return t >= ts && t < end.getTime();
+    }).length;
+    return { month, projets: projs, messages: msgs };
+  });
+
+  return { projectsByCategory, projectsByYear, messagesByMonth, projectStatus, topTags, contentCompletion, activityByMonth };
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -91,7 +122,7 @@ export default async function AdminDashboard() {
 
   const published = projects.filter((p) => p.published).length;
   const drafts = projects.length - published;
-  const chartData = buildChartData(projects, messages);
+  const chartData = buildChartData(projects, experiences, stats, messages);
 
   return (
     <div className="p-8 max-w-5xl mx-auto">

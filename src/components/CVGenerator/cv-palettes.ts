@@ -105,6 +105,21 @@ export const CV_PALETTES: CVPalette[] = [
     onDark:       "#ffffff",
     onDarkMuted:  "rgba(255,255,255,0.55)",
   },
+  {
+    id: "bordeaux",
+    label: "Bordeaux",
+    sidebar:      "#2d0a1a",
+    primary:      "#2d0a1a",
+    body:         "#3d1428",
+    muted:        "#8a6070",
+    accent:       "#be123c",
+    accentLight:  "#fff0f3",
+    border:       "#f0d0d8",
+    paper:        "#fffbfc",
+    band:         "#2d0a1a",
+    onDark:       "#ffffff",
+    onDarkMuted:  "rgba(255,255,255,0.55)",
+  },
 ];
 
 export const DEFAULT_PALETTE = CV_PALETTES[0];

@@ -23,7 +23,8 @@ export default function AdminCVGeneratorPage() {
         </p>
       </div>
 
-      <div className="flex-1 min-h-0">
+      {/* flex-1 + min-h-0 → la hauteur restante est transmise au composant */}
+      <div className="flex-1 min-h-0 overflow-hidden">
         <CVGeneratorNoSSR />
       </div>
     </div>
