@@ -16,6 +16,7 @@ function Footer() {
         stroke="#05796b"
         className="absolute bottom-0 right-0 w-72 md:w-[400px] pointer-events-none select-none"
         style={{
+          zoom: "80%",
           opacity: 0.6,
           maskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
           WebkitMaskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
