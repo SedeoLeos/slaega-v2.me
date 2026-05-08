@@ -148,15 +148,9 @@ function publicUrlFor(filename: string): string {
   const customBase = process.env.STORAGE_PUBLIC_URL;
   if (customBase) return `${customBase.replace(/\/$/, "")}/${filename}`;
 
-  const endpoint = process.env.STORAGE_ENDPOINT;
-  const bucket = process.env.STORAGE_BUCKET!;
-  if (endpoint) {
-    // path-style URL (MinIO, R2 default)
-    return `${endpoint.replace(/\/$/, "")}/${bucket}/${filename}`;
-  }
-  // AWS S3 virtual-hosted style
-  const region = process.env.STORAGE_REGION ?? "us-east-1";
-  return `https://${bucket}.s3.${region}.amazonaws.com/${filename}`;
+  // Default for S3/Supabase/R2: use the internal proxy route.
+  // URLs stored in DB are /api/uploads/<filename> — the real bucket stays hidden.
+  return `/api/uploads/${filename}`;
 }
 
 const s3Driver: StorageDriver = {

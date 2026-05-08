@@ -15,6 +15,32 @@ const MIME_TYPES: Record<string, string> = {
   ".avif": "image/avif",
 };
 
+/**
+ * Build the *real* upstream URL for a given filename when using S3.
+ *
+ * Supabase : https://<ref>.supabase.co/storage/v1/s3  →
+ *            https://<ref>.supabase.co/storage/v1/object/public/<bucket>/<file>
+ *
+ * Others (R2, MinIO, …) :
+ *            <endpoint>/<bucket>/<file>
+ */
+function remoteUrlFor(filename: string): string | null {
+  const provider = (process.env.STORAGE_PROVIDER ?? "local").toLowerCase();
+  if (provider !== "s3" && provider !== "r2" && provider !== "minio") return null;
+
+  const bucket   = process.env.STORAGE_BUCKET;
+  const endpoint = process.env.STORAGE_ENDPOINT;
+  if (!bucket || !endpoint) return null;
+
+  if (endpoint.includes("supabase.co")) {
+    // Strip /s3 suffix → use the public object path instead
+    const base = endpoint.replace(/\/s3\/?$/, "");
+    return `${base}/object/public/${bucket}/${filename}`;
+  }
+
+  return `${endpoint.replace(/\/$/, "")}/${bucket}/${filename}`;
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
@@ -22,14 +48,38 @@ export async function GET(
   const { path: pathSegments } = await params;
   const relativePath = pathSegments.join("/");
 
-  // Security: prevent directory traversal
+  // Security: block directory traversal
   if (relativePath.includes("..") || relativePath.startsWith("/")) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
+  // ── S3 / Supabase mode — proxy transparently ─────────────────────────────
+  const upstream = remoteUrlFor(relativePath);
+  if (upstream) {
+    try {
+      const res = await fetch(upstream);
+      if (!res.ok) return new NextResponse("Not found", { status: 404 });
+
+      const buffer = await res.arrayBuffer();
+      const contentType =
+        res.headers.get("Content-Type") ?? "application/octet-stream";
+
+      return new NextResponse(new Uint8Array(buffer), {
+        headers: {
+          "Content-Type":  contentType,
+          // Long-lived cache — filenames include a timestamp+random slug so they
+          // are effectively immutable.
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
+    } catch {
+      return new NextResponse("Error fetching file", { status: 500 });
+    }
+  }
+
+  // ── Local filesystem mode ─────────────────────────────────────────────────
   const filePath = path.join(UPLOADS_DIR, relativePath);
 
-  // Ensure the resolved path is still within UPLOADS_DIR
   if (!filePath.startsWith(UPLOADS_DIR)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
@@ -39,13 +89,13 @@ export async function GET(
   }
 
   try {
-    const buffer = await readFile(filePath);
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || "application/octet-stream";
+    const buffer      = await readFile(filePath);
+    const ext         = path.extname(filePath).toLowerCase();
+    const contentType = MIME_TYPES[ext] ?? "application/octet-stream";
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
-        "Content-Type": contentType,
+        "Content-Type":  contentType,
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
