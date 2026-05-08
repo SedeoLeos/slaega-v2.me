@@ -27,6 +27,8 @@ import {
     PutObjectCommand,
     S3Client,
 } from "@aws-sdk/client-s3";
+import { NodeHttpHandler } from "@smithy/node-http-handler";
+import https from "node:https";
 import { mkdir, readdir, stat, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -101,6 +103,11 @@ const localDriver: StorageDriver = {
 
 let cachedS3Client: S3Client | null = null;
 
+/** Supabase S3 endpoint URLs contain "supabase.co/storage/v1/s3" */
+function isSupabaseEndpoint(endpoint?: string): boolean {
+  return !!endpoint?.includes("supabase.co");
+}
+
 function s3Client(): S3Client {
   if (cachedS3Client) return cachedS3Client;
 
@@ -108,7 +115,10 @@ function s3Client(): S3Client {
   const endpoint = process.env.STORAGE_ENDPOINT;
   const accessKeyId = process.env.STORAGE_ACCESS_KEY_ID;
   const secretAccessKey = process.env.STORAGE_SECRET_ACCESS_KEY;
-  const forcePathStyle = process.env.STORAGE_FORCE_PATH_STYLE === "true";
+  // Supabase requires path-style URLs — force it automatically
+  const forcePathStyle =
+    process.env.STORAGE_FORCE_PATH_STYLE === "true" ||
+    isSupabaseEndpoint(endpoint);
 
   if (!accessKeyId || !secretAccessKey) {
     throw new Error(
@@ -116,11 +126,19 @@ function s3Client(): S3Client {
     );
   }
 
+  // Custom HTTPS agent — fixes TLS handshake failure on Node 17+/OpenSSL 3
+  // (observed with Supabase S3-compatible storage).
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: true,
+    minVersion: "TLSv1.2",
+  });
+
   cachedS3Client = new S3Client({
     region,
-    endpoint, // optional — required for R2/MinIO
-    forcePathStyle, // true for MinIO
+    endpoint,
+    forcePathStyle,
     credentials: { accessKeyId, secretAccessKey },
+    requestHandler: new NodeHttpHandler({ httpsAgent }),
   });
 
   return cachedS3Client;
@@ -154,9 +172,9 @@ const s3Driver: StorageDriver = {
         Key: filename,
         Body: buffer,
         ContentType: contentType,
-        // Public read by default for portfolio media. If your bucket policy
-        // doesn't allow ACL, this still uploads — files served via STORAGE_PUBLIC_URL.
-        ACL: process.env.STORAGE_ACL === "private" ? undefined : "public-read",
+        // ACL uniquement pour AWS S3 natif — Supabase / R2 / MinIO ne le supportent pas.
+        // Active avec STORAGE_USE_ACL=true si tu es sur AWS S3 pur.
+        ...(process.env.STORAGE_USE_ACL === "true" && { ACL: "public-read" }),
       })
     );
 

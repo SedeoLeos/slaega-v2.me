@@ -41,6 +41,9 @@ importers:
       '@react-pdf/renderer':
         specifier: ^4.5.1
         version: 4.5.1(react@19.1.0)
+      '@smithy/node-http-handler':
+        specifier: ^4.6.1
+        version: 4.6.1
       '@tanstack/react-query':
         specifier: ^5.87.1
         version: 5.87.1(react@19.1.0)
