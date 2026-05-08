@@ -13,25 +13,11 @@ export default async function FAQ() {
   const items = dbItems.length > 0 ? dbItems : DEFAULT_ITEMS;
 
   return (
-    <section className="w-full py-24 relative overflow-hidden" style={{ backgroundColor: '#141414' }}>
-      {/* Grid texture */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
-      />
-
-      <div className="relative max-w-content mx-auto px-10 md:px-20">
+    <section className="w-full py-24 bg-background">
+      <div className="max-w-content mx-auto px-10 md:px-20">
         {/* Badge */}
         <div className="flex justify-center mb-8">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase border"
-            style={{ color: '#E5533C', borderColor: 'rgba(229,83,60,0.3)', backgroundColor: 'rgba(229,83,60,0.08)' }}
-          >
-            {/* Question mark icon */}
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase border border-green-app/30 text-green-app bg-green-app/8">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -41,42 +27,29 @@ export default async function FAQ() {
         </div>
 
         {/* Heading */}
-        <h2
-          className="text-4xl sm:text-5xl font-extrabold text-center mb-14 leading-tight"
-          style={{ color: '#F0EDE6' }}
-        >
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-14 leading-tight text-foreground">
           Questions fréquentes.
         </h2>
 
-        {/* Accordion — uses native details/summary (no JS needed) */}
+        {/* Accordion — native details/summary, zero JS */}
         <div className="max-w-3xl mx-auto space-y-0">
           {items.map((item, idx) => (
             <details
               key={item.id}
-              className="group border-b"
-              style={{ borderColor: 'rgba(255,255,255,0.07)' }}
+              className="group border-b border-border"
             >
-              <summary
-                className="flex items-center gap-5 py-6 cursor-pointer list-none select-none"
-                style={{ color: '#F0EDE6' }}
-              >
+              <summary className="flex items-center gap-5 py-6 cursor-pointer list-none select-none">
                 {/* Number */}
-                <span
-                  className="text-xs font-mono font-bold tracking-widest flex-shrink-0 w-6"
-                  style={{ color: '#E5533C' }}
-                >
+                <span className="text-xs font-mono font-bold tracking-widest flex-shrink-0 w-6 text-green-app">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
-
                 {/* Question */}
-                <span className="flex-1 text-base font-semibold leading-snug">
+                <span className="flex-1 text-base font-semibold leading-snug text-foreground">
                   {item.question}
                 </span>
-
-                {/* Chevron — rotates when open */}
+                {/* Chevron */}
                 <svg
-                  className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-open:rotate-180"
-                  style={{ color: 'rgba(240,237,230,0.4)' }}
+                  className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-open:rotate-180 text-secondary"
                   fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -85,7 +58,7 @@ export default async function FAQ() {
 
               {/* Answer */}
               <div className="pb-6 pl-11 pr-8">
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,237,230,0.5)' }}>
+                <p className="text-sm leading-relaxed text-secondary">
                   {item.answer}
                 </p>
               </div>
