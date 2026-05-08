@@ -45,7 +45,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       top: 0,
       left: 0,
       width: "35%",
-      height: "100%",
+      height: "77%",   /* s'arrête à ~77% — ne couvre pas tout le bas de la page */
       opacity: 0.35,
     },
     bgImg: { width: "100%", height: "100%", objectFit: "cover" },
@@ -199,14 +199,15 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     expBulletText: { fontSize: 8.5, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── Projets ── */
-    projItem: { marginBottom: 9 },
+    projItem: { marginBottom: 11 },
     projTitle: {
       fontSize: 10,
       fontFamily: "Helvetica-Bold",
       color: DARK,
+      marginBottom: 4,
     },
-    projDesc: { fontSize: 8.5, color: TEXT, lineHeight: 1.5, marginTop: 1.5 },
-    projTags: { fontSize: 7.5, color: ACC, marginTop: 2.5 },
+    projDesc: { fontSize: 8.5, color: TEXT, lineHeight: 1.55, marginTop: 0 },
+    projTags: { fontSize: 7.5, color: ACC, marginTop: 4 },
   });
 
   return (

@@ -237,10 +237,10 @@ export default function TemplateBright({ data, palette, sections }: Props) {
       fontSize: 9,
       fontFamily: "Helvetica-Bold",
       color: DARK,
-      marginBottom: 3,
+      marginBottom: 5,
     },
-    projDesc: { fontSize: 8, color: MUTED, lineHeight: 1.45 },
-    projTags: { fontSize: 7, color: ACC, marginTop: 4 },
+    projDesc: { fontSize: 8, color: MUTED, lineHeight: 1.55 },
+    projTags: { fontSize: 7, color: ACC, marginTop: 5 },
   });
 
   return (
@@ -360,7 +360,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
                       {exp.location ? `  ·  ${exp.location}` : ""}
                     </Text>
                     <Text style={s.expDesc}>
-                      {stripHtml(exp.description).slice(0, 180)}
+                      {stripHtml(exp.description)}
                     </Text>
                   </View>
                 ))}
@@ -381,7 +381,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
                     <View key={p.slug} style={s.projCard}>
                       <Text style={s.projTitle}>{p.title}</Text>
                       <Text style={s.projDesc}>
-                        {stripHtml(p.desc).slice(0, 90)}
+                        {stripHtml(p.desc)}
                       </Text>
                       {p.tags.length > 0 && (
                         <Text style={s.projTags}>

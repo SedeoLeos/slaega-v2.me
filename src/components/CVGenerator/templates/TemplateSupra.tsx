@@ -130,8 +130,8 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
       overflow: "hidden",
     },
     projBody: { padding: 8 },
-    projTitle: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: NAVY, marginBottom: 2 },
-    projDesc: { fontSize: 6.5, color: "#777", lineHeight: 1.45, marginBottom: 4 },
+    projTitle: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: NAVY, marginBottom: 5 },
+    projDesc: { fontSize: 6.5, color: "#777", lineHeight: 1.55, marginBottom: 4 },
     projLink: { fontSize: 6.5, color: ACC },
 
     /* Education grid — 3 columns */
@@ -199,7 +199,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
           {/* Quote / bio */}
           {sections.summary.visible && summary && (
             <View style={s.quoteWrap}>
-              <Text style={s.quoteText}>{summary.slice(0, 160)}{summary.length > 160 ? "…" : ""}</Text>
+              <Text style={s.quoteText}>{summary}</Text>
             </View>
           )}
 
@@ -316,7 +316,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
                   <View key={p.slug} style={s.projCard}>
                     <View style={[s.projBody, { borderTopWidth: 2, borderTopColor: ACC, borderTopStyle: "solid" }]}>
                       <Text style={s.projTitle}>{p.title}</Text>
-                      <Text style={s.projDesc}>{stripHtml(p.desc).slice(0, 90)}…</Text>
+                      <Text style={s.projDesc}>{stripHtml(p.desc)}</Text>
                       {p.tags.length > 0 && (
                         <Text style={s.projLink}>{p.tags.slice(0, 3).join(" · ")}</Text>
                       )}

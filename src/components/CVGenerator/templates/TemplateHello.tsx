@@ -266,7 +266,7 @@ export default function TemplateHello({ data, palette, sections }: Props) {
                     </View>
                     <Text style={s.expComp}>{exp.company}</Text>
                     <Text style={s.expDesc}>
-                      {stripHtml(exp.description).slice(0, 100)}
+                      {stripHtml(exp.description)}
                     </Text>
                   </View>
                 ))}
@@ -308,8 +308,7 @@ export default function TemplateHello({ data, palette, sections }: Props) {
             {/* Summary */}
             {sections.summary.visible && summary ? (
               <Text style={s.summaryText}>
-                {summary.slice(0, 300)}
-                {summary.length > 300 ? "…" : ""}
+                {summary}
               </Text>
             ) : null}
 
@@ -369,7 +368,7 @@ export default function TemplateHello({ data, palette, sections }: Props) {
                         marginTop: 1,
                       }}
                     >
-                      {stripHtml(p.desc).slice(0, 80)}
+                      {stripHtml(p.desc)}
                     </Text>
                     {p.tags.length > 0 && (
                       <Text style={{ fontSize: 6.5, color: ACC, marginTop: 1 }}>

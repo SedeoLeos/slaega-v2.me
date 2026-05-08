@@ -246,7 +246,7 @@ export default function TemplatePulse({ data, palette, sections }: Props) {
                       {p.tags.length > 0 && (
                         <Text style={s.cardTags}>{p.tags.slice(0, 4).map(t => `#${t}`).join(" ")}</Text>
                       )}
-                      <Text style={s.cardSub}>{stripHtml(p.desc).slice(0, 60)}…</Text>
+                      <Text style={s.cardSub}>{stripHtml(p.desc)}</Text>
                     </View>
                   );
                 })}

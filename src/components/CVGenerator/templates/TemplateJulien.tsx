@@ -230,9 +230,9 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
       borderLeftColor: ACC,
       borderLeftStyle: "solid",
     },
-    projTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: TEXT },
-    projDesc: { fontSize: 7, color: MUTED, lineHeight: 1.4, marginTop: 1 },
-    projTags: { fontSize: 6.5, color: ACC, marginTop: 2 },
+    projTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: TEXT, marginBottom: 4 },
+    projDesc: { fontSize: 7, color: MUTED, lineHeight: 1.5, marginTop: 0 },
+    projTags: { fontSize: 6.5, color: ACC, marginTop: 4 },
 
     /* Contact */
     contactRow: {
@@ -315,7 +315,7 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
                         <Text style={s.timelineTitle}>{exp.role}</Text>
                         <Text style={s.timelineSubtitle}>{exp.company}</Text>
                         <Text style={s.timelineDesc}>
-                          {stripHtml(exp.description).slice(0, 80)}
+                          {stripHtml(exp.description)}
                         </Text>
                       </View>
                     </View>
@@ -331,8 +331,7 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
             {sections.summary.visible && summary ? (
               <>
                 <Text style={s.summaryText}>
-                  {summary.slice(0, 350)}
-                  {summary.length > 350 ? "…" : ""}
+                  {summary}
                 </Text>
                 <View style={s.divider} />
               </>
@@ -384,7 +383,7 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
                   <View key={p.slug} style={s.projCard}>
                     <Text style={s.projTitle}>{p.title}</Text>
                     <Text style={s.projDesc}>
-                      {stripHtml(p.desc).slice(0, 100)}
+                      {stripHtml(p.desc)}
                     </Text>
                     {p.tags.length > 0 && (
                       <Text style={s.projTags}>
