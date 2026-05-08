@@ -8,24 +8,23 @@ export default async function AdminLoginPage({
   const params = await searchParams;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ backgroundColor: '#141414' }}>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-background">
 
-      {/* CSS grid texture overlay */}
+      {/* Grid texture — utilise la couleur de bordure du thème */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+            'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)',
           backgroundSize: '48px 48px',
         }}
       />
 
-      {/* Radial glow center */}
+      {/* Radial glow center — accent vert du thème */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(229,83,60,0.06) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(5,121,107,0.07) 0%, transparent 65%)',
         }}
       />
 
@@ -34,14 +33,7 @@ export default async function AdminLoginPage({
 
         {/* Badge */}
         <div className="flex justify-center mb-8">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase border"
-            style={{
-              color: '#E5533C',
-              borderColor: 'rgba(229,83,60,0.3)',
-              backgroundColor: 'rgba(229,83,60,0.08)',
-            }}
-          >
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase border border-green-app/30 text-green-app bg-green-app/8">
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
             ADMIN // CMS
           </span>
@@ -49,30 +41,19 @@ export default async function AdminLoginPage({
 
         {/* Heading */}
         <div className="text-center mb-8">
-          <h1
-            className="text-4xl font-extrabold tracking-tight mb-2"
-            style={{ color: '#F0EDE6' }}
-          >
+          <h1 className="text-4xl font-extrabold tracking-tight mb-2 text-foreground">
             Slaega
           </h1>
-          <p className="text-sm" style={{ color: 'rgba(240,237,230,0.4)' }}>
+          <p className="text-sm text-secondary">
             Tableau de bord — accès restreint
           </p>
         </div>
 
         {/* Login card */}
-        <div
-          className="rounded-2xl p-8"
-          style={{
-            backgroundColor: '#1E1E1E',
-            border: '1px solid rgba(255,255,255,0.07)',
-          }}
-        >
-          {/* Divider label */}
-          <p
-            className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-5 text-center"
-            style={{ color: 'rgba(240,237,230,0.25)' }}
-          >
+        <div className="rounded-2xl p-8 bg-card border border-border">
+
+          {/* Label */}
+          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-5 text-center text-secondary">
             Authentification
           </p>
 
@@ -86,11 +67,7 @@ export default async function AdminLoginPage({
           >
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-xl font-semibold text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
-              style={{
-                backgroundColor: '#F0EDE6',
-                color: '#141414',
-              }}
+              className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-xl font-semibold text-sm transition-all duration-200 bg-foreground text-background hover:opacity-85 active:scale-[0.98]"
             >
               {/* GitHub icon */}
               <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -101,14 +78,7 @@ export default async function AdminLoginPage({
           </form>
 
           {params.error && (
-            <div
-              className="mt-5 flex items-center gap-2 px-4 py-3 rounded-lg text-xs"
-              style={{
-                backgroundColor: 'rgba(229,83,60,0.1)',
-                border: '1px solid rgba(229,83,60,0.2)',
-                color: '#E5533C',
-              }}
-            >
+            <div className="mt-5 flex items-center gap-2 px-4 py-3 rounded-lg text-xs border border-red-500/20 bg-red-500/8 text-red-600">
               <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -119,10 +89,7 @@ export default async function AdminLoginPage({
         </div>
 
         {/* Footer note */}
-        <p
-          className="text-center text-[11px] mt-6 tracking-wide"
-          style={{ color: 'rgba(240,237,230,0.2)' }}
-        >
+        <p className="text-center text-[11px] mt-6 tracking-wide text-secondary opacity-50">
           Accès limité au propriétaire du portfolio
         </p>
       </div>
