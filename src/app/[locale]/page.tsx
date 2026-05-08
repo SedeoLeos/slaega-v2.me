@@ -21,9 +21,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Ticker />
       <FadeIn delay={0.1}><Banner /></FadeIn>
       <FadeIn delay={0.05}><AboutPreview /></FadeIn>
+      <Ticker />
       <FadeIn><Service /></FadeIn>
       <FadeIn><TerminalShowcase /></FadeIn>
       <FadeIn><ValueCards /></FadeIn>

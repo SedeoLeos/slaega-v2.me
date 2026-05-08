@@ -28,38 +28,43 @@
   --font-poppins: var(--font-poppins);
 }
 
-/* ── Custom scrollbar — light theme (public site) ─────────────── */
+/* ── Custom scrollbar — no native OS look, thin overlay bar ────── */
+
+/* Hide the default wide scrollbar on the root */
+html {
+  scrollbar-width: thin;               /* Firefox: thin rail */
+  scrollbar-color: rgba(14,14,14,0.18) transparent;
+}
+
+/* Webkit root — 3 px sliver that floats above content */
+html::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+html::-webkit-scrollbar-track  { background: transparent; }
+html::-webkit-scrollbar-corner { background: transparent; }
+html::-webkit-scrollbar-thumb  {
+  background: rgba(14,14,14,0.22);
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+html::-webkit-scrollbar-thumb:hover  { background: #05796b; }
+html::-webkit-scrollbar-thumb:active { background: #044f47; }
+
+/* Every other scrollable container — same treatment */
 * {
   scrollbar-width: thin;
-  /* thumb | track */
-  scrollbar-color: rgba(14, 14, 14, 0.18) transparent;
+  scrollbar-color: rgba(14,14,14,0.15) transparent;
 }
-
-*::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: rgba(14, 14, 14, 0.18);
+*::-webkit-scrollbar        { width: 3px; height: 3px; }
+*::-webkit-scrollbar-track  { background: transparent; }
+*::-webkit-scrollbar-corner { background: transparent; }
+*::-webkit-scrollbar-thumb  {
+  background: rgba(14,14,14,0.15);
   border-radius: 999px;
 }
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #05796b;
-}
-
-*::-webkit-scrollbar-thumb:active {
-  background: #044f47;
-}
-
-*::-webkit-scrollbar-corner {
-  background: transparent;
-}
+*::-webkit-scrollbar-thumb:hover  { background: #05796b; }
+*::-webkit-scrollbar-thumb:active { background: #044f47; }
 
 /* ── Ticker / marquee animation ───────────────────────────────── */
 @keyframes ticker-scroll {

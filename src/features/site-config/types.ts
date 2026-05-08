@@ -12,7 +12,7 @@ export type TickerConfig = {
 export const DEFAULT_TICKER: TickerConfig = {
   enabled:   true,
   items:     ["Full-Stack Developer", "Mobile & Web", "Backend & API", "DevOps", "Open Source"],
-  bgColor:   "#05796B",
+  bgColor:   "#0E0E0E",
   textColor: "#FFFFFF",
   speed:     28,
 };
