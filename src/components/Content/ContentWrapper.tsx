@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
 
 interface ContentWrapperProps {
   previewContent: ReactNode
@@ -9,6 +10,7 @@ interface ContentWrapperProps {
 
 export default function ContentWrapper({ previewContent, fullContent }: ContentWrapperProps) {
   const [showMore, setShowMore] = useState(false)
+  const t = useTranslations('common')
   const handleToggle = () => setShowMore(!showMore)
 
   return (
@@ -22,7 +24,7 @@ export default function ContentWrapper({ previewContent, fullContent }: ContentW
           onClick={handleToggle}
           className="mt-4 bg-zinc-800 text-white px-8 py-4 w-max"
         >
-          {showMore ? 'Voir moins ↑' : 'Lire plus ↓'}
+          {showMore ? `${t('showLess')} ↑` : `${t('readMore')} ↓`}
         </button>
       </div>
     </div>

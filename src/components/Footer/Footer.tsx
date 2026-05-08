@@ -1,57 +1,68 @@
-import Link from 'next/link'
-import React from 'react'
-import Gmail from '../icons/gmail'
-import SocialLinK from '../SocialLinK'
-import { useTranslations } from 'next-intl'
+import Link from 'next/link';
+import React from 'react';
+import SocialLink from '../SocialLink';
+import { useTranslations } from 'next-intl';
+import { SiteConfig } from '@/shared/config/site-config';
+import CarteCongoDecor from '@/components/CarteCongoDecor';
 
 function Footer() {
-    const t = useTranslations()
-    
-    return (
+  const t = useTranslations();
+  const currentYear = new Date().getUTCFullYear();
 
-        <footer className='lg:mt-52 p-5 flex flex-col gap-y-10 w-full overflow-hidden'>
-            <div className='self-center max-w-content w-full px-5 md:px-20'>
+  return (
+    <footer className='flex flex-col w-full overflow-hidden relative'>
+      {/* ── Carte Congo décorative ── */}
+      <CarteCongoDecor
+        stroke="#05796b"
+        className="absolute bottom-0 right-0 w-72 md:w-[400px] pointer-events-none select-none"
+        style={{
+          zoom: "80%",
+          opacity: 0.6,
+          maskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
+          WebkitMaskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
+        }}
+      />
 
-                <div className='flex justify-between items-center flex-col md:flex-row gap-5'>
+      {/* CTA Section */}
+      <div className='self-center max-w-content w-full px-10 md:px-20 pt-16 pb-12 relative z-[1]'>
+        <div className='flex justify-between items-center flex-col md:flex-row gap-8'>
+          <h2 className='text-5xl md:text-6xl font-extrabold max-w-lg leading-tight'>
+            {t('footer.cta.title').split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index === 0 && <br />}
+              </React.Fragment>
+            ))}
+          </h2>
+          <Link
+            href={`mailto:${SiteConfig.email}`}
+            className='inline-flex items-center gap-3 border border-foreground/20 hover:border-foreground/50 rounded-2xl px-6 py-4 transition-colors group'
+          >
+            {/* Gmail icon */}
+            <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
+              <path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+              <polyline points='22,6 12,13 2,6' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+            </svg>
+            <span className='text-sm font-medium'>{SiteConfig.email}</span>
+          </Link>
+        </div>
+      </div>
 
-                    <h2 className='text-6xl max-w-lg'>
-                        {t('footer.cta.title').split('\n').map((line, index) => (
-                            <React.Fragment key={index}>
-                                {line}
-                                {index === 0 && <br />}
-                            </React.Fragment>
-                        ))}
-                    </h2>
+      <hr className='bg-foreground/10 w-full h-px border-none mx-0' />
 
-                    <Link href={`mailto:${t('footer.cta.email')}`} className='py-4 px-10 border-zinc-800 border flex justify-center items-center gap-2'>
-                        <Gmail />
-                        <span>
-                            {t('footer.cta.email')}
-                        </span>
-                    </Link>
-                </div>
-
-            </div>
-
-            <hr className='bg-zinc-800 w-full h-0.5'/>
-            <div className='self-center max-w-content w-full px-20  flex justify-between items-center sm:flex-row flex-col gap-5 '>
-
-                <div className=''>
-                    <span>
-                        {t('footer.copyright')}
-                    </span>
-                </div>
-                <div className='flex gap-5 '>
-                    <SocialLinK href={""} icon='linkden'/>                    
-                    <SocialLinK href={""} icon='sport' />                  
-                    <SocialLinK href={""} icon='facebook' />
-                    <SocialLinK href={""} icon='instagram' />
-                    <SocialLinK href={""} icon='tweeter' />
-                </div>
-            </div>
-
-        </footer>
-    )
+      {/* Bottom bar */}
+      <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4 relative z-[1]'>
+        <span className='text-sm text-foreground/50'>{t('footer.copyright', { year: currentYear })}</span>
+        <div className='flex gap-5'>
+          <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
+          <SocialLink href={SiteConfig.socialLinks.github} icon='github' />
+          <SocialLink href={SiteConfig.socialLinks.facebook} icon='facebook' />
+          <SocialLink href={SiteConfig.socialLinks.instagram} icon='instagram' />
+          <SocialLink href={SiteConfig.socialLinks.twitter} icon='twitter' />
+        </div>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

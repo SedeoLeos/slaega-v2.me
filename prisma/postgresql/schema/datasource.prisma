@@ -1,0 +1,11 @@
+// Template datasource for PostgreSQL (Supabase / Neon / Vercel Postgres / self-hosted).
+// Usage: pnpm db:use postgresql
+//
+// .env  →  DATABASE_URL="postgresql://user:password@host:5432/dbname?schema=public"
+//
+// Supabase example:
+//   DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+//   DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+datasource db {
+  provider = "postgresql"
+}

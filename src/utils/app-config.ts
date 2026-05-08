@@ -1,11 +1,11 @@
 import type { LocalePrefixMode } from 'next-intl/routing';
 
+// 'as-needed': fr = no prefix (/ /contact /project), en = /en/ prefix
 const localePrefix: LocalePrefixMode = 'as-needed';
 
-// FIXME: Update this configuration file based on your project information
 export const AppConfig = {
     name: 'Slaega Me',
-    locales: ['fr','en'],
+    locales: ['fr', 'en'],
     defaultLocale: 'fr',
     localePrefix,
 };

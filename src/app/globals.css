@@ -1,185 +1,720 @@
 @import "tailwindcss";
 
 :root {
-  --background: #DCDED0;
-  --foreground: #000000;
-  --secondary: hsl(0, 0%, 59%);
+  --background: #dcded0;
+  --foreground: #0e0e0e;
+  --secondary: hsl(0, 0%, 55%);
   --accent: hsl(79, 29%, 37%);
   --primary: hsl(79, 29%, 37%);
-  --green-app: #05796B;
+  --green-app: #05796b;
+  --card: #f5f5ee;
+  --border: rgba(14, 14, 14, 0.1);
 }
 
 @theme inline {
-  --spacing-content: 1457px;
-  --spacing-content-blog: 900px;
+  --spacing-content: 1320px;
+  --spacing-content-blog: 860px;
   --breakpoint-2lg: 1100px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  --font-inter: var(--font-inter);
-  --font-poppins: var(--font-poppins);
-
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-secondary: var(--secondary);
   --color-green-app: var(--green-app);
+  --color-card: var(--card);
+  --color-border: var(--border);
+
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
 }
 
+/* ── Custom scrollbar — rail transparent, seul le thumb visible ── */
+
+/* Firefox — thumb visible, track invisible */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14,14,14,0.22) transparent;
+}
+
+/* Webkit (Chrome / Edge / Safari)
+   Le conteneur de la scrollbar ET le track sont transparents ;
+   seul le thumb (le bouton) est coloré. */
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background: transparent;   /* conteneur invisible */
+}
+*::-webkit-scrollbar-track {
+  background: transparent;   /* rail invisible */
+  box-shadow: none;
+  border: none;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(14,14,14,0.22);
+  border-radius: 999px;
+  border: none;
+}
+*::-webkit-scrollbar-thumb:hover  { background: #05796b; }
+*::-webkit-scrollbar-thumb:active { background: #044f47; }
+
+/* ── Ticker / marquee animation ───────────────────────────────── */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Dark surfaces (admin panels, CV generator left col, sidebar) */
+.dark-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+.dark-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.dark-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb:hover {
+  background: #05796b;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb:active {
+  background: #059669;
+}
+
+/* Project / blog article — rich typography that lives & breathes. */
+.article-content {
+  color: #2a2a2a;
+  line-height: 1.72;
+  font-size: 1rem; /* 16px */
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+/* H1 — section opener with strong visual weight. */
+.article-content h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0e0e0e;
+  margin: 2.5rem 0 1rem;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.article-content h1::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: #05796b;
+  margin-top: 0.65rem;
+  border-radius: 2px;
+}
+
+/* H2 — sections with a left accent bar. */
+.article-content h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0e0e0e;
+  margin: 2.75rem 0 1rem;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+  position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid #05796b;
+}
+.article-content h2:first-child {
+  margin-top: 0;
+}
+
+/* H3 — sub-sections */
+.article-content h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 1.75rem 0 0.6rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+/* H4 */
+.article-content h4 {
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 1.25rem 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+}
+
+/* Paragraphs */
+.article-content p {
+  margin: 1rem 0;
+  color: #2a2a2a;
+}
+.article-content p:first-child {
+  margin-top: 0;
+}
+
+/* Lead paragraph */
+.article-content > p:first-of-type {
+  font-size: 1.0625rem;
+  color: #1a1a1a;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.article-content strong {
+  font-weight: 700;
+  color: #0e0e0e;
+}
+.article-content em {
+  font-style: italic;
+}
+
+.article-content a {
+  color: #05796b;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.article-content a:hover {
+  color: #044f47;
+}
+
+/* Lists — clean bullets with subtle accent, compact vertical rhythm */
+.article-content ul,
+.article-content ol {
+  margin: 0.85rem 0;
+  padding-left: 2rem;
+  font-size: 0.9375rem; /* 15px — slightly smaller than body */
+}
+.article-content ul {
+  list-style: none;
+}
+.article-content ol {
+  list-style: decimal;
+}
+.article-content ul li,
+.article-content ol li {
+  margin: 0.3rem 0;
+  line-height: 1.6;
+  position: relative;
+}
+.article-content ul li::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #05796b;
+  opacity: 0.75;
+}
+.article-content ol li::marker {
+  color: #05796b;
+  font-weight: 600;
+}
+/* Nested lists — tighter indent */
+.article-content li > ul,
+.article-content li > ol {
+  margin: 0.25rem 0;
+  padding-left: 1.5rem;
+  font-size: inherit;
+}
+.article-content li > ul li::before {
+  width: 4px;
+  height: 4px;
+  opacity: 0.45;
+  background: #05796b;
+}
+/* Immediately after heading → less top gap */
+.article-content h2 + ul,
+.article-content h2 + ol,
+.article-content h3 + ul,
+.article-content h3 + ol {
+  margin-top: 0.5rem;
+}
+
+/* Blockquote — pulled, with accent */
+.article-content blockquote {
+  border-left: 3px solid #05796b;
+  padding: 0.4rem 0 0.4rem 1.1rem;
+  margin: 1.25rem 0;
+  font-style: italic;
+  color: #555;
+  font-size: 0.9625rem;
+  background: rgba(5, 121, 107, 0.04);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.article-content blockquote p {
+  margin: 0.3rem 0;
+}
+
+/* Inline code */
+.article-content code {
+  background: rgba(5, 121, 107, 0.1);
+  color: #044f47;
+  padding: 0.15em 0.45em;
+  border-radius: 0.35em;
+  font-size: 0.88em;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 500;
+}
+
+/* Code blocks */
+.article-content pre {
+  background: #1a1a1a;
+  color: #e4e4e7;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.article-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-weight: 400;
+}
+
+/* HR — elegant divider */
+.article-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(14, 14, 14, 0.15) 20%,
+    rgba(14, 14, 14, 0.15) 80%,
+    transparent 100%
+  );
+  margin: 2rem 0;
+}
+
+/* Images */
+.article-content img {
+  border-radius: 1rem;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── SVG graphics (charts, diagrams, icons embedded in content) ──
+   Use high-specificity selectors so we beat both prose layer CSS
+   and any other utility that may set display:none on svg elements. */
+.article-content svg,
+.article-content .not-prose svg,
+article .article-content svg {
+  display: inline-block !important;
+  visibility: visible !important;
+  vertical-align: middle;
+  max-width: 100%;
+  overflow: visible !important;
+}
+/* Centered standalone SVGs */
+.article-content p > svg:only-child,
+.article-content figure > svg,
+.article-content .not-prose > svg {
+  display: block !important;
+  margin: 1.5rem auto;
+}
+/* Ensure SVG primitives are never hidden */
+.article-content svg circle,
+.article-content svg path,
+.article-content svg rect,
+.article-content svg ellipse,
+.article-content svg line,
+.article-content svg polyline,
+.article-content svg polygon,
+.article-content svg text,
+.article-content svg g {
+  visibility: visible !important;
+  vector-effect: non-scaling-stroke;
+}
+/* Override prose plugin's potential svg { display:none } rule */
+.prose.article-content svg,
+.prose .not-prose svg {
+  display: inline-block !important;
+  visibility: visible !important;
+}
+
+/* Tables */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+  border: 1px solid rgba(14, 14, 14, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.article-content th,
+.article-content td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(14, 14, 14, 0.08);
+  text-align: left;
+}
+.article-content thead {
+  background: rgba(5, 121, 107, 0.05);
+}
+.article-content th {
+  font-weight: 600;
+  color: #0e0e0e;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.article-content tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Override specifically for experience descriptions — slightly tighter */
+.experience-desc .article-content {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.experience-desc .article-content > p:first-of-type {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #2a2a2a;
+}
+.experience-desc .article-content h2 {
+  font-size: 1.05rem;
+  margin: 1.25rem 0 0.5rem;
+  padding-left: 0.75rem;
+  border-left-width: 3px;
+}
+.experience-desc .article-content h3 {
+  font-size: 0.95rem;
+  margin: 1rem 0 0.35rem;
+}
+.experience-desc .article-content p {
+  margin: 0.6rem 0;
+}
+.experience-desc .article-content ul,
+.experience-desc .article-content ol {
+  margin: 0.6rem 0;
+}
+
+/* About page body — center prose paragraphs */
+.about-body .prose p,
+.about-body .prose ul,
+.about-body .prose ol,
+.about-body .prose blockquote,
+.about-body .prose h1,
+.about-body .prose h2,
+.about-body .prose h3,
+.about-body .prose h4 {
+  text-align: center;
+}
+.about-body .prose ul,
+.about-body .prose ol {
+  list-style-position: inside;
+  padding-left: 0;
+}
 
 @layer base {
   body {
     @apply bg-background text-foreground;
-    @apply font-poppins;
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
   }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
   a {
     @apply text-foreground no-underline;
   }
 
-  input, textarea {
-    @apply bg-zinc-100 w-full;
-
+  input,
+  textarea {
+    @apply bg-background w-full border border-[var(--border)] rounded-xl;
+    font-family: inherit;
   }
-  input {
-    @apply h-20 p-5 w-full;
 
+  input {
+    @apply h-14 px-4 w-full;
+    font-size: 0.875rem;
   }
 
   textarea {
-    @apply h-80 p-5;
-
+    @apply h-48 p-4;
+    font-size: 0.875rem;
   }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   .more {
-    background: linear-gradient(180deg, rgba(220, 222, 208, 0.00) -98.48%, #DCDED0 55.11%);
+    background: linear-gradient(
+      180deg,
+      rgba(220, 222, 208, 0) -98.48%,
+      #dcded0 55.11%
+    );
   }
-  /* Applique les styles à tout contenu Markdown dans <article.project> */
 
-  /* Style global pour le contenu markdown dans un article */
-/* Arrière-plan global clair */
-article .project {
-  @apply text-[#1E1E1E] leading-relaxed;
+  /* Markdown project content */
+  article .project {
+    @apply text-[#1E1E1E] leading-relaxed;
+  }
+
+  article .project h1 {
+    @apply hidden;
+  }
+
+  article .project h2 {
+    @apply text-2xl font-bold text-[#111111] mt-8 mb-4;
+  }
+
+  article .project h3 {
+    @apply text-xl font-semibold text-[#1E1E1E] mt-6 mb-3;
+  }
+
+  article .project h4 {
+    @apply text-lg font-semibold text-[#1E1E1E] mt-5 mb-2;
+  }
+
+  article .project h5,
+  article .project h6 {
+    @apply text-base font-semibold text-[#1E1E1E] mt-4 mb-2;
+  }
+
+  article .project p {
+    @apply my-4 text-[15px] leading-7 text-[#333333];
+  }
+
+  article .project ul {
+    @apply list-disc pl-6 my-4 text-[#333333];
+  }
+
+  article .project ol {
+    @apply list-decimal pl-6 my-4 text-[#333333];
+  }
+
+  article .project li {
+    @apply mb-2 text-[15px];
+  }
+
+  article .project a {
+    @apply text-[#05796B] hover:text-[#0D5B56] underline transition-all duration-200;
+  }
+
+  article .project hr {
+    @apply my-8 border-[#D0D0C8];
+  }
+
+  article .project blockquote {
+    @apply border-l-4 border-[#05796B]/30 pl-5 italic text-[#555555] my-6 py-2;
+  }
+
+  article .project code {
+    @apply bg-foreground/8 text-[#D97706] px-1.5 py-0.5 rounded font-mono text-[0.85em];
+  }
+
+  article .project pre {
+    @apply bg-[#1E1E1E] text-[#E8E8E8] p-5 rounded-xl overflow-x-auto my-6 text-sm;
+  }
+
+  article .project img {
+    @apply rounded-xl my-6 max-w-full h-auto;
+  }
+
+  article .project table {
+    @apply w-full text-left border-collapse my-6 text-sm;
+  }
+
+  article .project th {
+    @apply border-b border-[#CCCCC4] font-semibold px-4 py-2.5 text-[#111111];
+  }
+
+  article .project td {
+    @apply border-b border-[#E0E0D8] px-4 py-2.5 text-[#333333];
+  }
+
+  .description p {
+    margin: 0;
+    display: inline;
+    font-size: inherit;
+  }
+
+  .description strong {
+    font-weight: 500;
+    color: inherit;
+  }
+
+  .description em {
+    font-style: italic;
+    color: inherit;
+  }
+
+  .description code {
+    background-color: rgba(0, 0, 0, 0.06);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 0.88em;
+    font-family: ui-monospace, monospace;
+  }
+
+  /* Print styles for CV */
+  @media print {
+    body > *:not(#cv-print) {
+      display: none;
+    }
+    #cv-print {
+      display: block !important;
+    }
+  }
 }
 
-/* Titres */
-article .project h1 {
-  @apply hidden;
+/* ── Admin light theme overrides ──────────────────────────────────────────── */
+/* Applied via data-admin-theme="light" on the AdminThemeProvider wrapper.    */
+/* Overrides the hardcoded zinc-* classes used throughout the admin UI.       */
+
+[data-admin-theme="light"] {
+  color-scheme: light;
 }
 
-article .project h2 {
-  @apply text-3xl font-bold text-[#111111] mt-5 lg:mt-10 mb-4;
+/* Body / html backgrounds */
+[data-admin-theme="light"] .bg-zinc-950 {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .bg-zinc-900 {
+  background-color: #ffffff !important;
+}
+[data-admin-theme="light"] .bg-zinc-800 {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/50 {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/60 {
+  background-color: rgba(241, 245, 249, 0.8) !important;
+}
+[data-admin-theme="light"] .bg-zinc-800\/80 {
+  background-color: rgba(226, 232, 240, 0.9) !important;
 }
 
-article .project h3 {
-  @apply text-2xl font-semibold text-[#1E1E1E] mt-8 mb-4;
+/* Sidebar */
+[data-admin-theme="light"] aside.bg-zinc-900 {
+  background-color: #ffffff !important;
+  border-right-color: #e2e8f0 !important;
 }
 
-article .project h4 {
-  @apply text-xl font-semibold text-[#1E1E1E] mt-6 mb-3;
+/* Borders */
+[data-admin-theme="light"] .border-zinc-800 {
+  border-color: #e2e8f0 !important;
+}
+[data-admin-theme="light"] .border-zinc-800\/60 {
+  border-color: rgba(226, 232, 240, 0.8) !important;
+}
+[data-admin-theme="light"] .border-zinc-700 {
+  border-color: #cbd5e1 !important;
 }
 
-article .project h5,
-article .project h6 {
-  @apply text-lg font-semibold text-[#1E1E1E] mt-4 mb-2;
+/* Text */
+[data-admin-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+[data-admin-theme="light"] .text-zinc-200 {
+  color: #1e293b !important;
+}
+[data-admin-theme="light"] .text-zinc-300 {
+  color: #334155 !important;
+}
+[data-admin-theme="light"] .text-zinc-400 {
+  color: #475569 !important;
+}
+[data-admin-theme="light"] .text-zinc-500 {
+  color: #64748b !important;
+}
+[data-admin-theme="light"] .text-zinc-600 {
+  color: #94a3b8 !important;
+}
+[data-admin-theme="light"] .text-zinc-700 {
+  color: #94a3b8 !important;
 }
 
-/* Paragraphes */
-article .project p {
-  @apply my-4 text-base leading-7 text-[#333333];
+/* Inputs */
+[data-admin-theme="light"] input,
+[data-admin-theme="light"] textarea,
+[data-admin-theme="light"] select {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+[data-admin-theme="light"] input::placeholder,
+[data-admin-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
 }
 
-/* Listes */
-article .project ul {
-  @apply list-disc pl-6 my-4 text-[#333333];
+/* Hover states */
+[data-admin-theme="light"] .hover\:bg-zinc-800:hover {
+  background-color: #f1f5f9 !important;
+}
+[data-admin-theme="light"] .hover\:bg-zinc-800\/80:hover {
+  background-color: #e2e8f0 !important;
 }
 
-article .project ol {
-  @apply list-decimal pl-6 my-4 text-[#333333];
+/* Active nav items (keep green-app accent untouched) */
+[data-admin-theme="light"] .bg-green-app\/10 {
+  background-color: rgba(5, 121, 107, 0.08) !important;
+}
+[data-admin-theme="light"] .border-green-app\/20 {
+  border-color: rgba(5, 121, 107, 0.2) !important;
 }
 
-article .project li {
-  @apply mb-2;
+/* Logo badge */
+[data-admin-theme="light"] .bg-zinc-700 {
+  background-color: #e2e8f0 !important;
 }
 
-/* Liens */
-article .project a {
-  @apply text-[#0F766E] hover:text-[#0D5B56] underline transition-all duration-200;
+/* Dark scrollbars → light in light mode */
+[data-admin-theme="light"] * {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
-
-/* HR */
-article .project hr {
-  @apply my-10 border-[#A0A0A0];
-}
-
-/* Blockquote */
-article .project blockquote {
-  @apply border-l-4 border-[#A0A0A0] pl-6 italic text-[#666666] my-6 bg-[#EBEBEB] py-3 rounded;
-}
-
-/* Code inline */
-article .project code {
-  @apply bg-[#E6E6E6] text-[#D97706] px-1.5 py-0.5 rounded font-mono text-sm;
-}
-
-/* Code block */
-article .project pre {
-  @apply bg-[#E6E6E6] text-[#1E1E1E] p-4 rounded-lg overflow-x-auto my-6 text-sm;
-}
-
-/* Images */
-article .project img {
-  @apply rounded-lg my-6 max-w-full h-auto shadow-md;
-}
-
-/* Tables */
-article .project table {
-  @apply w-full text-left border-collapse my-6 text-sm;
-}
-
-article .project th {
-  @apply border-b border-[#999999] font-semibold px-4 py-2 text-[#111111];
-}
-
-article .project td {
-  @apply border-b border-[#CCCCCC] px-4 py-2 text-[#1E1E1E];
-}
-
-
-.description {
-  /* Garder la taille de police normale */
-  font-size: inherit;
-  line-height: inherit;
-}
-
-.description p {
-  margin: 0;
-  display: inline;
-}
-
-.description strong {
-  /* Strong sans augmenter la taille - juste une couleur légèrement différente */
-  font-weight: 500;
-  color: inherit;
-}
-
-.description em {
-  font-style: italic;
-  color: inherit;
-}
-
-.description code {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 1px 3px;
-  border-radius: 2px;
-  font-size: 0.9em;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-}
-
-.description a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: rgba(0, 0, 0, 0.3);
-}
-
-.description a:hover {
-  text-decoration-color: currentColor;
-}
+[data-admin-theme="light"] *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
 }

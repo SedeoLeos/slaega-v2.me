@@ -3,11 +3,13 @@ import { Inter, Poppins } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/libs/i18n/routing';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
 import Store from "@/Provider/Store";
+import PageTransition from "@/components/animations/PageTransition";
+import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,19 +19,32 @@ const inter = Inter({
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "Slaega Me",
-  description: "Bienvenue sur mon portofolios",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: {
+      default: t("siteTitle"),
+      template: t("titleTemplate"),
+    },
+    description: t("description"),
+  };
+}
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
 export default async function RootLayout({
   children,
-  params
+  params,
 }: Readonly<{
   params: Promise<{ locale: string }>;
   children: React.ReactNode;
@@ -42,20 +57,36 @@ export default async function RootLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+
+  // ── Dynamic theme: read from DB, inject as CSS custom properties ────────────
+  const theme = await siteConfigRepository.getTheme().catch(() => null);
+  const themeCss = theme
+    ? `:root {
+        --background: ${theme.background};
+        --foreground: ${theme.foreground};
+        --green-app:  ${theme.greenApp};
+        --card:       ${theme.card};
+        --accent:     ${theme.accent};
+        --primary:    ${theme.accent};
+        --secondary:  ${theme.secondary};
+      }`
+    : "";
+
   return (
     <html lang={locale}>
+      {themeCss && <style dangerouslySetInnerHTML={{ __html: themeCss }} />}
       <NextIntlClientProvider locale={locale} messages={messages}>
-      <Store >
-        <body
-          className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}
-        >
-          <Header />
-          <main className="w-full relative overflow-hidden bg-background min-h-screen flex flex-col mt-20">
-            {children}
-          </main>
-          <Footer />
-        </body>
-      </Store>
+        <Store>
+          <body className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
+            <Header />
+            <main className="w-full relative overflow-hidden bg-background min-h-screen flex flex-col mt-20">
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+            <Footer />
+          </body>
+        </Store>
       </NextIntlClientProvider>
     </html>
   );
