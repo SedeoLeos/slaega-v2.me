@@ -6,6 +6,10 @@ import Hero from "@/components/Hero";
 import ProjectList from "@/components/Projects/ProjectList";
 import Service from "@/components/Service/Service";
 import Ticker from "@/components/Ticker/Ticker";
+import TerminalShowcase from "@/components/TerminalShowcase/TerminalShowcase";
+import ValueCards from "@/components/ValueCards/ValueCards";
+import Process from "@/components/Process/Process";
+import FAQ from "@/components/FAQ/FAQ";
 import FadeIn from "@/components/animations/FadeIn";
 
 // Always render fresh — the homepage reads CMS data (Banner stats, About preview,
@@ -21,11 +25,15 @@ export default function Home() {
       <FadeIn delay={0.1}><Banner /></FadeIn>
       <FadeIn delay={0.05}><AboutPreview /></FadeIn>
       <FadeIn><Service /></FadeIn>
+      <FadeIn><TerminalShowcase /></FadeIn>
+      <FadeIn><ValueCards /></FadeIn>
       <FadeIn>
         <Suspense fallback={null}>
           <ProjectList origin="home" />
         </Suspense>
       </FadeIn>
+      <FadeIn><Process /></FadeIn>
+      <FadeIn><FAQ /></FadeIn>
       <FadeIn><Contact /></FadeIn>
     </>
   );

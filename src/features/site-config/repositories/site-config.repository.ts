@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
-import type { PortfolioTheme, TickerConfig } from "../types";
-import { DEFAULT_THEME, DEFAULT_TICKER } from "../types";
+import type { PortfolioTheme, TickerConfig, TerminalConfig, ValueCardsConfig } from "../types";
+import { DEFAULT_THEME, DEFAULT_TICKER, DEFAULT_TERMINAL, DEFAULT_VALUE_CARDS } from "../types";
 
-export type { PortfolioTheme, TickerConfig } from "../types";
-export { DEFAULT_THEME, DEFAULT_TICKER } from "../types";
+export type { PortfolioTheme, TickerConfig, TerminalConfig, ValueCardsConfig } from "../types";
+export { DEFAULT_THEME, DEFAULT_TICKER, DEFAULT_TERMINAL, DEFAULT_VALUE_CARDS } from "../types";
 
 // ── Repository ────────────────────────────────────────────────────────────────
 
@@ -54,6 +54,34 @@ export const siteConfigRepository = {
     const current = await siteConfigRepository.getTicker();
     const merged  = { ...current, ...patch };
     await siteConfigRepository.set("ticker", merged);
+    return merged;
+  },
+
+  /** Returns the terminal showcase config, falling back to defaults if not set. */
+  async getTerminal(): Promise<TerminalConfig> {
+    const stored = await siteConfigRepository.get<Partial<TerminalConfig>>("terminal");
+    return { ...DEFAULT_TERMINAL, ...(stored ?? {}) };
+  },
+
+  /** Saves the terminal config (partial merge). */
+  async setTerminal(patch: Partial<TerminalConfig>): Promise<TerminalConfig> {
+    const current = await siteConfigRepository.getTerminal();
+    const merged  = { ...current, ...patch };
+    await siteConfigRepository.set("terminal", merged);
+    return merged;
+  },
+
+  /** Returns the value cards config, falling back to defaults if not set. */
+  async getValueCards(): Promise<ValueCardsConfig> {
+    const stored = await siteConfigRepository.get<Partial<ValueCardsConfig>>("value-cards");
+    return { ...DEFAULT_VALUE_CARDS, ...(stored ?? {}) };
+  },
+
+  /** Saves the value cards config (partial merge). */
+  async setValueCards(patch: Partial<ValueCardsConfig>): Promise<ValueCardsConfig> {
+    const current = await siteConfigRepository.getValueCards();
+    const merged  = { ...current, ...patch };
+    await siteConfigRepository.set("value-cards", merged);
     return merged;
   },
 };

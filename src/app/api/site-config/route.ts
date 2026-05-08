@@ -2,16 +2,18 @@ import { auth } from "@/auth";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 import { NextRequest, NextResponse } from "next/server";
 
-/** GET /api/site-config — returns theme + ticker (public read) */
+/** GET /api/site-config — returns theme + ticker + terminal + value-cards (public read) */
 export async function GET() {
-  const [theme, ticker] = await Promise.all([
+  const [theme, ticker, terminal, valueCards] = await Promise.all([
     siteConfigRepository.getTheme(),
     siteConfigRepository.getTicker(),
+    siteConfigRepository.getTerminal(),
+    siteConfigRepository.getValueCards(),
   ]);
-  return NextResponse.json({ theme, ticker });
+  return NextResponse.json({ theme, ticker, terminal, valueCards });
 }
 
-/** PUT /api/site-config — update theme and/or ticker (admin only) */
+/** PUT /api/site-config — update any config key (admin only) */
 export async function PUT(req: NextRequest) {
   const session = await auth();
   if (!session) {
@@ -19,10 +21,12 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json();
-  const [theme, ticker] = await Promise.all([
-    body.theme  ? siteConfigRepository.setTheme(body.theme)   : siteConfigRepository.getTheme(),
-    body.ticker ? siteConfigRepository.setTicker(body.ticker) : siteConfigRepository.getTicker(),
+  const [theme, ticker, terminal, valueCards] = await Promise.all([
+    body.theme          ? siteConfigRepository.setTheme(body.theme)             : siteConfigRepository.getTheme(),
+    body.ticker         ? siteConfigRepository.setTicker(body.ticker)           : siteConfigRepository.getTicker(),
+    body.terminal       ? siteConfigRepository.setTerminal(body.terminal)       : siteConfigRepository.getTerminal(),
+    body["value-cards"] ? siteConfigRepository.setValueCards(body["value-cards"]) : siteConfigRepository.getValueCards(),
   ]);
 
-  return NextResponse.json({ ok: true, theme, ticker });
+  return NextResponse.json({ ok: true, theme, ticker, terminal, valueCards });
 }

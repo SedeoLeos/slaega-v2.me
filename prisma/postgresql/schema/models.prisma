@@ -109,6 +109,30 @@ model SiteConfig {
   updatedAt DateTime @updatedAt
 }
 
+// FAQ items — numbered accordion section on the homepage.
+model FaqItem {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Process steps — STEP 01/02/03 approach section on the homepage.
+model ProcessStep {
+  id          String   @id @default(cuid())
+  stepNumber  Int
+  label       String
+  title       String
+  description String
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // Single-record model — content of the public /about section.
 model AboutPage {
   id         String   @id @default(cuid())

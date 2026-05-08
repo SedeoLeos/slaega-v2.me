@@ -38,7 +38,26 @@ function Hero() {
   const t = useTranslations();
 
   return (
-    <section className="w-full max-w-content self-center font-poppins px-10 md:px-20 py-16">
+    <section className="w-full max-w-content self-center font-poppins px-10 md:px-20 py-16 relative">
+      {/* Rig-style floating accent lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden>
+        {/* Top-left cluster */}
+        <div className="absolute top-6  left-0  w-28 h-0.5 opacity-30" style={{ backgroundColor: 'var(--green-app)' }} />
+        <div className="absolute top-10 left-8  w-16 h-0.5 opacity-20" style={{ backgroundColor: 'var(--green-app)' }} />
+        <div className="absolute top-16 left-2  w-10 h-0.5 opacity-15" style={{ backgroundColor: 'var(--green-app)' }} />
+        {/* Top-right cluster */}
+        <div className="absolute top-8  right-0  w-24 h-0.5 opacity-25" style={{ backgroundColor: 'var(--green-app)' }} />
+        <div className="absolute top-14 right-6  w-14 h-0.5 opacity-15" style={{ backgroundColor: 'var(--green-app)' }} />
+        {/* Mid-left */}
+        <div className="absolute top-1/3 left-0  w-20 h-0.5 opacity-10" style={{ backgroundColor: 'var(--green-app)' }} />
+        {/* Bottom-left */}
+        <div className="absolute bottom-8  left-4  w-32 h-0.5 opacity-20" style={{ backgroundColor: 'var(--green-app)' }} />
+        <div className="absolute bottom-14 left-0  w-12 h-0.5 opacity-10" style={{ backgroundColor: 'var(--green-app)' }} />
+        {/* Bottom-right */}
+        <div className="absolute bottom-6  right-0  w-20 h-0.5 opacity-20" style={{ backgroundColor: 'var(--green-app)' }} />
+        <div className="absolute bottom-12 right-8  w-10 h-0.5 opacity-12" style={{ backgroundColor: 'var(--green-app)' }} />
+      </div>
+
       <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-10 lg:gap-16 items-center">
         {/* Left: rotating circle text + tagline */}
         <motion.div
