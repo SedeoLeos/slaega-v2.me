@@ -18,12 +18,12 @@ function Footer() {
         aria-hidden="true"
         className="absolute bottom-0 right-0 w-80 md:w-[420px] pointer-events-none select-none"
         style={{
-          /* Fond clair → rendre la carte sombre (couleur foreground) */
+          /* Fond clair → rendre la carte sombre */
           filter: "brightness(0)",
-          opacity: 0.08,
+          opacity: 0.18,
           /* Fondu diagonal : visible coin bas-droit, disparaît vers haut-gauche */
-          maskImage: "linear-gradient(135deg, transparent 30%, black 80%)",
-          WebkitMaskImage: "linear-gradient(135deg, transparent 30%, black 80%)",
+          maskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
+          WebkitMaskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
         }}
       />
 
