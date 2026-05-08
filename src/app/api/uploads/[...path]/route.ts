@@ -60,15 +60,30 @@ export async function GET(
       const res = await fetch(upstream);
       if (!res.ok) return new NextResponse("Not found", { status: 404 });
 
-      const buffer = await res.arrayBuffer();
       const contentType =
         res.headers.get("Content-Type") ?? "application/octet-stream";
 
+      const isVideo = contentType.startsWith("video/");
+
+      if (isVideo) {
+        // Stream video — don't buffer the whole file in memory
+        return new NextResponse(res.body, {
+          headers: {
+            "Content-Type":   contentType,
+            "Cache-Control":  "public, max-age=31536000, immutable",
+            "Accept-Ranges":  "bytes",
+            ...(res.headers.get("Content-Length")
+              ? { "Content-Length": res.headers.get("Content-Length")! }
+              : {}),
+          },
+        });
+      }
+
+      // Images — buffer OK (small files)
+      const buffer = await res.arrayBuffer();
       return new NextResponse(new Uint8Array(buffer), {
         headers: {
           "Content-Type":  contentType,
-          // Long-lived cache — filenames include a timestamp+random slug so they
-          // are effectively immutable.
           "Cache-Control": "public, max-age=31536000, immutable",
         },
       });

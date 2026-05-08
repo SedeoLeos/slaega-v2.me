@@ -10,8 +10,21 @@ const ALLOWED_TYPES = [
   "image/gif",
   "image/svg+xml",
   "image/avif",
+  // Vidéo
+  "video/mp4",
+  "video/webm",
+  "video/ogg",
+  "video/quicktime",
 ];
-const MAX_SIZE = 8 * 1024 * 1024; // 8 MB
+
+const IMAGE_TYPES = new Set([
+  "image/jpeg", "image/png", "image/webp",
+  "image/gif", "image/svg+xml", "image/avif",
+]);
+
+// Images → 8 MB, vidéos → 200 MB
+const MAX_SIZE = (type: string) =>
+  IMAGE_TYPES.has(type) ? 8 * 1024 * 1024 : 200 * 1024 * 1024;
 
 function sanitize(name: string) {
   return (
@@ -44,16 +57,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: `Type non supporté. Utilise : ${ALLOWED_TYPES.map((t) =>
-          t.replace("image/", "")
+          t.replace("image/", "").replace("video/", "")
         ).join(", ")}`,
       },
       { status: 400 }
     );
   }
 
-  if (file.size > MAX_SIZE) {
+  const maxBytes = MAX_SIZE(file.type);
+  if (file.size > maxBytes) {
     return NextResponse.json(
-      { message: `Fichier trop lourd (max ${MAX_SIZE / 1024 / 1024} MB)` },
+      { message: `Fichier trop lourd (max ${maxBytes / 1024 / 1024} MB)` },
       { status: 400 }
     );
   }

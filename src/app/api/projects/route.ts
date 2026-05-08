@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
     published,
     projectUrl,
     githubUrl,
+    videoUrl,
   } = body;
 
   if (!title?.trim() || !date?.trim() || !content?.trim()) {
@@ -75,6 +76,7 @@ export async function POST(req: NextRequest) {
     published: published ?? true,
     projectUrl: projectUrl || undefined,
     githubUrl: githubUrl || undefined,
+    videoUrl: videoUrl || undefined,
   });
 
   revalidateProject(project.slug);

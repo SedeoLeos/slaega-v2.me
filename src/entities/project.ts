@@ -10,6 +10,7 @@ export type Project = {
   published: boolean;
   projectUrl?: string | null;
   githubUrl?: string | null;
+  videoUrl?: string | null;
 };
 
 export type ProjectContent = {
@@ -28,6 +29,7 @@ export type CreateProjectInput = {
   published?: boolean;
   projectUrl?: string;
   githubUrl?: string;
+  videoUrl?: string;
 };
 
 export type UpdateProjectInput = Partial<CreateProjectInput>;

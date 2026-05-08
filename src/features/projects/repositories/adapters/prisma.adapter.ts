@@ -27,6 +27,7 @@ function mapRow(row: {
   published: boolean;
   projectUrl?: string | null;
   githubUrl?: string | null;
+  videoUrl?: string | null;
 }): Project {
   return {
     id: row.id,
@@ -40,6 +41,7 @@ function mapRow(row: {
     published: row.published,
     projectUrl: row.projectUrl ?? null,
     githubUrl: row.githubUrl ?? null,
+    videoUrl: row.videoUrl ?? null,
   };
 }
 
@@ -121,6 +123,7 @@ export const prismaProjectAdapter = {
         published: data.published ?? true,
         projectUrl: data.projectUrl ?? null,
         githubUrl: data.githubUrl ?? null,
+        videoUrl: data.videoUrl ?? null,
       },
     });
     return mapRow(row);
@@ -152,6 +155,9 @@ export const prismaProjectAdapter = {
         }),
         ...(data.githubUrl !== undefined && {
           githubUrl: data.githubUrl || null,
+        }),
+        ...(data.videoUrl !== undefined && {
+          videoUrl: data.videoUrl || null,
         }),
       },
     });

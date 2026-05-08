@@ -45,6 +45,8 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   const [published, setPublished] = useState(initial?.published ?? true);
   const [projectUrl, setProjectUrl] = useState(initial?.projectUrl ?? "");
   const [githubUrl, setGithubUrl] = useState(initial?.githubUrl ?? "");
+  const [videoUrl, setVideoUrl] = useState(initial?.videoUrl ?? "");
+  const [videoUploading, setVideoUploading] = useState(false);
 
   const toggleCategory = (c: string) =>
     setCategories((prev) =>
@@ -78,6 +80,7 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           published,
           projectUrl: projectUrl || undefined,
           githubUrl: githubUrl || undefined,
+          videoUrl: videoUrl || undefined,
         }),
       });
 
@@ -177,6 +180,92 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
 
         <SidebarCard title="Image de couverture">
           <ImageInput value={image} onChange={setImage} />
+        </SidebarCard>
+
+        {/* ── Vidéo de démo ── */}
+        <SidebarCard title="Vidéo de démo (optionnel)">
+          <p className="text-[11px] text-zinc-500 mb-3 leading-relaxed">
+            Remplace l'image par une vidéo. Upload direct ou colle une URL (YouTube, Vimeo, mp4…).
+          </p>
+
+          {/* Upload local / S3 */}
+          <label className="flex items-center gap-2 cursor-pointer w-full justify-center py-2 px-3 rounded-lg border border-dashed border-zinc-700 hover:border-zinc-500 transition-colors text-xs text-zinc-400 mb-3">
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            {videoUploading ? "Envoi en cours…" : "Uploader une vidéo (mp4 / webm)"}
+            <input
+              type="file"
+              accept="video/mp4,video/webm,video/ogg,video/quicktime"
+              className="hidden"
+              disabled={videoUploading}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setVideoUploading(true);
+                try {
+                  const fd = new FormData();
+                  fd.append("file", file);
+                  const res = await fetch("/api/upload", { method: "POST", body: fd });
+                  if (!res.ok) {
+                    const d = await res.json();
+                    toast.error(d.message ?? "Erreur upload vidéo");
+                    return;
+                  }
+                  const d = await res.json();
+                  setVideoUrl(d.url);
+                  toast.success("Vidéo uploadée !");
+                } catch {
+                  toast.error("Erreur réseau");
+                } finally {
+                  setVideoUploading(false);
+                  e.target.value = "";
+                }
+              }}
+            />
+          </label>
+
+          {/* URL manuelle */}
+          <Field label="URL de la vidéo">
+            <input
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://youtube.com/watch?v=… ou /api/uploads/…"
+              type="url"
+              className="input-base"
+            />
+          </Field>
+
+          {/* Preview miniature */}
+          {videoUrl && (
+            <div className="mt-3 relative rounded-lg overflow-hidden bg-zinc-900 aspect-video flex items-center justify-center">
+              {videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+                <p className="text-xs text-zinc-400 text-center px-4">
+                  ▶ YouTube — prévisualisation dans la page projet
+                </p>
+              ) : videoUrl.includes("vimeo.com") ? (
+                <p className="text-xs text-zinc-400 text-center px-4">
+                  ▶ Vimeo — prévisualisation dans la page projet
+                </p>
+              ) : (
+                // eslint-disable-next-line jsx-a11y/media-has-caption
+                <video
+                  src={videoUrl}
+                  className="w-full h-full object-cover"
+                  controls={false}
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+              )}
+              <button
+                type="button"
+                onClick={() => setVideoUrl("")}
+                className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                title="Supprimer la vidéo"
+              >✕</button>
+            </div>
+          )}
         </SidebarCard>
 
         <SidebarCard title="Liens du projet">

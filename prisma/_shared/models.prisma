@@ -17,6 +17,7 @@ model Project {
   published   Boolean  @default(true)
   projectUrl  String?
   githubUrl   String?
+  videoUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

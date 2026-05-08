@@ -10,6 +10,74 @@ import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Extrait l'ID d'une URL YouTube (youtu.be/ID ou ?v=ID) */
+function youtubeId(url: string): string | null {
+  const m = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+  );
+  return m ? m[1] : null;
+}
+
+/** Extrait l'ID d'une URL Vimeo */
+function vimeoId(url: string): string | null {
+  const m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  return m ? m[1] : null;
+}
+
+/**
+ * Lecteur vidéo universel :
+ *  - YouTube  → iframe embed sans cookies
+ *  - Vimeo    → iframe embed
+ *  - Autre    → <video> natif (mp4, webm, etc.)
+ */
+function ProjectVideoPlayer({ url, title }: { url: string; title: string }) {
+  const ytId = youtubeId(url);
+  if (ytId) {
+    return (
+      <div className="relative w-full aspect-video">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full"
+          style={{ border: "none" }}
+        />
+      </div>
+    );
+  }
+
+  const vmId = vimeoId(url);
+  if (vmId) {
+    return (
+      <div className="relative w-full aspect-video">
+        <iframe
+          src={`https://player.vimeo.com/video/${vmId}?badge=0&autopause=0`}
+          title={title}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full"
+          style={{ border: "none" }}
+        />
+      </div>
+    );
+  }
+
+  // Fichier direct (mp4, webm, /api/uploads/…)
+  return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    <video
+      src={url}
+      controls
+      playsInline
+      preload="metadata"
+      className="w-full h-auto min-h-[320px] bg-black"
+    />
+  );
+}
+
 function formatDate(d: string, months: string[]): string {
   if (!d) return "";
   const parts = d.split("-");
@@ -181,17 +249,21 @@ export default async function ProjectPage({
         )}
       </header>
 
-      {/* Cover image — full container width, lifted off the page */}
+      {/* Cover — vidéo OU image selon ce qui est défini */}
       <div className="w-full max-w-5xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
         <div className="rounded-3xl overflow-hidden shadow-2xl shadow-foreground/10 border border-foreground/5 bg-card">
-          <Image
-            width={1600}
-            height={900}
-            src={meta.image || "/img.jpg"}
-            alt={meta.title}
-            className="w-full h-auto min-h-[520px]"
-            priority
-          />
+          {meta.videoUrl ? (
+            <ProjectVideoPlayer url={meta.videoUrl} title={meta.title} />
+          ) : (
+            <Image
+              width={1600}
+              height={900}
+              src={meta.image || "/img.jpg"}
+              alt={meta.title}
+              className="w-full h-auto min-h-[520px]"
+              priority
+            />
+          )}
         </div>
       </div>
 
