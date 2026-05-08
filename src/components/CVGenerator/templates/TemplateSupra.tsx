@@ -129,7 +129,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
       borderWidth: 1, borderColor: BORDER, borderStyle: "solid",
       overflow: "hidden",
     },
-    projBody: { padding: 8 },
+    projBody: { padding: 8, flexDirection: "column" },
     projTitle: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: NAVY, marginBottom: 5 },
     projDesc: { fontSize: 6.5, color: "#777", lineHeight: 1.55, marginBottom: 4 },
     projLink: { fontSize: 6.5, color: ACC },

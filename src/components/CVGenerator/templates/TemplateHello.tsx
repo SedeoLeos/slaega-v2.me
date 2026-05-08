@@ -350,7 +350,7 @@ export default function TemplateHello({ data, palette, sections }: Props) {
               <>
                 <Text style={s.secLabel}>{L.projects}</Text>
                 {data.projects.slice(0, 3).map((p) => (
-                  <View key={p.slug} style={{ marginBottom: 5 }}>
+                  <View key={p.slug} style={{ marginBottom: 5, flexDirection: "column" }}>
                     <Text
                       style={{
                         fontSize: 8,

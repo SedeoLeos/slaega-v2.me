@@ -236,15 +236,14 @@ export default async function AdminCmsLayout({
               </nav>
 
               {/* ── Carte Congo décorative ── */}
-              <div className="relative h-44 flex-shrink-0 overflow-hidden pointer-events-none select-none">
+              <div className="relative h-48 flex-shrink-0 overflow-hidden pointer-events-none select-none">
                 <CarteCongoDecor
-                  fill="#ffffff"
                   stroke="#ffffff"
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-44"
                   style={{
-                    opacity: 0.22,
-                    maskImage: "linear-gradient(to top, black 0%, black 25%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to top, black 0%, black 25%, transparent 100%)",
+                    opacity: 0.45,
+                    maskImage: "linear-gradient(to top, black 0%, black 65%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to top, black 0%, black 65%, transparent 100%)",
                   }}
                 />
               </div>

@@ -172,7 +172,7 @@ export default function TemplateMosaic({ data, sections }: Props) {
     bio: { fontSize: 8, color: "#555", lineHeight: 1.55, marginBottom: 10 },
 
     /* Jobs */
-    job:     { marginBottom: 10, paddingLeft: 10, borderLeftWidth: 1.5, borderLeftColor: BORDER, borderLeftStyle: "solid" },
+    job:     { marginBottom: 10, paddingLeft: 10, borderLeftWidth: 1.5, borderLeftColor: BORDER, borderLeftStyle: "solid", flexDirection: "column" },
     jobDot:  { width: 5, height: 5, backgroundColor: BLUE_MED, borderRadius: 1, marginLeft: -13.5, marginBottom: 2, flexShrink: 0 },
     jobTop:  { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
     jobName: { fontSize: 9, fontFamily: "Helvetica-Bold", color: BLUE_DARK, flex: 1 },

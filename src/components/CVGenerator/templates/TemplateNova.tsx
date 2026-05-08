@@ -114,7 +114,7 @@ export default function TemplateNova({ data, palette, sections }: Props) {
     secLabel: { fontSize: 9, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 0.4 },
 
     /* Jobs */
-    job:     { marginBottom: 11, paddingLeft: 12, borderLeftWidth: 1.5, borderLeftColor: palette.border, borderLeftStyle: "solid" },
+    job:     { marginBottom: 11, paddingLeft: 12, borderLeftWidth: 1.5, borderLeftColor: palette.border, borderLeftStyle: "solid", flexDirection: "column" },
     jobDot:  { width: 5, height: 5, backgroundColor: palette.accent, borderRadius: 1, marginLeft: -15, marginBottom: 3, flexShrink: 0 },
     jobTop:  { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
     jobName: { fontSize: 9, fontFamily: "Helvetica-Bold", color: palette.primary, flex: 1 },

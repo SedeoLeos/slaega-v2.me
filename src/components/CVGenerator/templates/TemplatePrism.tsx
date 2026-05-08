@@ -112,7 +112,7 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
     sectionLabel: { fontSize: 8, fontFamily: "Helvetica-Bold", color: palette.accent, textTransform: "uppercase", letterSpacing: 2, marginHorizontal: 10 },
 
     // Jobs — card style
-    job:         { marginBottom: 12, padding: 10, borderRadius: 4, borderWidth: 1, borderColor: palette.border, borderStyle: "solid" },
+    job:         { marginBottom: 12, padding: 10, borderRadius: 4, borderWidth: 1, borderColor: palette.border, borderStyle: "solid", flexDirection: "column" },
     jobHeader:   { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 2 },
     jobRole:     { fontSize: 9, fontFamily: "Helvetica-Bold", color: palette.primary, flex: 1 },
     jobDate:     { fontSize: 7, color: palette.muted, fontFamily: "Helvetica-Oblique" },

@@ -127,7 +127,7 @@ export default function TemplateOrbit({ data, palette, sections }: Props) {
     rSecLine: { flex: 1, height: 0.5, backgroundColor: palette.border, marginLeft: 8 },
 
     /* Jobs */
-    job:     { marginBottom: 11 },
+    job:     { marginBottom: 11, flexDirection: "column" },
     jobTop:  { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
     jobName: { fontSize: 9, fontFamily: "Helvetica-Bold", color: palette.primary, flex: 1 },
     jobDate: { fontSize: 6.5, color: palette.muted, fontFamily: "Helvetica-Oblique", flexShrink: 0, marginLeft: 4 },

@@ -221,6 +221,7 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
 
     /* Projets */
     projCard: {
+      flexDirection: "column",
       borderRadius: 4,
       backgroundColor: BG,
       paddingHorizontal: 8,

@@ -225,6 +225,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
     /* Projets — grille 2 colonnes */
     projGrid: { flexDirection: "row", flexWrap: "wrap", gap: 7 },
     projCard: {
+      flexDirection: "column",
       width: "47.5%",
       backgroundColor: PAPER,
       borderRadius: 6,

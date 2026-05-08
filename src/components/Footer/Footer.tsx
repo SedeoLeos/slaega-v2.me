@@ -13,13 +13,12 @@ function Footer() {
     <footer className='flex flex-col w-full overflow-hidden relative'>
       {/* ── Carte Congo décorative ── */}
       <CarteCongoDecor
-        fill="#0E0E0E"
         stroke="#05796b"
-        className="absolute bottom-0 right-0 w-80 md:w-[420px] pointer-events-none select-none"
+        className="absolute bottom-0 right-0 w-72 md:w-[400px] pointer-events-none select-none"
         style={{
-          opacity: 0.18,
-          maskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
-          WebkitMaskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
+          opacity: 0.6,
+          maskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
+          WebkitMaskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
         }}
       />
 

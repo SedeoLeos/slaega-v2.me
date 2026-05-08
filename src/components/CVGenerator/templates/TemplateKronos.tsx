@@ -199,7 +199,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     expBulletText: { fontSize: 8.5, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── Projets ── */
-    projItem: { marginBottom: 11 },
+    projItem: { marginBottom: 11, flexDirection: "column" },
     projTitle: {
       fontSize: 10,
       fontFamily: "Helvetica-Bold",

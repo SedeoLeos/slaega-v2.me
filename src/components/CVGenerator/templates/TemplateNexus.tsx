@@ -125,7 +125,7 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
     sectionLabel: { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: 0.5 },
 
     // Jobs
-    job:         { marginBottom: 10, paddingLeft: 12, borderLeftWidth: 1.5, borderLeftColor: palette.border, borderLeftStyle: "solid" },
+    job:         { marginBottom: 10, paddingLeft: 12, borderLeftWidth: 1.5, borderLeftColor: palette.border, borderLeftStyle: "solid", flexDirection: "column" },
     jobHeader:   { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 1 },
     jobTitleRow: { flexDirection: "row", alignItems: "center", flex: 1 },
     jobDot:      { width: 5, height: 5, backgroundColor: palette.accent, borderRadius: 2.5, marginLeft: -14.5, marginRight: 6, flexShrink: 0 },
