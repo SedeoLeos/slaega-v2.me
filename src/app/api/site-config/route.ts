@@ -2,13 +2,16 @@ import { auth } from "@/auth";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 import { NextRequest, NextResponse } from "next/server";
 
-/** GET /api/site-config — returns current portfolio theme (public read) */
+/** GET /api/site-config — returns theme + ticker (public read) */
 export async function GET() {
-  const theme = await siteConfigRepository.getTheme();
-  return NextResponse.json({ theme });
+  const [theme, ticker] = await Promise.all([
+    siteConfigRepository.getTheme(),
+    siteConfigRepository.getTicker(),
+  ]);
+  return NextResponse.json({ theme, ticker });
 }
 
-/** PUT /api/site-config — update theme (admin only) */
+/** PUT /api/site-config — update theme and/or ticker (admin only) */
 export async function PUT(req: NextRequest) {
   const session = await auth();
   if (!session) {
@@ -16,7 +19,10 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json();
-  const theme = await siteConfigRepository.setTheme(body.theme ?? body);
+  const [theme, ticker] = await Promise.all([
+    body.theme  ? siteConfigRepository.setTheme(body.theme)   : siteConfigRepository.getTheme(),
+    body.ticker ? siteConfigRepository.setTicker(body.ticker) : siteConfigRepository.getTicker(),
+  ]);
 
-  return NextResponse.json({ ok: true, theme });
+  return NextResponse.json({ ok: true, theme, ticker });
 }

@@ -102,7 +102,7 @@ export default async function Service() {
               className="w-full md:w-[calc(50%-12px)] xl:w-[calc(33.333%-16px)]"
             >
               <article
-                className="relative flex flex-col gap-4 p-7 rounded-2xl overflow-hidden h-full min-h-[260px]"
+                className="relative flex flex-col gap-4 p-7 rounded-2xl overflow-hidden h-full min-h-[260px] group"
                 style={{
                   background:
                     'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
@@ -110,9 +110,18 @@ export default async function Service() {
                   backdropFilter: 'blur(12px)',
                 }}
               >
-                {/* Icon */}
-                <div className="aspect-square w-11 bg-green-app flex justify-center items-center rounded-xl flex-shrink-0 z-[2] shadow-sm shadow-green-app/30">
-                  <ServiceIcon name={service.icon} />
+                {/* Top row: icon + number */}
+                <div className="flex items-start justify-between z-[2]">
+                  <div className="aspect-square w-11 bg-green-app flex justify-center items-center rounded-xl flex-shrink-0 shadow-sm shadow-green-app/30">
+                    <ServiceIcon name={service.icon} />
+                  </div>
+                  {/* Rig-style index number */}
+                  <span
+                    className="text-[11px] font-mono font-bold tracking-widest select-none transition-colors duration-300"
+                    style={{ color: 'rgba(255,255,255,0.12)' }}
+                  >
+                    {String(index + 1).padStart(3, '0')}
+                  </span>
                 </div>
 
                 {/* Title */}
@@ -124,6 +133,12 @@ export default async function Service() {
                 <p className="text-white/55 text-sm leading-relaxed z-[2] flex-1">
                   {service.description}
                 </p>
+
+                {/* Bottom separator line — animates on hover */}
+                <div
+                  className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 ease-out"
+                  style={{ background: 'linear-gradient(90deg, #05796B, transparent)' }}
+                />
 
                 {/* Glow accent */}
                 <div

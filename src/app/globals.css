@@ -61,6 +61,21 @@
   background: transparent;
 }
 
+/* ── Ticker / marquee animation ───────────────────────────────── */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
 /* Dark surfaces (admin panels, CV generator left col, sidebar) */
 .dark-scroll {
   scrollbar-width: thin;

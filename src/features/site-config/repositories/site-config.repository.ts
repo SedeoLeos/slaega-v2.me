@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
-import type { PortfolioTheme } from "../types";
-import { DEFAULT_THEME } from "../types";
+import type { PortfolioTheme, TickerConfig } from "../types";
+import { DEFAULT_THEME, DEFAULT_TICKER } from "../types";
 
-export type { PortfolioTheme } from "../types";
-export { DEFAULT_THEME } from "../types";
+export type { PortfolioTheme, TickerConfig } from "../types";
+export { DEFAULT_THEME, DEFAULT_TICKER } from "../types";
 
 // ── Repository ────────────────────────────────────────────────────────────────
 
@@ -40,6 +40,20 @@ export const siteConfigRepository = {
     const current = await siteConfigRepository.getTheme();
     const merged  = { ...current, ...patch };
     await siteConfigRepository.set("theme", merged);
+    return merged;
+  },
+
+  /** Returns the ticker config, falling back to defaults if not set. */
+  async getTicker(): Promise<TickerConfig> {
+    const stored = await siteConfigRepository.get<Partial<TickerConfig>>("ticker");
+    return { ...DEFAULT_TICKER, ...(stored ?? {}) };
+  },
+
+  /** Saves the ticker config (partial merge). */
+  async setTicker(patch: Partial<TickerConfig>): Promise<TickerConfig> {
+    const current = await siteConfigRepository.getTicker();
+    const merged  = { ...current, ...patch };
+    await siteConfigRepository.set("ticker", merged);
     return merged;
   },
 };

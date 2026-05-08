@@ -35,6 +35,10 @@ const PRESETS = [
     label: 'Rose poudré',
     theme: { background: '#FDF2F8', foreground: '#1F0B16', greenApp: '#BE185D', card: '#FDF8FB', accent: '#DB2777', secondary: '#9D174D' },
   },
+  {
+    label: 'Rig (sombre)',
+    theme: { background: '#141414', foreground: '#F0EDE6', greenApp: '#E5533C', card: '#1E1E1E', accent: '#E5533C', secondary: '#888888' },
+  },
 ];
 
 // ── Color preview chip ────────────────────────────────────────────────────────
