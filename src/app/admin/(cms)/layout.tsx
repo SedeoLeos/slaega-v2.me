@@ -235,16 +235,20 @@ export default async function AdminCmsLayout({
               </nav>
 
               {/* ── Carte Congo décorative ── */}
-              <div className="relative h-36 flex-shrink-0 overflow-hidden pointer-events-none select-none">
+              <div className="relative h-40 flex-shrink-0 overflow-hidden pointer-events-none select-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/carte-congo.svg"
                   alt=""
                   aria-hidden="true"
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-56 opacity-[0.12]"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64"
                   style={{
-                    maskImage: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+                    /* Rend le SVG blanc (fond sombre) */
+                    filter: "brightness(0) invert(1)",
+                    opacity: 0.18,
+                    /* Fondu : visible en bas, disparaît vers le haut */
+                    maskImage: "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
                   }}
                 />
               </div>

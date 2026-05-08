@@ -16,10 +16,14 @@ function Footer() {
         src="/carte-congo.svg"
         alt=""
         aria-hidden="true"
-        className="absolute bottom-0 right-0 w-72 md:w-96 opacity-[0.07] pointer-events-none select-none"
+        className="absolute bottom-0 right-0 w-80 md:w-[420px] pointer-events-none select-none"
         style={{
-          maskImage: "linear-gradient(to top left, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 45%, transparent 75%)",
-          WebkitMaskImage: "linear-gradient(to top left, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 45%, transparent 75%)",
+          /* Fond clair → rendre la carte sombre (couleur foreground) */
+          filter: "brightness(0)",
+          opacity: 0.08,
+          /* Fondu diagonal : visible coin bas-droit, disparaît vers haut-gauche */
+          maskImage: "linear-gradient(135deg, transparent 30%, black 80%)",
+          WebkitMaskImage: "linear-gradient(135deg, transparent 30%, black 80%)",
         }}
       />
 
