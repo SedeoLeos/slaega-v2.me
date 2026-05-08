@@ -9,9 +9,22 @@ function Footer() {
   const currentYear = new Date().getUTCFullYear();
 
   return (
-    <footer className='flex flex-col w-full overflow-hidden'>
+    <footer className='flex flex-col w-full overflow-hidden relative'>
+      {/* ── Carte Congo décorative ── */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/carte-congo.svg"
+        alt=""
+        aria-hidden="true"
+        className="absolute bottom-0 right-0 w-72 md:w-96 opacity-[0.07] pointer-events-none select-none"
+        style={{
+          maskImage: "linear-gradient(to top left, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 45%, transparent 75%)",
+          WebkitMaskImage: "linear-gradient(to top left, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 45%, transparent 75%)",
+        }}
+      />
+
       {/* CTA Section */}
-      <div className='self-center max-w-content w-full px-10 md:px-20 pt-16 pb-12'>
+      <div className='self-center max-w-content w-full px-10 md:px-20 pt-16 pb-12 relative z-[1]'>
         <div className='flex justify-between items-center flex-col md:flex-row gap-8'>
           <h2 className='text-5xl md:text-6xl font-extrabold max-w-lg leading-tight'>
             {t('footer.cta.title').split('\n').map((line, index) => (
@@ -38,7 +51,7 @@ function Footer() {
       <hr className='bg-foreground/10 w-full h-px border-none mx-0' />
 
       {/* Bottom bar */}
-      <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4'>
+      <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4 relative z-[1]'>
         <span className='text-sm text-foreground/50'>{t('footer.copyright', { year: currentYear })}</span>
         <div className='flex gap-5'>
           <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />

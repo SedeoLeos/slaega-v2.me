@@ -234,6 +234,21 @@ export default async function AdminCmsLayout({
                 </div>
               </nav>
 
+              {/* ── Carte Congo décorative ── */}
+              <div className="relative h-36 flex-shrink-0 overflow-hidden pointer-events-none select-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/carte-congo.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-56 opacity-[0.12]"
+                  style={{
+                    maskImage: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+                  }}
+                />
+              </div>
+
               {/* User section */}
               <div className="px-3 py-3 border-t border-zinc-800/60 relative z-10 bg-zinc-900">
                 <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg">
