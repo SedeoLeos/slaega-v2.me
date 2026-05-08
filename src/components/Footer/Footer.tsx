@@ -3,6 +3,7 @@ import React from 'react';
 import SocialLink from '../SocialLink';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
+import CarteCongoDecor from '@/components/CarteCongoDecor';
 
 function Footer() {
   const t = useTranslations();
@@ -11,17 +12,12 @@ function Footer() {
   return (
     <footer className='flex flex-col w-full overflow-hidden relative'>
       {/* ── Carte Congo décorative ── */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/carte-congo.svg"
-        alt=""
-        aria-hidden="true"
+      <CarteCongoDecor
+        fill="#0E0E0E"
+        stroke="#05796b"
         className="absolute bottom-0 right-0 w-80 md:w-[420px] pointer-events-none select-none"
         style={{
-          /* Fond clair → rendre la carte sombre */
-          filter: "brightness(0)",
           opacity: 0.18,
-          /* Fondu diagonal : visible coin bas-droit, disparaît vers haut-gauche */
           maskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
           WebkitMaskImage: "linear-gradient(135deg, transparent 20%, black 65%)",
         }}

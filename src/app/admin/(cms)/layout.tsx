@@ -6,6 +6,7 @@ import Toaster from "@/components/admin/Toaster";
 import AdminNavItem from "@/components/admin/AdminNavItem";
 import { AdminThemeProvider } from "@/components/admin/AdminThemeProvider";
 import AdminThemeToggle from "@/components/admin/AdminThemeToggle";
+import CarteCongoDecor from "@/components/CarteCongoDecor";
 
 export const metadata = { title: "Admin — Slaega" };
 
@@ -235,20 +236,15 @@ export default async function AdminCmsLayout({
               </nav>
 
               {/* ── Carte Congo décorative ── */}
-              <div className="relative h-40 flex-shrink-0 overflow-hidden pointer-events-none select-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/carte-congo.svg"
-                  alt=""
-                  aria-hidden="true"
+              <div className="relative h-44 flex-shrink-0 overflow-hidden pointer-events-none select-none">
+                <CarteCongoDecor
+                  fill="#ffffff"
+                  stroke="#ffffff"
                   className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64"
                   style={{
-                    /* Rend le SVG blanc (fond sombre) */
-                    filter: "brightness(0) invert(1)",
-                    opacity: 0.18,
-                    /* Fondu : visible en bas, disparaît vers le haut */
-                    maskImage: "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
+                    opacity: 0.22,
+                    maskImage: "linear-gradient(to top, black 0%, black 25%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to top, black 0%, black 25%, transparent 100%)",
                   }}
                 />
               </div>
