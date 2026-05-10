@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getExperiences } from '@/features/experience/use-cases/get-experiences.use-case';
 import ExperienceItem from '@/components/Experience/ExperienceItem';
 import EmptyState from '@/components/ui/EmptyState';
-
+export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props) {
