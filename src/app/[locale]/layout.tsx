@@ -8,7 +8,6 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
 import Store from "@/Provider/Store";
-import PageTransition from "@/components/animations/PageTransition";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 
 const inter = Inter({
@@ -79,11 +78,7 @@ export default async function RootLayout({
         <Store>
           <body className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
             <Header />
-            <main className="w-full relative overflow-hidden bg-background min-h-screen flex flex-col mt-20">
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </main>
+            {children}
             <Footer />
           </body>
         </Store>
