@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { aboutBlockRepository } from "@/features/banner/repositories/banner.repository";
-import { revalidateHome } from "@/lib/revalidation";
 
 export async function GET() {
   const list = await aboutBlockRepository.getAll();
@@ -14,7 +13,6 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ message: "Body invalide" }, { status: 400 });
   const created = await aboutBlockRepository.create(body);
-  revalidateHome();
   return NextResponse.json(created);
 }
 
@@ -27,7 +25,6 @@ export async function PUT(req: NextRequest) {
   if (!body) return NextResponse.json({ message: "Body invalide" }, { status: 400 });
   const updated = await aboutBlockRepository.update(id, body);
   if (!updated) return NextResponse.json({ message: "Introuvable" }, { status: 404 });
-  revalidateHome();
   return NextResponse.json(updated);
 }
 
@@ -37,6 +34,5 @@ export async function DELETE(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ message: "ID manquant" }, { status: 400 });
   const ok = await aboutBlockRepository.delete(id);
-  revalidateHome();
   return NextResponse.json({ ok });
 }

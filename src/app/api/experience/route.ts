@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 import { experienceRepository } from "@/features/experience/repositories/experience.repository";
-import { revalidateExperience } from "@/lib/revalidation";
 import type { CreateExperienceInput, UpdateExperienceInput } from "@/entities/experience";
+
+
+/** Invalidate all project-related pages for both locales.
+ * Default locale (fr) has no prefix; secondary locale (en) has /en prefix. */
+function revalidateExperience() {
+  revalidatePath("/experience"); // fr listing
+  revalidatePath("/en/experience");
+}
 // ─── GET /api/experience ──────────────────────────────────────────────────────
 export async function GET() {
   const experiences = await experienceRepository.getAll();

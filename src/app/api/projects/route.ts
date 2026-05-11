@@ -1,11 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { projectRepository } from "@/features/projects/repositories/project.repository";
-import { revalidateProjects } from "@/lib/revalidation";
 import type {
   CreateProjectInput,
   UpdateProjectInput,
 } from "@/entities/project";
+
+/** Invalidate all project-related pages for both locales.
+ * Default locale (fr) has no prefix; secondary locale (en) has /en prefix. */
+function revalidateProject(slug?: string) {
+  if (slug) {
+    revalidatePath(`/project/${slug}`); // fr (default, no prefix)
+    revalidatePath(`/en/project/${slug}`); // en
+  }
+  revalidatePath("/project"); // fr listing
+  revalidatePath("/en/project"); // en listing
+  revalidatePath("/"); // home (may show recent projects)
+  revalidatePath("/en"); // en home
+}
 
 // ─── GET /api/projects ────────────────────────────────────────────────────────
 // Public: published projects. With ?admin=1 + auth: all projects (incl. drafts)
@@ -66,7 +79,7 @@ export async function POST(req: NextRequest) {
     videoUrl: videoUrl || undefined,
   });
 
-  revalidateProjects(project.slug);
+  revalidateProject(project.slug);
   return NextResponse.json(project, { status: 201 });
 }
 
@@ -88,7 +101,7 @@ export async function PUT(req: NextRequest) {
       { status: 404 },
     );
 
-  revalidateProjects(slug);
+  revalidateProject(slug);
   return NextResponse.json(updated);
 }
 
@@ -103,7 +116,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ message: "slug requis" }, { status: 400 });
 
   const deleted = await projectRepository.delete(slug);
-  if (deleted) revalidateProjects(slug);
+  if (deleted) revalidateProject(slug);
 
   return deleted
     ? NextResponse.json({ ok: true })
