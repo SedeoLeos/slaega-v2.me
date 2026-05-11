@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
+import { revalidateEverything } from "@/lib/revalidation";
 import { NextRequest, NextResponse } from "next/server";
 
 /** GET /api/site-config — returns theme + ticker + terminal + value-cards (public read) */
@@ -28,5 +29,6 @@ export async function PUT(req: NextRequest) {
     body["value-cards"] ? siteConfigRepository.setValueCards(body["value-cards"]) : siteConfigRepository.getValueCards(),
   ]);
 
+  revalidateEverything();
   return NextResponse.json({ ok: true, theme, ticker, terminal, valueCards });
 }

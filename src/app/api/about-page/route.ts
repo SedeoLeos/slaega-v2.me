@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { aboutPageRepository } from "@/features/about/repositories/about-page.repository";
+import { revalidateAbout } from "@/lib/revalidation";
 
 export async function GET() {
   const data = await aboutPageRepository.getOrCreate();
@@ -20,5 +21,6 @@ export async function PUT(req: NextRequest) {
   const updated = await aboutPageRepository.update(id, body);
   if (!updated) return NextResponse.json({ message: "Introuvable" }, { status: 404 });
 
+  revalidateAbout();
   return NextResponse.json(updated);
 }

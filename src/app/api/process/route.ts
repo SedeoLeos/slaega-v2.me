@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { processRepository } from "@/features/process/repositories/process.repository";
+import { revalidateHome } from "@/lib/revalidation";
 
 export async function GET(req: NextRequest) {
   const admin = req.nextUrl.searchParams.get("admin") === "1";
@@ -18,6 +19,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ message: "Body invalide" }, { status: 400 });
   const created = await processRepository.create(body);
+  revalidateHome();
   return NextResponse.json(created);
 }
 
@@ -30,6 +32,7 @@ export async function PUT(req: NextRequest) {
   if (!body) return NextResponse.json({ message: "Body invalide" }, { status: 400 });
   const updated = await processRepository.update(id, body);
   if (!updated) return NextResponse.json({ message: "Introuvable" }, { status: 404 });
+  revalidateHome();
   return NextResponse.json(updated);
 }
 
@@ -40,5 +43,6 @@ export async function DELETE(req: NextRequest) {
   if (!id) return NextResponse.json({ message: "ID manquant" }, { status: 400 });
   const ok = await processRepository.delete(id);
   if (!ok) return NextResponse.json({ message: "Introuvable" }, { status: 404 });
+  revalidateHome();
   return NextResponse.json({ ok: true });
 }
