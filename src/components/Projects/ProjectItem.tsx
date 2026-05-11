@@ -74,7 +74,7 @@ export default function ProjectItem({
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 flex flex-col gap-1.5 px-4 pt-3 pb-3.5 flex-1">
+      <div className="relative z-10 flex flex-col gap-1.5 px-4 pt-3 pb-3.5 flex-1 min-h-0 overflow-hidden">
         {/* Date */}
         {formattedDate && (
           <time className="text-[9px] text-foreground/30 font-semibold tracking-widest uppercase">
@@ -89,7 +89,7 @@ export default function ProjectItem({
 
         {/* Description */}
         {cleanDesc && (
-          <p className="text-[11.5px] text-foreground/45 leading-relaxed line-clamp-3 flex-1">
+          <p className="text-[11.5px] text-foreground/45 leading-relaxed line-clamp-3">
             {cleanDesc}
           </p>
         )}
@@ -109,7 +109,7 @@ export default function ProjectItem({
         )}
 
         {/* ── CTA bar ── */}
-        <div className="flex items-center gap-2 mt-1 pt-2.5 border-t border-foreground/[0.07]">
+        <div className="flex items-center gap-2 mt-auto pt-2.5 border-t border-foreground/[0.07]">
           <span className="text-[9.5px] font-bold uppercase tracking-widest text-foreground/30 group-hover:text-green-app transition-colors duration-300 flex-shrink-0">
             {t("discover")}
           </span>
