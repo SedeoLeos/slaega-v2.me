@@ -262,5 +262,17 @@
         "network": "Erreur réseau"
       }
     }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Cette page n'existe pas ou a été déplacée. Tu t'es peut-être perdu ?",
+    "backHome": "Retour à l'accueil",
+    "contact": "Me contacter"
+  },
+  "errorPage": {
+    "title": "Une erreur s'est produite",
+    "description": "Quelque chose s'est mal passé de notre côté. Rafraîchis la page ou reviens plus tard.",
+    "retry": "Réessayer",
+    "backHome": "Retour à l'accueil"
   }
 }

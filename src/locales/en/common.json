@@ -262,5 +262,17 @@
         "network": "Network error"
       }
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page doesn't exist or has been moved. Maybe you got lost?",
+    "backHome": "Back to home",
+    "contact": "Contact me"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "An error occurred on our end. Refresh the page or come back later.",
+    "retry": "Try again",
+    "backHome": "Back to home"
   }
 }
