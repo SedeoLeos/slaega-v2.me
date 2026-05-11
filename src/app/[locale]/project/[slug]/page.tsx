@@ -255,14 +255,15 @@ export default async function ProjectPage({
           {meta.videoUrl ? (
             <ProjectVideoPlayer url={meta.videoUrl} title={meta.title} />
           ) : (
-            <Image
-              width={1600}
-              height={900}
-              src={meta.image || "/img.jpg"}
-              alt={meta.title}
-              className="w-full h-auto min-h-[520px]"
-              priority
-            />
+            <div className="relative w-full aspect-[16/9]">
+              <Image
+                src={meta.image || "/img.jpg"}
+                alt={meta.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           )}
         </div>
       </div>
@@ -307,7 +308,7 @@ export default async function ProjectPage({
           5. SIMILAR PROJECTS
           ═════════════════════════════════════════════════════════ */}
       {posts.length > 0 && (
-        <section className="w-full max-w-content-blog mx-auto px-6 lg:px-0 pb-24 relative z-[2]">
+        <section className="w-full max-w-content mx-auto px-6 lg:px-0 pb-24 relative z-[2]">
           <SectionDivider />
           <div className="text-center mt-10 mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-green-app mb-2">

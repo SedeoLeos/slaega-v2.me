@@ -44,14 +44,13 @@ export default function ProjectItem({
       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-green-app scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-500 ease-out z-20" />
 
       {/* ── Image ── */}
-      <div className="relative w-full overflow-hidden bg-foreground/5">
+      <div className="relative w-full aspect-[16/10] overflow-hidden bg-foreground/5">
         <Image
           src={src || "/img.jpg"}
           alt={title}
-          width={800}
-          height={600}
+          fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="w-full h-auto min-h-[200px] transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
         />
 
         {/* Bottom scrim */}
@@ -84,13 +83,13 @@ export default function ProjectItem({
         )}
 
         {/* Title */}
-        <h3 className="text-[13.5px] font-extrabold leading-snug line-clamp-2 group-hover:text-green-app transition-colors duration-300">
+        <h3 className="text-[13.5px] font-extrabold leading-snug line-clamp-1 group-hover:text-green-app transition-colors duration-300">
           {title}
         </h3>
 
         {/* Description */}
         {cleanDesc && (
-          <p className="text-[11.5px] text-foreground/45 leading-relaxed line-clamp-2 flex-1">
+          <p className="text-[11.5px] text-foreground/45 leading-relaxed line-clamp-3 flex-1">
             {cleanDesc}
           </p>
         )}

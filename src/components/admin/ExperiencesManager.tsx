@@ -284,7 +284,7 @@ function ListView({ experiences }: { experiences: Experience[] }) {
                   <a
                     href={exp.companyUrl}
                     target="_blank"
-                    className="hover:text-white transition-colors flex items-center gap-1"
+                    className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
                   >
                     {exp.company}
                   </a>
