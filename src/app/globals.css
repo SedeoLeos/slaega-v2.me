@@ -105,16 +105,20 @@
   background: #059669;
 }
 
-/* Project / blog article — rich typography that lives & breathes. */
-.article-content {
-  color: var(--foreground);
+/* Project / blog article — rich typography that lives & breathes.
+   The !important on color overrides the .prose plugin defaults which
+   may inject hardcoded dark values that break non-default themes.     */
+.article-content,
+.prose.article-content {
+  color: var(--foreground) !important;
   line-height: 1.72;
   font-size: 1rem; /* 16px */
   font-family: var(--font-poppins), system-ui, sans-serif;
 }
 
 /* H1 — section opener with strong visual weight. */
-.article-content h1 {
+.article-content h1,
+.prose.article-content h1 {
   font-size: 2rem;
   font-weight: 800;
   color: var(--foreground);
@@ -135,7 +139,8 @@
 }
 
 /* H2 — sections with a left accent bar. */
-.article-content h2 {
+.article-content h2,
+.prose.article-content h2 {
   font-size: 1.45rem;
   font-weight: 700;
   color: var(--foreground);
@@ -151,7 +156,8 @@
 }
 
 /* H3 — sub-sections */
-.article-content h3 {
+.article-content h3,
+.prose.article-content h3 {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--foreground);
@@ -161,7 +167,8 @@
 }
 
 /* H4 */
-.article-content h4 {
+.article-content h4,
+.prose.article-content h4 {
   font-weight: 700;
   color: var(--foreground);
   margin: 1.25rem 0 0.4rem;
@@ -171,7 +178,8 @@
 }
 
 /* Paragraphs */
-.article-content p {
+.article-content p,
+.prose.article-content p {
   margin: 1rem 0;
   color: color-mix(in srgb, var(--foreground) 85%, transparent);
 }
@@ -187,7 +195,8 @@
   line-height: 1.65;
 }
 
-.article-content strong {
+.article-content strong,
+.prose.article-content strong {
   font-weight: 700;
   color: var(--foreground);
 }
