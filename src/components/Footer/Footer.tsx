@@ -4,6 +4,7 @@ import SocialLink from '../SocialLink';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
 import CarteCongoDecor from '@/components/CarteCongoDecor';
+import LocaleSwitcher from '@/components/LocaleSwitcher';
 
 function Footer() {
   const t = useTranslations();
@@ -53,6 +54,10 @@ function Footer() {
       {/* Bottom bar */}
       <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4 relative z-[1]'>
         <span className='text-sm text-foreground/50'>{t('footer.copyright', { year: currentYear })}</span>
+
+        {/* Language switcher */}
+        <LocaleSwitcher />
+
         <div className='flex gap-5'>
           <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
           <SocialLink href={SiteConfig.socialLinks.github} icon='github' />

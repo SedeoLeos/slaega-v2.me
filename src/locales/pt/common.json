@@ -1,0 +1,278 @@
+{
+  "meta": {
+    "siteTitle": "Slaega — Seba Gedeon",
+    "titleTemplate": "%s — Slaega",
+    "description": "Engenheiro de software full-stack especializado em mobile, web, backend e DevOps."
+  },
+  "common": {
+    "loading": "Carregando…",
+    "readMore": "Ler mais",
+    "readLess": "Ler menos",
+    "showLess": "Ver menos",
+    "monthsShort": [
+      "Jan",
+      "Fev",
+      "Mar",
+      "Abr",
+      "Mai",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Set",
+      "Out",
+      "Nov",
+      "Dez"
+    ]
+  },
+  "emptyState": {
+    "projects": {
+      "title": "Nenhum projeto por enquanto",
+      "description": "Novos projetos aparecerão aqui assim que estiverem prontos para ser compartilhados.",
+      "ctaLabel": "Entrar em contato",
+      "ctaHref": "/contact"
+    },
+    "projectsFiltered": {
+      "title": "Sem resultados",
+      "description": "Nenhum projeto corresponde a este filtro. Tente outra categoria ou veja todos.",
+      "ctaLabel": "Ver todos os projetos",
+      "ctaHref": "/project"
+    },
+    "experience": {
+      "title": "Histórico profissional em breve",
+      "description": "As experiências profissionais serão adicionadas em breve. Volte logo!",
+      "ctaLabel": "Entrar em contato",
+      "ctaHref": "/contact"
+    }
+  },
+  "feedback": {
+    "contact": {
+      "successTitle": "Mensagem enviada!",
+      "successDescription": "Obrigado pelo contato — responderei o mais breve possível.",
+      "successAction": "Enviar outra mensagem",
+      "errorTitle": "Falha no envio",
+      "errorDescription": "Não foi possível enviar a mensagem. Verifique sua conexão e tente novamente, ou entre em contato diretamente.",
+      "errorAction": "Tentar novamente",
+      "errorSecondary": "Enviar email"
+    }
+  },
+  "header": {
+    "navigation": {
+      "home": "Início",
+      "myWork": "Projetos",
+      "experience": "Experiência",
+      "about": "Sobre mim",
+      "cvGenerator": "Gerador de CV",
+      "contactMe": "Contato"
+    },
+    "social": {
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn"
+    },
+    "toggleMenu": "Abrir menu"
+  },
+  "about": {
+    "title": "Sobre mim",
+    "subtitle": "Conheça-me melhor",
+    "paragraph1": "Olá! Sou Seba Gedeon, engenheiro de software full-stack apaixonado por criar aplicações robustas e escaláveis. Minha experiência abrange desenvolvimento mobile, web, backend, desktop, integração de dados e DevOps.",
+    "paragraph2": "Trago profunda expertise técnica em segurança de aplicações, sistemas de permissões e autenticação. Seja desenvolvendo apps mobile de alta performance, backends escaláveis ou infraestruturas DevOps seguras, domino toda a cadeia de desenvolvimento.",
+    "paragraph3": "Vamos trabalhar juntos para concretizar seus projetos com soluções sob medida, seguras e de alta performance.",
+    "downloadResume": "Baixar CV",
+    "contactCta": "Entrar em contato"
+  },
+  "aboutPreview": {
+    "cta": "Saiba mais"
+  },
+  "banner": {
+    "statusFallback": "Status"
+  },
+  "services": {
+    "title": "Serviços",
+    "subtitle": "O que posso fazer por você",
+    "items": [
+      {
+        "title": "Desenvolvimento Mobile & Web",
+        "description": "Apps móveis nativos e multiplataforma, aplicações web modernas e responsivas. Expertise em React Native, Flutter, React, Vue.js."
+      },
+      {
+        "title": "Backend & API",
+        "description": "Backends robustos, APIs RESTful e GraphQL, microsserviços e arquiteturas distribuídas. Domínio de Node.js, Python, Java e bancos de dados."
+      },
+      {
+        "title": "Desktop & Integração",
+        "description": "Apps desktop multiplataforma e soluções de integração de dados. Expertise em Electron, .NET e integração de APIs de terceiros."
+      },
+      {
+        "title": "Segurança & Auth",
+        "description": "Sistemas de autenticação seguros, gerenciamento de permissões, OAuth, JWT, criptografia e boas práticas de segurança."
+      },
+      {
+        "title": "DevOps & Infraestrutura",
+        "description": "Pipelines CI/CD, Docker, Kubernetes, monitoramento e deploy automatizado na nuvem (AWS, Azure, GCP)."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Vamos trabalhar juntos",
+    "description": "Tem um projeto em mente? Vamos discutir como podemos colaborar para criar soluções técnicas inovadoras.",
+    "findMeOn": "Encontre-me em",
+    "form": {
+      "email": "Email",
+      "name": "Nome",
+      "message": "Mensagem",
+      "submit": "Enviar",
+      "submitting": "Enviando…",
+      "success": "Mensagem enviada com sucesso.",
+      "error": "Não foi possível enviar a mensagem.",
+      "subjectLabel": "Assunto",
+      "subjectPlaceholder": "Escolha um assunto",
+      "subjects": {
+        "freelance": "Projeto freelance",
+        "consulting": "Consultoria técnica",
+        "hiring": "Contratação",
+        "general": "Dúvida geral",
+        "other": "Outro"
+      }
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  },
+  "footer": {
+    "cta": {
+      "title": "Vamos\nTrabalhar Juntos -",
+      "email": "smatsoula19@gmail.com"
+    },
+    "copyright": "© {year} Seba Gedeon. Todos os direitos reservados.",
+    "social": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter"
+    }
+  },
+  "hero": {
+    "greeting": "olá",
+    "tagline1": "vamos pensar",
+    "tagline2": "criativo",
+    "name": "Sou Seba Gedeon",
+    "description": "Engenheiro de software full-stack que cria aplicações robustas e escaláveis. Especializo-me em mobile, web e backend, com expertise em frameworks modernos, cloud e soluções seguras.",
+    "learnMore": "saiba mais"
+  },
+  "projects": {
+    "title": "Projetos",
+    "subtitle": "Uma seleção do meu trabalho",
+    "viewAll": "Ver todos os projetos",
+    "loadMore": "Carregar mais",
+    "loadLess": "Carregar menos",
+    "discover": "Descobrir",
+    "minRead": "{count} min de leitura",
+    "minReadShort": "{count} min"
+  },
+  "projectPage": {
+    "breadcrumbAll": "Todos os projetos",
+    "techLabel": "Tecnologias",
+    "techTitle": "Stack do projeto",
+    "similarLabel": "Explorar também",
+    "similarTitle": "Projetos similares",
+    "viewAll": "Ver todos os projetos",
+    "viewLive": "Ver projeto",
+    "viewGithub": "GitHub"
+  },
+  "experience": {
+    "label": "Trajetória",
+    "title": "Experiência",
+    "pageTitle": "Experiência — Slaega",
+    "subtitle": "Minha trajetória profissional e os cargos que ocupei ao longo do tempo.",
+    "empty": "Nenhuma experiência para exibir ainda.",
+    "present": "Atual",
+    "currentBadge": "Cargo atual",
+    "viewAll": "Ver todas as experiências ({count})"
+  },
+  "categories": {
+    "showcase-site": "Site vitrine",
+    "e-commerce": "E-commerce",
+    "web-app": "Aplicação web",
+    "api-webservice": "Web services / API",
+    "automation": "Automação",
+    "wordpress-site": "Site WordPress",
+    "data-integration": "Integração de dados",
+    "admin-dashboard": "Dashboard / Admin",
+    "poc-prototype": "POC / Protótipo",
+    "mobile-app": "Aplicação móvel",
+    "desktop-app": "Aplicação desktop",
+    "self-hosted-platform": "Plataforma auto-hospedada",
+    "devops-infrastructure": "DevOps / Infraestrutura",
+    "platform-deployment": "Deploy de plataforma",
+    "auth-system": "Sistema de autorização",
+    "ci-cd": "CI/CD",
+    "cloud-setup": "Configuração cloud",
+    "monitoring-logging": "Monitoramento & Logs",
+    "reverse-proxy": "Proxy / Roteamento",
+    "Web": "Web",
+    "Mobile": "Mobile",
+    "FullStack": "Full Stack",
+    "Backend": "Backend",
+    "Frontend": "Frontend",
+    "DevOps": "DevOps",
+    "API": "API",
+    "Design": "Design",
+    "SaaS": "SaaS",
+    "Open Source": "Open Source"
+  },
+  "tools": {
+    "cvGenerator": {
+      "title": "Gerador de CV",
+      "description": "Cole uma oferta de emprego e gere automaticamente um CV direcionado que destaca suas experiências e projetos mais relevantes.",
+      "authRequired": "Faça login com GitHub para acessar o gerador de CV.",
+      "howItWorksTitle": "Como funciona",
+      "steps": [
+        "Cole uma oferta de emprego.",
+        "Gere um CV adaptado às habilidades solicitadas.",
+        "Imprima ou exporte para PDF."
+      ],
+      "form": {
+        "jobOfferLabel": "Oferta de emprego",
+        "jobOfferPlaceholder": "Cole aqui a oferta completa…"
+      },
+      "actions": {
+        "generate": "Gerar CV",
+        "generating": "Gerando…",
+        "pdf": "PDF"
+      },
+      "meta": {
+        "language": "Idioma",
+        "langFr": "Français",
+        "langEn": "English",
+        "keywordsDetected": "Palavras-chave detectadas ({count})",
+        "experiences": "Experiência",
+        "projects": "Projetos"
+      },
+      "preview": {
+        "empty": "O CV gerado aparecerá aqui"
+      },
+      "errors": {
+        "tooShort": "A oferta é muito curta (mín. 50 caracteres)",
+        "generic": "Erro",
+        "network": "Erro de rede"
+      }
+    }
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "Esta página não existe ou foi movida. Você se perdeu?",
+    "backHome": "Voltar ao início",
+    "contact": "Entrar em contato"
+  },
+  "errorPage": {
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro do nosso lado. Recarregue a página ou volte mais tarde.",
+    "retry": "Tentar novamente",
+    "backHome": "Voltar ao início"
+  }
+}

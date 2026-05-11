@@ -5,7 +5,7 @@ const localePrefix: LocalePrefixMode = 'as-needed';
 
 export const AppConfig = {
     name: 'Slaega Me',
-    locales: ['fr', 'en'],
+    locales: ['fr', 'en', 'es', 'pt'],
     defaultLocale: 'fr',
     localePrefix,
 };
