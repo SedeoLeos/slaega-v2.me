@@ -13,7 +13,7 @@ function Footer() {
     <footer className='flex flex-col w-full overflow-hidden relative'>
       {/* ── Carte Congo décorative ── */}
       <CarteCongoDecor
-        stroke="#05796b"
+        stroke="var(--green-app)"
         className="absolute bottom-0 right-0 w-72 md:w-[400px] pointer-events-none select-none"
         style={{
           zoom: "80%",

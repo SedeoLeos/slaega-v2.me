@@ -137,7 +137,7 @@ export default async function Service() {
                 {/* Bottom separator line — animates on hover */}
                 <div
                   className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 ease-out"
-                  style={{ background: 'linear-gradient(90deg, #05796B, transparent)' }}
+                  style={{ background: 'linear-gradient(90deg, var(--green-app), transparent)' }}
                 />
 
                 {/* Glow accent */}

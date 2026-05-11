@@ -66,19 +66,19 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
 
     /* Contact block */
     contactBlock: { paddingHorizontal: 16, marginBottom: 6 },
-    contactSecLabel: { fontSize: 7, color: "#aaa", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
+    contactSecLabel: { fontSize: 7, color: "#777", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
     contactRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 5 },
     contactIcon: {
       width: 14, height: 14, borderRadius: 4, backgroundColor: ACC + "20",
       alignItems: "center", justifyContent: "center", flexShrink: 0,
     },
     contactIconDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: ACC },
-    contactLabel: { fontSize: 5.5, color: "#aaa", letterSpacing: 0.8, textTransform: "uppercase" },
+    contactLabel: { fontSize: 5.5, color: "#777", letterSpacing: 0.8, textTransform: "uppercase" },
     contactVal:   { fontSize: 7, color: NAVY },
 
     /* Skills in sidebar */
     skillBlock: { paddingHorizontal: 16, marginBottom: 8 },
-    skillSecLabel: { fontSize: 7, color: "#aaa", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
+    skillSecLabel: { fontSize: 7, color: "#777", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
     skillChipsWrap: { flexDirection: "row", flexWrap: "wrap", gap: 3 },
     skillChip: {
       paddingHorizontal: 5, paddingVertical: 2, borderRadius: 3,
@@ -109,9 +109,9 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
     },
     expLeft: { flexDirection: "column", width: "38%", gap: 2 },
     expDateLoc: { flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 2 },
-    expDate: { fontSize: 6.5, color: "#aaa" },
+    expDate: { fontSize: 6.5, color: "#777" },
     expLocDot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: "#ccc" },
-    expLoc:  { fontSize: 6.5, color: "#aaa" },
+    expLoc:  { fontSize: 6.5, color: "#777" },
     expCompanyRow: { flexDirection: "row", alignItems: "center", gap: 6 },
     expLogoBox: {
       width: 18, height: 18, borderRadius: 5, backgroundColor: ACC + "18",
@@ -147,15 +147,15 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
       alignItems: "center", justifyContent: "center",
     },
     eduLogoDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: ACC },
-    eduSchool: { fontSize: 6, color: "#aaa", flex: 1 },
+    eduSchool: { fontSize: 6, color: "#777", flex: 1 },
     eduTitle: { fontSize: 7, fontFamily: "Helvetica-Bold", color: NAVY, lineHeight: 1.3 },
-    eduDate:  { fontSize: 6, color: "#aaa", marginTop: 1 },
+    eduDate:  { fontSize: 6, color: "#777", marginTop: 1 },
 
     /* Skills — two groups */
     skillsBlock: { flexDirection: "row", gap: 12 },
     skillGroup: { flex: 1 },
     skillGroupLabel: {
-      fontSize: 7, color: "#aaa", textTransform: "uppercase",
+      fontSize: 7, color: "#777", textTransform: "uppercase",
       letterSpacing: 1.5, marginBottom: 6,
       flexDirection: "row", alignItems: "center", gap: 4,
     },

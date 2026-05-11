@@ -28,7 +28,7 @@ export default function FeedbackState({
     <div
       role="status"
       aria-live="polite"
-      className="flex-1 max-w-xl w-full bg-white rounded-2xl border border-foreground/8 shadow-sm p-8 sm:p-10 flex flex-col items-center text-center"
+      className="flex-1 max-w-xl w-full bg-card rounded-2xl border border-foreground/8 shadow-sm p-8 sm:p-10 flex flex-col items-center text-center"
     >
       {/* Icon halo */}
       <div className="relative mb-5">

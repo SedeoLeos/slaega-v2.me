@@ -11,7 +11,7 @@ type Props = SVGProps<SVGSVGElement> & {
  * au contexte (sidebar sombre, footer clair…).
  */
 export default function CarteCongoDecor({
-  stroke = "#05796B",
+  stroke = "var(--green-app)",
   className,
   style,
   ...props

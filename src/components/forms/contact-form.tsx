@@ -193,23 +193,24 @@ export default function ContactForm() {
       <style>{`
         .contact-input {
           width: 100%;
-          background: white;
-          border: 1.5px solid rgba(14, 14, 14, 0.1);
+          background: var(--background);
+          border: 1.5px solid color-mix(in srgb, var(--foreground) 10%, transparent);
           border-radius: 0.875rem;
           padding: 0.75rem 1rem;
           font-size: 0.875rem;
-          color: #0e0e0e;
+          color: var(--foreground);
           outline: none;
           font-family: inherit;
           transition: border-color 0.15s, box-shadow 0.15s;
           height: auto;
         }
         .contact-input:focus {
-          border-color: #05796b;
-          box-shadow: 0 0 0 3px rgba(5, 121, 107, 0.1);
+          border-color: var(--green-app);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--green-app) 10%, transparent);
         }
         .contact-input::placeholder {
-          color: rgba(14, 14, 14, 0.3);
+          color: var(--foreground);
+          opacity: 0.35;
         }
       `}</style>
     </form>

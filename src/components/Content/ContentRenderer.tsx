@@ -74,18 +74,18 @@ function normalizeContent(raw: string): { text: string; isHtml: boolean } {
 
 /** Shared inline styles for prose CSS variables */
 const proseVars = {
-  "--tw-prose-body": "#3a3a3a",
-  "--tw-prose-headings": "#0e0e0e",
-  "--tw-prose-links": "#05796b",
-  "--tw-prose-bold": "#0e0e0e",
-  "--tw-prose-counters": "#71717a",
-  "--tw-prose-bullets": "#52525b",
-  "--tw-prose-hr": "#d0d0c8",
-  "--tw-prose-quotes": "#71717a",
-  "--tw-prose-quote-borders": "rgba(5,121,107,0.3)",
-  "--tw-prose-code": "#05796b",
-  "--tw-prose-pre-code": "#e4e4e7",
-  "--tw-prose-pre-bg": "#1e1e1e",
+  "--tw-prose-body":         "var(--foreground)",
+  "--tw-prose-headings":     "var(--foreground)",
+  "--tw-prose-links":        "var(--green-app)",
+  "--tw-prose-bold":         "var(--foreground)",
+  "--tw-prose-counters":     "var(--secondary)",
+  "--tw-prose-bullets":      "var(--green-app)",
+  "--tw-prose-hr":           "color-mix(in srgb, var(--foreground) 15%, transparent)",
+  "--tw-prose-quotes":       "var(--secondary)",
+  "--tw-prose-quote-borders":"color-mix(in srgb, var(--green-app) 30%, transparent)",
+  "--tw-prose-code":         "var(--green-app)",
+  "--tw-prose-pre-code":     "#e4e4e7",
+  "--tw-prose-pre-bg":       "#1e1e1e",
 } as React.CSSProperties;
 
 /**
@@ -191,7 +191,7 @@ export default function ContentRenderer({
           className="absolute bottom-12 left-0 right-0 h-32 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, rgba(220,222,208,0) 0%, rgba(220,222,208,0.85) 60%, #DCDED0 100%)",
+              "linear-gradient(180deg, transparent 0%, var(--background) 100%)",
           }}
         />
       )}

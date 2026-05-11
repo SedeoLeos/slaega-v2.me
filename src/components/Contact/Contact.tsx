@@ -8,7 +8,7 @@ function Contact() {
   const t = useTranslations();
 
   return (
-    <div className='w-full bg-white flex flex-col items-center justify-center overflow-hidden relative'>
+    <div className='w-full bg-background flex flex-col items-center justify-center overflow-hidden relative'>
       <div className='absolute left-0 opacity-30 pointer-events-none'>
         <IllustrationContact />
       </div>

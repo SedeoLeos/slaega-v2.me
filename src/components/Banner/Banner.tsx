@@ -58,7 +58,7 @@ export default async function Banner() {
 
         {/* ── About card — same layout, dynamic non-redundant content ── */}
         {about && (
-          <div className="flex bg-white self-end overflow-hidden shadow-md border border-foreground/5 max-w-md w-full md:max-h-40 lg:flex-shrink-0">
+          <div className="flex bg-card self-end overflow-hidden shadow-md border border-foreground/5 max-w-md w-full md:max-h-40 lg:flex-shrink-0">
             <div className="bg-foreground w-40 flex-shrink-0 relative overflow-hidden">
               {/* Subtle pulse dot for "available" indicator */}
               <div className="absolute top-3 left-3 flex items-center gap-1.5">
@@ -66,7 +66,7 @@ export default async function Banner() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-app opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-app" />
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-background/80">
                   {about.label || t("statusFallback")}
                 </span>
               </div>

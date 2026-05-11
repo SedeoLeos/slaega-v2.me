@@ -119,7 +119,7 @@ export default function CustomSelect({
         <ul
           id={`${id}-list`}
           role="listbox"
-          className="absolute z-50 left-0 right-0 top-[calc(100%+6px)] bg-[#f5f5ee] border border-foreground/10 rounded-xl shadow-lg shadow-foreground/8 overflow-hidden py-1"
+          className="absolute z-50 left-0 right-0 top-[calc(100%+6px)] bg-card border border-foreground/10 rounded-xl shadow-lg shadow-foreground/8 overflow-hidden py-1"
         >
           {options.map((opt) => {
             const isActive = selected?.value === opt.value;
