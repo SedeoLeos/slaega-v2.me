@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
-import ProjectPlaceholder from "@/components/Projects/ProjectPlaceholder";
+import ProjectGraph from "@/components/Projects/ProjectGraph";
 import ContentRenderer from "@/components/Content/ContentRenderer";
 import { getAllProjects, getPost } from "@/libs/posts";
 import Image from "next/image";
@@ -267,7 +267,7 @@ export default async function ProjectPage({
             </div>
           ) : (
             <div className="relative w-full aspect-[16/9]">
-              <ProjectPlaceholder
+              <ProjectGraph
                 title={meta.title}
                 tags={meta.tags}
                 categories={meta.categories}

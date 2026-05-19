@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import ProjectPlaceholder from "./ProjectPlaceholder";
+import ProjectGraph from "./ProjectGraph";
 
 type ProjectItemProps = {
   src?: string;
@@ -57,7 +57,7 @@ export default function ProjectItem({
             className="object-cover object-top transition-[object-position] duration-[2500ms] ease-in-out group-hover:object-bottom"
           />
         ) : (
-          <ProjectPlaceholder
+          <ProjectGraph
             title={title}
             tags={tags}
             categories={categories}
