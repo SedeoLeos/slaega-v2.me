@@ -125,8 +125,8 @@ model FaqItem {
 model ProcessStep {
   id          String   @id @default(cuid())
   stepNumber  Int
-  label       String
-  title       String
+  label       String   // e.g. "STEP 01"
+  title       String   // e.g. "Analyse & Découverte"
   description String
   order       Int      @default(0)
   published   Boolean  @default(true)
