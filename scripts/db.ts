@@ -31,27 +31,42 @@ import { spawnSync } from "node:child_process";
 type Provider = "sqlite" | "postgresql" | "mysql";
 
 function readActiveProvider(): Provider {
-  // 1. Explicit file (local dev, set by `pnpm db:use <provider>`)
+  const VALID: Provider[] = ["sqlite", "postgresql", "mysql"];
+
+  // 1. Env var — set in Vercel dashboard (or .env) without touching code
+  const fromEnv = process.env.DATABASE_PROVIDER?.trim().toLowerCase() as Provider | undefined;
+  if (fromEnv) {
+    if (!VALID.includes(fromEnv)) {
+      console.error(
+        `✗ DATABASE_PROVIDER="${fromEnv}" is invalid. Expected: sqlite | postgresql | mysql`,
+      );
+      process.exit(1);
+    }
+    return fromEnv;
+  }
+
+  // 2. Local file — written by `pnpm db:use <provider>` during local dev
   const file = path.join(process.cwd(), "prisma", ".active-provider");
   if (existsSync(file)) {
     const value = readFileSync(file, "utf8").trim() as Provider;
-    if (value !== "sqlite" && value !== "postgresql" && value !== "mysql") {
+    if (!VALID.includes(value)) {
       console.error(`✗ Invalid value in prisma/.active-provider: "${value}"`);
       process.exit(1);
     }
     return value;
   }
 
-  // 2. Infer from DATABASE_URL (CI / Vercel / production — no .active-provider file)
+  // 3. Auto-detect from DATABASE_URL prefix (fallback)
   const url = (process.env.DATABASE_URL ?? "").trim().toLowerCase();
   if (url.startsWith("postgres://") || url.startsWith("postgresql://")) return "postgresql";
   if (url.startsWith("mysql://") || url.startsWith("mariadb://")) return "mysql";
   if (url.startsWith("file:") || url.startsWith("sqlite:") || url === "") return "sqlite";
 
   console.error(
-    `✗ Could not detect provider: no prisma/.active-provider and DATABASE_URL\n` +
-    `  has an unrecognised prefix ("${url.slice(0, 20)}…").\n` +
-    `  Run \`pnpm db:use sqlite|postgresql|mysql\` to set it explicitly.`,
+    `✗ Cannot detect database provider. Set one of:\n` +
+    `    DATABASE_PROVIDER=sqlite|postgresql|mysql   (env var — recommended for Vercel)\n` +
+    `    prisma/.active-provider                     (local file — via \`pnpm db:use\`)\n` +
+    `    DATABASE_URL with a recognised prefix       (file: / postgres:// / mysql://)`,
   );
   process.exit(1);
 }
