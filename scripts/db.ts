@@ -61,6 +61,24 @@ function readActiveProvider(): Provider {
 }
 
 function main() {
+  const userArgs = process.argv.slice(2);
+  if (userArgs.length === 0) {
+    console.error("Usage: tsx scripts/db.ts <prisma-command> [...flags]");
+    process.exit(1);
+  }
+
+  // For `migrate deploy` (prebuild): skip gracefully if DATABASE_URL is absent.
+  // This lets `prisma generate` still run fine during CI cache-warming steps
+  // where no live DB is available yet.
+  const isMigrateDeploy = userArgs.includes("deploy");
+  const dbUrl = (process.env.DATABASE_URL ?? "").trim();
+  if (isMigrateDeploy && !dbUrl) {
+    console.warn("⚠  DATABASE_URL is not set — skipping migrate deploy.");
+    console.warn("   Set DATABASE_URL (and optionally DATABASE_PROVIDER) in your");
+    console.warn("   Vercel dashboard or .env to apply migrations automatically.");
+    process.exit(0);
+  }
+
   const provider = readActiveProvider();
   const schemaDir = path.join("prisma", provider, "schema");
   const abs = path.join(process.cwd(), schemaDir);
@@ -68,12 +86,6 @@ function main() {
   if (!existsSync(abs)) {
     console.error(`✗ Schema directory missing: ${schemaDir}`);
     console.error(`  Run \`pnpm db:use ${provider}\` to (re)create it.`);
-    process.exit(1);
-  }
-
-  const userArgs = process.argv.slice(2);
-  if (userArgs.length === 0) {
-    console.error("Usage: tsx scripts/db.ts <prisma-command> [...flags]");
     process.exit(1);
   }
 
