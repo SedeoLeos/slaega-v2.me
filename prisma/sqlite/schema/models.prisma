@@ -15,6 +15,9 @@ model Project {
   description String   @default("")
   content     String   @default("")
   published   Boolean  @default(true)
+  projectUrl  String?
+  githubUrl   String?
+  videoUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -97,6 +100,14 @@ model ContactSubmission {
   ip        String?
   userAgent String?
   createdAt DateTime @default(now())
+}
+
+// Key-value store for site-wide configuration (theme, settings…).
+// Each row is a unique key → JSON-serialised value.
+model SiteConfig {
+  key       String   @id          // e.g. "theme"
+  value     String                // JSON string
+  updatedAt DateTime @updatedAt
 }
 
 // FAQ items — numbered accordion section on the homepage.
