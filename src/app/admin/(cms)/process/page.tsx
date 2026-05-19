@@ -4,7 +4,7 @@ import ProcessEditor from "@/components/admin/ProcessEditor";
 export const metadata = { title: "Processus — Admin" };
 
 export default async function ProcessPage() {
-  const steps = await processRepository.getAll();
+  const steps = await processRepository.getAll().catch(() => []);
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="mb-8">

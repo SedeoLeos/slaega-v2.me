@@ -4,7 +4,7 @@ import FaqEditor from "@/components/admin/FaqEditor";
 export const metadata = { title: "FAQ — Admin" };
 
 export default async function FaqPage() {
-  const items = await faqRepository.getAll();
+  const items = await faqRepository.getAll().catch(() => []);
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="mb-8">
