@@ -31,14 +31,29 @@ import { spawnSync } from "node:child_process";
 type Provider = "sqlite" | "postgresql" | "mysql";
 
 function readActiveProvider(): Provider {
+  // 1. Explicit file (local dev, set by `pnpm db:use <provider>`)
   const file = path.join(process.cwd(), "prisma", ".active-provider");
-  if (!existsSync(file)) return "sqlite";
-  const value = readFileSync(file, "utf8").trim() as Provider;
-  if (value !== "sqlite" && value !== "postgresql" && value !== "mysql") {
-    console.error(`✗ Invalid value in prisma/.active-provider: "${value}"`);
-    process.exit(1);
+  if (existsSync(file)) {
+    const value = readFileSync(file, "utf8").trim() as Provider;
+    if (value !== "sqlite" && value !== "postgresql" && value !== "mysql") {
+      console.error(`✗ Invalid value in prisma/.active-provider: "${value}"`);
+      process.exit(1);
+    }
+    return value;
   }
-  return value;
+
+  // 2. Infer from DATABASE_URL (CI / Vercel / production — no .active-provider file)
+  const url = (process.env.DATABASE_URL ?? "").trim().toLowerCase();
+  if (url.startsWith("postgres://") || url.startsWith("postgresql://")) return "postgresql";
+  if (url.startsWith("mysql://") || url.startsWith("mariadb://")) return "mysql";
+  if (url.startsWith("file:") || url.startsWith("sqlite:") || url === "") return "sqlite";
+
+  console.error(
+    `✗ Could not detect provider: no prisma/.active-provider and DATABASE_URL\n` +
+    `  has an unrecognised prefix ("${url.slice(0, 20)}…").\n` +
+    `  Run \`pnpm db:use sqlite|postgresql|mysql\` to set it explicitly.`,
+  );
+  process.exit(1);
 }
 
 function main() {
