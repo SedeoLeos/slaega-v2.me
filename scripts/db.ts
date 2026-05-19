@@ -2,8 +2,9 @@
 /**
  * Prisma command wrapper — auto-applies `--schema` based on the active provider.
  *
- * The active provider is stored in `prisma/.active-provider` (one of
- * `sqlite | postgresql | mysql`). Run `pnpm db:use <provider>` to switch.
+ * Provider resolution order:
+ *   1. DATABASE_PROVIDER env var  (set in .env or Vercel dashboard)
+ *   2. DATABASE_URL prefix        (file: → sqlite, postgres:// → postgresql, mysql:// → mysql)
  *
  * Each provider has its own schema dir AND its own migrations history:
  *
@@ -24,7 +25,6 @@
  *   tsx scripts/db.ts migrate deploy
  *   tsx scripts/db.ts studio
  */
-import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -33,7 +33,7 @@ type Provider = "sqlite" | "postgresql" | "mysql";
 function readActiveProvider(): Provider {
   const VALID: Provider[] = ["sqlite", "postgresql", "mysql"];
 
-  // 1. Env var — set in Vercel dashboard (or .env) without touching code
+  // 1. Explicit env var — set in Vercel dashboard or local .env
   const fromEnv = process.env.DATABASE_PROVIDER?.trim().toLowerCase() as Provider | undefined;
   if (fromEnv) {
     if (!VALID.includes(fromEnv)) {
@@ -45,18 +45,7 @@ function readActiveProvider(): Provider {
     return fromEnv;
   }
 
-  // 2. Local file — written by `pnpm db:use <provider>` during local dev
-  const file = path.join(process.cwd(), "prisma", ".active-provider");
-  if (existsSync(file)) {
-    const value = readFileSync(file, "utf8").trim() as Provider;
-    if (!VALID.includes(value)) {
-      console.error(`✗ Invalid value in prisma/.active-provider: "${value}"`);
-      process.exit(1);
-    }
-    return value;
-  }
-
-  // 3. Auto-detect from DATABASE_URL prefix (fallback)
+  // 2. Auto-detect from DATABASE_URL prefix
   const url = (process.env.DATABASE_URL ?? "").trim().toLowerCase();
   if (url.startsWith("postgres://") || url.startsWith("postgresql://")) return "postgresql";
   if (url.startsWith("mysql://") || url.startsWith("mariadb://")) return "mysql";
@@ -64,8 +53,7 @@ function readActiveProvider(): Provider {
 
   console.error(
     `✗ Cannot detect database provider. Set one of:\n` +
-    `    DATABASE_PROVIDER=sqlite|postgresql|mysql   (env var — recommended for Vercel)\n` +
-    `    prisma/.active-provider                     (local file — via \`pnpm db:use\`)\n` +
+    `    DATABASE_PROVIDER=sqlite|postgresql|mysql   (env var — local .env or Vercel dashboard)\n` +
     `    DATABASE_URL with a recognised prefix       (file: / postgres:// / mysql://)`,
   );
   process.exit(1);
