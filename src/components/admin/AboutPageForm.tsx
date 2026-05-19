@@ -21,19 +21,36 @@ export default function AboutPageForm({ initial }: Props) {
   const [ctaHref, setCtaHref] = useState(initial.ctaHref);
   const [published, setPublished] = useState(initial.published);
   const [highlights, setHighlights] = useState<AboutHighlightGroup[]>(initial.highlights);
+  // Raw textarea strings — kept as-is while typing, parsed only on blur
+  const [rawItems, setRawItems] = useState<string[]>(
+    () => initial.highlights.map((g) => g.items.join(", ")),
+  );
 
   const updateGroup = (index: number, patch: Partial<AboutHighlightGroup>) => {
     setHighlights((prev) => prev.map((g, i) => (i === index ? { ...g, ...patch } : g)));
   };
 
-  const addGroup = () =>
+  const addGroup = () => {
     setHighlights((prev) => [...prev, { title: "", items: [] }]);
+    setRawItems((prev) => [...prev, ""]);
+  };
 
-  const removeGroup = (index: number) =>
+  const removeGroup = (index: number) => {
     setHighlights((prev) => prev.filter((_, i) => i !== index));
+    setRawItems((prev) => prev.filter((_, i) => i !== index));
+  };
 
-  const setItems = (index: number, raw: string) => {
-    const items = raw.split(",").map((s) => s.trim()).filter(Boolean);
+  // Update raw string freely while typing — no parsing
+  const handleItemsChange = (index: number, raw: string) => {
+    setRawItems((prev) => prev.map((r, i) => (i === index ? raw : r)));
+  };
+
+  // Parse and commit to highlights only when the user leaves the field
+  const commitItems = (index: number) => {
+    const items = (rawItems[index] ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     updateGroup(index, { items });
   };
 
@@ -138,8 +155,9 @@ export default function AboutPageForm({ initial }: Props) {
                 </button>
               </div>
               <textarea
-                value={g.items.join(", ")}
-                onChange={(e) => setItems(i, e.target.value)}
+                value={rawItems[i] ?? g.items.join(", ")}
+                onChange={(e) => handleItemsChange(i, e.target.value)}
+                onBlur={() => commitItems(i)}
                 rows={2}
                 placeholder="Items séparés par des virgules : Spring Boot, NestJS, Next.js…"
                 className="input-base resize-none"
