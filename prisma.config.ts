@@ -1,28 +1,36 @@
 // Prisma 7 config — replaces the legacy "prisma" key in package.json.
 // Docs: https://www.prisma.io/docs/orm/prisma-schema/overview/locations#prismaconfigts
 //
-// Provider-aware: reads `prisma/.active-provider` and resolves the schema
-// and migrations paths to the matching provider directory. Run
-// `pnpm db:use <sqlite|postgresql|mysql>` to switch.
-import { existsSync, readFileSync } from "node:fs";
+// Provider resolution order (same as scripts/db.ts):
+//   1. DATABASE_PROVIDER env var  → set in Vercel dashboard or .env
+//   2. DATABASE_URL prefix        → postgres:// / mysql:// / file:
+//   3. Default: sqlite
 import path from "node:path";
 import { defineConfig } from "prisma/config";
 import { config as loadEnv } from "dotenv";
 
-// Load .env so DATABASE_URL is available to the migrate engine.
+// Load .env so DATABASE_URL / DATABASE_PROVIDER are available.
 loadEnv();
 
 type Provider = "sqlite" | "postgresql" | "mysql";
 
-function readActiveProvider(): Provider {
-  const file = path.join("prisma", ".active-provider");
-  if (!existsSync(file)) return "sqlite";
-  const value = readFileSync(file, "utf8").trim();
-  if (value === "postgresql" || value === "mysql" || value === "sqlite") return value;
+function resolveProvider(): Provider {
+  const VALID: Provider[] = ["sqlite", "postgresql", "mysql"];
+
+  // 1. Explicit env var (Vercel dashboard or .env)
+  const fromEnv = process.env.DATABASE_PROVIDER?.trim().toLowerCase() as Provider | undefined;
+  if (fromEnv && VALID.includes(fromEnv)) return fromEnv;
+
+  // 2. Auto-detect from DATABASE_URL prefix
+  const url = (process.env.DATABASE_URL ?? "").trim().toLowerCase();
+  if (url.startsWith("postgres://") || url.startsWith("postgresql://")) return "postgresql";
+  if (url.startsWith("mysql://") || url.startsWith("mariadb://")) return "mysql";
+
+  // 3. Default to sqlite (local dev without explicit config)
   return "sqlite";
 }
 
-const provider = readActiveProvider();
+const provider = resolveProvider();
 
 // `prisma migrate` / `prisma db push` need a real (non-pooled) connection.
 // Supabase: DATABASE_URL is the pgbouncer pooler (cannot run DDL), so we
