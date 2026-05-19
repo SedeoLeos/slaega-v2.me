@@ -25,6 +25,7 @@
  *   tsx scripts/db.ts migrate deploy
  *   tsx scripts/db.ts studio
  */
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
