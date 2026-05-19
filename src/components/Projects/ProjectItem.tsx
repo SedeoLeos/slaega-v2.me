@@ -3,14 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import ProjectPlaceholder from "./ProjectPlaceholder";
 
 type ProjectItemProps = {
-  src: string;
+  src?: string;
   title: string;
   desc: string;
   slug: string;
   date?: string;
   categories?: string[];
+  tags?: string[];
 };
 
 export default function ProjectItem({
@@ -20,6 +22,7 @@ export default function ProjectItem({
   slug,
   date,
   categories,
+  tags,
 }: ProjectItemProps) {
   const t = useTranslations("projects");
   const locale = useLocale();
@@ -45,13 +48,22 @@ export default function ProjectItem({
 
       {/* ── Image ── */}
       <div className="relative w-full aspect-[16/10] overflow-hidden bg-foreground/5">
-        <Image
-          src={src || "/img.jpg"}
-          alt={title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-        />
+        {src ? (
+          <Image
+            src={src}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover object-top transition-[object-position] duration-[2500ms] ease-in-out group-hover:object-bottom"
+          />
+        ) : (
+          <ProjectPlaceholder
+            title={title}
+            tags={tags}
+            categories={categories}
+            compact
+          />
+        )}
 
         {/* Bottom scrim */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />

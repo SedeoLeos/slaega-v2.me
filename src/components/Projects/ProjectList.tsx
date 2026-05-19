@@ -94,12 +94,13 @@ function ProjectList({ origin }: ProjectListProps) {
             : visibleProjects.map((item, index) => (
                 <ProjectItem
                   key={index}
-                  src={item.image || '/img.jpg'}
+                  src={item.image || undefined}
                   title={item.title || ''}
                   slug={item.slug}
                   desc={item.desc || ''}
                   date={item.date}
                   categories={item.categories}
+                  tags={item.tags}
                 />
               ))}
         </div>

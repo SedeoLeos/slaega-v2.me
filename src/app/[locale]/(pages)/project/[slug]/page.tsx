@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
+import ProjectPlaceholder from "@/components/Projects/ProjectPlaceholder";
 import ContentRenderer from "@/components/Content/ContentRenderer";
 import { getAllProjects, getPost } from "@/libs/posts";
 import Image from "next/image";
@@ -249,19 +250,27 @@ export default async function ProjectPage({
         )}
       </header>
 
-      {/* Cover — vidéo OU image selon ce qui est défini */}
+      {/* Cover — vidéo OU image avec pan OU placeholder */}
       <div className="w-full max-w-5xl mx-auto px-6 lg:px-0 mb-20 relative z-[2]">
-        <div className="rounded-3xl overflow-hidden shadow-2xl shadow-foreground/10 border border-foreground/5 bg-card">
+        <div className="group rounded-3xl overflow-hidden border border-foreground/5 bg-card">
           {meta.videoUrl ? (
             <ProjectVideoPlayer url={meta.videoUrl} title={meta.title} />
-          ) : (
+          ) : meta.image ? (
             <div className="relative w-full aspect-[16/9]">
               <Image
-                src={meta.image || "/img.jpg"}
+                src={meta.image}
                 alt={meta.title}
                 fill
-                className="object-cover"
+                className="object-cover object-top transition-[object-position] duration-[3000ms] ease-in-out group-hover:object-bottom"
                 priority
+              />
+            </div>
+          ) : (
+            <div className="relative w-full aspect-[16/9]">
+              <ProjectPlaceholder
+                title={meta.title}
+                tags={meta.tags}
+                categories={meta.categories}
               />
             </div>
           )}
@@ -322,12 +331,13 @@ export default async function ProjectPage({
             {posts.slice(0, 3).map((item) => (
               <ProjectItem
                 key={item.slug}
-                src={item.image}
+                src={item.image || undefined}
                 title={item.title}
                 slug={item.slug}
                 desc={item.desc}
                 date={item.date}
                 categories={item.categories}
+                tags={item.tags}
               />
             ))}
           </div>
