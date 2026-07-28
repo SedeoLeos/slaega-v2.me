@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "tsx scripts/db.ts migrate deploy && tsx prisma/seed-prod.ts",
+    "prebuild": "tsx scripts/db.ts migrate deploy && (tsx prisma/seed-prod.ts || echo '⚠ seed step failed — continuing build')",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",

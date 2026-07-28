@@ -23,9 +23,10 @@
  * │   Correct them in place, then re-run `pnpm db:seed`.                       │
  * └───────────────────────────────────────────────────────────────────────────┘
  *
- * Note: `prebuild` runs `migrate deploy && seed-prod`, so a production build
- * (re)applies this content automatically. Being upsert-based, each deploy
- * re-syncs the DB to the values in this file.
+ * Note: `prebuild` runs `migrate deploy && seed-prod`, so a PRODUCTION build
+ * (re)applies this content automatically (upsert — re-syncs the DB to this
+ * file). The seed is skipped on Vercel preview/dev builds and is non-fatal, so
+ * a seeding hiccup never breaks a deployment.
  */
 import "dotenv/config";
 import fs from "node:fs";
@@ -44,6 +45,15 @@ import {
 // DATABASE_URL) — mirrors the behaviour of `scripts/db.ts migrate deploy`.
 if (!process.env.DATABASE_URL || !process.env.DATABASE_URL.trim()) {
   console.warn("⚠  DATABASE_URL is not set — skipping seed.");
+  process.exit(0);
+}
+
+// On Vercel, only seed on PRODUCTION deployments. Preview/development builds
+// must never seed — they may share the production DATABASE_URL and would
+// otherwise overwrite live content on every PR build. Locally VERCEL_ENV is
+// undefined, so `pnpm db:seed` still runs normally.
+if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production") {
+  console.warn(`⚠  VERCEL_ENV=${process.env.VERCEL_ENV} — skipping seed (production deploys only).`);
   process.exit(0);
 }
 
