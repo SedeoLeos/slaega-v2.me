@@ -29,7 +29,7 @@ export default async function TerminalShowcase() {
         </div>
 
         {/* Heading */}
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 leading-tight text-foreground">
+        <h2 className="text-4xl sm:text-5xl font-extrabold font-display text-center mb-16 leading-tight text-foreground">
           {cfg.heading}
         </h2>
 

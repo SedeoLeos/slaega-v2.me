@@ -19,7 +19,7 @@ export default async function ExperienceSection() {
         <span className="text-xs font-semibold uppercase tracking-widest text-green-app">
           {t('label')}
         </span>
-        <h2 className="text-4xl sm:text-5xl font-extrabold mt-2">{t('title')}</h2>
+        <h2 className="text-4xl sm:text-5xl font-extrabold font-display mt-2">{t('title')}</h2>
       </div>
 
       {/* Centered timeline */}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Poppins, Space_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/libs/i18n/routing';
@@ -7,6 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
+import CustomCursor from "@/components/animations/CustomCursor";
 import Store from "@/Provider/Store";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 
@@ -19,6 +20,12 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export async function generateMetadata({
@@ -76,7 +83,8 @@ export default async function RootLayout({
       {themeCss && <style dangerouslySetInnerHTML={{ __html: themeCss }} />}
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Store>
-          <body className={`${inter.variable} ${poppins.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
+          <body className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
+            <CustomCursor />
             <Header />
             {children}
             <Footer />

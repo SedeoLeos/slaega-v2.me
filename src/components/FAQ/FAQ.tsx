@@ -27,7 +27,7 @@ export default async function FAQ() {
         </div>
 
         {/* Heading */}
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-14 leading-tight text-foreground">
+        <h2 className="text-4xl sm:text-5xl font-extrabold font-display text-center mb-14 leading-tight text-foreground">
           Questions fréquentes.
         </h2>
 

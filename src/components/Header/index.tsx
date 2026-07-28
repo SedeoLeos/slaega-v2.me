@@ -2,20 +2,28 @@
 import Link from 'next/link';
 import NavItem from './NavItem';
 import Drawer from '../icons/drawer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
 
 const Header = () => {
   const t = useTranslations();
   const [menu, setMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <div className='w-full backdrop-blur-xl bg-background/70 fixed justify-center flex z-30 border-b border-foreground/5'>
-      <header className='w-full py-6 px-10 md:px-20 text-foreground font-poppins flex justify-between items-center max-w-content'>
+    <div className={`w-full backdrop-blur-xl fixed justify-center flex z-30 transition-all duration-300 ${scrolled ? 'bg-background/85 border-b border-foreground/5' : 'bg-background/70 border-b border-transparent'}`}>
+      <header className={`w-full px-10 md:px-20 text-foreground font-poppins flex justify-between items-center max-w-content transition-all duration-300 ${scrolled ? 'py-3' : 'py-6'}`}>
         {/* Logo */}
         <Link href='/'>
-          <h1 className='text-2xl font-extrabold text-green-app tracking-tight'>{SiteConfig.brand}</h1>
+          <h1 className={`font-extrabold text-green-app tracking-tight transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{SiteConfig.brand}</h1>
         </Link>
 
         {/* Desktop nav */}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import AnimatedCounter from "@/components/animations/AnimatedCounter";
 import type { StatColor } from "@/entities/stat";
 import {
   aboutBlockRepository,
@@ -49,7 +50,7 @@ export default async function Banner() {
                   className={`${bg} ${txt} py-2 px-3 text-xs font-bold tracking-widest`}
                   style={{ width: `${w}px`, maxWidth: "100%" }}
                 >
-                  {s.value} {s.label}
+                  <AnimatedCounter value={s.value} /> {s.label}
                 </div>
               );
             })}
@@ -58,7 +59,7 @@ export default async function Banner() {
 
         {/* ── About card — same layout, dynamic non-redundant content ── */}
         {about && (
-          <div className="flex bg-card self-end overflow-hidden shadow-md border border-foreground/5 max-w-md w-full md:max-h-40 lg:flex-shrink-0">
+          <div className="flex bg-card self-end overflow-hidden border border-foreground/5 max-w-md w-full md:max-h-40 lg:flex-shrink-0 transition-transform duration-300 hover:scale-[1.02]">
             <div className="bg-foreground w-40 flex-shrink-0 relative overflow-hidden">
               {/* Subtle pulse dot for "available" indicator */}
               <div className="absolute top-3 left-3 flex items-center gap-1.5">

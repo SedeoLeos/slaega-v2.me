@@ -42,7 +42,7 @@ export default async function Process() {
 
         {/* Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-4 text-foreground">
+          <h2 className="text-4xl sm:text-5xl font-extrabold font-display leading-tight mb-4 text-foreground">
             La méthode prime sur la vitesse.
           </h2>
           <p className="text-secondary text-base max-w-xl mx-auto leading-relaxed">
