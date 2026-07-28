@@ -17,6 +17,22 @@ function makeClient(): PrismaClient {
   });
 }
 
-export const db: PrismaClient = globalForPrisma.prisma ?? makeClient();
+function getClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = makeClient();
+  }
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+// Lazy proxy: the real PrismaClient (and its DATABASE_URL requirement) is only
+// resolved on first actual property access — i.e. the first query — NOT at
+// import time. This lets `next build` collect page data for API routes without
+// a DATABASE_URL (e.g. Vercel preview deploys); the error is raised only if a
+// query genuinely runs without a database configured.
+export const db: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop, receiver) {
+    const client = getClient();
+    const value = Reflect.get(client as object, prop, receiver);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
