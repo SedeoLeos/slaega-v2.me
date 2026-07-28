@@ -41,7 +41,7 @@ export default function ProjectItem({
   return (
     <Link
       href={`/project/${slug}`}
-      className="group relative flex flex-col bg-card rounded-xl overflow-hidden border border-foreground/[0.06] hover:border-foreground/10 hover:shadow-xl hover:shadow-foreground/[0.08] hover:-translate-y-0.5 transition-all duration-300 ease-out"
+      className="group relative flex flex-col bg-card rounded-xl overflow-hidden border border-foreground/[0.06] hover:border-foreground/10 hover:scale-[1.02] transition-all duration-300 ease-out"
     >
       {/* Animated left accent bar */}
       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-green-app scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-500 ease-out z-20" />

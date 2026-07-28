@@ -26,6 +26,30 @@
 
   --font-inter: var(--font-inter);
   --font-poppins: var(--font-poppins);
+  --font-space: var(--font-space);
+}
+
+/* ── Cinematic display type — massive editorial headings ───────────── */
+.font-display {
+  font-family: var(--font-space), var(--font-poppins), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+.text-display {
+  font-size: clamp(2.75rem, 7vw, 6rem);
+}
+.text-display-sm {
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+}
+
+/* Hide the native cursor on fine-pointer devices where the custom cursor runs */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button {
+    cursor: none;
+  }
 }
 
 /* ── Custom scrollbar — rail transparent, seul le thumb visible ── */

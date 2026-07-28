@@ -85,7 +85,7 @@ function Hero() {
               </p>
               <div className="w-16 h-0.5 bg-foreground" />
             </div>
-            <h1 className="text-6xl sm:text-7xl font-extrabold leading-[0.95]">
+            <h1 className="font-display text-display-sm text-foreground">
               <span className="block">{t("hero.tagline1")}</span>
               <span className="block text-green-app">{t("hero.tagline2")}</span>
             </h1>
@@ -102,14 +102,14 @@ function Hero() {
           {/* Olive accent block (offset) */}
           <div className="absolute -bottom-4 -right-4 w-full h-full bg-accent rounded-3xl z-0" />
           {/* White photo container */}
-          <div className="relative w-full h-full bg-white rounded-3xl flex items-center justify-center z-10 overflow-hidden shadow-md">
+          <div className="relative w-full h-full bg-white rounded-3xl flex items-center justify-center z-10 overflow-hidden">
             <Image
               src="/images/me.jpg"
               alt="Seba Gedeon"
               width={500}
               height={500}
               priority
-              className="w-[78%] aspect-square object-cover rounded-full border-8 border-background shadow-sm"
+              className="w-[78%] aspect-square object-cover rounded-full border-8 border-background"
             />
           </div>
         </motion.div>
