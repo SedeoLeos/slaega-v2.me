@@ -140,7 +140,7 @@ const FEATURED_PROJECTS = [
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",
     date: "2023-09-01",
-    tags: ["NestJS", "Next.js", "SaaS", "Multi-tenant", "Keycloak", "TypeScript"],
+    tags: ["NestJS", "Next.js", "OpenFGA", "SaaS", "Multi-tenant", "TypeScript"],
     categories: ["web-app", "api-webservice"],
     description:
       "Lead developer de Focus Suite : une plateforme SaaS multi-tenant qui centralise la gestion d'entreprise — de la facturation aux RH.",
@@ -154,11 +154,11 @@ const FEATURED_PROJECTS = [
 ### Ce que la plateforme apporte
 - **Multi-tenant natif** — chaque organisation dispose d'un espace isolé, avec ses données et ses règles.
 - **Modules métiers** — ventes, facturation, achats, stocks, RH & paie, le tout connecté.
-- **Sécurité de niveau entreprise** — authentification **Keycloak**, autorisation fine, traçabilité.
+- **Autorisation fine (OpenFGA)** — des permissions relationnelles au plus près du métier, traçables.
 - **Architecture évolutive** — back **NestJS** modulaire, front **Next.js**, API-first.
 
 ### Stack
-NestJS · Next.js · TypeScript · PostgreSQL · Keycloak · Docker
+NestJS · Next.js · TypeScript · PostgreSQL · OpenFGA · Docker
 
 > Un produit pensé pour durer : propre, documenté, et prêt à grandir avec ses utilisateurs.`,
   },
@@ -166,7 +166,7 @@ NestJS · Next.js · TypeScript · PostgreSQL · Keycloak · Docker
     slug: "civis-cms",
     title: "Civis — CMS institutionnel (ministères RDC)",
     date: "2023-06-01",
-    tags: ["CMS", "Next.js", "NestJS", "Gouvernement", "Multi-site", "Sécurité"],
+    tags: ["Strapi", "Next.js", "CMS", "Gouvernement", "Multi-site", "PostgreSQL"],
     categories: ["web-app", "platform-deployment"],
     description:
       "Civis : un CMS institutionnel déployé pour des ministères en RDC, pour publier et gouverner des contenus officiels à grande échelle.",
@@ -175,16 +175,16 @@ NestJS · Next.js · TypeScript · PostgreSQL · Keycloak · Docker
 
 **Le contexte.** Une administration publique ne publie pas comme une entreprise : chaque contenu engage l'institution. Il faut des rôles, des validations, une traçabilité — et une fiabilité sans faille.
 
-**Le projet.** **Civis** est un **CMS institutionnel** conçu pour ce niveau d'exigence, **utilisé par des ministères en République Démocratique du Congo** pour créer, valider et diffuser leurs contenus officiels.
+**Le projet.** **Civis** est un **CMS institutionnel** bâti sur **Strapi** (back headless) et **Next.js** (front), **utilisé par des ministères en République Démocratique du Congo** pour créer, valider et diffuser leurs contenus officiels.
 
 ### Points forts
+- **Headless (Strapi + Next.js)** — un back CMS souple, un front rapide et sur-mesure.
 - **Multi-site** — plusieurs entités administrées depuis une même base.
 - **Workflow éditorial** — rédaction, relecture, validation puis publication.
-- **Gestion fine des rôles** — chacun voit et fait exactement ce qu'il doit.
 - **Robuste et déployable** — pensé pour des environnements réglementés.
 
 ### Stack
-Next.js · NestJS · PostgreSQL · Docker
+Strapi · Next.js · PostgreSQL · Docker
 
 > _Lien de démonstration interne (staging) : cms.internal.nncrtvs.xyz — non accessible publiquement._`,
   },
@@ -192,7 +192,7 @@ Next.js · NestJS · PostgreSQL · Docker
     slug: "ordre-des-pharmaciens-cg",
     title: "Ordre des Pharmaciens du Congo",
     date: "2023-04-01",
-    tags: ["Next.js", "Institutionnel", "Vitrine", "SEO", "Accessibilité"],
+    tags: ["WordPress", "PHP", "Institutionnel", "Vitrine", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
       "Le site institutionnel de l'Ordre des Pharmaciens du Congo : une vitrine officielle, claire et crédible, au service des membres et du public.",
@@ -210,7 +210,7 @@ Next.js · NestJS · PostgreSQL · Docker
 - **Performance** — chargement rapide, responsive sur tous les écrans.
 
 ### Stack
-Next.js · Tailwind CSS · SEO · Responsive
+WordPress · PHP · SEO · Responsive
 
 > Une vitrine sobre et crédible, à la hauteur d'une institution nationale.`,
   },
@@ -218,7 +218,7 @@ Next.js · Tailwind CSS · SEO · Responsive
     slug: "nutrisports-shop",
     title: "Nutrisports Shop — E-commerce",
     date: "2023-05-01",
-    tags: ["E-commerce", "Next.js", "NestJS", "Paiement", "Catalogue", "Panier"],
+    tags: ["WordPress", "WooCommerce", "E-commerce", "Paiement", "Catalogue"],
     categories: ["web-app", "api-webservice"],
     description:
       "Nutrisports Shop : une boutique e-commerce complète — catalogue, panier, paiement et gestion des commandes de bout en bout.",
@@ -236,38 +236,38 @@ Next.js · Tailwind CSS · SEO · Responsive
 - **Back-office** — gestion des produits, stocks et commandes.
 
 ### Stack
-Next.js · NestJS · PostgreSQL · Intégration paiement
+WordPress · WooCommerce · Paiement · Responsive
 
-> Une expérience d'achat pensée pour convertir, sur une base technique fiable.`,
+> Une expérience d'achat pensée pour convertir, sur une base e-commerce éprouvée.`,
   },
   {
     slug: "societe-cg",
     title: "Societe.cg — Plateforme web",
     date: "2023-03-01",
-    tags: ["Next.js", "NestJS", "Web App", "Congo", "Full-Stack"],
-    categories: ["web-app"],
+    tags: ["WordPress", "PHP", "Vitrine", "Congo", "SEO"],
+    categories: ["web-app", "showcase-site"],
     description:
-      "Societe.cg : une plateforme web sur mesure conçue et développée chez Nanocreatives, du back-end à l'interface.",
+      "Societe.cg : un site web livré en production chez Nanocreatives — conception, intégration et mise en ligne.",
     projectUrl: "https://societe.cg",
-    content: `## Societe.cg — une plateforme web sur mesure
+    content: `## Societe.cg — un site web livré en production
 
-**Le projet.** Conception et développement de **Societe.cg**, une plateforme web full-stack livrée en production, de l'architecture back-end à l'interface utilisateur.
+**Le projet.** Conception, intégration et mise en ligne de **Societe.cg**, un site web bâti sur **WordPress** et livré en production.
 
 ### Ce que j'ai apporté
-- **Architecture full-stack** — back **NestJS**, front **Next.js**.
+- **Intégration WordPress** — thème sur mesure, contenus structurés.
 - **Interface soignée** — claire, responsive, orientée usage.
-- **Mise en production** — déploiement et exploitation réels.
+- **Mise en production** — déploiement, SEO et exploitation réels.
 
 ### Stack
-Next.js · NestJS · PostgreSQL · Docker
+WordPress · PHP · SEO · Responsive
 
-> _Aperçu en direct ci-dessus. Détails métiers disponibles sur demande._`,
+> _Aperçu en direct ci-dessus._`,
   },
   {
     slug: "bralima",
     title: "Bralima — Site corporate",
     date: "2023-10-01",
-    tags: ["Next.js", "Corporate", "Vitrine", "Institutionnel", "SEO"],
+    tags: ["WordPress", "PHP", "Corporate", "Vitrine", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
       "Le site corporate de Bralima : une présence digitale à la hauteur d'un grand groupe industriel, moderne et performante.",
@@ -284,7 +284,7 @@ Next.js · NestJS · PostgreSQL · Docker
 - **Performance & SEO** — rapide, responsive, bien référencé.
 
 ### Stack
-Next.js · Tailwind CSS · SEO · Responsive
+WordPress · PHP · SEO · Responsive
 
 > Une vitrine corporate crédible et durable.`,
   },
@@ -292,48 +292,48 @@ Next.js · Tailwind CSS · SEO · Responsive
     slug: "retailix-partners",
     title: "Retailix Partners — Plateforme B2B retail",
     date: "2023-07-01",
-    tags: ["Next.js", "NestJS", "Retail", "B2B", "Web App"],
-    categories: ["web-app"],
+    tags: ["WordPress", "PHP", "Retail", "B2B", "SEO"],
+    categories: ["web-app", "showcase-site"],
     description:
-      "Retailix Partners : une plateforme B2B au service des acteurs du retail, du back-end métier à l'interface partenaire.",
+      "Retailix Partners : le site B2B des acteurs du retail — présentation de l'offre, crédibilité et génération de contacts.",
     projectUrl: "https://retailixpartners.com/",
-    content: `## Retailix Partners — connecter les acteurs du retail
+    content: `## Retailix Partners — la vitrine B2B du retail
 
-**Le projet.** Conception et développement de **Retailix Partners**, une plateforme **B2B** dédiée au secteur du retail, reliant partenaires et opérations.
+**Le projet.** Conception et intégration de **Retailix Partners**, un site **B2B** dédié au secteur du retail : présenter l'offre, inspirer confiance et générer des contacts qualifiés.
 
 ### Ce qui a été construit
-- **Espace partenaires** — interface dédiée, claire et efficace.
-- **Back-end métier** — logique **NestJS** robuste et évolutive.
-- **Front moderne** — **Next.js**, responsive et rapide.
+- **Présentation de l'offre** — claire, structurée, orientée décideurs.
+- **Intégration WordPress** — thème sur mesure, contenus faciles à maintenir.
+- **Performance & SEO** — rapide, responsive, bien référencé.
 
 ### Stack
-Next.js · NestJS · PostgreSQL · Docker
+WordPress · PHP · SEO · Responsive
 
-> Une plateforme B2B pensée pour l'échelle et la fiabilité.`,
+> Une vitrine B2B crédible, pensée pour convertir.`,
   },
   {
     slug: "iolifescience-infra",
     title: "IO Life Science — Infrastructure & DevOps",
     date: "2023-08-01",
-    tags: ["DevOps", "Docker", "Coolify", "Nginx", "Infrastructure", "CI/CD"],
+    tags: ["WordPress", "DevOps", "Docker", "Coolify", "Nginx", "Infrastructure"],
     categories: ["platform-deployment", "self-hosted-platform"],
     description:
-      "IO Life Science : mise en place et provisioning de l'infrastructure — serveurs, Coolify, déploiement et mise en production.",
+      "IO Life Science : mise en place et provisioning de l'infrastructure hébergeant le site — serveurs, Coolify, déploiement et mise en production.",
     projectUrl: "https://iolifescience.com/",
     content: `## IO Life Science — l'infrastructure qui fait tourner le produit
 
 **L'enjeu.** Derrière chaque site fiable, il y a une **infrastructure maîtrisée** : des serveurs propres, des déploiements reproductibles, une mise en ligne sans surprise.
 
-**La réalisation.** J'ai **provisionné et configuré l'infrastructure** d'iolifescience.com : préparation des serveurs, mise en place de **Coolify** pour accélérer les déploiements, et pilotage de la mise en production.
+**La réalisation.** J'ai **provisionné et configuré l'infrastructure** d'iolifescience.com (site **WordPress**) : préparation des serveurs, mise en place de **Coolify** pour accélérer les déploiements, reverse-proxy et TLS, puis pilotage de la mise en production.
 
 ### Ce qui a été mis en place
 - **Provisioning serveurs** — environnements propres et sécurisés.
 - **Coolify (PaaS auto-hébergé)** — déploiements rapides pour les équipes.
 - **Reverse proxy & TLS** — Nginx, certificats, routage.
-- **Mise en production** — pipeline de déploiement fiable.
+- **Hébergement WordPress** — site en production, fiable et rapide.
 
 ### Stack
-Linux · Docker · Coolify · Nginx · CI/CD
+WordPress · Linux · Docker · Coolify · Nginx
 
 > L'infrastructure invisible qui rend le produit possible — et rapide à livrer.`,
   },

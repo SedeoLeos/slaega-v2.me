@@ -8,6 +8,7 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
 import CustomCursor from "@/components/animations/CustomCursor";
+import Loader from "@/components/animations/Loader";
 import Store from "@/Provider/Store";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 
@@ -84,6 +85,7 @@ export default async function RootLayout({
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Store>
           <body className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
+            <Loader />
             <CustomCursor />
             <Header />
             {children}
