@@ -82,16 +82,21 @@ async function seedProjects() {
         .find((l) => l.trim())
         ?.trim() ?? "";
 
+    const projectUrl = data.projectUrl ? String(data.projectUrl) : null;
+    // Projects with a public link get a live preview of the real site; others
+    // keep their front-matter image.
+    const image = projectUrl ? livePreview(projectUrl) : String(data.image ?? "/images/img.jpg");
+
     const payload = {
       title: String(data.title ?? slug),
       date: String(data.date ?? new Date().toISOString().split("T")[0]),
       tags: JSON.stringify(Array.isArray(data.tags) ? data.tags : []),
       categories: JSON.stringify(Array.isArray(data.categories) ? data.categories : []),
-      image: String(data.image ?? "/img.jpg"),
+      image,
       description,
       content,
       published: data.published === undefined ? true : Boolean(data.published),
-      projectUrl: data.projectUrl ? String(data.projectUrl) : null,
+      projectUrl,
       githubUrl: data.githubUrl ? String(data.githubUrl) : null,
       videoUrl: data.videoUrl ? String(data.videoUrl) : null,
     };
@@ -106,90 +111,231 @@ async function seedProjects() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  1b. FEATURED PROJECTS — Nanocreatives realisations (DB-only, not from MDX)
-//      @confirm each `description` / `image` / `date`. Add a real screenshot
-//      under /public/images and update `image` when available.
+//  Live preview thumbnail — renders a screenshot of a public URL at runtime
+//  (WordPress mShots, no API key). Used as the card image for linked projects.
+//  Internal / non-public hosts get a designed placeholder instead.
+// ═══════════════════════════════════════════════════════════════════════════
+const PLACEHOLDER_IMG = "/images/img.jpg";
+function livePreview(url: string | null, w = 1280, h = 800): string {
+  if (!url) return PLACEHOLDER_IMG;
+  try {
+    const host = new URL(url).hostname;
+    // Skip unreachable / internal hosts — a screenshot service can't reach them.
+    if (host.includes(".internal.") || host.endsWith(".local") || host === "localhost") {
+      return PLACEHOLDER_IMG;
+    }
+    return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=${w}&h=${h}`;
+  } catch {
+    return PLACEHOLDER_IMG;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  1b. FEATURED PROJECTS — Nanocreatives realisations (DB-only, not from MDX).
+//      Rich editorial `content` (Markdown) so each project card opens onto a
+//      proper case-study page. Card images are live previews of the real sites.
 // ═══════════════════════════════════════════════════════════════════════════
 const FEATURED_PROJECTS = [
   {
     slug: "focus-suite",
-    title: "Focus Suite — Plateforme SaaS",
-    date: "2023-09-01", // @confirm
-    tags: ["NestJS", "Next.js", "SaaS", "Keycloak", "Multi-tenant", "TypeScript"],
+    title: "Focus Suite — Plateforme SaaS de gestion",
+    date: "2023-09-01",
+    tags: ["NestJS", "Next.js", "SaaS", "Multi-tenant", "Keycloak", "TypeScript"],
     categories: ["web-app", "api-webservice"],
     description:
-      "Lead developer de pro.focus-suite.com : plateforme SaaS de gestion d'entreprise. Architecture multi-tenant, authentification et autorisation fine.", // @confirm
+      "Lead developer de Focus Suite : une plateforme SaaS multi-tenant qui centralise la gestion d'entreprise — de la facturation aux RH.",
     projectUrl: "https://pro.focus-suite.com",
+    content: `## Focus Suite — le SaaS qui unifie la gestion d'entreprise
+
+**Le constat.** Les PME jonglent avec une dizaine d'outils qui ne se parlent pas : un pour la facturation, un autre pour les stocks, un troisième pour la paie. Résultat : des données éclatées, des ressaisies, et aucune vision d'ensemble.
+
+**La réponse.** En tant que *lead developer*, j'ai conçu et piloté **Focus Suite**, une plateforme SaaS **multi-tenant** qui réunit ces métiers dans une seule interface cohérente, sécurisée et temps réel.
+
+### Ce que la plateforme apporte
+- **Multi-tenant natif** — chaque organisation dispose d'un espace isolé, avec ses données et ses règles.
+- **Modules métiers** — ventes, facturation, achats, stocks, RH & paie, le tout connecté.
+- **Sécurité de niveau entreprise** — authentification **Keycloak**, autorisation fine, traçabilité.
+- **Architecture évolutive** — back **NestJS** modulaire, front **Next.js**, API-first.
+
+### Stack
+NestJS · Next.js · TypeScript · PostgreSQL · Keycloak · Docker
+
+> Un produit pensé pour durer : propre, documenté, et prêt à grandir avec ses utilisateurs.`,
   },
   {
     slug: "civis-cms",
-    title: "Civis — CMS institutionnel",
-    date: "2023-06-01", // @confirm
-    tags: ["CMS", "Next.js", "NestJS", "Government", "Public Sector", "Multi-site"],
+    title: "Civis — CMS institutionnel (ministères RDC)",
+    date: "2023-06-01",
+    tags: ["CMS", "Next.js", "NestJS", "Gouvernement", "Multi-site", "Sécurité"],
     categories: ["web-app", "platform-deployment"],
     description:
-      "CMS institutionnel Civis, utilisé par des ministères en RDC pour gérer et publier leurs contenus officiels.", // @confirm
-    projectUrl: null as string | null,
+      "Civis : un CMS institutionnel déployé pour des ministères en RDC, pour publier et gouverner des contenus officiels à grande échelle.",
+    projectUrl: "https://cms.internal.nncrtvs.xyz/", // lien staging (no-prod), non public
+    content: `## Civis — publier l'information publique, avec exigence
+
+**Le contexte.** Une administration publique ne publie pas comme une entreprise : chaque contenu engage l'institution. Il faut des rôles, des validations, une traçabilité — et une fiabilité sans faille.
+
+**Le projet.** **Civis** est un **CMS institutionnel** conçu pour ce niveau d'exigence, **utilisé par des ministères en République Démocratique du Congo** pour créer, valider et diffuser leurs contenus officiels.
+
+### Points forts
+- **Multi-site** — plusieurs entités administrées depuis une même base.
+- **Workflow éditorial** — rédaction, relecture, validation puis publication.
+- **Gestion fine des rôles** — chacun voit et fait exactement ce qu'il doit.
+- **Robuste et déployable** — pensé pour des environnements réglementés.
+
+### Stack
+Next.js · NestJS · PostgreSQL · Docker
+
+> _Lien de démonstration interne (staging) : cms.internal.nncrtvs.xyz — non accessible publiquement._`,
   },
   {
     slug: "ordre-des-pharmaciens-cg",
     title: "Ordre des Pharmaciens du Congo",
-    date: "2023-04-01", // @confirm
-    tags: ["Next.js", "Institutional", "Showcase", "SEO", "Public Sector"],
+    date: "2023-04-01",
+    tags: ["Next.js", "Institutionnel", "Vitrine", "SEO", "Accessibilité"],
     categories: ["web-app", "showcase-site"],
     description:
-      "Site institutionnel de l'Ordre des Pharmaciens du Congo — présentation de l'institution et services aux membres.", // @confirm
+      "Le site institutionnel de l'Ordre des Pharmaciens du Congo : une vitrine officielle, claire et crédible, au service des membres et du public.",
     projectUrl: "https://ordredespharmaciens.cg/",
+    content: `## Ordre des Pharmaciens du Congo — la vitrine d'une institution
+
+**L'enjeu.** Un ordre professionnel a besoin d'une présence en ligne qui inspire **confiance et autorité** : informer le public, servir ses membres, incarner l'institution.
+
+**La réalisation.** J'ai conçu et développé le **site institutionnel officiel** de l'Ordre — moderne, clair, rapide, pensé pour durer.
+
+### Ce qui a été livré
+- **Présentation de l'institution** — missions, organisation, actualités.
+- **Espace membres & public** — informations et services accessibles à tous.
+- **SEO & accessibilité** — visible sur les moteurs, lisible par tous.
+- **Performance** — chargement rapide, responsive sur tous les écrans.
+
+### Stack
+Next.js · Tailwind CSS · SEO · Responsive
+
+> Une vitrine sobre et crédible, à la hauteur d'une institution nationale.`,
   },
   {
     slug: "nutrisports-shop",
     title: "Nutrisports Shop — E-commerce",
-    date: "2023-05-01", // @confirm
-    tags: ["E-commerce", "Next.js", "NestJS", "Payment", "Catalog", "Cart"],
+    date: "2023-05-01",
+    tags: ["E-commerce", "Next.js", "NestJS", "Paiement", "Catalogue", "Panier"],
     categories: ["web-app", "api-webservice"],
     description:
-      "Boutique e-commerce Nutrisports : catalogue produits, panier, paiement et gestion des commandes.", // @confirm
+      "Nutrisports Shop : une boutique e-commerce complète — catalogue, panier, paiement et gestion des commandes de bout en bout.",
     projectUrl: "https://nutrisports-shop.com/",
+    content: `## Nutrisports Shop — vendre en ligne, sans friction
+
+**L'objectif.** Offrir à Nutrisports une **boutique en ligne complète** : un parcours d'achat fluide côté client, et une gestion simple côté commerçant.
+
+**La réalisation.** Une plateforme e-commerce de bout en bout, du catalogue au paiement, jusqu'au suivi des commandes.
+
+### Fonctionnalités clés
+- **Catalogue produits** — recherche, filtres, fiches détaillées.
+- **Panier & commande** — parcours d'achat rapide et rassurant.
+- **Paiement intégré** — transactions sécurisées.
+- **Back-office** — gestion des produits, stocks et commandes.
+
+### Stack
+Next.js · NestJS · PostgreSQL · Intégration paiement
+
+> Une expérience d'achat pensée pour convertir, sur une base technique fiable.`,
   },
   {
     slug: "societe-cg",
-    title: "Societe.cg",
-    date: "2023-03-01", // @confirm
-    tags: ["Next.js", "NestJS", "Web App", "Congo"],
+    title: "Societe.cg — Plateforme web",
+    date: "2023-03-01",
+    tags: ["Next.js", "NestJS", "Web App", "Congo", "Full-Stack"],
     categories: ["web-app"],
     description:
-      "Plateforme web Societe.cg développée chez Nanocreatives.", // @confirm — préciser la nature du projet
+      "Societe.cg : une plateforme web sur mesure conçue et développée chez Nanocreatives, du back-end à l'interface.",
     projectUrl: "https://societe.cg",
+    content: `## Societe.cg — une plateforme web sur mesure
+
+**Le projet.** Conception et développement de **Societe.cg**, une plateforme web full-stack livrée en production, de l'architecture back-end à l'interface utilisateur.
+
+### Ce que j'ai apporté
+- **Architecture full-stack** — back **NestJS**, front **Next.js**.
+- **Interface soignée** — claire, responsive, orientée usage.
+- **Mise en production** — déploiement et exploitation réels.
+
+### Stack
+Next.js · NestJS · PostgreSQL · Docker
+
+> _Aperçu en direct ci-dessus. Détails métiers disponibles sur demande._`,
   },
   {
     slug: "bralima",
-    title: "Bralima",
-    date: "2023-10-01", // @confirm
-    tags: ["Next.js", "Institutional", "Showcase", "Corporate", "SEO"],
+    title: "Bralima — Site corporate",
+    date: "2023-10-01",
+    tags: ["Next.js", "Corporate", "Vitrine", "Institutionnel", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
-      "Site corporate Bralima (bralima.net) développé chez Nanocreatives.", // @confirm — préciser la nature du projet
+      "Le site corporate de Bralima : une présence digitale à la hauteur d'un grand groupe industriel, moderne et performante.",
     projectUrl: "https://bralima.net/",
+    content: `## Bralima — la présence digitale d'un grand groupe
+
+**L'enjeu.** Pour un acteur industriel majeur, le site corporate est une **carte de visite institutionnelle** : il doit refléter la solidité et l'envergure de la marque.
+
+**La réalisation.** Un **site corporate** moderne et performant : présentation du groupe, de ses activités et de ses actualités, avec une exécution soignée.
+
+### Points forts
+- **Identité forte** — un design à la mesure de la marque.
+- **Contenus institutionnels** — activités, engagements, actualités.
+- **Performance & SEO** — rapide, responsive, bien référencé.
+
+### Stack
+Next.js · Tailwind CSS · SEO · Responsive
+
+> Une vitrine corporate crédible et durable.`,
   },
   {
     slug: "retailix-partners",
-    title: "Retailix Partners",
-    date: "2023-07-01", // @confirm
-    tags: ["Next.js", "NestJS", "Retail", "Web App", "B2B"],
+    title: "Retailix Partners — Plateforme B2B retail",
+    date: "2023-07-01",
+    tags: ["Next.js", "NestJS", "Retail", "B2B", "Web App"],
     categories: ["web-app"],
     description:
-      "Plateforme Retailix Partners développée chez Nanocreatives.", // @confirm — préciser la nature du projet
+      "Retailix Partners : une plateforme B2B au service des acteurs du retail, du back-end métier à l'interface partenaire.",
     projectUrl: "https://retailixpartners.com/",
+    content: `## Retailix Partners — connecter les acteurs du retail
+
+**Le projet.** Conception et développement de **Retailix Partners**, une plateforme **B2B** dédiée au secteur du retail, reliant partenaires et opérations.
+
+### Ce qui a été construit
+- **Espace partenaires** — interface dédiée, claire et efficace.
+- **Back-end métier** — logique **NestJS** robuste et évolutive.
+- **Front moderne** — **Next.js**, responsive et rapide.
+
+### Stack
+Next.js · NestJS · PostgreSQL · Docker
+
+> Une plateforme B2B pensée pour l'échelle et la fiabilité.`,
   },
   {
     slug: "iolifescience-infra",
-    title: "IO Life Science — Infrastructure",
-    date: "2023-08-01", // @confirm
-    tags: ["DevOps", "Docker", "Coolify", "Nginx", "Infrastructure", "Provisioning"],
+    title: "IO Life Science — Infrastructure & DevOps",
+    date: "2023-08-01",
+    tags: ["DevOps", "Docker", "Coolify", "Nginx", "Infrastructure", "CI/CD"],
     categories: ["platform-deployment", "self-hosted-platform"],
     description:
-      "Configuration et provisioning de l'infrastructure d'iolifescience.com : serveurs, déploiement via Coolify et mise en production.", // @confirm
+      "IO Life Science : mise en place et provisioning de l'infrastructure — serveurs, Coolify, déploiement et mise en production.",
     projectUrl: "https://iolifescience.com/",
+    content: `## IO Life Science — l'infrastructure qui fait tourner le produit
+
+**L'enjeu.** Derrière chaque site fiable, il y a une **infrastructure maîtrisée** : des serveurs propres, des déploiements reproductibles, une mise en ligne sans surprise.
+
+**La réalisation.** J'ai **provisionné et configuré l'infrastructure** d'iolifescience.com : préparation des serveurs, mise en place de **Coolify** pour accélérer les déploiements, et pilotage de la mise en production.
+
+### Ce qui a été mis en place
+- **Provisioning serveurs** — environnements propres et sécurisés.
+- **Coolify (PaaS auto-hébergé)** — déploiements rapides pour les équipes.
+- **Reverse proxy & TLS** — Nginx, certificats, routage.
+- **Mise en production** — pipeline de déploiement fiable.
+
+### Stack
+Linux · Docker · Coolify · Nginx · CI/CD
+
+> L'infrastructure invisible qui rend le produit possible — et rapide à livrer.`,
   },
 ];
 
@@ -200,9 +346,9 @@ async function seedFeaturedProjects() {
       date: p.date,
       tags: JSON.stringify(p.tags),
       categories: JSON.stringify(p.categories),
-      image: "/images/img.jpg", // @confirm — remplacer par une vraie capture
+      image: livePreview(p.projectUrl),
       description: p.description,
-      content: p.description,
+      content: p.content,
       published: true,
       projectUrl: p.projectUrl,
       githubUrl: null,
@@ -640,11 +786,15 @@ const SITE_CONFIG: Record<string, unknown> = {
   theme: DEFAULT_THEME,
 };
 
+// Keys whose value is authoritative in code and should be re-synced on every
+// deploy (overwrite). Others are create-only so admin edits survive.
+const SITE_CONFIG_OVERWRITE = new Set(["theme"]);
+
 async function seedSiteConfig() {
   for (const [key, value] of Object.entries(SITE_CONFIG)) {
     const json = JSON.stringify(value);
-    // create-only: never clobber a value already customised via the admin.
-    await db.siteConfig.upsert({ where: { key }, create: { key, value: json }, update: {} });
+    const update = SITE_CONFIG_OVERWRITE.has(key) ? { value: json } : {};
+    await db.siteConfig.upsert({ where: { key }, create: { key, value: json }, update });
   }
   console.log(`✓ SiteConfig (${Object.keys(SITE_CONFIG).length} keys) ensured`);
 }
