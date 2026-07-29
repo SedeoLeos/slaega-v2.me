@@ -42,11 +42,13 @@ export default function TemplateNova({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: palette.paper, fontFamily: "Helvetica" },
+    // Page padding → top/bottom margins repeat on every page (fixes page 2).
+    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", paddingTop: 30, paddingBottom: 30 },
 
-    /* ── Header band ── */
+    /* ── Header band (negative marginTop → full bleed at true top on page 1) ── */
     header: {
       backgroundColor: palette.sidebar,
+      marginTop: -30,
       paddingTop: 22, paddingBottom: 20,
       paddingHorizontal: 30,
       flexDirection: "row",
