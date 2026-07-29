@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  /* Original palette (baseline). Accent/colors are managed in the back-office
-     theme; tweak them there or tell me an exact hex. */
-  --background: #dcded0;
-  --foreground: #0e0e0e;
-  --secondary: hsl(0, 0%, 55%);
-  --accent: hsl(79, 29%, 37%);
-  --primary: hsl(79, 29%, 37%);
-  --green-app: #05796b;
-  --card: #f5f5ee;
-  --border: rgba(14, 14, 14, 0.1);
+  /* Luxury-minimalist monochrome — warm cream canvas + ink; whitespace & type
+     do the work, no bright accent. Tune an accent in the back-office if wanted. */
+  --background: #F2F0EA;            /* warm cream */
+  --foreground: #121110;            /* ink */
+  --secondary: #8C897F;             /* warm gray — labels / meta */
+  --accent: #121110;               /* ink — monochrome accent */
+  --primary: #121110;
+  --green-app: #121110;
+  --card: #FBFAF6;                  /* warm white cards */
+  --border: rgba(18, 17, 16, 0.10);
 }
 
 @theme inline {

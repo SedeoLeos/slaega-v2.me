@@ -63,13 +63,13 @@ export default async function TerminalShowcase() {
               <span className="text-[10px] font-mono tracking-widest text-zinc-500">
                 PORTFOLIO://LOCALHOST · ONLINE
               </span>
-              <div className="w-2 h-2 rounded-full bg-green-app" />
+              <div className="w-2 h-2 rounded-full bg-[#27C93F]" />
             </div>
 
             {/* Terminal body */}
             <div className="p-6 font-mono text-sm space-y-2.5 bg-zinc-950" style={{ minHeight: '240px' }}>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-green-app">λ</span>
+                <span className="text-[#27C93F]">λ</span>
                 <span className="text-zinc-200">portfolio init</span>
               </div>
               {cfg.terminalLines.map((line, i) => {
@@ -79,7 +79,7 @@ export default async function TerminalShowcase() {
 
                 if (isPrompt) return (
                   <div key={i} className="flex items-center gap-2 pt-2">
-                    <span className="text-green-app">λ</span>
+                    <span className="text-[#27C93F]">λ</span>
                     <span className="animate-pulse text-zinc-600">▋</span>
                   </div>
                 );
