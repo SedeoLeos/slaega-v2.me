@@ -42,11 +42,11 @@ export default function TemplateDuo({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", flexDirection: "row" },
+    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", paddingTop: 30, paddingBottom: 30, paddingLeft: 226 },
 
     /* ── Sidebar ── */
     sidebar: {
-      width: "38%",
+      position: "absolute", top: 0, left: 0, bottom: 0, width: 226,
       backgroundColor: palette.sidebar,
       paddingTop: 32, paddingHorizontal: 16, paddingBottom: 28,
     },
@@ -97,7 +97,7 @@ export default function TemplateDuo({ data, palette, sections }: Props) {
     capText: { fontSize: 7.5, color: palette.onDarkMuted, flex: 1, lineHeight: 1.45 },
 
     /* ── Main ── */
-    main: { flex: 1, paddingTop: 32, paddingHorizontal: 20, paddingBottom: 28 },
+    main: { paddingHorizontal: 20 },
 
     secWrap: { marginBottom: 16 },
     secRow:  { flexDirection: "row", alignItems: "center", marginBottom: 9 },
@@ -122,7 +122,7 @@ export default function TemplateDuo({ data, palette, sections }: Props) {
       <Page size="A4" style={s.page}>
 
         {/* ═══ SIDEBAR ═══ */}
-        <View style={s.sidebar}>
+        <View style={s.sidebar} fixed>
 
           <View style={s.photoWrap}>
             <Image src={CV_PROFILE.photo} style={s.photo} />

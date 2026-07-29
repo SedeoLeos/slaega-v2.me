@@ -82,10 +82,10 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", flexDirection: "row" },
+    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", paddingTop: 28, paddingBottom: 30, paddingLeft: 168 },
 
-    // Sidebar
-    sidebar:         { width: 168, backgroundColor: palette.sidebar, position: "relative", paddingTop: 32, paddingBottom: 24, paddingHorizontal: 16, flexShrink: 0 },
+    // Sidebar — fixed full-height column (repeats on every page, full bleed)
+    sidebar:         { position: "absolute", top: 0, left: 0, bottom: 0, width: 168, backgroundColor: palette.sidebar, paddingTop: 32, paddingBottom: 24, paddingHorizontal: 16 },
     photoWrap:       { alignItems: "center", marginBottom: 14 },
     photo:           { width: 80, height: 80, borderRadius: 40, objectFit: "cover", borderWidth: 3, borderColor: palette.accent, borderStyle: "solid" },
     sidebarName:     { fontSize: 13, fontFamily: "Helvetica-Bold", color: palette.onDark, textAlign: "center", letterSpacing: -0.3, lineHeight: 1.2, marginBottom: 3 },
@@ -106,7 +106,7 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
     skillsWrap:      { flexDirection: "row", flexWrap: "wrap" },
 
     // Main
-    main:       { flex: 1, paddingTop: 28, paddingBottom: 24, paddingLeft: 22, paddingRight: 28 },
+    main:       { paddingLeft: 22, paddingRight: 28 },
     tagline:    { fontSize: 7.5, color: palette.muted, fontFamily: "Helvetica-BoldOblique", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 6 },
     jobTitle:   { fontSize: 20, fontFamily: "Helvetica-Bold", color: palette.primary, letterSpacing: -0.3, lineHeight: 1.1, marginBottom: 14 },
     accentLine: { width: 40, height: 3, backgroundColor: palette.accent, marginBottom: 14, borderRadius: 2 },
@@ -139,8 +139,8 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        {/* ── Sidebar ─────────────────────── */}
-        <View style={s.sidebar}>
+        {/* ── Sidebar (fixed, full height, every page) ─────────────────────── */}
+        <View style={s.sidebar} fixed>
           <SidebarDecor palette={palette} />
 
           {/* Photo + name */}

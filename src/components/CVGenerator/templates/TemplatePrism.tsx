@@ -76,10 +76,12 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: palette.paper, fontFamily: "Helvetica" },
+    // Page padding → top/bottom margins repeat on every page (fixes page 2).
+    page: { backgroundColor: palette.paper, fontFamily: "Helvetica", paddingTop: 30, paddingBottom: 30 },
 
-    // Header band
-    band:       { backgroundColor: palette.band, height: 130, position: "relative" },
+    // Header band — negative marginTop lets it break out to the true top edge
+    // on page 1 (full bleed) despite the page's top padding.
+    band:       { backgroundColor: palette.band, height: 130, position: "relative", marginTop: -30 },
     bandBody:   { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 36, paddingTop: 28, paddingBottom: 20 },
     bandLeft:   { flex: 1 },
     taglineText: { fontSize: 7, color: palette.onDarkMuted, textTransform: "uppercase", letterSpacing: 2, marginBottom: 5 },
@@ -177,7 +179,7 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
           {sections.capabilities.visible && caps.length > 0 ? (
             <>
               <View style={s.section}>
-                <View style={s.sectionHead}>
+                <View style={s.sectionHead} minPresenceAhead={90}>
                   <View style={s.sectionLine} />
                   <Text style={s.sectionLabel}>{L.canDo}</Text>
                   <View style={s.sectionLine} />
@@ -197,7 +199,7 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
           {/* Experience */}
           {sections.experience.visible && data.experiences.length > 0 ? (
             <View style={s.section}>
-              <View style={s.sectionHead}>
+              <View style={s.sectionHead} minPresenceAhead={90}>
                 <View style={s.sectionLine} />
                 <Text style={s.sectionLabel}>{L.experience}</Text>
                 <View style={s.sectionLine} />
@@ -221,8 +223,8 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
 
           {/* Projects */}
           {sections.projects.visible && data.projects.length > 0 ? (
-            <View style={s.section}>
-              <View style={s.sectionHead}>
+            <View style={s.section} wrap={false}>
+              <View style={s.sectionHead} minPresenceAhead={90}>
                 <View style={s.sectionLine} />
                 <Text style={s.sectionLabel}>{L.projects}</Text>
                 <View style={s.sectionLine} />
@@ -242,7 +244,7 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
           {/* Skills */}
           {sections.skills.visible && data.allSkills.length > 0 ? (
             <View style={s.section}>
-              <View style={s.sectionHead}>
+              <View style={s.sectionHead} minPresenceAhead={90}>
                 <View style={s.sectionLine} />
                 <Text style={s.sectionLabel}>{L.skills}</Text>
                 <View style={s.sectionLine} />
