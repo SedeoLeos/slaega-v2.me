@@ -300,8 +300,8 @@ export default function TemplateMosaic({ data, palette, sections }: Props) {
 
             {/* Projects */}
             {sections.projects.visible && data.projects.length > 0 && (
-              <View wrap={false}>
-                <View style={s.secRow}>
+              <View>
+                <View style={s.secRow} minPresenceAhead={70}>
                   <SectionMarker color={BLUE_MED} />
                   <Text style={s.secLabel}>{L.projects}</Text>
                   <View style={s.secLine} />

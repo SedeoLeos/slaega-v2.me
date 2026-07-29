@@ -223,7 +223,7 @@ export default function TemplatePrism({ data, palette, sections }: Props) {
 
           {/* Projects */}
           {sections.projects.visible && data.projects.length > 0 ? (
-            <View style={s.section} wrap={false}>
+            <View style={s.section}>
               <View style={s.sectionHead} minPresenceAhead={90}>
                 <View style={s.sectionLine} />
                 <Text style={s.sectionLabel}>{L.projects}</Text>

@@ -40,14 +40,13 @@ export default function TemplateBright({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: PAPER, fontFamily: "Helvetica" },
-    body: { flexDirection: "row", height: "100%" },
+    page: { backgroundColor: WHITE, fontFamily: "Helvetica", paddingTop: 30, paddingBottom: 30, paddingLeft: 226 },
 
-    /* ─── Sidebar (accent color) ─── */
+    /* ─── Sidebar (accent color) — absolute, page 1 only, full bleed ─── */
     sidebar: {
-      width: "38%",
+      position: "absolute", top: -30, left: 0, height: 842, width: 226,
       backgroundColor: ACC,
-      paddingTop: 32,
+      paddingTop: 62,
       paddingHorizontal: 18,
       paddingBottom: 20,
     },
@@ -142,11 +141,8 @@ export default function TemplateBright({ data, palette, sections }: Props) {
 
     /* ─── Main ─── */
     main: {
-      flex: 1,
-      backgroundColor: WHITE,
-      paddingTop: 32,
-      paddingHorizontal: 22,
-      paddingBottom: 20,
+      paddingLeft: 22,
+      paddingRight: 22,
     },
 
     /* Tagline accent */
@@ -189,9 +185,9 @@ export default function TemplateBright({ data, palette, sections }: Props) {
 
     /* Expérience */
     expItem: {
-      marginBottom: 11,
+      marginBottom: 12,
       paddingLeft: 10,
-      paddingBottom: 12,
+      paddingBottom: 4,
       borderLeftWidth: 2,
       borderLeftColor: ACC,
       borderLeftStyle: "solid",
@@ -248,8 +244,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        <View style={s.body}>
-          {/* ═══ SIDEBAR ═══ */}
+          {/* ═══ SIDEBAR (page 1 only) ═══ */}
           <View style={s.sidebar}>
             {/* Photo */}
             <View style={s.photoWrap}>
@@ -349,7 +344,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
                   <View style={s.mSecLine} />
                 </View>
                 {data.experiences.map((exp) => (
-                  <View key={exp.id} style={s.expItem} wrap={false}>
+                  <View key={exp.id} style={s.expItem}>
                     <View style={s.expHeader}>
                       <Text style={s.expTitle}>{exp.role}</Text>
                       <Text style={s.expDate}>
@@ -396,7 +391,6 @@ export default function TemplateBright({ data, palette, sections }: Props) {
               </>
             )}
           </View>
-        </View>
       </Page>
     </Document>
   );
