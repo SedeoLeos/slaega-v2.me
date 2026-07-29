@@ -5,9 +5,9 @@ import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-c
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
 import { NextRequest, NextResponse } from "next/server";
 
-// AI generation can exceed the default serverless timeout — allow up to 60s.
+// AI generation can exceed the default serverless timeout — allow up to 300s (Vercel Fluid Compute).
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 // ── Helpers ────────────────────────────────────────────────────────
 function stripHtml(s: string): string {
