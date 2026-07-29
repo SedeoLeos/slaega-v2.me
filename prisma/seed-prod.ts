@@ -538,7 +538,9 @@ async function seedStats() {
     const payload = { value: s.value, label: s.label, color: s.color, order: s.order, published: true };
     await db.stat.upsert({ where: { id: s.id }, create: { id: s.id, ...payload }, update: payload });
   }
-  console.log(`✓ Stats (${STATS.length}) upserted`);
+  // Authoritative: remove any legacy stats (e.g. from the old seed-cms) not in this set.
+  await db.stat.deleteMany({ where: { id: { notIn: STATS.map((s) => s.id) } } });
+  console.log(`✓ Stats (${STATS.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -587,7 +589,8 @@ async function seedServices() {
     const payload = { title: s.title, description: s.description, icon: s.icon, order: i, published: true };
     await db.service.upsert({ where: { id: s.id }, create: { id: s.id, ...payload }, update: payload });
   }
-  console.log(`✓ Services (${SERVICES.length}) upserted`);
+  await db.service.deleteMany({ where: { id: { notIn: SERVICES.map((s) => s.id) } } });
+  console.log(`✓ Services (${SERVICES.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -620,7 +623,8 @@ async function seedContactFields() {
     };
     await db.contactField.upsert({ where: { name: f.name }, create: { name: f.name, ...payload }, update: payload });
   }
-  console.log(`✓ Contact fields (${CONTACT_FIELDS.length}) upserted`);
+  await db.contactField.deleteMany({ where: { name: { notIn: CONTACT_FIELDS.map((f) => f.name) } } });
+  console.log(`✓ Contact fields (${CONTACT_FIELDS.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -635,7 +639,8 @@ async function seedAboutBlock() {
     published: true,
   };
   await db.aboutBlock.upsert({ where: { id: "about-block-main" }, create: { id: "about-block-main", ...payload }, update: payload });
-  console.log("✓ AboutBlock upserted");
+  await db.aboutBlock.deleteMany({ where: { id: { not: "about-block-main" } } });
+  console.log("✓ AboutBlock upserted (+ legacy purged)");
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -683,7 +688,8 @@ Ma stack quotidienne : **Spring Boot, NestJS, Next.js, Laravel, Flutter, Expo, G
 async function seedAboutPage() {
   const payload = { ...ABOUT_PAGE, highlights: JSON.stringify(ABOUT_PAGE.highlights) };
   await db.aboutPage.upsert({ where: { id: "about-page-main" }, create: { id: "about-page-main", ...payload }, update: payload });
-  console.log("✓ AboutPage upserted");
+  await db.aboutPage.deleteMany({ where: { id: { not: "about-page-main" } } });
+  console.log("✓ AboutPage upserted (+ legacy purged)");
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -727,7 +733,8 @@ async function seedFaq() {
     const payload = { question: f.question, answer: f.answer, order: i, published: true };
     await db.faqItem.upsert({ where: { id: f.id }, create: { id: f.id, ...payload }, update: payload });
   }
-  console.log(`✓ FAQ items (${FAQ_ITEMS.length}) upserted`);
+  await db.faqItem.deleteMany({ where: { id: { notIn: FAQ_ITEMS.map((f) => f.id) } } });
+  console.log(`✓ FAQ items (${FAQ_ITEMS.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -772,7 +779,8 @@ async function seedProcess() {
     };
     await db.processStep.upsert({ where: { id: p.id }, create: { id: p.id, ...payload }, update: payload });
   }
-  console.log(`✓ Process steps (${PROCESS_STEPS.length}) upserted`);
+  await db.processStep.deleteMany({ where: { id: { notIn: PROCESS_STEPS.map((p) => p.id) } } });
+  console.log(`✓ Process steps (${PROCESS_STEPS.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
