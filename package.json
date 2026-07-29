@@ -2,6 +2,9 @@
   "name": "slaega-v2.me",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "prebuild": "(tsx scripts/db.ts migrate deploy || echo '⚠ migrate deploy skipped/failed — continuing build') && (tsx prisma/seed-prod.ts || echo '⚠ seed step failed — continuing build')",
