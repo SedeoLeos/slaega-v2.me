@@ -79,6 +79,24 @@ function main() {
     process.exit(0);
   }
 
+  // Prisma's schema engine cannot run migrations through a transaction-mode
+  // pgbouncer pooler (Supabase port 6543 / `pgbouncer=true`): it tries to take a
+  // session advisory lock the pooler doesn't support and HANGS forever, stalling
+  // the whole build. `prisma.config.ts` already prefers DIRECT_URL for migrations
+  // — so skip cleanly when the effective migrate target is still a txn pooler
+  // (i.e. no direct/session DIRECT_URL is configured).
+  if (isMigrateDeploy) {
+    const migrateUrl = (process.env.DIRECT_URL?.trim() || dbUrl);
+    const isTxnPooler = /:6543(\b|\/)/.test(migrateUrl) || /[?&]pgbouncer=true\b/.test(migrateUrl);
+    if (isTxnPooler) {
+      console.warn("⚠  migrate deploy target is a transaction-mode pooler (pgbouncer) —");
+      console.warn("   migrations cannot run there. Skipping to avoid a build hang.");
+      console.warn("   → Set DIRECT_URL to a direct/session Supabase connection (port 5432)");
+      console.warn("     in your Vercel env to apply migrations on deploy.");
+      process.exit(0);
+    }
+  }
+
   const provider = readActiveProvider();
   const schemaDir = path.join("prisma", provider, "schema");
   const abs = path.join(process.cwd(), schemaDir);
