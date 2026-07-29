@@ -6,7 +6,7 @@
  * Main: tagline, summary, experience, projects
  */
 import {
-  Page, Document, View, Text, Image, StyleSheet, Svg, Path, Rect, Circle,
+  Page, Document, View, Text, Image, StyleSheet, Svg, Path, Rect,
 } from "@react-pdf/renderer";
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
@@ -44,31 +44,6 @@ function IconStar({ color }: { color: string }) {
   );
 }
 
-// ── Sidebar decorative pattern ────────────────────────────────────────────────
-function SidebarDecor({ palette }: { palette: CVPalette }) {
-  return (
-    <Svg width={168} height={842} viewBox="0 0 168 842" style={{ position: "absolute", top: 0, left: 0 }}>
-      {/* Subtle grid dots */}
-      {[0.15, 0.2, 0.12, 0.18, 0.1].map((op, row) =>
-        [20, 60, 100, 140].map((x, col) => (
-          <Circle
-            key={`${row}-${col}`}
-            cx={x}
-            cy={80 + row * 160 + col * 8}
-            r={1.5}
-            fill={palette.onDark}
-            opacity={op}
-          />
-        ))
-      )}
-      {/* Bottom accent triangle */}
-      <Path d="M0 780 L168 820 L168 842 L0 842 Z" fill={palette.accent} opacity={0.18} />
-      {/* Top accent bar */}
-      <Rect x={0} y={0} width={168} height={4} fill={palette.accent} opacity={0.6} />
-    </Svg>
-  );
-}
-
 // ── Main document ─────────────────────────────────────────────────────────────
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -85,7 +60,7 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
     page: { backgroundColor: palette.paper, fontFamily: "Helvetica", paddingTop: 28, paddingBottom: 30, paddingLeft: 168 },
 
     // Sidebar — fixed full-height column (repeats on every page, full bleed)
-    sidebar:         { position: "absolute", top: 0, left: 0, bottom: 0, width: 168, backgroundColor: palette.sidebar, paddingTop: 32, paddingBottom: 24, paddingHorizontal: 16 },
+    sidebar:         { position: "absolute", top: -28, left: 0, height: 842, width: 168, backgroundColor: palette.sidebar, paddingTop: 60, paddingBottom: 24, paddingHorizontal: 16 },
     photoWrap:       { alignItems: "center", marginBottom: 14 },
     photo:           { width: 80, height: 80, borderRadius: 40, objectFit: "cover", borderWidth: 3, borderColor: palette.accent, borderStyle: "solid" },
     sidebarName:     { fontSize: 13, fontFamily: "Helvetica-Bold", color: palette.onDark, textAlign: "center", letterSpacing: -0.3, lineHeight: 1.2, marginBottom: 3 },
@@ -139,10 +114,8 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        {/* ── Sidebar (fixed, full height, every page) ─────────────────────── */}
-        <View style={s.sidebar} fixed>
-          <SidebarDecor palette={palette} />
-
+        {/* ── Sidebar — absolute, page 1 only (bounded height → no page-2 band) ── */}
+        <View style={s.sidebar}>
           {/* Photo + name */}
           <View style={s.photoWrap}>
             <Image src={CV_PROFILE.photo} style={s.photo} />
@@ -197,6 +170,7 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
             </>
           ) : null}
         </View>
+
 
         {/* ── Main content ────────────────── */}
         <View style={s.main}>
