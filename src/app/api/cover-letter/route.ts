@@ -11,6 +11,10 @@ import { getExperiences } from "@/features/experience/use-cases/get-experiences.
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
 import { NextRequest, NextResponse } from "next/server";
 
+// AI generation can exceed the default serverless timeout — allow up to 60s.
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
 function stripHtml(s: string): string {
   return (s ?? "")
     .replace(/<\/?(p|br|div|h[1-6]|li|ul|ol|strong|em|a|u|span|table|tr|td|th|img|hr)[^>]*>/gi, " ")
