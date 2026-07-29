@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type CVData = {
   keywords: string[];
@@ -244,6 +244,58 @@ export default function CVGenerator() {
   const [error, setError] = useState("");
   const printRef = useRef<HTMLDivElement>(null);
 
+  // ── Saved CVs (reuse without regenerating) ──────────────────────────────
+  type SavedSummary = { id: string; title: string; language: string; createdAt: string };
+  const [saved, setSaved] = useState<SavedSummary[]>([]);
+  const [saving, setSaving] = useState(false);
+
+  const loadSavedList = async () => {
+    try {
+      const res = await fetch("/api/cv-generator/saved");
+      if (res.ok) setSaved((await res.json()).items ?? []);
+    } catch { /* ignore */ }
+  };
+  useEffect(() => { loadSavedList(); }, []);
+
+  const saveCurrent = async () => {
+    if (!cv) return;
+    setSaving(true);
+    try {
+      const title = (cv.jobTitle?.trim() || jobOffer.trim().split("\n")[0] || "CV").slice(0, 120);
+      const language = isEnglish(`${cv.jobTitle} ${cv.tagline ?? ""} ${cv.summary ?? ""}`) ? "en" : "fr";
+      const res = await fetch("/api/cv-generator/saved", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, jobOffer, language, data: cv }),
+      });
+      if (res.ok) await loadSavedList();
+      else setError("Échec de l'enregistrement du CV");
+    } catch {
+      setError("Échec de l'enregistrement du CV");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const reuseSaved = async (id: string) => {
+    try {
+      const res = await fetch(`/api/cv-generator/saved?id=${id}`);
+      if (!res.ok) return;
+      const { cv: rec } = await res.json();
+      setJobOffer(rec.jobOffer ?? "");
+      setCv(rec.data as CVData);   // instant PDF — no AI call
+      setStatus("idle");
+      setError("");
+    } catch { /* ignore */ }
+  };
+
+  const deleteSaved = async (id: string) => {
+    try {
+      await fetch(`/api/cv-generator/saved?id=${id}`, { method: "DELETE" });
+      setSaved((prev) => prev.filter((s) => s.id !== id));
+    } catch { /* ignore */ }
+  };
+
   const generate = async () => {
     if (jobOffer.trim().length < 50) {
       setError("L'offre est trop courte (min 50 caractères)");
@@ -310,23 +362,81 @@ export default function CVGenerator() {
           </button>
 
           {cv && (
-            <button
-              type="button"
-              onClick={print}
-              className="inline-flex items-center gap-2 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 px-4 py-2.5 rounded-full text-sm font-medium transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              PDF ({pages.length} {pages.length > 1 ? "pages" : "page"})
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={saveCurrent}
+                disabled={saving}
+                className="inline-flex items-center gap-2 border border-green-app/40 text-green-app hover:bg-green-app/10 px-4 py-2.5 rounded-full text-sm font-medium transition-colors disabled:opacity-50"
+              >
+                {saving ? "Enregistrement…" : "Enregistrer"}
+              </button>
+              <button
+                type="button"
+                onClick={print}
+                className="inline-flex items-center gap-2 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 px-4 py-2.5 rounded-full text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                PDF ({pages.length} {pages.length > 1 ? "pages" : "page"})
+              </button>
+            </>
           )}
         </div>
 
         {error && (
           <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
             <p className="text-sm text-red-400">{error}</p>
+          </div>
+        )}
+
+        {/* ── Saved CVs — reuse an old CV without regenerating (no AI call) ── */}
+        {saved.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide">
+              Mes CV enregistrés ({saved.length})
+            </p>
+            <ul className="space-y-1.5">
+              {saved.map((s) => (
+                <li
+                  key={s.id}
+                  className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2"
+                >
+                  <button
+                    type="button"
+                    onClick={() => reuseSaved(s.id)}
+                    className="flex-1 min-w-0 text-left"
+                    title="Réutiliser ce CV (sans régénérer)"
+                  >
+                    <p className="text-sm text-zinc-200 truncate">{s.title}</p>
+                    <p className="text-[11px] text-zinc-500">
+                      {new Date(s.createdAt).toLocaleDateString("fr-FR")} · {s.language?.toUpperCase()}
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => reuseSaved(s.id)}
+                    className="text-[11px] font-semibold text-green-app hover:underline flex-shrink-0"
+                  >
+                    Réutiliser
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteSaved(s.id)}
+                    className="text-zinc-500 hover:text-red-400 flex-shrink-0"
+                    title="Supprimer"
+                    aria-label="Supprimer"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
