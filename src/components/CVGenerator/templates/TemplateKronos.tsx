@@ -302,7 +302,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                   .map((b) => b.trim())
                   .filter(Boolean);
                 return (
-                  <View key={exp.id} style={s.expItem} wrap={false}>
+                  <View key={exp.id} style={s.expItem}>
                     <View style={s.expSquare} />
                     <View style={s.expContent}>
                       <View style={s.expHeader}>
@@ -345,7 +345,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
               </View>
               <View style={s.secDivider} />
               {data.projects.slice(0, 4).map((p) => (
-                <View key={p.slug} style={s.projItem} wrap={false}>
+                <View key={p.slug} style={s.projItem}>
                   <Text style={s.projTitle}>{p.title}</Text>
                   <Text style={s.projDesc}>{stripHtml(p.desc)}</Text>
                   {p.tags.length > 0 && (
