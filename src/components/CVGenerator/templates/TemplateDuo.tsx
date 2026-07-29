@@ -46,9 +46,9 @@ export default function TemplateDuo({ data, palette, sections }: Props) {
 
     /* ── Sidebar ── */
     sidebar: {
-      position: "absolute", top: 0, left: 0, bottom: 0, width: 226,
+      position: "absolute", top: -30, left: 0, height: 842, width: 226,
       backgroundColor: palette.sidebar,
-      paddingTop: 32, paddingHorizontal: 16, paddingBottom: 28,
+      paddingTop: 62, paddingHorizontal: 16, paddingBottom: 28,
     },
     photoWrap: { alignItems: "center", marginBottom: 12 },
     photo: {
@@ -122,7 +122,7 @@ export default function TemplateDuo({ data, palette, sections }: Props) {
       <Page size="A4" style={s.page}>
 
         {/* ═══ SIDEBAR ═══ */}
-        <View style={s.sidebar} fixed>
+        <View style={s.sidebar}>
 
           <View style={s.photoWrap}>
             <Image src={CV_PROFILE.photo} style={s.photo} />
