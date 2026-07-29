@@ -2,6 +2,10 @@ import { auth } from "@/auth";
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
 import { NextRequest, NextResponse } from "next/server";
 
+// AI generation can exceed the default serverless timeout — allow up to 60s.
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
 type SectionKey = "tagline" | "summary" | "capabilities" | "experience" | "projects" | "skills";
 
 function stripHtml(s: string): string {
