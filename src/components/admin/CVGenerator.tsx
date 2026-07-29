@@ -126,7 +126,7 @@ const PROFILE = {
 
 // Usable height per A4 page (297mm − 15mm top − 15mm bottom = 267mm).
 // Tuned slightly conservative to avoid bottom overflow.
-const PAGE_CAPACITY = 262; // mm
+const PAGE_CAPACITY = 250; // mm — conservative so entries never overflow / clip at a page break
 
 type ExperienceItem = CVData["experiences"][number];
 type ProjectItem = CVData["projects"][number];
@@ -677,11 +677,11 @@ function ExperienceArticle({ exp, lang }: { exp: ExperienceItem; lang: "fr" | "e
 function ProjectArticle({ project }: { project: ProjectItem }) {
   return (
     <article className="cv-job">
-      <div className="cv-job-header">
-        <div className="cv-job-title-wrap">
-          <span className="cv-job-marker" />
-          <h3 className="cv-job-title">{project.title}</h3>
-        </div>
+      {/* No date on projects → render the title directly (no flex header,
+          which would collapse via baseline alignment and overlap the desc). */}
+      <div className="cv-job-title-wrap" style={{ marginBottom: "3px" }}>
+        <span className="cv-job-marker" />
+        <h3 className="cv-job-title">{project.title}</h3>
       </div>
       <p className="cv-job-desc">{stripHtml(project.desc)}</p>
       {project.tags.length > 0 && (
@@ -952,7 +952,7 @@ function CVStyles() {
         font-weight: 700;
         color: #0a1a35;
         letter-spacing: 0.02em;
-        margin: 16px 0 12px 0;
+        margin: 22px 0 13px 0;
       }
       .cv-section-title-marker {
         width: 4px;
@@ -963,7 +963,7 @@ function CVStyles() {
 
       /* Job entries */
       .cv-job {
-        margin-bottom: 13px;
+        margin-bottom: 16px;
         padding-left: 16px;
         border-left: 2px solid #e3e8f0;
         position: relative;
@@ -1008,8 +1008,8 @@ function CVStyles() {
         margin: 2px 0 5px 0;
       }
       .cv-job-desc {
-        font-size: 9pt;
-        line-height: 1.5;
+        font-size: 9.3pt;
+        line-height: 1.55;
         color: #3a4a68;
         margin: 0;
       }
