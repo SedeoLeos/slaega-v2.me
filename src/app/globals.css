@@ -1,37 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  /* Neutral-luxury palette — warm paper, deep ink, one restrained bronze accent
-     (visible on both light and dark sections). Minimalist, editorial. */
-  --background: #F1EFE9;            /* warm paper */
-  --foreground: #151310;            /* deep warm ink */
-  --secondary: #86847B;             /* muted warm gray — labels / meta */
-  --accent: #8A6F45;               /* muted bronze — single accent */
-  --primary: #8A6F45;
-  --green-app: #8A6F45;             /* legacy var name kept; now the accent */
-  --card: #FBFAF6;                  /* warm white cards → contrast, no border */
-  --border: rgba(21, 19, 16, 0.08);
-  --ink-dark: #100E0B;              /* near-black for dark sections */
-}
-
-/* ── Full-page scroll (home only, via <html class="snap-home">) ─────────────
-   Each home section fills the viewport and snaps into place as you scroll. */
-html.snap-home {
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 4.5rem;       /* clear the fixed header */
-  scroll-behavior: smooth;
-}
-.snap-section {
-  min-height: 100svh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-/* Sections taller than the viewport (project grid, etc.) top-align instead of
-   centering so no content is pushed off-screen. */
-.snap-section.snap-tall {
-  justify-content: flex-start;
+  /* Original palette (baseline). Accent/colors are managed in the back-office
+     theme; tweak them there or tell me an exact hex. */
+  --background: #dcded0;
+  --foreground: #0e0e0e;
+  --secondary: hsl(0, 0%, 55%);
+  --accent: hsl(79, 29%, 37%);
+  --primary: hsl(79, 29%, 37%);
+  --green-app: #05796b;
+  --card: #f5f5ee;
+  --border: rgba(14, 14, 14, 0.1);
 }
 
 @theme inline {
