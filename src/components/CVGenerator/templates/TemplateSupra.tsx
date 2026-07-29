@@ -30,11 +30,11 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
   const ACC    = palette.accent;
 
   const s = StyleSheet.create({
-    page: { backgroundColor: BG, fontFamily: "Helvetica", flexDirection: "row" },
+    page: { backgroundColor: BG, fontFamily: "Helvetica", paddingTop: 30, paddingBottom: 30, paddingLeft: 202 },
 
-    /* ═══ LEFT SIDEBAR ═══ */
+    /* ═══ LEFT SIDEBAR — page 1 only, full bleed ═══ */
     sidebar: {
-      width: "34%",
+      position: "absolute", top: -30, left: 0, height: 842, width: 202,
       backgroundColor: CARD,
       borderRightWidth: 1, borderRightColor: BORDER, borderRightStyle: "solid",
       flexDirection: "column",
@@ -93,8 +93,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
 
     /* ═══ RIGHT MAIN ═══ */
     main: {
-      flex: 1,
-      paddingTop: 24, paddingBottom: 20, paddingLeft: 20, paddingRight: 22,
+      paddingLeft: 20, paddingRight: 22,
       flexDirection: "column", gap: 14,
     },
 
@@ -108,10 +107,10 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
       flexDirection: "row", gap: 8, marginBottom: 10, alignItems: "flex-start",
     },
     expLeft: { flexDirection: "column", width: "38%", gap: 2 },
-    expDateLoc: { flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 2 },
+    expDateLoc: { flexDirection: "column", gap: 1, marginBottom: 3 },
     expDate: { fontSize: 6.5, color: "#777" },
     expLocDot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: "#ccc" },
-    expLoc:  { fontSize: 6.5, color: "#777" },
+    expLoc:  { fontSize: 6.5, color: "#999", flexShrink: 1 },
     expCompanyRow: { flexDirection: "row", alignItems: "center", gap: 6 },
     expLogoBox: {
       width: 18, height: 18, borderRadius: 5, backgroundColor: ACC + "18",
@@ -282,10 +281,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
                         {formatMonth(exp.startDate, false, lang, L.present)} – {formatMonth(exp.endDate, exp.current, lang, L.present)}
                       </Text>
                       {exp.location ? (
-                        <>
-                          <View style={s.expLocDot} />
-                          <Text style={s.expLoc}>{exp.location}</Text>
-                        </>
+                        <Text style={s.expLoc}>{exp.location}</Text>
                       ) : null}
                     </View>
                     <View style={s.expCompanyRow}>

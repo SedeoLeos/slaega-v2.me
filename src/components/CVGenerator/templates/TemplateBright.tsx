@@ -189,8 +189,9 @@ export default function TemplateBright({ data, palette, sections }: Props) {
 
     /* Expérience */
     expItem: {
-      marginBottom: 13,
+      marginBottom: 11,
       paddingLeft: 10,
+      paddingBottom: 12,
       borderLeftWidth: 2,
       borderLeftColor: ACC,
       borderLeftStyle: "solid",
@@ -348,7 +349,7 @@ export default function TemplateBright({ data, palette, sections }: Props) {
                   <View style={s.mSecLine} />
                 </View>
                 {data.experiences.map((exp) => (
-                  <View key={exp.id} style={s.expItem}>
+                  <View key={exp.id} style={s.expItem} wrap={false}>
                     <View style={s.expHeader}>
                       <Text style={s.expTitle}>{exp.role}</Text>
                       <Text style={s.expDate}>

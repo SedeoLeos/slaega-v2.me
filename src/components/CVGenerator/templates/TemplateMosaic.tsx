@@ -1,83 +1,55 @@
 /**
- * Template MOSAIC — Fond mosaïque bleu fixe (pas de palette)
+ * Template MOSAIC — Fond mosaïque (couleurs pilotées par la palette)
  *
- * Header : mosaïque bleue (gauche) + identité + contact (droite)
- * Body   : sidebar sombre (compétences) | main blanc (expériences, projets)
- *
- * ⚠️ Ce template utilise des couleurs fixes — la palette n'est PAS appliquée.
+ * Header : mosaïque (gauche) + identité + contact (droite)
+ * Body   : sidebar sombre (compétences) | main clair (expériences, projets)
  */
 import {
   Page, Document, View, Text, Image, StyleSheet, Svg, Rect,
 } from "@react-pdf/renderer";
 import type { CVData, CVSections } from "../cv-types";
+import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
 
-type Props = { data: CVData; sections: CVSections };
-
-// ── Fixed blue palette ────────────────────────────────────────────────────────
-const BLUE_DARK   = "#0a1f5e";   // sidebar bg, header text
-const BLUE_MED    = "#2855b8";   // accent, section titles
-const BLUE_LIGHT  = "#4a7de4";   // accent light
-const BLUE_PALE   = "#b8cef5";   // tile base
-const WHITE       = "#ffffff";
-const OFF_WHITE   = "#f8faff";   // page bg
-const BORDER      = "#dde8fb";
-
-// ── Mosaic SVG (deterministic — no Math.random) ───────────────────────────────
-const SHADES = [
-  "#b8cef5", "#c8d9f7", "#9ab8f0", "#d8e7fb",
-  "#aac5f3", "#e0ecfc", "#bad2f6", "#cde0f8",
-  "#7aa2eb", "#8ab1ee", "#d0e5fb", "#e8f2fd",
-];
+type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
 // Pre-baked grid parameters (deterministic)
 const GRID_COLS = 5;
 const GRID_ROWS = 14;
 
-function MosaicSvg({ width, height }: { width: number; height: number }) {
+// ── Mosaic SVG — themed: `base` background, `tile` accent squares ─────────────
+function MosaicSvg({ width, height, base, tile }: { width: number; height: number; base: string; tile: string }) {
   const tw = width  / GRID_COLS;
   const th = height / GRID_ROWS;
 
-  // Deterministic offsets & color indices (no random)
   const DX = [ 0,  0.18, -0.12,  0.22,  0.05, -0.18,  0.10,  0.28, -0.08,  0.15,  0.25, -0.05,  0.12, -0.20];
   const DY = [ 0.05, -0.08, 0.15, -0.10, 0.02, 0.18, -0.05, 0.08, -0.15, 0.12, -0.02, 0.20, -0.18, 0.04];
-  const CI = [ 0, 2, 4, 1, 3, 5, 6, 2, 0, 4, 7, 3, 8, 1, 5, 9, 2, 6, 10, 0, 3, 11, 4, 7, 1, 5, 8, 2, 9, 6];
 
-  const tiles: { x: number; y: number; w: number; h: number; fill: string; op: number }[] = [];
+  const tiles: { x: number; y: number; w: number; h: number; op: number }[] = [];
 
   for (let r = 0; r < GRID_ROWS; r++) {
     for (let c = 0; c < GRID_COLS; c++) {
-      const idx = r * GRID_COLS + c;
-      const ci  = CI[idx % CI.length];
-      // Opacity fades from ~0.95 at top to ~0.15 at bottom
+      // Opacity fades from ~0.9 at top to ~0.12 at bottom
       const fade = 1 - (r / (GRID_ROWS - 1)) * 0.82;
-      const op   = Math.max(0.12, fade - (c % 3) * 0.07);
+      const op   = Math.max(0.1, fade - (c % 3) * 0.08);
       const dx   = DX[r % DX.length] * tw;
       const dy   = DY[c % DY.length] * th;
-
-      tiles.push({
-        x:  c * tw + dx,
-        y:  r * th + dy,
-        w:  tw * 0.84,
-        h:  th * 0.84,
-        fill: SHADES[ci],
-        op,
-      });
+      tiles.push({ x: c * tw + dx, y: r * th + dy, w: tw * 0.84, h: th * 0.84, op });
     }
   }
 
   return (
     <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-      <Rect x={0} y={0} width={width} height={height} fill={BLUE_DARK} />
+      <Rect x={0} y={0} width={width} height={height} fill={base} />
       {tiles.map((t, i) => (
-        <Rect key={i} x={t.x} y={t.y} width={t.w} height={t.h} fill={t.fill} opacity={t.op} rx={3} />
+        <Rect key={i} x={t.x} y={t.y} width={t.w} height={t.h} fill={tile} opacity={t.op} rx={3} />
       ))}
     </Svg>
   );
 }
 
 // ── Section marker (sun/star style) ──────────────────────────────────────────
-function SectionMarker() {
+function SectionMarker({ color }: { color: string }) {
   return (
     <Svg width={12} height={12} viewBox="0 0 12 12">
       {[0, 45, 90, 135].map((deg) => {
@@ -86,17 +58,26 @@ function SectionMarker() {
         const y1  = 6 + Math.sin(rad) * 5;
         const x2  = 6 - Math.cos(rad) * 5;
         const y2  = 6 - Math.sin(rad) * 5;
-        return <Rect key={deg} x={x2 - 0.4} y={y2 - 0.4} width={x1 - x2 + 0.8} height={0.8} fill={BLUE_MED} rx={0.4} />;
+        return <Rect key={deg} x={x2 - 0.4} y={y2 - 0.4} width={x1 - x2 + 0.8} height={0.8} fill={color} rx={0.4} />;
       })}
-      <Rect x={4} y={4} width={4} height={4} fill={BLUE_MED} rx={1} />
+      <Rect x={4} y={4} width={4} height={4} fill={color} rx={1} />
     </Svg>
   );
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-export default function TemplateMosaic({ data, sections }: Props) {
+export default function TemplateMosaic({ data, palette, sections }: Props) {
   const lang = data.language ?? "fr";
   const L    = CV_LABELS[lang];
+
+  // Theme colours mapped from the active palette
+  const BLUE_DARK  = palette.sidebar;      // sidebar bg, header bg
+  const BLUE_MED   = palette.accent;       // accents, section titles
+  const BLUE_LIGHT = palette.accent;       // dots, borders
+  const BLUE_PALE  = palette.onDarkMuted;  // muted text on dark
+  const WHITE      = palette.onDark;       // text/tiles on dark
+  const OFF_WHITE  = palette.paper;        // page bg
+  const BORDER     = palette.border;
 
   const tagline = sections.tagline.text ?? data.tagline ?? "";
   const summary = sections.summary.text ?? stripHtml(data.summary ?? "");
@@ -216,7 +197,7 @@ export default function TemplateMosaic({ data, sections }: Props) {
         <View style={s.header}>
           {/* Mosaic column — full height of header */}
           <View style={s.mosaicCol}>
-            <MosaicSvg width={226} height={148} />
+            <MosaicSvg width={226} height={148} base={BLUE_DARK} tile={WHITE} />
           </View>
 
           {/* Identity */}
@@ -295,7 +276,7 @@ export default function TemplateMosaic({ data, sections }: Props) {
             {sections.experience.visible && data.experiences.length > 0 && (
               <>
                 <View style={s.secRow}>
-                  <SectionMarker />
+                  <SectionMarker color={BLUE_MED} />
                   <Text style={s.secLabel}>{L.experience}</Text>
                   <View style={s.secLine} />
                 </View>
@@ -319,14 +300,14 @@ export default function TemplateMosaic({ data, sections }: Props) {
 
             {/* Projects */}
             {sections.projects.visible && data.projects.length > 0 && (
-              <>
+              <View wrap={false}>
                 <View style={s.secRow}>
-                  <SectionMarker />
+                  <SectionMarker color={BLUE_MED} />
                   <Text style={s.secLabel}>{L.projects}</Text>
                   <View style={s.secLine} />
                 </View>
                 {data.projects.slice(0, 4).map((p) => (
-                  <View key={p.slug} style={s.job} wrap={false}>
+                  <View key={p.slug} style={s.job}>
                     <View style={s.jobDot} />
                     <Text style={[s.jobName, { flexGrow: 0, flexBasis: "auto" }]}>{p.title}</Text>
                     <Text style={s.jobDesc}>{stripHtml(p.desc)}</Text>
@@ -335,14 +316,14 @@ export default function TemplateMosaic({ data, sections }: Props) {
                     )}
                   </View>
                 ))}
-              </>
+              </View>
             )}
 
             {/* Skills chips in main */}
             {sections.skills.visible && data.allSkills.length > 0 && (
               <>
                 <View style={s.secRow}>
-                  <SectionMarker />
+                  <SectionMarker color={BLUE_MED} />
                   <Text style={s.secLabel}>{L.skills}</Text>
                   <View style={s.secLine} />
                 </View>

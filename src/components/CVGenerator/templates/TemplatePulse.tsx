@@ -36,7 +36,7 @@ export default function TemplatePulse({ data, palette, sections }: Props) {
 
     /* ═══ LEFT COLUMN ═══ */
     left: {
-      width: "44%",
+      width: "50%",
       paddingTop: 28, paddingBottom: 24, paddingLeft: 22, paddingRight: 12,
       flexDirection: "column", gap: 10,
     },
@@ -63,17 +63,17 @@ export default function TemplatePulse({ data, palette, sections }: Props) {
       textAlign: "center", marginBottom: 6,
     },
 
-    /* Card grid — 2 columns */
-    cardGrid: { flexDirection: "row", flexWrap: "wrap", gap: 5 },
+    /* Card grid — single column (full width, roomier) */
+    cardGrid: { flexDirection: "column", gap: 6 },
     card: {
-      width: "47%", backgroundColor: BG, borderRadius: 6,
+      width: "100%", backgroundColor: BG, borderRadius: 6,
       borderWidth: 1, borderColor: BORDER, borderStyle: "solid",
-      padding: 6, flexDirection: "column", gap: 2,
+      padding: 8, flexDirection: "column", gap: 2,
     },
     cardHighlight: {
-      width: "47%", backgroundColor: ACC + "18", borderRadius: 6,
+      width: "100%", backgroundColor: ACC + "18", borderRadius: 6,
       borderWidth: 1, borderColor: ACC + "40", borderStyle: "solid",
-      padding: 6, flexDirection: "column", gap: 2,
+      padding: 8, flexDirection: "column", gap: 2,
     },
     cardYear:  { fontSize: 6, color: "#999", letterSpacing: 0.5 },
     cardTitle: { fontSize: 8, fontFamily: "Helvetica-Bold", color: NAVY, lineHeight: 1.3 },

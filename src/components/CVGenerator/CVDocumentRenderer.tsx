@@ -53,7 +53,7 @@ export default function CVDocumentRenderer({
   if (template === "hello")
     return <TemplateHello data={data} palette={palette} sections={sections} />;
   if (template === "mosaic")
-    return <TemplateMosaic data={data} sections={sections} />;
+    return <TemplateMosaic data={data} palette={palette} sections={sections} />;
   if (template === "julien")
     return <TemplateJulien data={data} palette={palette} sections={sections} />;
   if (template === "bright")
