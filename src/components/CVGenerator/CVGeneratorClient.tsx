@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import type { CVData, CVSections, CVTemplateId } from './cv-types';
 // (no useTranslations — this component renders in admin without NextIntlClientProvider)
@@ -190,6 +190,15 @@ function SectionRow({
   );
 }
 
+// ── Saved-CV summary shape (from /api/cv-generator/saved) ──────────────────────
+type SavedCvSummary = {
+  id: string;
+  title: string;
+  jobOffer: string;
+  language: string;
+  createdAt: string;
+};
+
 // ── Main component ────────────────────────────────────────────────────────────
 export default function CVGeneratorClient() {
   // t replaced by L constant (admin has no NextIntlClientProvider)
@@ -199,6 +208,81 @@ export default function CVGeneratorClient() {
   const [cv,        setCv]        = useState<CVData | null>(null);
   const [status,    setStatus]    = useState<'idle' | 'loading' | 'error'>('idle');
   const [error,     setError]     = useState('');
+
+  // ── Saved CVs
+  const [savedList,    setSavedList]    = useState<SavedCvSummary[]>([]);
+  const [savedOpen,    setSavedOpen]    = useState(false);
+  const [savingState,  setSavingState]  = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [busyId,       setBusyId]       = useState<string | null>(null);
+
+  const loadSaved = useCallback(async () => {
+    try {
+      const res = await fetch('/api/cv-generator/saved');
+      if (!res.ok) return;
+      const data = await res.json();
+      setSavedList(Array.isArray(data.items) ? data.items : []);
+    } catch {
+      /* silencieux */
+    }
+  }, []);
+
+  useEffect(() => { loadSaved(); }, [loadSaved]);
+
+  const saveCurrent = useCallback(async () => {
+    if (!cv) return;
+    setSavingState('saving');
+    try {
+      const title = `${cv.jobTitle} — ${new Date().toLocaleDateString('fr-FR')}`;
+      const res = await fetch('/api/cv-generator/saved', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, jobOffer, language: cv.language ?? 'fr', data: cv }),
+      });
+      if (res.ok) {
+        setSavingState('saved');
+        await loadSaved();
+        setSavedOpen(true);
+        setTimeout(() => setSavingState('idle'), 2000);
+      } else {
+        setSavingState('idle');
+      }
+    } catch {
+      setSavingState('idle');
+    }
+  }, [cv, jobOffer, loadSaved]);
+
+  const reuseSaved = useCallback(async (id: string) => {
+    setBusyId(id);
+    try {
+      const res = await fetch(`/api/cv-generator/saved?id=${encodeURIComponent(id)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const saved = data.cv;
+      if (saved?.data) {
+        setCv(saved.data as CVData);
+        setJobOffer(saved.jobOffer ?? '');
+        setSections(defaultSections());
+        setStatus('idle');
+        setError('');
+      }
+    } catch {
+      /* silencieux */
+    } finally {
+      setBusyId(null);
+    }
+  }, []);
+
+  const deleteSaved = useCallback(async (id: string) => {
+    setBusyId(id);
+    try {
+      await fetch(`/api/cv-generator/saved?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      await loadSaved();
+    } catch {
+      /* silencieux */
+    } finally {
+      setBusyId(null);
+    }
+  }, [loadSaved]);
 
   // ── Customisation state
   const [templateId,     setTemplateId]     = useState<CVTemplateId>('kronos');
@@ -301,6 +385,76 @@ export default function CVGeneratorClient() {
           {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
         </div>
 
+        {/* ── Mes CV enregistrés ─────────────────────────────── */}
+        <div className="border border-zinc-800 rounded-xl">
+          <button
+            type="button"
+            onClick={() => setSavedOpen((v) => !v)}
+            className="w-full flex items-center justify-between px-3 py-2.5 text-left"
+          >
+            <span className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
+              <svg className="w-3.5 h-3.5 text-green-app" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+              Mes CV enregistrés
+              {savedList.length > 0 && (
+                <span className="text-[10px] bg-green-app/15 text-green-app px-1.5 py-0.5 rounded-full">
+                  {savedList.length}
+                </span>
+              )}
+            </span>
+            <svg className={`w-4 h-4 text-zinc-500 transition-transform ${savedOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {savedOpen && (
+            <div className="px-3 pb-3 flex flex-col gap-1.5">
+              {savedList.length === 0 ? (
+                <p className="text-[11px] text-zinc-600 py-1">
+                  Aucun CV enregistré. Génère un CV puis clique sur « Enregistrer » pour le réutiliser sans le régénérer.
+                </p>
+              ) : (
+                savedList.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-2"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] text-zinc-200 font-medium truncate">{item.title}</p>
+                      <p className="text-[10px] text-zinc-500">
+                        {new Date(item.createdAt).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })}
+                        {' · '}
+                        {item.language === 'en' ? 'EN' : 'FR'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => reuseSaved(item.id)}
+                      disabled={busyId === item.id}
+                      title="Réutiliser ce CV"
+                      className="text-[10px] font-semibold text-green-app hover:opacity-80 disabled:opacity-40 px-1.5 py-1"
+                    >
+                      {busyId === item.id ? '…' : 'Réutiliser'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteSaved(item.id)}
+                      disabled={busyId === item.id}
+                      title="Supprimer"
+                      className="w-6 h-6 flex items-center justify-center rounded hover:bg-zinc-800 text-zinc-600 hover:text-red-400 transition-colors disabled:opacity-40"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Template picker — drawer trigger */}
         <div>
           <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2 font-medium">Template</p>
@@ -388,9 +542,21 @@ export default function CVGeneratorClient() {
           </div>
         )}
 
-        {/* Download */}
+        {/* Download + Save */}
         {cv && docNode && (
-          <div className="mt-auto">
+          <div className="mt-auto flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={saveCurrent}
+              disabled={savingState === 'saving'}
+              className="w-full flex items-center justify-center gap-2 bg-green-app/10 hover:bg-green-app/20 border border-green-app/30 text-green-app font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-40"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" style={{ display: savingState === 'saved' ? 'block' : 'none' }} />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1-4H9a2 2 0 00-2 2v6h10V5a2 2 0 00-2-2z" style={{ display: savingState === 'saved' ? 'none' : 'block' }} />
+              </svg>
+              {savingState === 'saving' ? 'Enregistrement…' : savingState === 'saved' ? 'Enregistré ✓' : 'Enregistrer ce CV'}
+            </button>
             <PDFDownloadLink
               document={docNode}
               fileName={`cv-${cv.jobTitle.toLowerCase().replace(/\s+/g, '-')}.pdf`}

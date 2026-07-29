@@ -37,21 +37,29 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     : (data.capabilities ?? []);
 
   const s = StyleSheet.create({
-    page: { backgroundColor: "#ffffff", fontFamily: "Helvetica" },
+    page: {
+      backgroundColor: "#ffffff",
+      fontFamily: "Helvetica",
+      /* Page-level padding → répété automatiquement sur CHAQUE page
+         (corrige la page 2 sans marge). */
+      paddingTop: 30,
+      paddingBottom: 34,
+      paddingHorizontal: 40,
+    },
 
     /* ── Watermark (réduit, discret) ── */
     bgWrap: {
       position: "absolute",
-      top: 0,
-      left: 0,
+      top: -30,
+      left: -40,
       width: "35%",
       height: "77%",   /* s'arrête à ~77% — ne couvre pas tout le bas de la page */
       opacity: 0.35,
     },
     bgImg: { width: "100%", height: "100%", objectFit: "cover" },
 
-    /* ── Contenu principal ── */
-    content: { paddingHorizontal: 36, paddingTop: 22, paddingBottom: 24 },
+    /* ── Contenu principal (padding déplacé sur <Page>) ── */
+    content: {},
 
     /* ── Header : ligne fine + titre + ligne ── */
     topLine: { height: 0.8, backgroundColor: DIVIDER, marginBottom: 6 },
@@ -62,7 +70,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       marginBottom: 14,
     },
     jobTitleText: {
-      fontSize: 9,
+      fontSize: 9.5,
       color: ACC,
       letterSpacing: 0.8,
       textTransform: "uppercase",
@@ -95,9 +103,9 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
 
     /* ── Résumé ── */
     summaryText: {
-      fontSize: 9.5,
+      fontSize: 10.5,
       color: TEXT,
-      lineHeight: 1.65,
+      lineHeight: 1.6,
       marginTop: 12,
       marginBottom: 16,
     },
@@ -114,11 +122,11 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       textTransform: "uppercase",
       marginBottom: 2,
     },
-    contactValue: { fontSize: 8.5, color: TEXT },
+    contactValue: { fontSize: 9.5, color: TEXT },
 
     /* ── Capacités ── */
     capsTitle: {
-      fontSize: 9,
+      fontSize: 10,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       textTransform: "uppercase",
@@ -129,10 +137,10 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     capItem: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 4,
+      marginBottom: 4.5,
     },
-    capDot: { fontSize: 9, color: ACC, marginRight: 6 },
-    capText: { fontSize: 9, color: TEXT, flex: 1, lineHeight: 1.5 },
+    capDot: { fontSize: 10, color: ACC, marginRight: 6 },
+    capText: { fontSize: 10, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── En-tête de section ── */
     secRow: {
@@ -142,7 +150,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       marginBottom: 3,
     },
     secTitle: {
-      fontSize: 14,
+      fontSize: 15,
       fontFamily: "Helvetica-Bold",
       color: ACC,
       letterSpacing: -0.2,
@@ -177,37 +185,37 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       alignItems: "flex-start",
     },
     expTitle: {
-      fontSize: 10.5,
+      fontSize: 11.5,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       flex: 1,
     },
     expDate: {
-      fontSize: 8.5,
+      fontSize: 9,
       color: MUTED,
       fontFamily: "Helvetica-Oblique",
       flexShrink: 0,
       marginLeft: 6,
     },
-    expCompany: { fontSize: 8.5, color: MUTED, marginBottom: 4 },
+    expCompany: { fontSize: 9.5, color: MUTED, marginBottom: 4 },
     expBullet: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 2.5,
+      marginBottom: 3,
     },
-    expBulletDot: { fontSize: 9, color: TEXT, marginRight: 5 },
-    expBulletText: { fontSize: 8.5, color: TEXT, flex: 1, lineHeight: 1.5 },
+    expBulletDot: { fontSize: 10, color: TEXT, marginRight: 5 },
+    expBulletText: { fontSize: 10, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── Projets ── */
     projItem: { marginBottom: 11, flexDirection: "column" },
     projTitle: {
-      fontSize: 10,
+      fontSize: 11,
       fontFamily: "Helvetica-Bold",
       color: DARK,
       marginBottom: 4,
     },
-    projDesc: { fontSize: 8.5, color: TEXT, lineHeight: 1.55, marginTop: 0 },
-    projTags: { fontSize: 7.5, color: ACC, marginTop: 4 },
+    projDesc: { fontSize: 10, color: TEXT, lineHeight: 1.5, marginTop: 0 },
+    projTags: { fontSize: 8.5, color: ACC, marginTop: 4 },
   });
 
   return (
@@ -282,7 +290,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
           {/* Expérience */}
           {sections.experience.visible && data.experiences.length > 0 && (
             <>
-              <View style={s.secRow}>
+              <View style={s.secRow} minPresenceAhead={60}>
                 <Text style={s.secTitle}>{L.experience}</Text>
                 <View style={s.secLine} />
               </View>
@@ -294,7 +302,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                   .map((b) => b.trim())
                   .filter(Boolean);
                 return (
-                  <View key={exp.id} style={s.expItem}>
+                  <View key={exp.id} style={s.expItem} wrap={false}>
                     <View style={s.expSquare} />
                     <View style={s.expContent}>
                       <View style={s.expHeader}>
@@ -331,13 +339,13 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
           {/* Projets */}
           {sections.projects.visible && data.projects.length > 0 && (
             <>
-              <View style={s.secRow}>
+              <View style={s.secRow} minPresenceAhead={60}>
                 <Text style={s.secTitle}>{L.projects}</Text>
                 <View style={s.secLine} />
               </View>
               <View style={s.secDivider} />
               {data.projects.slice(0, 4).map((p) => (
-                <View key={p.slug} style={s.projItem}>
+                <View key={p.slug} style={s.projItem} wrap={false}>
                   <Text style={s.projTitle}>{p.title}</Text>
                   <Text style={s.projDesc}>{stripHtml(p.desc)}</Text>
                   {p.tags.length > 0 && (
