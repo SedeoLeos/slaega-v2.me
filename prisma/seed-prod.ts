@@ -140,21 +140,29 @@ const FEATURED_PROJECTS = [
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",
     date: "2023-09-01",
-    tags: ["NestJS", "Next.js", "OpenFGA", "SaaS", "Multi-tenant", "TypeScript"],
+    tags: ["NestJS", "Next.js", "OpenFGA", "RH & Paie", "SaaS", "Multi-tenant"],
     categories: ["web-app", "api-webservice"],
     description:
-      "Lead developer de Focus Suite : une plateforme SaaS multi-tenant qui centralise la gestion d'entreprise — de la facturation aux RH.",
+      "Lead developer de Focus Suite : l'outil tout-en-un qui pilote toute la vie de l'entreprise — employés, paie, contrats, facturation, temps, absences et tâches.",
     projectUrl: "https://pro.focus-suite.com",
-    content: `## Focus Suite — le SaaS qui unifie la gestion d'entreprise
+    content: `## Focus Suite — piloter toute l'entreprise depuis un seul outil
 
-**Le constat.** Les PME jonglent avec une dizaine d'outils qui ne se parlent pas : un pour la facturation, un autre pour les stocks, un troisième pour la paie. Résultat : des données éclatées, des ressaisies, et aucune vision d'ensemble.
+**Le problème.** Gérer une entreprise, c'est jongler avec des dizaines d'outils qui ne se parlent pas : un pour la paie, un autre pour les contrats, un tableur pour les absences, un logiciel à part pour la facturation. Les données sont éclatées, ressaisies, et personne n'a de vision d'ensemble.
 
-**La réponse.** En tant que *lead developer*, j'ai conçu et piloté **Focus Suite**, une plateforme SaaS **multi-tenant** qui réunit ces métiers dans une seule interface cohérente, sécurisée et temps réel.
+**La réponse.** En tant que **lead developer**, j'ai conçu et piloté **Focus Suite**, un outil **puissant et tout-en-un** qui réunit la gestion des ressources humaines et de l'activité dans une seule plateforme cohérente, sécurisée et temps réel.
 
-### Ce que la plateforme apporte
-- **Multi-tenant natif** — chaque organisation dispose d'un espace isolé, avec ses données et ses règles.
-- **Modules métiers** — ventes, facturation, achats, stocks, RH & paie, le tout connecté.
-- **Autorisation fine (OpenFGA)** — des permissions relationnelles au plus près du métier, traçables.
+### Ce que Focus Suite gère
+- **Employés** — dossiers, rôles, organisation, cycle de vie complet.
+- **Contrats** — création, suivi et échéances des contrats.
+- **Paie** — calcul et gestion de la paie, connectée aux données RH.
+- **Temps & activités** — pointage, activités des employés, **heures supplémentaires**.
+- **Absences & congés** — demandes, validations, soldes.
+- **Tâches** — affectation et suivi de l'activité opérationnelle.
+- **Facturation** — édition et suivi des factures, reliés aux données de l'entreprise.
+
+### Sous le capot
+- **Multi-tenant natif** — chaque organisation a son espace isolé, ses données, ses règles.
+- **Autorisation fine avec OpenFGA** — qui voit quoi, qui peut quoi, au plus près du métier et traçable.
 - **Architecture évolutive** — back **NestJS** modulaire, front **Next.js**, API-first.
 
 ### Stack
@@ -377,8 +385,8 @@ const EXPERIENCES = [
     endDate: null,
     current: true,
     description:
-      "Ingénieur logiciel senior avec une responsabilité DevOps de premier plan. Je conçois et fiabilise des solutions logicielles critiques et scalables : analyse technique approfondie, architecture backend et application rigoureuse des bonnes pratiques (Clean Code, sécurité, observabilité, monitoring). Je pilote également l'industrialisation — pipelines CI/CD, infrastructure et cloud — afin de livrer des systèmes fiables, maintenables et performants pour des environnements à forte exigence technique.",
-    skills: ["Backend", "Architecture", "Clean Code", "Sécurité", "Observabilité", "CI/CD", "Cloud", "DevOps"],
+      "Ingénieur logiciel senior avec une responsabilité DevOps de premier plan. Au-delà du développement, je pilote l'infrastructure de bout en bout : orchestration Kubernetes (k8s) & k3s, conteneurisation Docker, CI/CD, provisioning et administration de serveurs Linux, reverse-proxy Nginx, monitoring et observabilité. Objectif : des systèmes fiables, sécurisés, scalables et maintenables pour des environnements à forte exigence technique.",
+    skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Cloud", "Observabilité"],
     location: "Brazzaville, République du Congo (hybride)",
     companyUrl: null as string | null,
   },
@@ -655,25 +663,34 @@ const ABOUT_PAGE = {
 
 Au sein du **Ministère des Finances de Brazzaville**, je contribue à des projets institutionnels structurants : *e-Bourse* (Flutter / Spring Boot), *Syspace* (gestion des contribuables), et l'assistance technique POC auprès du DSI. En parallèle, je conçois chez **Nanocreatives** des plateformes de gestion d'entreprise (ventes, facturation, achats, RH, paie, audit) avec un focus fort sur la sécurité — intégration de **Keycloak** pour l'authentification, **OpenFGA** et **Cerbos** pour la gestion fine des autorisations.
 
-Ma stack quotidienne : **Spring Boot, NestJS, Next.js, Laravel, Flutter, Expo, Go**. J'aime particulièrement les architectures distribuées, les microservices et l'orchestration multi-systèmes (ERP, CRM, CMS, SaaS). Côté DevOps : Docker, Coolify, AWS, Azure, GitLab/GitHub CI/CD.`,
+Mais ma vraie force, c'est le **DevOps et l'administration système** : je conçois, provisionne et opère l'infrastructure de bout en bout. **Orchestration Kubernetes (k8s) & k3s**, conteneurisation Docker, mise en place de **Coolify** pour accélérer les équipes, reverse-proxy Nginx & TLS, pipelines CI/CD, gestion et durcissement de serveurs Linux, monitoring — sur AWS, Azure et OpenStack.
+
+Ma stack quotidienne côté développement : **Spring Boot, NestJS, Next.js, Laravel, Flutter, Expo, Go**. J'aime particulièrement les architectures distribuées, les microservices et l'orchestration multi-systèmes (ERP, CRM, CMS, SaaS).`,
   highlights: [
+    {
+      title: "DevOps & Administration système",
+      items: [
+        "Kubernetes (k8s) & k3s — orchestration & clusters",
+        "Docker, Coolify, Nginx (reverse-proxy & TLS)",
+        "Provisioning & durcissement de serveurs Linux",
+        "Pipelines CI/CD (GitLab / GitHub Actions)",
+        "Cloud & IaaS : AWS, Azure, OpenStack",
+        "Monitoring, mise en production & exploitation",
+      ],
+    },
     {
       title: "Ce que je peux réaliser",
       items: [
+        "Infrastructure fiable, scalable et sécurisée",
         "Projets numériques à enjeux financiers et institutionnels",
-        "Solutions fiables adaptées aux contraintes métiers",
-        "Sécurisation des accès et données sensibles",
         "Automatisation et optimisation de processus",
+        "Sécurisation des accès et des données sensibles",
         "Travail en environnements réglementés",
       ],
     },
     {
       title: "Stack principale",
       items: ["Spring Boot", "NestJS", "Next.js", "Laravel", "Flutter", "Expo (React Native)", "Go", "LangChain", "n8n"],
-    },
-    {
-      title: "DevOps & Infra",
-      items: ["Docker", "Coolify", "AWS", "Azure", "OpenStack", "GitLab CI", "GitHub Actions"],
     },
     {
       title: "Sécurité",
