@@ -268,8 +268,8 @@ export default function TemplateOrbit({ data, palette, sections }: Props) {
                   <View style={s.rSecLine} />
                 </View>
                 {data.projects.slice(0, 4).map((p) => (
-                  <View key={p.slug} style={s.job}>
-                    <Text style={s.jobName}>{p.title}</Text>
+                  <View key={p.slug} style={s.job} wrap={false}>
+                    <Text style={[s.jobName, { flexGrow: 0, flexBasis: "auto" }]}>{p.title}</Text>
                     <Text style={s.jobDesc}>{stripHtml(p.desc)}</Text>
                     {p.tags.length > 0 && (
                       <Text style={s.jobTags}>{p.tags.slice(0, 6).join(" · ")}</Text>
