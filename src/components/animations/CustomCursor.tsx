@@ -46,7 +46,7 @@ export default function CustomCursor() {
       style={{ x: sx, y: sy }}
     >
       <motion.span
-        className="block rounded-full"
+        className="block rounded-full keep-round"
         animate={{
           width: hovering ? 40 : 10,
           height: hovering ? 40 : 10,

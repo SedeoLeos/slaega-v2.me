@@ -31,6 +31,22 @@
   --font-space: var(--font-space);
 }
 
+/* ── Square-first — the whole UI drops rounded corners to a 2px max ──────
+   Editorial, angular design. Overrides every Tailwind radius utility
+   (including pills & circles) to keep it consistent site-wide. */
+@layer utilities {
+  .rounded-sm, .rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl,
+  .rounded-3xl, .rounded-full,
+  [class*="rounded-t-"], [class*="rounded-b-"],
+  [class*="rounded-l-"], [class*="rounded-r-"],
+  [class*="rounded-tl-"], [class*="rounded-tr-"],
+  [class*="rounded-bl-"], [class*="rounded-br-"] {
+    border-radius: 2px !important;
+  }
+  /* Opt-out for the few genuinely circular bits (status dots, custom cursor). */
+  .keep-round { border-radius: 9999px !important; }
+}
+
 /* ── Cinematic display type — massive editorial headings ───────────── */
 .font-display {
   font-family: var(--font-space), var(--font-poppins), system-ui, sans-serif;
