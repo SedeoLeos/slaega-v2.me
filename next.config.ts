@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
 
+  images: {
+    // Live project previews are rendered by WordPress mShots at runtime.
+    remotePatterns: [
+      { protocol: 'https', hostname: 's.wordpress.com' },
+    ],
+  },
+
   async headers() {
     return [
       {
