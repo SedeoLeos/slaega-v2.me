@@ -572,7 +572,7 @@ const SERVICES = [
     id: "svc-devops",
     title: "DevOps & Infrastructure",
     description:
-      "Pipelines CI/CD, Docker, Coolify, déploiement et monitoring sur cloud (AWS, Azure, OpenStack).",
+      "Pipelines CI/CD, conteneurs Docker, orchestration Kubernetes (k8s) & k3s, Coolify, déploiement et monitoring sur cloud (AWS, Azure, OpenStack).",
     icon: "cloud",
   },
   {
