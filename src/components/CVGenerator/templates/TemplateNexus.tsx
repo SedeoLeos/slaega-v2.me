@@ -257,8 +257,8 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
                 <Text style={s.sectionLabel}>{L.projects}</Text>
               </View>
               {data.projects.slice(0, 4).map((p) => (
-                <View key={p.slug} style={s.job}>
-                  <View style={s.jobTitleRow}>
+                <View key={p.slug} style={s.job} wrap={false}>
+                  <View style={[s.jobTitleRow, { flexGrow: 0, flexBasis: "auto" }]}>
                     <View style={s.jobDot} />
                     <Text style={s.jobRole}>{p.title}</Text>
                   </View>

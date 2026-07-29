@@ -293,7 +293,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
                         <View style={s.expLogoDot} />
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text style={s.expTitle}>{exp.role}</Text>
+                        <Text style={[s.expTitle, { flexGrow: 0, flexBasis: "auto" }]}>{exp.role}</Text>
                         <Text style={s.expCompany}>{exp.company.toUpperCase()}</Text>
                       </View>
                     </View>

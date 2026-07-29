@@ -326,9 +326,9 @@ export default function TemplateMosaic({ data, sections }: Props) {
                   <View style={s.secLine} />
                 </View>
                 {data.projects.slice(0, 4).map((p) => (
-                  <View key={p.slug} style={s.job}>
+                  <View key={p.slug} style={s.job} wrap={false}>
                     <View style={s.jobDot} />
-                    <Text style={s.jobName}>{p.title}</Text>
+                    <Text style={[s.jobName, { flexGrow: 0, flexBasis: "auto" }]}>{p.title}</Text>
                     <Text style={s.jobDesc}>{stripHtml(p.desc)}</Text>
                     {p.tags.length > 0 && (
                       <Text style={s.jobTags}>{p.tags.slice(0, 6).join(" · ")}</Text>
