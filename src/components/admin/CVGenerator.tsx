@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 type CVData = {
   keywords: string[];
+  language?: "fr" | "en";
   tagline?: string;
   summary?: string;
   jobTitle: string;
@@ -325,7 +326,10 @@ export default function CVGenerator() {
 
   const print = () => window.print();
 
-  const lang: "fr" | "en" = cv && isEnglish(`${cv.jobTitle} ${cv.tagline ?? ""} ${cv.summary ?? ""}`) ? "en" : "fr";
+  // Prefer the AI's detected language (avoids FR content with EN labels); fall
+  // back to heuristic detection only if it's missing.
+  const lang: "fr" | "en" =
+    cv?.language ?? (cv && isEnglish(`${cv.jobTitle} ${cv.tagline ?? ""} ${cv.summary ?? ""}`) ? "en" : "fr");
   const L = lang === "en" ? DEFAULT_EN : DEFAULT_FR;
   const tagline = cv?.tagline?.trim() || L.tagline;
   const summary = cv?.summary?.trim() || L.bio;
@@ -1086,7 +1090,9 @@ function CVStyles() {
         }
         .cv-page {
           width: 210mm;
-          height: 297mm;
+          /* Slightly under A4 so sub-pixel rounding never overflows into a
+             blank/offset next page (fixes the extra top margin on page 2). */
+          height: 296mm;
           page-break-after: always;
           page-break-inside: avoid;
           break-after: page;
@@ -1095,6 +1101,7 @@ function CVStyles() {
           margin: 0 !important;
           background: #ffffff !important;
         }
+        .cv-page:last-child { height: auto; min-height: 0; }
         .cv-page:last-child {
           page-break-after: auto;
           break-after: auto;

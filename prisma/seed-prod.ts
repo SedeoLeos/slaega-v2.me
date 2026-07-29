@@ -528,7 +528,9 @@ async function seedExperiences() {
       update: payload,
     });
   }
-  console.log(`✓ Experiences (${EXPERIENCES.length}) upserted`);
+  // Authoritative: remove legacy / duplicate experiences not in this set.
+  await db.experience.deleteMany({ where: { id: { notIn: EXPERIENCES.map((e) => e.id) } } });
+  console.log(`✓ Experiences (${EXPERIENCES.length}) upserted (+ legacy purged)`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
