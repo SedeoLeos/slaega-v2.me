@@ -393,12 +393,12 @@ export default function CVGeneratorClient() {
             className="w-full flex items-center justify-between px-3 py-2.5 text-left"
           >
             <span className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
-              <svg className="w-3.5 h-3.5 text-green-app" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
               </svg>
               Mes CV enregistrés
               {savedList.length > 0 && (
-                <span className="text-[10px] bg-green-app/15 text-green-app px-1.5 py-0.5 rounded-full">
+                <span className="text-[10px] bg-zinc-700 text-zinc-100 px-1.5 py-0.5 rounded-full">
                   {savedList.length}
                 </span>
               )}
@@ -433,7 +433,7 @@ export default function CVGeneratorClient() {
                       onClick={() => reuseSaved(item.id)}
                       disabled={busyId === item.id}
                       title="Réutiliser ce CV"
-                      className="text-[10px] font-semibold text-green-app hover:opacity-80 disabled:opacity-40 px-1.5 py-1"
+                      className="text-[10px] font-semibold text-zinc-100 hover:text-white disabled:opacity-40 px-1.5 py-1"
                     >
                       {busyId === item.id ? '…' : 'Réutiliser'}
                     </button>
@@ -511,7 +511,7 @@ export default function CVGeneratorClient() {
             </p>
             <div className="flex flex-wrap gap-1">
               {cv.keywords.map((k) => (
-                <span key={k} className="text-[10px] bg-green-app/10 text-green-app border border-green-app/20 px-1.5 py-0.5 rounded-full">
+                <span key={k} className="text-[10px] bg-zinc-800 text-zinc-300 border border-zinc-700 px-1.5 py-0.5 rounded-full">
                   {k}
                 </span>
               ))}
@@ -549,7 +549,7 @@ export default function CVGeneratorClient() {
               type="button"
               onClick={saveCurrent}
               disabled={savingState === 'saving'}
-              className="w-full flex items-center justify-center gap-2 bg-green-app/10 hover:bg-green-app/20 border border-green-app/30 text-green-app font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-40"
+              className="w-full flex items-center justify-center gap-2 bg-zinc-100 hover:bg-white text-zinc-900 font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-40"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" style={{ display: savingState === 'saved' ? 'block' : 'none' }} />
