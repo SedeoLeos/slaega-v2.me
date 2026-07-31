@@ -3,13 +3,13 @@
 :root {
   /* Luxury-minimalist monochrome — warm cream canvas + ink; whitespace & type
      do the work, no bright accent. Tune an accent in the back-office if wanted. */
-  --background: #F2F0EA;            /* warm cream */
-  --foreground: #121110;            /* ink */
-  --secondary: #8C897F;             /* warm gray — labels / meta */
-  --accent: #121110;               /* ink — monochrome accent */
-  --primary: #121110;
-  --green-app: #121110;
-  --card: #FBFAF6;                  /* warm white cards */
+  --background: #0B0B0B;            /* deep charcoal */
+  --foreground: #FFFFFF;            /* crisp white */
+  --secondary: #8C8C8C;             /* muted gray — labels / meta */
+  --accent: #FF5A00;               /* electric tangerine */
+  --primary: #FF5A00;
+  --green-app: #FF5A00;
+  --card: #121212;                 /* near-black cards */
   --border: rgba(18, 17, 16, 0.10);
 }
 

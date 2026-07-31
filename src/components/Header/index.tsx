@@ -22,13 +22,14 @@ const Header = () => {
     <div data-global-header className={`w-full backdrop-blur-xl fixed justify-center flex z-30 transition-all duration-300 ${scrolled ? 'bg-background/85 border-b border-foreground/5' : 'bg-background/70 border-b border-transparent'}`}>
       <header className={`w-full px-10 md:px-20 text-foreground font-poppins flex justify-between items-center max-w-content transition-all duration-300 ${scrolled ? 'py-3' : 'py-6'}`}>
         {/* Logo */}
-        <Link href='/'>
-          <h1 className={`font-extrabold text-green-app tracking-tight transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{SiteConfig.brand}</h1>
+        <Link href='/' className='flex items-center gap-2'>
+          <span className='inline-block h-1.5 w-1.5 rounded-full bg-green-app keep-round' />
+          <h1 className={`font-space font-bold lowercase text-foreground tracking-tight transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{SiteConfig.brand}</h1>
         </Link>
 
         {/* Desktop nav */}
         <nav className='2lg:flex hidden'>
-          <ul className='flex text-sm font-medium gap-7'>
+          <ul className='flex text-[11px] uppercase tracking-[0.18em] font-space font-medium gap-8'>
             {SiteConfig.navLinks.map((item, index) => (
               <NavItem
                 key={index}
@@ -43,7 +44,7 @@ const Header = () => {
         {/* Right actions */}
         <div className='flex items-center gap-8'>
           {/* Social abbreviations */}
-          <div className='hidden md:flex gap-5 text-sm font-bold'>
+          <div className='hidden md:flex gap-5 text-[11px] uppercase tracking-[0.18em] font-space font-medium'>
             <Link
               href={SiteConfig.socialLinks.github}
               target='_blank'

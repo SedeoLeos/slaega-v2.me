@@ -101,8 +101,8 @@ function Hero() {
         >
           {/* Olive accent block (offset) */}
           <div className="absolute -bottom-4 -right-4 w-full h-full bg-accent rounded-3xl z-0" />
-          {/* White photo container */}
-          <div className="relative w-full h-full bg-white rounded-3xl flex items-center justify-center z-10 overflow-hidden">
+          {/* Photo container */}
+          <div className="relative w-full h-full bg-card border border-foreground/10 rounded-3xl flex items-center justify-center z-10 overflow-hidden">
             <Image
               src="/images/me.jpg"
               alt="Seba Gedeon"
