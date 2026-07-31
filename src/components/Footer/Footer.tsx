@@ -11,7 +11,7 @@ function Footer() {
   const currentYear = new Date().getUTCFullYear();
 
   return (
-    <footer className='flex flex-col w-full overflow-hidden relative'>
+    <footer data-global-footer className='flex flex-col w-full overflow-hidden relative'>
       {/* ── Carte Congo décorative ── */}
       <CarteCongoDecor
         stroke="var(--green-app)"

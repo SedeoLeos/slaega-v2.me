@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
 /**
@@ -11,6 +12,7 @@ import { AnimatePresence, motion } from "framer-motion";
  * Mounted once in the root layout, so it does not re-run on client navigations.
  */
 export default function Loader() {
+  const pathname = usePathname();
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
   const [reduced, setReduced] = useState(false);
@@ -41,6 +43,9 @@ export default function Loader() {
   useEffect(() => {
     if (done) document.documentElement.style.overflow = "";
   }, [done]);
+
+  // The immersive slaega route owns the viewport — no portfolio intro there.
+  if (pathname?.includes("/slaega")) return null;
 
   return (
     <AnimatePresence>
