@@ -7,7 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer/Footer";
-import CustomCursor from "@/components/animations/CustomCursor";
+import SlaegaCursor from "@/components/slaega/SlaegaCursor";
 import Loader from "@/components/animations/Loader";
 import SmoothScroll from "@/components/animations/SmoothScroll";
 import Store from "@/Provider/Store";
@@ -88,7 +88,7 @@ export default async function RootLayout({
           <body className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
             <Loader />
             <SmoothScroll />
-            <CustomCursor />
+            <SlaegaCursor />
             <Header />
             {children}
             <Footer />

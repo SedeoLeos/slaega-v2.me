@@ -97,10 +97,10 @@ export type PortfolioTheme = {
 };
 
 export const DEFAULT_THEME: PortfolioTheme = {
-  background: "#F2F0EA",
-  foreground: "#121110",
-  greenApp:   "#121110",
-  card:       "#FBFAF6",
-  accent:     "#121110",
-  secondary:  "#8C897F",
+  background: "#0B0B0B",
+  foreground: "#FFFFFF",
+  greenApp:   "#FF5A00",
+  card:       "#121212",
+  accent:     "#FF5A00",
+  secondary:  "#8C8C8C",
 };

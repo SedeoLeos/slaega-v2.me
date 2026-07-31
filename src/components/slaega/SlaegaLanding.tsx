@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import SlaegaCursor from "./SlaegaCursor";
 import SlaegaHero from "./SlaegaHero";
 import SlaegaServices, { type SlaegaProject, type SlaegaService } from "./SlaegaServices";
 
@@ -44,7 +43,6 @@ export default function SlaegaLanding({
 
   return (
     <main className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
-      <SlaegaCursor />
       <SlaegaHero />
       <SlaegaServices projects={projects} services={services} />
 
