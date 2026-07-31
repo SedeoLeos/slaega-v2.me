@@ -15,29 +15,31 @@ const FIELDS: { key: keyof PortfolioTheme; label: string; description: string }[
 
 // ── Preset palettes ──────────────────────────────────────────────────────────
 const PRESETS = [
+  // Same brutalist dark base everywhere — only the accent changes, so any
+  // preset stays on-brand (deep charcoal + crisp white + one electric accent).
   {
-    label: 'Olive (défaut)',
+    label: 'Tangerine (défaut)',
     theme: DEFAULT_THEME,
   },
   {
-    label: 'Crème ivoire',
-    theme: { background: '#F5F0E8', foreground: '#1A1208', greenApp: '#6B4A2A', card: '#FDFAF4', accent: '#8B6544', secondary: '#7A6855' },
+    label: 'Ambre',
+    theme: { background: '#0B0B0B', foreground: '#FFFFFF', greenApp: '#F5A623', card: '#121212', accent: '#F5A623', secondary: '#8C8C8C' },
   },
   {
-    label: 'Gris ardoise',
-    theme: { background: '#E8EAEC', foreground: '#111827', greenApp: '#2563EB', card: '#F3F4F6', accent: '#3B82F6', secondary: '#6B7280' },
+    label: 'Rouge signal',
+    theme: { background: '#0B0B0B', foreground: '#FFFFFF', greenApp: '#FF3B30', card: '#121212', accent: '#FF3B30', secondary: '#8C8C8C' },
   },
   {
-    label: 'Nuit profonde',
-    theme: { background: '#0F172A', foreground: '#F1F5F9', greenApp: '#06B6D4', card: '#1E293B', accent: '#0EA5E9', secondary: '#94A3B8' },
+    label: 'Cyan électrique',
+    theme: { background: '#0B0B0B', foreground: '#FFFFFF', greenApp: '#22D3EE', card: '#121212', accent: '#22D3EE', secondary: '#8C8C8C' },
   },
   {
-    label: 'Rose poudré',
-    theme: { background: '#FDF2F8', foreground: '#1F0B16', greenApp: '#BE185D', card: '#FDF8FB', accent: '#DB2777', secondary: '#9D174D' },
+    label: 'Lime',
+    theme: { background: '#0B0B0B', foreground: '#FFFFFF', greenApp: '#B6FF3C', card: '#121212', accent: '#B6FF3C', secondary: '#8C8C8C' },
   },
   {
-    label: 'Rig (sombre)',
-    theme: { background: '#141414', foreground: '#F0EDE6', greenApp: '#E5533C', card: '#1E1E1E', accent: '#E5533C', secondary: '#888888' },
+    label: 'Magenta',
+    theme: { background: '#0B0B0B', foreground: '#FFFFFF', greenApp: '#FF3DA6', card: '#121212', accent: '#FF3DA6', secondary: '#8C8C8C' },
   },
 ];
 
