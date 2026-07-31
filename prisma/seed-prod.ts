@@ -808,41 +808,59 @@ async function seedProcess() {
 //      Never overwrites edits, never purges entries the author adds himself.
 // ═══════════════════════════════════════════════════════════════════════════
 const PENSEES = [
+  // Devises réelles de l'auteur — ses propres mots.
   {
-    id: "pensee-croyance-1",
-    kind: "croyance",
-    title: "On construit pour durer",
-    subtitle: "Ma première croyance",
-    body:
-      "Je crois qu'une chose bien faite traverse le temps. Le code, une relation, une parole donnée : la vraie valeur ne se voit pas le premier jour, elle se prouve dans la durée. Construire vite, oui — mais construire pour tenir, toujours.",
+    id: "pensee-devise-king",
+    kind: "devise",
+    title: "Vise la vie de king",
+    subtitle: "",
+    body: "",
+    link: "",
   },
+  {
+    id: "pensee-devise-likolo",
+    kind: "devise",
+    title: "Marche la tête haute, vise le sommet — likolo",
+    subtitle: "",
+    body: "",
+    link: "",
+  },
+  {
+    id: "pensee-devise-rebond",
+    kind: "devise",
+    title: "Quand je tombe, je rebondis",
+    subtitle: "",
+    body: "J'ai appris à rebondir : quand je tombe, je vais de l'avant, le regard devant.",
+    link: "",
+  },
+  // Vision — starter à éditer librement depuis le CMS.
   {
     id: "pensee-vision-1",
     kind: "vision",
-    title: "La technologie au service de l'humain",
-    subtitle: "Ma vision de l'humanité",
+    title: "Le talent n'a pas de frontière",
+    subtitle: "Ma vision",
     body:
-      "Je crois en une humanité qui grandit ensemble, pas les uns contre les autres. La technologie ne devrait jamais éloigner les hommes — elle devrait rapprocher, ouvrir, donner du pouvoir à ceux qui n'en ont pas. Depuis Brazzaville, je veux prouver que le talent n'a pas de frontière, et que l'avenir se construit partout, pas seulement ailleurs.",
+      "Depuis Brazzaville, je veux prouver qu'on peut construire ici des choses qui tiennent tête au monde entier. L'avenir se bâtit partout — pas seulement ailleurs.",
+    link: "",
   },
+  // Chansons — on LIE vers le son, sans jamais réécrire les paroles.
   {
-    id: "pensee-pensee-1",
-    kind: "pensee",
-    title: "Ne jamais oublier d'où l'on vient",
-    subtitle: "",
-    body:
-      "slaega, c'est la somme de tous mes surnoms — Sedeo Leos, Arion Evans, Gedeon sebA. Un rappel que je ne pars pas de zéro : je porte une histoire, des origines, une famille, une ville. Avancer sans oublier, c'est ça, monter sans se perdre.",
-  },
-  {
-    id: "pensee-chanson-1",
+    id: "pensee-song-no-limite",
     kind: "chanson",
-    title: "Ascension",
-    subtitle: "Extrait — à compléter",
-    body:
-      "Parti de rien, les mains vides, le cœur plein\nBrazza dans le dos, le monde devant, je tiens\nChaque ligne de code, chaque note, un pas de plus\nslaega monte, slaega tient, slaega ne recule plus\n\n[ refrain à écrire… ]",
+    title: "No Limite",
+    subtitle: "Seba G",
+    body: "",
+    link: "https://audiomack.com/seba-g/song/no-limite",
   },
 ];
 
 async function seedPensees() {
+  // Purge de l'ancien contenu de démarrage fictif (paroles inventées) —
+  // ciblé par id, ne touche jamais aux écrits créés depuis le CMS.
+  await db.pensee.deleteMany({
+    where: { id: { in: ["pensee-chanson-1", "pensee-croyance-1", "pensee-pensee-1"] } },
+  });
+
   for (const [i, p] of PENSEES.entries()) {
     await db.pensee.upsert({
       where: { id: p.id },
@@ -852,6 +870,7 @@ async function seedPensees() {
         title: p.title,
         subtitle: p.subtitle,
         body: p.body,
+        link: p.link,
         order: i,
         published: true,
       },

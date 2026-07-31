@@ -18,9 +18,9 @@ const PIECES = Array.from({ length: 60 }, (_, i) => {
 
 // Tous les surnoms — l'histoire derrière slaega.
 const ALIASES = [
-  { code: "SL", name: "Sedeo Leos" },
-  { code: "AE", name: "Arion Evans" },
-  { code: "GDBA", name: "Gedeon sebA" },
+  { code: "SL", name: "Sedeo Leos", note: "sedeo, le lion" },
+  { code: "AE", name: "Arion Evans", note: "" },
+  { code: "GDBA", name: "GeDeon seBA", note: "l'origine" },
 ];
 
 export default function BirthdayPage() {
@@ -118,10 +118,15 @@ export default function BirthdayPage() {
               <div key={a.code} className="bg-[#0B0B0B] p-6">
                 <div className="font-space text-3xl font-bold text-[#FF5A00]">{a.code}</div>
                 <div className="mt-2 font-space text-sm text-white/70">{a.name}</div>
+                {a.note && <div className="mt-1 text-xs text-white/40">{a.note}</div>}
               </div>
             ))}
           </div>
-          <p className="mt-5 font-space text-lg text-white/80">
+          <p className="mt-5 text-sm text-white/45">
+            <span className="text-white/70">sedeo</span>, la fusion de Seba &amp; Gedeon ·{" "}
+            <span className="text-white/70">leos</span>, le lion
+          </p>
+          <p className="mt-3 font-space text-lg text-white/80">
             = <span className="lowercase text-white">slaega</span>
           </p>
         </div>

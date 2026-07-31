@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Pensee" ADD COLUMN "link" TEXT NOT NULL DEFAULT '';

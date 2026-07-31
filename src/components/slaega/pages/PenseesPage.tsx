@@ -115,25 +115,40 @@ function FilterChip({
 }
 
 function PenseeCard({ pensee }: { pensee: Pensee }) {
-  const isSong = pensee.kind === "chanson";
+  const isDevise = pensee.kind === "devise";
   return (
     <article data-reveal-item className="bg-[#0B0B0B] p-8 md:p-10">
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <span className="font-space text-xs uppercase tracking-[0.2em] text-[#FF5A00]">
           {penseeKindLabel(pensee.kind)}
         </span>
-        <h2 className="font-space text-2xl font-semibold tracking-tight text-white md:text-3xl">
+        <h2
+          className={`font-space font-semibold tracking-tight text-white ${
+            isDevise ? "text-2xl md:text-4xl" : "text-2xl md:text-3xl"
+          }`}
+        >
+          {isDevise ? <span className="text-white/40">« </span> : null}
           {pensee.title}
+          {isDevise ? <span className="text-white/40"> »</span> : null}
         </h2>
       </div>
       {pensee.subtitle && <p className="mt-1 text-sm text-white/40">{pensee.subtitle}</p>}
-      <div
-        className={`mt-5 max-w-[72ch] leading-relaxed text-white/65 ${
-          isSong ? "whitespace-pre-line font-space text-[15px] text-white/75" : "whitespace-pre-line text-[15px]"
-        }`}
-      >
-        {pensee.body}
-      </div>
+      {pensee.body && (
+        <div className="mt-5 max-w-[72ch] whitespace-pre-line text-[15px] leading-relaxed text-white/65">
+          {pensee.body}
+        </div>
+      )}
+      {pensee.link && (
+        <a
+          data-cursor
+          href={pensee.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-flex items-center gap-2 rounded-[2px] border border-white/15 px-5 py-3 font-space text-xs uppercase tracking-widest text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
+        >
+          Écouter <span aria-hidden>↗</span>
+        </a>
+      )}
     </article>
   );
 }

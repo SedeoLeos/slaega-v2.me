@@ -12,6 +12,7 @@ const toPensee = (r: {
   title: string;
   subtitle: string;
   body: string;
+  link: string;
   order: number;
   published: boolean;
 }): Pensee => ({
@@ -20,6 +21,7 @@ const toPensee = (r: {
   title: r.title,
   subtitle: r.subtitle,
   body: r.body,
+  link: r.link,
   order: r.order,
   published: r.published,
 });

@@ -138,10 +138,11 @@ model ProcessStep {
 // chansons, gérées librement par l'auteur depuis le CMS et affichées sur /pensees.
 model Pensee {
   id        String   @id @default(cuid())
-  kind      String   @default("pensee") // pensee | croyance | vision | chanson
+  kind      String   @default("pensee") // devise | pensee | croyance | vision | chanson
   title     String
   subtitle  String   @default("")
-  body      String   // Markdown / texte long (paroles, réflexions…)
+  body      String   // Markdown / texte long (réflexions…)
+  link      String   @default("") // lien externe (ex. Audiomack pour une chanson)
   order     Int      @default(0)
   published Boolean  @default(true)
   createdAt DateTime @default(now())

@@ -12,13 +12,6 @@ const PILLARS = [
   { k: "06", t: "Ascension", d: "De Brazzaville au monde. Chaque projet est une marche de plus vers le sommet." },
 ];
 
-// L'ADN du nom — chaque surnom devient une lettre.
-const ALIASES = [
-  { code: "SL", name: "Sedeo Leos", note: "le roi lion — la posture, la fierté, le calme du souverain." },
-  { code: "AE", name: "Arion Evans", note: "le poète-navigateur — la créativité, le voyage, l'imaginaire." },
-  { code: "GDBA", name: "Gedeon sebA", note: "l'origine — mon nom, retourné, gardé près du cœur." },
-];
-
 const BEYOND = [
   {
     t: "La musique",
@@ -52,54 +45,36 @@ export default function PhilosophyPage() {
           <span className="text-white/40">=</span> king <span className="text-[#FF5A00]">sedeo leos</span>
         </p>
         <p data-reveal-item className="max-w-[60ch] text-lg leading-relaxed text-white/55">
-          slaega n&apos;est pas qu&apos;un nom — c&apos;est une mémoire. Celle de tous les surnoms que
-          j&apos;ai portés depuis le début. Je m&apos;appelle <span className="text-white">Seba Gedeon
-          Matsoula Malonga</span>, et slaega est le mot que j&apos;ai forgé pour ne jamais oublier
-          qui je suis, ni d&apos;où je viens.
+          Derrière slaega, il y a Seba Gedeon Matsoula Malonga — et une conviction : un nom se mérite
+          par ce qu&apos;on en fait. slaega, c&apos;est la synthèse d&apos;un parcours et d&apos;une
+          ambition : rester fidèle à ses racines, et viser toujours plus haut.
         </p>
       </Reveal>
 
-      {/* L'anatomie du nom */}
+      {/* Le sens du nom — inspiré, pas mécanique */}
       <section className="pt-24">
         <div className="mb-10 flex items-baseline gap-4 border-b border-white/10 pb-4">
-          <span className="font-space text-sm text-[#FF5A00]">[ anatomie ]</span>
+          <span className="font-space text-sm text-[#FF5A00]">[ le sens ]</span>
           <h2 className="font-space text-2xl font-semibold tracking-tight text-white md:text-3xl">
-            L&apos;ADN du nom
+            Ce que porte le nom
           </h2>
         </div>
-        <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-white/10 md:grid-cols-3">
-          {ALIASES.map((a) => (
-            <article key={a.code} data-reveal-item data-cursor className="group bg-[#0B0B0B] p-8 transition-colors duration-500 hover:bg-[#111] md:p-10">
-              <span className="font-space text-5xl font-bold text-[#FF5A00]">{a.code}</span>
-              <h3 className="mt-4 font-space text-xl font-semibold text-white">{a.name}</h3>
-              <p className="mt-3 text-[14px] leading-relaxed text-white/55">{a.note}</p>
-            </article>
-          ))}
-        </Reveal>
-
-        {/* Étymologie */}
-        <Reveal className="mt-10 grid grid-cols-1 gap-6 rounded-[3px] border border-white/10 bg-[#0d0d0d] p-8 md:grid-cols-[1fr_1.2fr] md:p-10">
-          <div data-reveal-item className="flex flex-col justify-center">
-            <p className="font-space text-4xl font-bold text-white md:text-5xl">
-              <span className="text-[#FF5A00]">se</span>deo
-            </p>
-            <p className="mt-2 font-space text-sm uppercase tracking-widest text-white/40">
-              la racine du nom
-            </p>
-          </div>
-          <div data-reveal-item className="flex flex-col justify-center gap-3 text-[15px] leading-relaxed text-white/60">
+        <Reveal className="grid grid-cols-1 gap-10 md:grid-cols-[1.3fr_1fr]">
+          <p
+            data-reveal-item
+            className="font-space text-[clamp(1.6rem,4vw,3rem)] font-bold leading-[1.05] tracking-tight text-white"
+          >
+            Une même bannière pour tout ce que j&apos;ai été,
+            <span className="text-[#FF5A00]"> et tout ce que je deviens.</span>
+          </p>
+          <div data-reveal-item className="flex flex-col justify-center gap-4 text-[15px] leading-relaxed text-white/60">
             <p>
-              <span className="font-space text-white">se</span> — les deux premières lettres de{" "}
-              <span className="text-white">Seba</span>.
-            </p>
-            <p>
-              <span className="font-space text-white">deo</span> — le cœur de{" "}
-              <span className="text-white">Gedeon</span>.
+              slaega réunit les identités et les élans qui m&apos;ont construit — la posture du
+              souverain, la créativité du bâtisseur, la mémoire de mes origines.
             </p>
             <p className="text-white/45">
-              Deux moitiés de mon nom fondues en un seul mot. slaega, c&apos;est l&apos;acronyme
-              vivant de tout ce que j&apos;ai été — <span className="text-[#FF5A00]">SL · AE · GDBA</span> —
-              réuni sous une même bannière.
+              C&apos;est un nom-repère : il me rappelle d&apos;où je viens à chaque fois qu&apos;il me
+              projette plus loin. Ni un pseudo, ni une marque de plus — une ligne de conduite.
             </p>
           </div>
         </Reveal>
@@ -115,9 +90,9 @@ export default function PhilosophyPage() {
           <span className="text-[#FF5A00]">vision</span>.
         </p>
         <p data-reveal-item className="mt-8 max-w-[64ch] text-lg leading-relaxed text-white/55">
-          slaega, c&apos;est ma philosophie autant que mon métier. Mon existant, mon avenir, ma
-          passion. Un rappel constant que je ne me résume pas à des lignes de code — je suis une
-          histoire, des origines, une musique intérieure et une trajectoire qui monte.
+          Une philosophie autant qu&apos;un métier : ce que je construis doit tenir, et ce que je
+          suis ne se résume pas à des lignes de code. Il y a une histoire, une musique, et une
+          trajectoire qui monte.
         </p>
       </Reveal>
 
