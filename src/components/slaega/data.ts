@@ -21,6 +21,15 @@ export const HERO_NODES: Node[] = [
   { id: "rn", label: "react native", hint: "mobile", x: 40, y: 82 },
 ];
 
+/** Full tech stack — scrolling marquee band */
+export const STACK: string[] = [
+  "Kubernetes", "k3s", "Coolify", "Dokploy", "CapRover", "Argo CD", "Jenkins",
+  "Docker", "GitOps", "CI/CD", "Nginx", "Linux",
+  "Next.js", "React", "React Native", "Flutter", "Node.js", "NestJS", "Python",
+  "Keycloak", "Auth0", "Okta", "OpenFGA", "SpiceDB", "Permit.io", "OAuth", "JWT",
+  "TypeScript", "PostgreSQL", "GraphQL",
+];
+
 export type Discipline = { index: string; title: string; body: string };
 
 /** Ce que je fais — expertise (fallback if the CMS has none) */
