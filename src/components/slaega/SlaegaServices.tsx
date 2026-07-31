@@ -1,7 +1,19 @@
 "use client";
 
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import Reveal from "./Reveal";
-import { DISCIPLINES, PRODUCTS, OFFERS, PACKS } from "./data";
+import { DISCIPLINES } from "./data";
+
+export type SlaegaProject = {
+  slug: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  image: string;
+  category?: string;
+};
+export type SlaegaService = { title: string; description: string; icon?: string };
 
 function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
   return (
@@ -14,16 +26,39 @@ function SectionLabel({ index, children }: { index: string; children: React.Reac
   );
 }
 
-export default function SlaegaServices() {
+export default function SlaegaServices({
+  projects,
+  services,
+}: {
+  projects: SlaegaProject[];
+  services: SlaegaService[];
+}) {
+  const tServices = useTranslations("services");
+  const tProjects = useTranslations("projects");
+  const tAbout = useTranslations("about");
+  const tContact = useTranslations("contact");
+
+  // Expertise: CMS services if present, else the curated fallback.
+  const expertise =
+    services.length > 0
+      ? services.map((s, i) => ({
+          index: String(i + 1).padStart(2, "0"),
+          title: s.title,
+          body: s.description,
+        }))
+      : DISCIPLINES;
+
+  const work = projects.slice(0, 6);
+
   return (
     <div className="w-full px-6 pb-32 md:px-12 lg:px-16">
-      {/* ── Disciplines ─────────────────────────────────────── */}
+      {/* ── Expertise ───────────────────────────────────────── */}
       <section className="pt-24">
-        <SectionLabel index="[ expertise ]">Ce que nous maîtrisons</SectionLabel>
+        <SectionLabel index="[ expertise ]">{tServices("subtitle")}</SectionLabel>
         <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-white/10 md:grid-cols-2">
-          {DISCIPLINES.map((d) => (
+          {expertise.map((d) => (
             <article
-              key={d.index}
+              key={d.index + d.title}
               data-reveal-item
               data-cursor
               className="group relative bg-[#0B0B0B] p-8 transition-colors duration-500 hover:bg-[#111] md:p-10"
@@ -32,158 +67,136 @@ export default function SlaegaServices() {
               <h3 className="mt-5 font-space text-2xl font-semibold text-white md:text-3xl">
                 {d.title}
               </h3>
-              <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-white/55">
-                {d.body}
-              </p>
+              <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-white/55">{d.body}</p>
               <span className="absolute right-8 top-8 h-2 w-2 rounded-full bg-white/10 transition-colors duration-500 group-hover:bg-[#FF5A00]" />
             </article>
           ))}
         </Reveal>
       </section>
 
-      {/* ── Ecosystem / Products ────────────────────────────── */}
-      <section className="pt-28">
-        <SectionLabel index="[ écosystème ]">Nos solutions logicielles</SectionLabel>
-        <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-6">
-          {PRODUCTS.map((p) => (
-            <article
-              key={p.id}
-              data-reveal-item
-              data-cursor
-              data-cursor-label="voir"
-              className={`group relative flex min-h-[280px] flex-col justify-between overflow-hidden rounded-[3px] border border-white/10 bg-[#0d0d0d] p-8 transition-all duration-500 hover:border-[#FF5A00]/50 hover:bg-[#111] ${
-                p.size === "lg" ? "md:col-span-4" : "md:col-span-2"
-              }`}
-            >
-              <div>
-                <span className="text-[11px] uppercase tracking-[0.2em] text-white/35">
-                  {p.category}
-                </span>
-                <h3 className="mt-3 font-space text-3xl font-bold lowercase text-white md:text-4xl">
-                  {p.name}
-                </h3>
-                <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-white/55">
-                  {p.body}
-                </p>
-              </div>
-              <div className="mt-6 flex flex-wrap items-center gap-2">
-                {p.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-[2px] border border-white/12 px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/50"
-                  >
-                    {t}
-                  </span>
-                ))}
-                <span
-                  aria-hidden
-                  className="ml-auto translate-x-0 font-space text-xl text-white/20 transition-all duration-500 group-hover:translate-x-1 group-hover:text-[#FF5A00]"
-                >
-                  ↗
-                </span>
-              </div>
-            </article>
-          ))}
-        </Reveal>
-      </section>
-
-      {/* ── Offers ──────────────────────────────────────────── */}
-      <section className="pt-28">
-        <SectionLabel index="[ services ]">Et aussi</SectionLabel>
-        <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {OFFERS.map((o) => (
-            <article
-              key={o.id}
-              data-reveal-item
-              data-cursor
-              className="group rounded-[3px] border border-white/10 bg-[#0d0d0d] p-8 transition-colors duration-500 hover:bg-[#111] md:p-10"
-            >
-              <h3 className="font-space text-2xl font-semibold text-white md:text-[28px]">
-                {o.title}
-              </h3>
-              <p className="mt-4 max-w-[50ch] text-[15px] leading-relaxed text-white/55">
-                {o.body}
-              </p>
-              <span className="mt-6 inline-block font-space text-sm text-white/40 transition-colors group-hover:text-[#FF5A00]">
-                en savoir plus →
-              </span>
-            </article>
-          ))}
-        </Reveal>
-      </section>
-
-      {/* ── Web Packs ───────────────────────────────────────── */}
-      <section className="pt-28">
-        <SectionLabel index="[ web packs ]">Sites vitrine</SectionLabel>
-        <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {PACKS.map((pk) => (
-            <article
-              key={pk.id}
-              data-reveal-item
-              data-cursor
-              data-cursor-label="choisir"
-              className={`group relative flex flex-col rounded-[3px] border p-8 transition-all duration-500 ${
-                pk.featured
-                  ? "border-[#FF5A00]/60 bg-[#160c05]"
-                  : "border-white/10 bg-[#0d0d0d] hover:border-white/25"
-              }`}
-            >
-              {pk.featured && (
-                <span className="absolute right-6 top-6 rounded-[2px] bg-[#FF5A00] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-[#0B0B0B]">
-                  populaire
-                </span>
-              )}
-              <span className="font-space text-sm uppercase tracking-[0.2em] text-white/45">
-                {pk.name}
-              </span>
-              <div className="mt-4 flex items-baseline gap-1.5">
-                <span className="font-space text-5xl font-bold text-white">{pk.price}</span>
-                {pk.unit && <span className="text-sm text-white/40">{pk.unit}</span>}
-              </div>
-              <ul className="mt-8 flex flex-1 flex-col gap-3">
-                {pk.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-[14px] text-white/60">
-                    <span
-                      className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full"
-                      style={{ background: pk.featured ? "#FF5A00" : "rgba(255,255,255,.3)" }}
-                    />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button
+      {/* ── Selected work — real projects ───────────────────── */}
+      {work.length > 0 && (
+        <section className="pt-28">
+          <SectionLabel index="[ projets ]">{tProjects("subtitle")}</SectionLabel>
+          <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-6">
+            {work.map((p, i) => (
+              <Link
+                key={p.slug}
+                href={`/project/${p.slug}`}
+                data-reveal-item
                 data-cursor
-                className={`mt-8 rounded-[2px] px-5 py-3 text-sm font-medium uppercase tracking-widest transition-colors duration-300 ${
-                  pk.featured
-                    ? "bg-[#FF5A00] text-[#0B0B0B] hover:bg-white"
-                    : "border border-white/20 text-white hover:border-[#FF5A00] hover:text-[#FF5A00]"
+                data-cursor-label={tProjects("discover")}
+                className={`group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-[3px] border border-white/10 bg-[#0d0d0d] transition-all duration-500 hover:border-[#FF5A00]/50 ${
+                  i % 3 === 0 ? "md:col-span-4" : "md:col-span-2"
                 }`}
               >
-                Démarrer
-              </button>
-            </article>
-          ))}
+                {p.image && (
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-cover bg-center opacity-30 transition-all duration-700 group-hover:scale-105 group-hover:opacity-45"
+                    style={{ backgroundImage: `url("${p.image}")` }}
+                  />
+                )}
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "linear-gradient(180deg, rgba(11,11,11,.3) 0%, rgba(11,11,11,.92) 78%)" }}
+                />
+                <div className="relative z-10 p-8">
+                  {p.category && (
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-white/40">
+                      {p.category}
+                    </span>
+                  )}
+                  <h3 className="mt-2 font-space text-2xl font-bold text-white md:text-3xl">
+                    {p.title}
+                  </h3>
+                  <p className="mt-3 max-w-[52ch] text-[14px] leading-relaxed text-white/55 line-clamp-2">
+                    {p.desc}
+                  </p>
+                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                    {p.tags.slice(0, 4).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-[2px] border border-white/12 px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/50"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    <span
+                      aria-hidden
+                      className="ml-auto font-space text-xl text-white/20 transition-all duration-500 group-hover:translate-x-1 group-hover:text-[#FF5A00]"
+                    >
+                      ↗
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </Reveal>
+          <Reveal className="mt-8">
+            <Link
+              data-reveal-item
+              data-cursor
+              href="/project"
+              className="inline-flex items-center gap-3 font-space text-sm uppercase tracking-widest text-white/60 transition-colors hover:text-[#FF5A00]"
+            >
+              {tProjects("viewAll")} <span aria-hidden>→</span>
+            </Link>
+          </Reveal>
+        </section>
+      )}
+
+      {/* ── About ───────────────────────────────────────────── */}
+      <section className="pt-28">
+        <SectionLabel index="[ à propos ]">{tAbout("title")}</SectionLabel>
+        <Reveal className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr]">
+          <div data-reveal-item className="flex flex-col gap-6">
+            <p className="text-xl leading-relaxed text-white/75 md:text-2xl">{tAbout("paragraph1")}</p>
+            <p className="max-w-[62ch] text-[15px] leading-relaxed text-white/50">
+              {tAbout("paragraph2")}
+            </p>
+          </div>
+          <div data-reveal-item className="flex flex-col justify-end gap-4">
+            <a
+              data-cursor
+              href="/cv"
+              className="inline-flex items-center justify-between gap-3 rounded-[2px] border border-white/15 px-6 py-4 font-space text-sm uppercase tracking-widest text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
+            >
+              {tAbout("downloadResume")} <span aria-hidden>↓</span>
+            </a>
+            <a
+              data-cursor
+              href="/contact"
+              className="inline-flex items-center justify-between gap-3 rounded-[2px] bg-white px-6 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors hover:bg-[#FF5A00]"
+            >
+              {tAbout("contactCta")} <span aria-hidden>→</span>
+            </a>
+          </div>
         </Reveal>
       </section>
 
-      {/* ── CTA footer ──────────────────────────────────────── */}
+      {/* ── Contact CTA ─────────────────────────────────────── */}
       <section className="pt-32">
         <Reveal className="flex flex-col items-start gap-8 border-t border-white/10 pt-16">
           <h2
             data-reveal-item
             className="font-space text-[clamp(2.2rem,7vw,5.5rem)] font-bold leading-[0.9] tracking-tighter text-white"
           >
-            On construit <span className="text-[#FF5A00]">quoi</span> ensemble ?
+            {tContact("title").split(" ").slice(0, -1).join(" ")}{" "}
+            <span className="text-[#FF5A00]">{tContact("title").split(" ").slice(-1)}</span>
           </h2>
-          <a
+          <p data-reveal-item className="max-w-[54ch] text-lg text-white/55">
+            {tContact("description")}
+          </p>
+          <Link
             data-reveal-item
             data-cursor
             data-cursor-label="parler"
-            href="mailto:hello@slaega.com"
+            href="/contact"
             className="inline-flex items-center gap-3 rounded-[2px] bg-white px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors duration-300 hover:bg-[#FF5A00]"
           >
-            Démarrer un projet <span aria-hidden>→</span>
-          </a>
+            {tContact("form.submit")} <span aria-hidden>→</span>
+          </Link>
         </Reveal>
       </section>
     </div>

@@ -3,9 +3,15 @@
 import { useEffect } from "react";
 import SlaegaCursor from "./SlaegaCursor";
 import SlaegaHero from "./SlaegaHero";
-import SlaegaServices from "./SlaegaServices";
+import SlaegaServices, { type SlaegaProject, type SlaegaService } from "./SlaegaServices";
 
-export default function SlaegaLanding() {
+export default function SlaegaLanding({
+  projects = [],
+  services = [],
+}: {
+  projects?: SlaegaProject[];
+  services?: SlaegaService[];
+}) {
   // Own the viewport: hide portfolio chrome + go dark while mounted.
   useEffect(() => {
     const html = document.documentElement;
@@ -40,13 +46,13 @@ export default function SlaegaLanding() {
     <main className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
       <SlaegaCursor />
       <SlaegaHero />
-      <SlaegaServices />
+      <SlaegaServices projects={projects} services={services} />
 
       <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <span className="font-space text-2xl font-bold lowercase text-white">slaega</span>
           <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
-            elite IT experts · en partenariat avec organe des orach
+            Seba Gedeon · ingénieur logiciel full-stack &amp; devops
           </span>
           <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
             © {new Date().getFullYear()}
