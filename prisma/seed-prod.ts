@@ -803,6 +803,66 @@ async function seedProcess() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+//  9b. PENSÉES / ÉCRITS — croyances, vision, réflexions, chansons
+//      CREATE-ONLY: seeds starter content once, then leaves it fully to the CMS.
+//      Never overwrites edits, never purges entries the author adds himself.
+// ═══════════════════════════════════════════════════════════════════════════
+const PENSEES = [
+  {
+    id: "pensee-croyance-1",
+    kind: "croyance",
+    title: "On construit pour durer",
+    subtitle: "Ma première croyance",
+    body:
+      "Je crois qu'une chose bien faite traverse le temps. Le code, une relation, une parole donnée : la vraie valeur ne se voit pas le premier jour, elle se prouve dans la durée. Construire vite, oui — mais construire pour tenir, toujours.",
+  },
+  {
+    id: "pensee-vision-1",
+    kind: "vision",
+    title: "La technologie au service de l'humain",
+    subtitle: "Ma vision de l'humanité",
+    body:
+      "Je crois en une humanité qui grandit ensemble, pas les uns contre les autres. La technologie ne devrait jamais éloigner les hommes — elle devrait rapprocher, ouvrir, donner du pouvoir à ceux qui n'en ont pas. Depuis Brazzaville, je veux prouver que le talent n'a pas de frontière, et que l'avenir se construit partout, pas seulement ailleurs.",
+  },
+  {
+    id: "pensee-pensee-1",
+    kind: "pensee",
+    title: "Ne jamais oublier d'où l'on vient",
+    subtitle: "",
+    body:
+      "slaega, c'est la somme de tous mes surnoms — Sedeo Leos, Arion Evans, Gedeon sebA. Un rappel que je ne pars pas de zéro : je porte une histoire, des origines, une famille, une ville. Avancer sans oublier, c'est ça, monter sans se perdre.",
+  },
+  {
+    id: "pensee-chanson-1",
+    kind: "chanson",
+    title: "Ascension",
+    subtitle: "Extrait — à compléter",
+    body:
+      "Parti de rien, les mains vides, le cœur plein\nBrazza dans le dos, le monde devant, je tiens\nChaque ligne de code, chaque note, un pas de plus\nslaega monte, slaega tient, slaega ne recule plus\n\n[ refrain à écrire… ]",
+  },
+];
+
+async function seedPensees() {
+  for (const [i, p] of PENSEES.entries()) {
+    await db.pensee.upsert({
+      where: { id: p.id },
+      create: {
+        id: p.id,
+        kind: p.kind,
+        title: p.title,
+        subtitle: p.subtitle,
+        body: p.body,
+        order: i,
+        published: true,
+      },
+      // create-only: leave the author's CMS edits untouched on re-seed.
+      update: {},
+    });
+  }
+  console.log(`✓ Pensées (${PENSEES.length}) ensured (create-only, CMS-owned)`);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 //  10. SITE CONFIG — ticker / terminal / value-cards / theme (JSON key-value)
 //      Only sets a key if it is not already present, so admin edits win.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -841,6 +901,7 @@ async function main() {
   await seedAboutPage();
   await seedFaq();
   await seedProcess();
+  await seedPensees();
   await seedSiteConfig();
   console.log("\n✅ Production seed complete.");
 }

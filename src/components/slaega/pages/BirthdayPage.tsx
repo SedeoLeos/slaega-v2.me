@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const COLORS = ["#FF5A00", "#FFFFFF", "#F5A623", "#22D3EE", "#FF3DA6", "#B6FF3C"];
 
@@ -16,8 +16,41 @@ const PIECES = Array.from({ length: 60 }, (_, i) => {
   return { left, delay, dur, size, rot, color, round, i };
 });
 
+// Tous les surnoms — l'histoire derrière slaega.
+const ALIASES = [
+  { code: "SL", name: "Sedeo Leos" },
+  { code: "AE", name: "Arion Evans" },
+  { code: "GDBA", name: "Gedeon sebA" },
+];
+
 export default function BirthdayPage() {
   const [wished, setWished] = useState(false);
+
+  // Compteur slaega : slaega 1 → slaega 19 (né un 19).
+  const [count, setCount] = useState(1);
+  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setCount(19);
+      return;
+    }
+    timer.current = setInterval(() => {
+      setCount((c) => {
+        if (c >= 19) {
+          if (timer.current) clearInterval(timer.current);
+          return 19;
+        }
+        return c + 1;
+      });
+    }, 140);
+    return () => {
+      if (timer.current) clearInterval(timer.current);
+    };
+  }, []);
 
   return (
     <div className="slaega-root relative flex min-h-[80vh] w-full flex-col items-center justify-center overflow-hidden bg-[#0B0B0B] px-6 py-24 font-[var(--font-inter)] text-white">
@@ -42,25 +75,62 @@ export default function BirthdayPage() {
       </div>
 
       {/* message */}
-      <div className="relative z-10 flex flex-col items-center text-center">
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
         <span className="text-[11px] uppercase tracking-[0.3em] text-white/45">
-          <span className="text-[#FF5A00]">✦</span> slaega célèbre
+          <span className="text-[#FF5A00]">✦</span> slaega célèbre · 19 août 2000
         </span>
         <h1 className="mt-8 font-space text-[clamp(2.6rem,11vw,9rem)] font-bold leading-[0.82] tracking-tighter text-white">
           Happy
           <br />
           <span className="text-[#FF5A00]">Birthday</span>
         </h1>
-        <p className="mt-8 max-w-[42ch] text-lg leading-relaxed text-white/60">
+        <p className="mt-6 font-space text-lg font-medium tracking-tight text-white/85 md:text-xl">
+          Seba Gedeon Matsoula Malonga
+        </p>
+        <p className="mt-6 max-w-[42ch] text-lg leading-relaxed text-white/60">
           Une année de plus à construire, à apprendre, à monter d&apos;un cran. Que la suivante
           soit encore plus grande. 🎂
         </p>
+
+        {/* Compteur slaega 1 → 19 */}
+        <div className="mt-12 flex flex-col items-center">
+          <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">
+            le compte d&apos;une vie
+          </span>
+          <div className="mt-4 flex items-baseline gap-3 font-space">
+            <span className="text-2xl font-medium lowercase text-white/70 md:text-3xl">slaega</span>
+            <span
+              key={count}
+              className="birthday-tick font-space text-[clamp(3rem,14vw,7rem)] font-bold leading-none tracking-tighter text-[#FF5A00]"
+            >
+              {count}
+            </span>
+          </div>
+        </div>
+
+        {/* Les surnoms */}
+        <div className="mt-14 w-full">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-white/40">
+            derrière le nom — tous mes surnoms
+          </p>
+          <div className="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-white/10 sm:grid-cols-3">
+            {ALIASES.map((a) => (
+              <div key={a.code} className="bg-[#0B0B0B] p-6">
+                <div className="font-space text-3xl font-bold text-[#FF5A00]">{a.code}</div>
+                <div className="mt-2 font-space text-sm text-white/70">{a.name}</div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-5 font-space text-lg text-white/80">
+            = <span className="lowercase text-white">slaega</span>
+          </p>
+        </div>
 
         <button
           type="button"
           data-cursor
           onClick={() => setWished(true)}
-          className="mt-10 inline-flex items-center gap-3 rounded-[2px] bg-white px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors hover:bg-[#FF5A00]"
+          className="mt-12 inline-flex items-center gap-3 rounded-[2px] bg-white px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors hover:bg-[#FF5A00]"
         >
           {wished ? "Vœu envoyé ✓" : "Faire un vœu"}
           <span aria-hidden>{wished ? "🎉" : "→"}</span>
@@ -89,9 +159,25 @@ export default function BirthdayPage() {
           animation-timing-function: linear;
           animation-iteration-count: infinite;
         }
+        @keyframes birthday-tick {
+          0% {
+            transform: translateY(0.15em) scale(0.85);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+        .birthday-tick {
+          animation: birthday-tick 0.18s ease-out;
+        }
         @media (prefers-reduced-motion: reduce) {
           .birthday-confetti {
             display: none;
+          }
+          .birthday-tick {
+            animation: none;
           }
         }
       `}</style>

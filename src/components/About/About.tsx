@@ -90,6 +90,31 @@ export default async function About() {
           />
         </svg>
       </Link>
+
+      {/* Aller plus loin — pages personnelles */}
+      <div className="mt-14 w-full max-w-3xl">
+        <p className="text-xs font-semibold uppercase tracking-widest text-green-app text-center mb-5">
+          Aller plus loin
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            { href: '/moi', title: 'La personne', desc: 'Seba Gedeon Matsoula' },
+            { href: '/philosophie', title: 'La philosophie', desc: 'slaega = king sedeo leos' },
+            { href: '/pensees', title: 'Mes écrits', desc: 'Croyances, vision, chansons' },
+          ].map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="group bg-card border border-foreground/5 rounded-2xl p-5 hover:border-green-app/40 transition-colors"
+            >
+              <p className="text-sm font-bold text-foreground group-hover:text-green-app transition-colors">
+                {l.title}
+              </p>
+              <p className="text-xs text-foreground/50 mt-1">{l.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
