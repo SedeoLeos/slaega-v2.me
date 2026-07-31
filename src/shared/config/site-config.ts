@@ -14,6 +14,7 @@ export const SiteConfig = {
     { href: '/project', i18nKey: 'header.navigation.myWork' },
     { href: '/experience', i18nKey: 'header.navigation.experience' },
     { href: '/about', i18nKey: 'header.navigation.about' },
+    { href: '/pensees', i18nKey: 'header.navigation.pensees' },
     { href: '/contact', i18nKey: 'header.navigation.contactMe' },
   ],
 } as const;

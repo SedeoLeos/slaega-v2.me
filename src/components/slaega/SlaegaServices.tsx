@@ -235,6 +235,24 @@ export default function SlaegaServices({
             </p>
           </div>
           <div data-reveal-item className="flex flex-col justify-end gap-4">
+            {/* Explorer davantage — pages personnelles */}
+            <div className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+              {[
+                { href: "/moi", label: "La personne — Seba Gedeon" },
+                { href: "/philosophie", label: "slaega = king sedeo leos" },
+                { href: "/pensees", label: "Mes pensées & écrits" },
+              ].map((l) => (
+                <a
+                  key={l.href}
+                  data-cursor
+                  href={l.href}
+                  className="group flex items-center justify-between gap-3 py-4 font-space text-sm text-white/70 transition-colors hover:text-[#FF5A00]"
+                >
+                  {l.label}
+                  <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+                </a>
+              ))}
+            </div>
             <a
               data-cursor
               href="/cv"
