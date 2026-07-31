@@ -7,78 +7,58 @@ export default async function NotFound() {
   const t = await getTranslations({ locale, namespace: 'notFound' });
 
   return (
-    <main className="w-full relative overflow-hidden bg-background flex flex-col items-center justify-center min-h-screen mt-0 px-6">
-
+    <main className="slaega-root relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#0B0B0B] px-6 py-24 font-[var(--font-inter)] text-white">
       {/* Congo map — décoratif, très estompé */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.04]">
-        <CarteCongoDecor className="w-[600px] max-w-full" />
+      <div className="pointer-events-none absolute inset-0 flex select-none items-center justify-center opacity-[0.05]">
+        <CarteCongoDecor stroke="#FF5A00" className="w-[620px] max-w-full" />
       </div>
 
-      {/* Halo vert en arrière-plan */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, color-mix(in srgb, var(--green-app) 8%, transparent) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center gap-8 max-w-lg">
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center text-center">
+        <span className="text-[11px] uppercase tracking-[0.3em] text-white/45">
+          <span className="text-[#FF5A00]">✦</span> erreur 404
+        </span>
 
         {/* Grand nombre 404 */}
-        <div className="flex items-center gap-2 select-none" aria-hidden="true">
-          <span className="text-[120px] sm:text-[160px] font-extrabold leading-none text-foreground/10 tracking-tighter">
-            4
-          </span>
-          <div
-            className="w-20 h-20 sm:w-28 sm:h-28 rounded-full flex-shrink-0 flex items-center justify-center"
-            style={{
-              background: 'var(--green-app)',
-              boxShadow: '0 0 60px color-mix(in srgb, var(--green-app) 40%, transparent)',
-            }}
-          >
-            <span className="text-[40px] sm:text-[56px] font-extrabold leading-none text-white">
-              0
-            </span>
-          </div>
-          <span className="text-[120px] sm:text-[160px] font-extrabold leading-none text-foreground/10 tracking-tighter">
-            4
-          </span>
+        <div
+          aria-hidden
+          className="mt-8 flex select-none items-center justify-center font-space text-[clamp(5rem,26vw,15rem)] font-bold leading-none tracking-tighter"
+        >
+          <span className="text-white/12">4</span>
+          <span className="text-[#FF5A00]">0</span>
+          <span className="text-white/12">4</span>
         </div>
 
         {/* Texte */}
-        <div className="space-y-3">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            {t('title')}
-          </h1>
-          <p className="text-foreground/55 text-base leading-relaxed">
-            {t('description')}
-          </p>
-        </div>
+        <h1 className="mt-6 font-space text-3xl font-bold tracking-tight text-white sm:text-5xl">
+          {t('title')}
+        </h1>
+        <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/55">
+          {t('description')}
+        </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+        <div className="mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Link
+            data-cursor
             href={`/${locale}`}
-            className="inline-flex items-center gap-2 bg-foreground text-background px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-foreground/85 transition-all hover:gap-3 w-full sm:w-auto justify-center"
+            className="group inline-flex items-center justify-center gap-3 rounded-[2px] bg-white px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors hover:bg-[#FF5A00]"
           >
             {t('backHome')}
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.53033 2.21968L9 1.68935L7.93934 2.75001L8.46967 3.28034L12.4393 7.25001H1.75H1V8.75001H1.75H12.4393L8.46967 12.7197L7.93934 13.25L9 14.3107L9.53033 13.7803L14.6036 8.70711C14.9941 8.31659 14.9941 7.68342 14.6036 7.2929L9.53033 2.21968Z"
-                fill="currentColor"
-              />
-            </svg>
+            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
           <Link
+            data-cursor
             href={`/${locale}/contact`}
-            className="inline-flex items-center gap-2 border border-foreground/20 text-foreground/70 px-7 py-3.5 rounded-full font-semibold text-sm hover:border-foreground/50 hover:text-foreground transition-all w-full sm:w-auto justify-center"
+            className="inline-flex items-center justify-center gap-3 rounded-[2px] border border-white/15 px-7 py-4 font-space text-sm uppercase tracking-widest text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
           >
             {t('contact')}
           </Link>
         </div>
 
+        {/* Wordmark */}
+        <span className="mt-16 font-space text-sm lowercase tracking-tight text-white/30">
+          slaega<span className="text-[#FF5A00]">.</span>
+        </span>
       </div>
     </main>
   );
