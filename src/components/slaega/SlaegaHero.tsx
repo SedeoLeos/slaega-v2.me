@@ -57,10 +57,10 @@ export default function SlaegaHero() {
       <div className="relative z-10 flex flex-wrap items-start justify-between gap-4 text-[11px] uppercase tracking-[0.25em] text-white/45">
         <span className="flex items-center gap-2">
           <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "#FF5A00" }} />
-          elite IT experts
+          salut — Seba Gedeon
         </span>
         <span className="max-w-[40ch] text-right leading-relaxed">
-          en partenariat avec <span className="text-white/80">organe des orach</span>
+          Brazzaville · <span className="text-white/80">disponible pour vos projets</span>
         </span>
       </div>
 
@@ -99,18 +99,21 @@ export default function SlaegaHero() {
           <span className="block text-[clamp(3.5rem,14vw,13rem)]">slaega</span>
         </h1>
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <p className="max-w-[34ch] text-lg leading-snug text-white/60 md:text-xl">
-            L&apos;association d&apos;experts qui conçoit, code et pilote —{" "}
-            <span className="text-white">DevOps, ingénierie logicielle, gestion de projet et DSI offshore.</span>
+          <p className="max-w-[42ch] text-lg leading-snug text-white/60 md:text-xl">
+            Ingénieur logiciel full-stack &amp; DevOps.{" "}
+            <span className="text-white">
+              Je construis des applications robustes et évolutives — mobile, web, backend — et des
+              infrastructures cloud sécurisées.
+            </span>
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-1 font-space text-sm uppercase tracking-[0.2em] text-white/40">
             <span>DevOps</span>
             <span className="text-[#FF5A00]">/</span>
-            <span>Coding</span>
+            <span>Mobile</span>
             <span className="text-[#FF5A00]">/</span>
-            <span>Project Mgmt</span>
+            <span>Backend</span>
             <span className="text-[#FF5A00]">/</span>
-            <span>DSI</span>
+            <span>Sécurité</span>
           </div>
         </div>
       </div>
