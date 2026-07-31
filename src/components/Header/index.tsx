@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import NavItem from './NavItem';
+import SlaegaMark from '../brand/SlaegaMark';
 import Drawer from '../icons/drawer';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -22,8 +23,8 @@ const Header = () => {
     <div data-global-header className={`w-full backdrop-blur-xl fixed justify-center flex z-30 transition-all duration-300 ${scrolled ? 'bg-background/85 border-b border-foreground/5' : 'bg-background/70 border-b border-transparent'}`}>
       <header className={`w-full px-10 md:px-20 text-foreground font-poppins flex justify-between items-center max-w-content transition-all duration-300 ${scrolled ? 'py-3' : 'py-6'}`}>
         {/* Logo */}
-        <Link href='/' className='flex items-center gap-2'>
-          <span className='inline-block h-1.5 w-1.5 rounded-full bg-green-app keep-round' />
+        <Link href='/' className='flex items-center gap-2.5'>
+          <SlaegaMark className={`transition-all duration-300 ${scrolled ? 'h-6 w-6' : 'h-7 w-7'}`} />
           <h1 className={`font-space font-bold lowercase text-foreground tracking-tight transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{SiteConfig.brand}</h1>
         </Link>
 
