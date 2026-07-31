@@ -11,10 +11,11 @@ type Form = {
   title: string;
   subtitle: string;
   body: string;
+  link: string;
   published: boolean;
 };
 
-const EMPTY: Form = { kind: "pensee", title: "", subtitle: "", body: "", published: true };
+const EMPTY: Form = { kind: "devise", title: "", subtitle: "", body: "", link: "", published: true };
 
 export default function PenseeEditor({ initialItems }: Props) {
   const [items, setItems] = useState<Pensee[]>(initialItems);
@@ -24,6 +25,12 @@ export default function PenseeEditor({ initialItems }: Props) {
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState("");
 
+  const canSave =
+    form.title.trim().length > 0 &&
+    (form.kind === "chanson"
+      ? form.body.trim().length > 0 || form.link.trim().length > 0
+      : form.body.trim().length > 0);
+
   const startEdit = (item: Pensee) => {
     setCreating(false);
     setEditing(item.id);
@@ -32,6 +39,7 @@ export default function PenseeEditor({ initialItems }: Props) {
       title: item.title,
       subtitle: item.subtitle,
       body: item.body,
+      link: item.link,
       published: item.published,
     });
   };
@@ -125,16 +133,27 @@ export default function PenseeEditor({ initialItems }: Props) {
         className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app"
       />
       <textarea
-        rows={form.kind === "chanson" ? 12 : 6}
+        rows={form.kind === "chanson" ? 4 : 6}
         value={form.body}
         onChange={(e) => setForm((p) => ({ ...p, body: e.target.value }))}
         placeholder={
           form.kind === "chanson"
-            ? "Paroles… (les retours à la ligne sont conservés)"
-            : "Texte, réflexion, croyance…"
+            ? "Courte description du son (optionnel) — pas besoin des paroles"
+            : form.kind === "devise"
+              ? "La devise, ou un mot sur ce qu'elle signifie…"
+              : "Texte, réflexion, croyance…"
         }
-        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app resize-y font-mono leading-relaxed"
+        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app resize-y leading-relaxed"
       />
+      {form.kind === "chanson" && (
+        <input
+          type="url"
+          value={form.link}
+          onChange={(e) => setForm((p) => ({ ...p, link: e.target.value }))}
+          placeholder="Lien pour écouter (ex. https://audiomack.com/…)"
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app"
+        />
+      )}
       <div className="flex items-center justify-between">
         <label className="flex items-center gap-2 text-xs text-zinc-400">
           <input
@@ -167,7 +186,7 @@ export default function PenseeEditor({ initialItems }: Props) {
                   <button
                     type="button"
                     onClick={() => save(item.id)}
-                    disabled={!!saving || !form.title.trim() || !form.body.trim()}
+                    disabled={!!saving || !canSave}
                     className="px-4 py-2 bg-green-app/20 hover:bg-green-app/30 border border-green-app/30 text-green-app rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                   >
                     {saving === item.id ? "Sauvegarde…" : "Sauvegarder"}
@@ -245,7 +264,7 @@ export default function PenseeEditor({ initialItems }: Props) {
               <button
                 type="button"
                 onClick={() => save()}
-                disabled={!!saving || !form.title.trim() || !form.body.trim()}
+                disabled={!!saving || !canSave}
                 className="px-4 py-2 bg-green-app/20 hover:bg-green-app/30 border border-green-app/30 text-green-app rounded-lg text-sm font-medium transition-colors disabled:opacity-40"
               >
                 {saving === "new" ? "Ajout…" : "Ajouter"}
