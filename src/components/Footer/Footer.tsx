@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 import SocialLink from '../SocialLink';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
@@ -11,59 +10,66 @@ function Footer() {
   const currentYear = new Date().getUTCFullYear();
 
   return (
-    <footer data-global-footer className='flex flex-col w-full overflow-hidden relative'>
-      {/* ── Carte Congo décorative ── */}
+    <footer
+      data-global-footer
+      className="relative w-full overflow-hidden border-t border-foreground/10 bg-background font-space"
+    >
+      {/* Subtle Congo signature */}
       <CarteCongoDecor
         stroke="var(--green-app)"
-        className="absolute bottom-0 right-0 w-72 md:w-[400px] pointer-events-none select-none"
+        className="pointer-events-none absolute bottom-0 right-0 w-64 select-none md:w-[380px]"
         style={{
-          zoom: "80%",
-          opacity: 0.6,
-          maskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
-          WebkitMaskImage: "linear-gradient(135deg, transparent 0%, black 50%)",
+          zoom: '80%',
+          opacity: 0.14,
+          maskImage: 'linear-gradient(135deg, transparent 0%, black 60%)',
+          WebkitMaskImage: 'linear-gradient(135deg, transparent 0%, black 60%)',
         }}
       />
 
-      {/* CTA Section */}
-      <div className='self-center max-w-content w-full px-10 md:px-20 pt-16 pb-12 relative z-[1]'>
-        <div className='flex justify-between items-center flex-col md:flex-row gap-8'>
-          <h2 className='text-5xl md:text-6xl font-extrabold max-w-lg leading-tight'>
-            {t('footer.cta.title').split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                {index === 0 && <br />}
-              </React.Fragment>
-            ))}
+      <div className="relative z-[1] mx-auto w-full max-w-content px-6 py-20 md:px-16">
+        {/* CTA */}
+        <div className="flex flex-col gap-8 border-b border-foreground/10 pb-16 md:flex-row md:items-end md:justify-between">
+          <h2 className="max-w-[16ch] text-[clamp(2.2rem,6vw,4.5rem)] font-bold leading-[0.92] tracking-tighter text-foreground">
+            {t('footer.cta.title').replace('\n', ' ')}
           </h2>
           <Link
             href={`mailto:${SiteConfig.email}`}
-            className='inline-flex items-center gap-3 border border-foreground/20 hover:border-foreground/50 rounded-2xl px-6 py-4 transition-colors group'
+            data-cursor
+            className="group inline-flex items-center gap-3 whitespace-nowrap text-lg text-foreground/70 transition-colors hover:text-green-app"
           >
-            {/* Gmail icon */}
-            <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
-              <path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
-              <polyline points='22,6 12,13 2,6' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
-            </svg>
-            <span className='text-sm font-medium'>{SiteConfig.email}</span>
+            <span className="border-b border-foreground/20 pb-1 group-hover:border-green-app">
+              {SiteConfig.email}
+            </span>
+            <span aria-hidden className="text-green-app transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
         </div>
-      </div>
 
-      <hr className='bg-foreground/10 w-full h-px border-none mx-0' />
+        {/* Brand + meta */}
+        <div className="mt-12 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-block h-2 w-2 rounded-full bg-green-app keep-round" />
+            <span className="text-3xl font-bold lowercase tracking-tight text-foreground">
+              {SiteConfig.brand}
+            </span>
+          </div>
 
-      {/* Bottom bar */}
-      <div className='self-center max-w-content w-full px-10 md:px-20 py-6 flex justify-between items-center sm:flex-row flex-col gap-4 relative z-[1]'>
-        <span className='text-sm text-foreground/50'>{t('footer.copyright', { year: currentYear })}</span>
-
-        {/* Language switcher */}
-        <LocaleSwitcher />
-
-        <div className='flex gap-5'>
-          <SocialLink href={SiteConfig.socialLinks.linkedin} icon='linkedin' />
-          <SocialLink href={SiteConfig.socialLinks.github} icon='github' />
-          <SocialLink href={SiteConfig.socialLinks.facebook} icon='facebook' />
-          <SocialLink href={SiteConfig.socialLinks.instagram} icon='instagram' />
-          <SocialLink href={SiteConfig.socialLinks.twitter} icon='twitter' />
+          <div className="flex flex-col items-start gap-5 md:items-end">
+            <div className="flex gap-5">
+              <SocialLink href={SiteConfig.socialLinks.linkedin} icon="linkedin" />
+              <SocialLink href={SiteConfig.socialLinks.github} icon="github" />
+              <SocialLink href={SiteConfig.socialLinks.facebook} icon="facebook" />
+              <SocialLink href={SiteConfig.socialLinks.instagram} icon="instagram" />
+              <SocialLink href={SiteConfig.socialLinks.twitter} icon="twitter" />
+            </div>
+            <div className="flex items-center gap-6">
+              <LocaleSwitcher />
+              <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/40">
+                {t('footer.copyright', { year: currentYear })}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

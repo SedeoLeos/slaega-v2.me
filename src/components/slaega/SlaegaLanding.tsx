@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import SlaegaHero from "./SlaegaHero";
+import SlaegaMarquee from "./SlaegaMarquee";
 import SlaegaServices, {
   type SlaegaProject,
   type SlaegaService,
@@ -60,6 +61,7 @@ export default function SlaegaLanding({
   return (
     <div className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
       <SlaegaHero />
+      <SlaegaMarquee />
       <SlaegaServices projects={projects} services={services} stats={stats} steps={steps} faq={faq} />
 
       {immersive && (
