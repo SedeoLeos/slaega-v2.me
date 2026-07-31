@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "../Reveal";
 
@@ -14,23 +15,56 @@ export default function MoiPage() {
   return (
     <div className="slaega-root w-full bg-[#0B0B0B] px-6 pb-32 pt-16 font-[var(--font-inter)] text-white md:px-12 lg:px-16">
       {/* Header */}
-      <Reveal className="flex flex-col gap-8 border-b border-white/10 pb-16">
-        <span data-reveal-item className="text-[11px] uppercase tracking-[0.25em] text-white/45">
-          <span className="text-[#FF5A00]">✦</span> la personne
-        </span>
-        <h1
-          data-reveal-item
-          className="font-space text-[clamp(2.4rem,8vw,6.5rem)] font-bold leading-[0.9] tracking-tighter text-white"
-        >
-          Seba Gedeon
-          <br />
-          Matsoula
-        </h1>
-        <p data-reveal-item className="max-w-[58ch] text-lg leading-relaxed text-white/60">
-          Avant la marque, il y a l&apos;homme. Je suis Seba Gedeon Matsoula — développeur,
-          curieux insatiable, bâtisseur. Ce que tu vois sous le nom <span className="text-white">slaega</span>,
-          c&apos;est mon travail. Ici, c&apos;est un peu de qui je suis.
-        </p>
+      <Reveal className="grid grid-cols-1 gap-10 border-b border-white/10 pb-16 md:grid-cols-[1.35fr_1fr] md:items-end">
+        <div className="flex flex-col gap-8">
+          <span data-reveal-item className="text-[11px] uppercase tracking-[0.25em] text-white/45">
+            <span className="text-[#FF5A00]">✦</span> la personne
+          </span>
+          <h1
+            data-reveal-item
+            className="font-space text-[clamp(2.4rem,8vw,6.5rem)] font-bold leading-[0.9] tracking-tighter text-white"
+          >
+            Seba Gedeon
+            <br />
+            Matsoula
+          </h1>
+          <p data-reveal-item className="max-w-[58ch] text-lg leading-relaxed text-white/60">
+            Avant la marque, il y a l&apos;homme. Je suis Seba Gedeon Matsoula — développeur,
+            curieux insatiable, bâtisseur. Ce que tu vois sous le nom <span className="text-white">slaega</span>,
+            c&apos;est mon travail. Ici, c&apos;est un peu de qui je suis.
+          </p>
+        </div>
+
+        {/* Portrait */}
+        <div data-reveal-item className="relative w-full max-w-[360px] justify-self-start md:justify-self-end">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[3px] border border-white/10 bg-[#121212]">
+            <Image
+              src="/images/me.jpg"
+              alt="Seba Gedeon Matsoula"
+              fill
+              sizes="(max-width: 768px) 90vw, 360px"
+              className="object-cover object-top"
+              priority
+            />
+            {/* voile bas pour le label */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-24"
+              style={{ background: "linear-gradient(to top, rgba(11,11,11,0.85), transparent)" }}
+            />
+            <div className="absolute bottom-0 left-0 flex items-center gap-2 p-4">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A00]" />
+              <span className="font-space text-[11px] uppercase tracking-[0.2em] text-white/80">
+                Brazzaville · 2000
+              </span>
+            </div>
+          </div>
+          {/* accent tangerine */}
+          <span
+            aria-hidden
+            className="absolute -bottom-2 -right-2 -z-10 hidden h-full w-full rounded-[3px] border border-[#FF5A00]/40 md:block"
+          />
+        </div>
       </Reveal>
 
       {/* Facts */}
