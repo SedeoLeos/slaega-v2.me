@@ -2,17 +2,33 @@
 
 import { useEffect } from "react";
 import SlaegaHero from "./SlaegaHero";
-import SlaegaServices, { type SlaegaProject, type SlaegaService } from "./SlaegaServices";
+import SlaegaServices, {
+  type SlaegaProject,
+  type SlaegaService,
+  type SlaegaStat,
+  type SlaegaStep,
+  type SlaegaFaq,
+} from "./SlaegaServices";
 
 export default function SlaegaLanding({
   projects = [],
   services = [],
+  stats = [],
+  steps = [],
+  faq = [],
+  immersive = false,
 }: {
   projects?: SlaegaProject[];
   services?: SlaegaService[];
+  stats?: SlaegaStat[];
+  steps?: SlaegaStep[];
+  faq?: SlaegaFaq[];
+  /** true → standalone route that hides the portfolio chrome (/slaega).
+   *  false → home: the global (dark) Header/Footer stay. */
+  immersive?: boolean;
 }) {
-  // Own the viewport: hide portfolio chrome + go dark while mounted.
   useEffect(() => {
+    if (!immersive) return;
     const html = document.documentElement;
     const prev = html.getAttribute("data-immersive");
     html.setAttribute("data-immersive", "1");
@@ -20,7 +36,7 @@ export default function SlaegaLanding({
       if (prev === null) html.removeAttribute("data-immersive");
       else html.setAttribute("data-immersive", prev);
     };
-  }, []);
+  }, [immersive]);
 
   // Keep ScrollTrigger in sync with the (global Lenis) smooth scroll.
   useEffect(() => {
@@ -42,21 +58,23 @@ export default function SlaegaLanding({
   }, []);
 
   return (
-    <main className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
+    <div className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
       <SlaegaHero />
-      <SlaegaServices projects={projects} services={services} />
+      <SlaegaServices projects={projects} services={services} stats={stats} steps={steps} faq={faq} />
 
-      <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <span className="font-space text-2xl font-bold lowercase text-white">slaega</span>
-          <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
-            Seba Gedeon · ingénieur logiciel full-stack &amp; devops
-          </span>
-          <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
-            © {new Date().getFullYear()}
-          </span>
-        </div>
-      </footer>
+      {immersive && (
+        <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
+          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+            <span className="font-space text-2xl font-bold lowercase text-white">slaega</span>
+            <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
+              Seba Gedeon · ingénieur logiciel full-stack &amp; devops
+            </span>
+            <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
+              © {new Date().getFullYear()}
+            </span>
+          </div>
+        </footer>
+      )}
 
       <style jsx global>{`
         .slaega-root .font-space {
@@ -107,6 +125,6 @@ export default function SlaegaLanding({
           }
         }
       `}</style>
-    </main>
+    </div>
   );
 }
