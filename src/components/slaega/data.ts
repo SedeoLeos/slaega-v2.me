@@ -13,11 +13,12 @@ export type Node = {
 
 /** Draggable skill nodes on the hero — the real stack, alive */
 export const HERO_NODES: Node[] = [
-  { id: "k8s", label: "kubernetes", hint: "k3s · devops", x: 15, y: 28 },
-  { id: "rn", label: "react native", hint: "mobile", x: 80, y: 22 },
-  { id: "node", label: "node.js", hint: "backend", x: 72, y: 64 },
-  { id: "next", label: "next.js", hint: "web", x: 22, y: 68 },
-  { id: "sec", label: "openfga", hint: "auth & sécurité", x: 50, y: 44 },
+  { id: "k8s", label: "kubernetes", hint: "k3s · devops", x: 14, y: 26 },
+  { id: "coolify", label: "coolify", hint: "self-host paas", x: 82, y: 22 },
+  { id: "argocd", label: "argo cd", hint: "gitops · ci/cd", x: 73, y: 62 },
+  { id: "keycloak", label: "keycloak", hint: "iam · sso", x: 19, y: 66 },
+  { id: "authz", label: "openfga", hint: "authorization", x: 49, y: 43 },
+  { id: "rn", label: "react native", hint: "mobile", x: 40, y: 82 },
 ];
 
 export type Discipline = { index: string; title: string; body: string };
@@ -27,7 +28,7 @@ export const DISCIPLINES: Discipline[] = [
   {
     index: "01",
     title: "DevOps & Cloud",
-    body: "Kubernetes, k3s, CI/CD, provisioning et administration Linux, reverse-proxy, monitoring. Des infrastructures fiables, sécurisées et scalables — livrées en production.",
+    body: "Kubernetes & k3s, GitOps (Argo CD), CI/CD (Jenkins), PaaS self-hosted (Coolify, Dokploy, CapRover), provisioning et administration Linux, reverse-proxy, monitoring. Des infras fiables, sécurisées et scalables — livrées en production.",
   },
   {
     index: "02",
@@ -41,7 +42,7 @@ export const DISCIPLINES: Discipline[] = [
   },
   {
     index: "04",
-    title: "Sécurité & Auth",
-    body: "Authentification, gestion des permissions, OAuth, JWT, OpenFGA. La sécurité applicative de bout en bout.",
+    title: "IAM · Auth & Autorisation",
+    body: "Identité & SSO (Keycloak, Auth0, Okta), autorisation fine (OpenFGA, SpiceDB, Permit.io), OAuth, JWT. La sécurité applicative et la gestion des accès, de bout en bout.",
   },
 ];

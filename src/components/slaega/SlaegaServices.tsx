@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import Reveal from "./Reveal";
@@ -14,6 +15,9 @@ export type SlaegaProject = {
   category?: string;
 };
 export type SlaegaService = { title: string; description: string; icon?: string };
+export type SlaegaStat = { value: string; label: string };
+export type SlaegaStep = { stepNumber: number; title: string; description: string };
+export type SlaegaFaq = { question: string; answer: string };
 
 function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
   return (
@@ -26,19 +30,55 @@ function SectionLabel({ index, children }: { index: string; children: React.Reac
   );
 }
 
+function FaqRow({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div data-reveal-item className="border-b border-white/10">
+      <button
+        type="button"
+        data-cursor
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-6 py-6 text-left"
+      >
+        <span className="font-space text-lg font-medium text-white md:text-xl">{q}</span>
+        <span
+          className={`font-space text-2xl leading-none text-[#FF5A00] transition-transform duration-300 ${
+            open ? "rotate-45" : ""
+          }`}
+        >
+          +
+        </span>
+      </button>
+      <div
+        className="grid transition-all duration-300 ease-out"
+        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+      >
+        <div className="overflow-hidden">
+          <p className="max-w-[70ch] pb-6 text-[15px] leading-relaxed text-white/55">{a}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SlaegaServices({
   projects,
   services,
+  stats,
+  steps,
+  faq,
 }: {
   projects: SlaegaProject[];
   services: SlaegaService[];
+  stats: SlaegaStat[];
+  steps: SlaegaStep[];
+  faq: SlaegaFaq[];
 }) {
   const tServices = useTranslations("services");
   const tProjects = useTranslations("projects");
   const tAbout = useTranslations("about");
   const tContact = useTranslations("contact");
 
-  // Expertise: CMS services if present, else the curated fallback.
   const expertise =
     services.length > 0
       ? services.map((s, i) => ({
@@ -52,8 +92,26 @@ export default function SlaegaServices({
 
   return (
     <div className="w-full px-6 pb-32 md:px-12 lg:px-16">
+      {/* ── Stats strip ─────────────────────────────────────── */}
+      {stats.length > 0 && (
+        <section className="pt-20">
+          <Reveal className="grid grid-cols-2 gap-px overflow-hidden rounded-[2px] bg-white/10 md:grid-cols-4">
+            {stats.slice(0, 4).map((s) => (
+              <div key={s.label} data-reveal-item className="bg-[#0B0B0B] p-8 md:p-10">
+                <div className="font-space text-4xl font-bold text-white md:text-5xl">
+                  {s.value}
+                </div>
+                <div className="mt-2 text-[12px] uppercase tracking-[0.18em] text-white/45">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </Reveal>
+        </section>
+      )}
+
       {/* ── Expertise ───────────────────────────────────────── */}
-      <section className="pt-24">
+      <section className="pt-28">
         <SectionLabel index="[ expertise ]">{tServices("subtitle")}</SectionLabel>
         <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-white/10 md:grid-cols-2">
           {expertise.map((d) => (
@@ -74,7 +132,7 @@ export default function SlaegaServices({
         </Reveal>
       </section>
 
-      {/* ── Selected work — real projects ───────────────────── */}
+      {/* ── Selected work ───────────────────────────────────── */}
       {work.length > 0 && (
         <section className="pt-28">
           <SectionLabel index="[ projets ]">{tProjects("subtitle")}</SectionLabel>
@@ -146,6 +204,26 @@ export default function SlaegaServices({
         </section>
       )}
 
+      {/* ── Process ─────────────────────────────────────────── */}
+      {steps.length > 0 && (
+        <section className="pt-28">
+          <SectionLabel index="[ méthode ]">Ma façon de travailler</SectionLabel>
+          <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-white/10 md:grid-cols-3">
+            {steps.map((st) => (
+              <article key={st.stepNumber} data-reveal-item className="bg-[#0B0B0B] p-8 md:p-10">
+                <span className="font-space text-5xl font-bold text-white/10">
+                  {String(st.stepNumber).padStart(2, "0")}
+                </span>
+                <h3 className="mt-4 font-space text-xl font-semibold text-white md:text-2xl">
+                  {st.title}
+                </h3>
+                <p className="mt-3 text-[14px] leading-relaxed text-white/55">{st.description}</p>
+              </article>
+            ))}
+          </Reveal>
+        </section>
+      )}
+
       {/* ── About ───────────────────────────────────────────── */}
       <section className="pt-28">
         <SectionLabel index="[ à propos ]">{tAbout("title")}</SectionLabel>
@@ -174,6 +252,18 @@ export default function SlaegaServices({
           </div>
         </Reveal>
       </section>
+
+      {/* ── FAQ ─────────────────────────────────────────────── */}
+      {faq.length > 0 && (
+        <section className="pt-28">
+          <SectionLabel index="[ faq ]">Questions fréquentes</SectionLabel>
+          <Reveal className="flex flex-col">
+            {faq.map((f) => (
+              <FaqRow key={f.question} q={f.question} a={f.answer} />
+            ))}
+          </Reveal>
+        </section>
+      )}
 
       {/* ── Contact CTA ─────────────────────────────────────── */}
       <section className="pt-32">
