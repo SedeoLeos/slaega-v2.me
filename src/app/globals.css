@@ -836,3 +836,15 @@ article .article-content svg {
 [data-admin-theme="light"] *::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.12);
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   slaega — immersive brutalist landing (route: /slaega)
+   Hide the portfolio chrome so the experience owns the viewport.
+   ═══════════════════════════════════════════════════════════════════ */
+html[data-immersive="1"] { background: #0B0B0B; }
+html[data-immersive="1"] body { background: #0B0B0B; }
+html[data-immersive="1"] [data-global-header],
+html[data-immersive="1"] [data-global-footer],
+html[data-immersive="1"] [data-global-cursor] { display: none !important; }
+html[data-immersive="1"] * { cursor: none; }
+@media (max-width: 767px) { html[data-immersive="1"] * { cursor: auto; } }

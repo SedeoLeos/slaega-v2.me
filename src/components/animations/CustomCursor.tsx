@@ -42,6 +42,7 @@ export default function CustomCursor() {
   return (
     <motion.div
       aria-hidden
+      data-global-cursor
       className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block"
       style={{ x: sx, y: sy }}
     >
