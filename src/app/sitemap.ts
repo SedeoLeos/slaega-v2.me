@@ -14,6 +14,10 @@ const STATIC_ROUTES: {
   { path: "/project",   priority: 0.9, changeFrequency: "weekly"  },
   { path: "/experience",priority: 0.8, changeFrequency: "monthly" },
   { path: "/about",     priority: 0.7, changeFrequency: "monthly" },
+  { path: "/moi",       priority: 0.7, changeFrequency: "monthly" },
+  { path: "/philosophie", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/pensees",   priority: 0.6, changeFrequency: "weekly"  },
+  { path: "/cv",        priority: 0.6, changeFrequency: "monthly" },
   { path: "/contact",   priority: 0.6, changeFrequency: "yearly"  },
 ];
 

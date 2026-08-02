@@ -13,6 +13,7 @@ import SmoothScroll from "@/components/animations/SmoothScroll";
 import Store from "@/Provider/Store";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 import { DEFAULT_THEME } from "@/features/site-config/types";
+import { SITE_URL, KEYWORDS, FULL_NAME, personJsonLd, websiteJsonLd } from "@/shared/config/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,12 +39,44 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
+  const title = t("siteTitle");
+  const description = t("description");
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
-      default: t("siteTitle"),
+      default: title,
       template: t("titleTemplate"),
     },
-    description: t("description"),
+    description,
+    keywords: KEYWORDS,
+    applicationName: "slaega",
+    authors: [{ name: FULL_NAME, url: SITE_URL }],
+    creator: FULL_NAME,
+    publisher: FULL_NAME,
+    alternates: {
+      canonical: locale === "fr" ? SITE_URL : `${SITE_URL}/${locale}`,
+      languages: { fr: SITE_URL, en: `${SITE_URL}/en` },
+    },
+    openGraph: {
+      type: "website",
+      siteName: "slaega — " + FULL_NAME,
+      title,
+      description,
+      url: locale === "fr" ? SITE_URL : `${SITE_URL}/${locale}`,
+      locale: locale === "fr" ? "fr_FR" : "en_US",
+      images: [{ url: "/images/me.jpg", width: 1024, height: 1024, alt: FULL_NAME }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/me.jpg"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
   };
 }
 
@@ -100,6 +133,14 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <style dangerouslySetInnerHTML={{ __html: themeCss }} />
       <script dangerouslySetInnerHTML={{ __html: modeScript }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+      />
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Store>
           <body className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden flex flex-col items-center w-full`}>
