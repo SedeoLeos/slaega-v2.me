@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl';
 import type { Experience } from '@/entities/experience';
 import ContentRenderer from '@/components/Content/ContentRenderer';
 
-type Props = { experience: Experience; isLast?: boolean };
+type Props = { experience: Experience; index?: number; isLast?: boolean };
 
-export default function ExperienceItem({ experience: exp, isLast }: Props) {
+export default function ExperienceItem({ experience: exp, index }: Props) {
   const t = useTranslations();
   const months = t.raw('common.monthsShort') as string[];
 
@@ -19,57 +19,62 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
   }`;
 
   return (
-    <div className="relative flex gap-6 sm:gap-8">
-      {/* Timeline line */}
-      <div className="flex flex-col items-center">
-        <div
-          className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${
-            exp.current ? 'bg-green-app ring-4 ring-green-app/20' : 'bg-foreground/30'
-          }`}
-        />
-        {!isLast && <div className="w-px flex-1 bg-foreground/10 mt-2 min-h-[2rem]" />}
-      </div>
-
-      {/* Content */}
-      <div className="pb-10 flex-1 min-w-0">
-        <div className="flex flex-wrap items-start gap-x-3 gap-y-1 mb-1">
-          <h3 className="font-semibold text-base text-foreground">{exp.role}</h3>
+    <article
+      data-reveal-item
+      className="group grid grid-cols-1 gap-5 border-t border-foreground/10 py-10 transition-colors duration-500 hover:bg-foreground/[0.02] md:grid-cols-[minmax(0,15rem)_1fr] md:gap-12"
+    >
+      {/* Left — meta */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          {typeof index === 'number' && (
+            <span className="font-space text-sm font-medium text-green-app">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          )}
           {exp.current && (
-            <span className="text-xs bg-green-app/10 text-green-app border border-green-app/20 px-2 py-0.5 rounded-full font-medium">
+            <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-green-app/30 px-2 py-0.5 font-space text-[10px] font-semibold uppercase tracking-widest text-green-app">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-app keep-round" />
               {t('experience.currentBadge')}
             </span>
           )}
         </div>
-        <p className="text-sm text-foreground/60 mb-1">
+        <p className="font-space text-[13px] uppercase tracking-[0.15em] text-foreground/45">{period}</p>
+        <p className="font-space text-lg font-semibold text-foreground">
           {exp.companyUrl ? (
             <a
               href={exp.companyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-green-app transition-colors"
+              data-cursor
+              className="transition-colors hover:text-green-app"
             >
               {exp.company}
             </a>
           ) : (
             exp.company
           )}
-          {exp.location && ` · ${exp.location}`}
         </p>
-        <p className="text-xs text-foreground/40 mb-3 font-mono">{period}</p>
+        {exp.location && <p className="text-sm text-foreground/40">{exp.location}</p>}
+      </div>
 
-        {/* Rich description (HTML / Markdown) — uses the same renderer as projects */}
+      {/* Right — role, description, skills */}
+      <div className="flex flex-col">
+        <h3 className="font-space text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          {exp.role}
+        </h3>
+
         {exp.description && (
-          <div className="text-foreground/70 leading-relaxed max-w-3xl experience-desc">
+          <div className="experience-desc mt-4 max-w-3xl leading-relaxed text-foreground/65">
             <ContentRenderer content={exp.description} collapseThreshold={600} />
           </div>
         )}
 
         {exp.skills.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-4">
+          <div className="mt-5 flex flex-wrap gap-2">
             {exp.skills.map((s) => (
               <span
                 key={s}
-                className="text-xs bg-foreground/5 border border-foreground/10 text-foreground/60 px-2.5 py-0.5 rounded-full"
+                className="rounded-[2px] border border-foreground/12 px-2.5 py-1 font-space text-[11px] uppercase tracking-wide text-foreground/55"
               >
                 {s}
               </span>
@@ -77,6 +82,6 @@ export default function ExperienceItem({ experience: exp, isLast }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 }
