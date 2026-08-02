@@ -197,6 +197,8 @@ type SavedCvSummary = {
   jobOffer: string;
   language: string;
   createdAt: string;
+  isPublic?: boolean;
+  domain?: string;
 };
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -271,6 +273,20 @@ export default function CVGeneratorClient() {
       setBusyId(null);
     }
   }, []);
+
+  const updateSaved = useCallback(async (id: string, patch: { isPublic?: boolean; domain?: string }) => {
+    // optimistic
+    setSavedList((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
+    try {
+      await fetch('/api/cv-generator/saved', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...patch }),
+      });
+    } catch {
+      await loadSaved();
+    }
+  }, [loadSaved]);
 
   const deleteSaved = useCallback(async (id: string) => {
     setBusyId(id);
@@ -418,36 +434,63 @@ export default function CVGeneratorClient() {
                 savedList.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-2"
+                    className="flex flex-col gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-2"
                   >
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[11px] text-zinc-200 font-medium truncate">{item.title}</p>
-                      <p className="text-[10px] text-zinc-500">
-                        {new Date(item.createdAt).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })}
-                        {' · '}
-                        {item.language === 'en' ? 'EN' : 'FR'}
-                      </p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] text-zinc-200 font-medium truncate">{item.title}</p>
+                        <p className="text-[10px] text-zinc-500">
+                          {new Date(item.createdAt).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })}
+                          {' · '}
+                          {item.language === 'en' ? 'EN' : 'FR'}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => reuseSaved(item.id)}
+                        disabled={busyId === item.id}
+                        title="Réutiliser ce CV"
+                        className="text-[10px] font-semibold text-zinc-100 hover:text-white disabled:opacity-40 px-1.5 py-1"
+                      >
+                        {busyId === item.id ? '…' : 'Réutiliser'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteSaved(item.id)}
+                        disabled={busyId === item.id}
+                        title="Supprimer"
+                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-zinc-800 text-zinc-600 hover:text-red-400 transition-colors disabled:opacity-40"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => reuseSaved(item.id)}
-                      disabled={busyId === item.id}
-                      title="Réutiliser ce CV"
-                      className="text-[10px] font-semibold text-zinc-100 hover:text-white disabled:opacity-40 px-1.5 py-1"
-                    >
-                      {busyId === item.id ? '…' : 'Réutiliser'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => deleteSaved(item.id)}
-                      disabled={busyId === item.id}
-                      title="Supprimer"
-                      className="w-6 h-6 flex items-center justify-center rounded hover:bg-zinc-800 text-zinc-600 hover:text-red-400 transition-colors disabled:opacity-40"
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
+                    {/* Public gallery controls */}
+                    <div className="flex items-center gap-2 border-t border-zinc-800 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => updateSaved(item.id, { isPublic: !item.isPublic })}
+                        title={item.isPublic ? 'Retirer de /cv' : 'Publier sur /cv'}
+                        className={`text-[10px] font-semibold px-2 py-1 rounded transition-colors ${
+                          item.isPublic
+                            ? 'bg-green-app/20 text-green-app border border-green-app/30'
+                            : 'bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-zinc-200'
+                        }`}
+                      >
+                        {item.isPublic ? '● Public' : '○ Privé'}
+                      </button>
+                      <input
+                        type="text"
+                        defaultValue={item.domain ?? ''}
+                        placeholder="Domaine (Banque, Fintech…)"
+                        onBlur={(e) => {
+                          const v = e.target.value.trim();
+                          if (v !== (item.domain ?? '')) updateSaved(item.id, { domain: v });
+                        }}
+                        className="flex-1 min-w-0 bg-zinc-950 border border-zinc-700 rounded px-2 py-1 text-[10px] text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app"
+                      />
+                    </div>
                   </div>
                 ))
               )}
