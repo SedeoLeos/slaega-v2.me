@@ -193,7 +193,12 @@
     "empty": "Aucune expérience à afficher pour l'instant.",
     "present": "Aujourd'hui",
     "currentBadge": "En poste",
-    "viewAll": "Voir toutes les expériences ({count})"
+    "viewAll": "Voir toutes les expériences ({count})",
+    "progression": "Évolution · {count} rôles",
+    "viewDetail": "Voir le détail & les projets",
+    "rolesHeading": "Évolution du rôle",
+    "projectsHere": "Projets liés",
+    "back": "Retour au parcours"
   },
   "categories": {
     "showcase-site": "Site vitrine",

@@ -193,7 +193,12 @@
     "empty": "No hay experiencias que mostrar aún.",
     "present": "Actualidad",
     "currentBadge": "Puesto actual",
-    "viewAll": "Ver todas las experiencias ({count})"
+    "viewAll": "Ver todas las experiencias ({count})",
+    "progression": "Evolución · {count} roles",
+    "viewDetail": "Ver detalle y proyectos",
+    "rolesHeading": "Evolución del rol",
+    "projectsHere": "Proyectos relacionados",
+    "back": "Volver a la experiencia"
   },
   "categories": {
     "showcase-site": "Sitio escaparate",

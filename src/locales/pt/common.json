@@ -193,7 +193,12 @@
     "empty": "Nenhuma experiência para exibir ainda.",
     "present": "Atual",
     "currentBadge": "Cargo atual",
-    "viewAll": "Ver todas as experiências ({count})"
+    "viewAll": "Ver todas as experiências ({count})",
+    "progression": "Evolução · {count} funções",
+    "viewDetail": "Ver detalhe e projetos",
+    "rolesHeading": "Evolução do cargo",
+    "projectsHere": "Projetos relacionados",
+    "back": "Voltar à experiência"
   },
   "categories": {
     "showcase-site": "Site vitrine",
