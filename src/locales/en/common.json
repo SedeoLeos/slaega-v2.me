@@ -193,7 +193,12 @@
     "empty": "No experience to display yet.",
     "present": "Present",
     "currentBadge": "Current role",
-    "viewAll": "See all experiences ({count})"
+    "viewAll": "See all experiences ({count})",
+    "progression": "Progression · {count} roles",
+    "viewDetail": "View detail & projects",
+    "rolesHeading": "Role progression",
+    "projectsHere": "Related projects",
+    "back": "Back to experience"
   },
   "categories": {
     "showcase-site": "Showcase site",

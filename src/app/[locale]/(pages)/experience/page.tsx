@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getExperiences } from '@/features/experience/use-cases/get-experiences.use-case';
-import ExperienceItem from '@/components/Experience/ExperienceItem';
+import { groupByCompany } from '@/features/experience/group';
+import ExperienceCompany from '@/components/Experience/ExperienceCompany';
 import Reveal from '@/components/slaega/Reveal';
 import EmptyState from '@/components/ui/EmptyState';
 
@@ -19,8 +20,8 @@ export default async function ExperiencePage({ params }: Props) {
 
   const t = await getTranslations();
   const tExp = (key: string) => t(`experience.${key}`);
-  // Already ordered most-recent-first by the repository.
   const experiences = await getExperiences().catch(() => []);
+  const companies = groupByCompany(experiences);
 
   return (
     <main className="slaega-root w-full px-6 pb-32 pt-28 font-[var(--font-inter)] text-foreground md:px-12 lg:px-16">
@@ -40,8 +41,8 @@ export default async function ExperiencePage({ params }: Props) {
         </p>
       </Reveal>
 
-      {/* Timeline */}
-      {experiences.length === 0 ? (
+      {/* Companies (grouped, with role progression) */}
+      {companies.length === 0 ? (
         <div className="mx-auto max-w-content pt-16">
           <EmptyState
             variant="soon"
@@ -55,8 +56,8 @@ export default async function ExperiencePage({ params }: Props) {
         </div>
       ) : (
         <Reveal className="mx-auto max-w-content">
-          {experiences.map((exp, i) => (
-            <ExperienceItem key={exp.id} experience={exp} index={i} isLast={i === experiences.length - 1} />
+          {companies.map((group, i) => (
+            <ExperienceCompany key={group.slug} group={group} index={i} />
           ))}
         </Reveal>
       )}
