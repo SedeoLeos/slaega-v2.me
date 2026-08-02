@@ -1,5 +1,6 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale, getLocale } from 'next-intl/server';
 import { getExperiences } from '@/features/experience/use-cases/get-experiences.use-case';
+import { localizeExperience } from '@/features/i18n/localize';
 import { groupByCompany } from '@/features/experience/group';
 import ExperienceCompany from '@/components/Experience/ExperienceCompany';
 import Reveal from '@/components/slaega/Reveal';
@@ -20,7 +21,10 @@ export default async function ExperiencePage({ params }: Props) {
 
   const t = await getTranslations();
   const tExp = (key: string) => t(`experience.${key}`);
-  const experiences = await getExperiences().catch(() => []);
+  const activeLocale = await getLocale();
+  const experiences = (await getExperiences().catch(() => [])).map((e) =>
+    localizeExperience(e, activeLocale),
+  );
   const companies = groupByCompany(experiences);
 
   return (

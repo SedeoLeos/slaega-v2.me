@@ -18,6 +18,8 @@ model Project {
   projectUrl  String?
   githubUrl   String?
   videoUrl    String?
+  // Per-language overrides (base = FR columns). JSON: { en: { title, desc, content } }
+  translations String  @default("{}")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -33,6 +35,8 @@ model Experience {
   skills      String   @default("[]")
   location    String   @default("")
   companyUrl  String?
+  // Per-language overrides (base = FR columns). JSON: { en: { role, description, location } }
+  translations String  @default("{}")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

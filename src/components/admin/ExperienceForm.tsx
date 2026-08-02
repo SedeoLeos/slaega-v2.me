@@ -26,6 +26,10 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
   const [current, setCurrent] = useState(initial?.current ?? false);
   const [description, setDescription] = useState(initial?.description ?? "");
   const [skills, setSkills] = useState<string[]>(initial?.skills ?? []);
+  // English translation (base language is FR).
+  const [enRole, setEnRole] = useState(initial?.translations?.en?.role ?? "");
+  const [enDescription, setEnDescription] = useState(initial?.translations?.en?.description ?? "");
+  const [enLocation, setEnLocation] = useState(initial?.translations?.en?.location ?? "");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,6 +50,13 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
           company, role, location, companyUrl,
           startDate, endDate: current ? null : endDate || null,
           current, description, skills,
+          translations: {
+            en: {
+              role: enRole.trim(),
+              description: enDescription.trim(),
+              location: enLocation.trim(),
+            },
+          },
         }),
       });
 
@@ -165,6 +176,40 @@ export default function ExperienceForm({ initial, mode, id }: ExperienceFormProp
         label="Compétences"
         placeholder="React, TypeScript, Docker…"
       />
+
+      {/* English translation (base = FR) */}
+      <div className="rounded-xl border border-zinc-700 bg-zinc-900/40 p-4 space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-green-app border border-green-app/30 rounded px-1.5 py-0.5">EN</span>
+          <p className="text-xs text-zinc-400">Version anglaise (laisser vide = affiche le français)</p>
+        </div>
+        <div>
+          <label className="block text-xs text-zinc-400 mb-1">Role (EN)</label>
+          <input
+            type="text"
+            value={enRole}
+            onChange={(e) => setEnRole(e.target.value)}
+            placeholder="Software Architect…"
+            className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-zinc-400 mb-1">Location (EN)</label>
+          <input
+            type="text"
+            value={enLocation}
+            onChange={(e) => setEnLocation(e.target.value)}
+            placeholder="Brazzaville · Remote…"
+            className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-green-app"
+          />
+        </div>
+        <RichEditor
+          value={enDescription}
+          onChange={setEnDescription}
+          label="Description (EN)"
+          placeholder="Describe your missions, achievements, responsibilities…"
+        />
+      </div>
 
       {/* Submit */}
       <div className="flex items-center gap-3 pt-2">

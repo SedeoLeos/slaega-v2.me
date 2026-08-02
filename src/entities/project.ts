@@ -1,3 +1,7 @@
+export type ProjectI18n = {
+  en?: { title?: string; desc?: string; content?: string };
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -11,6 +15,7 @@ export type Project = {
   projectUrl?: string | null;
   githubUrl?: string | null;
   videoUrl?: string | null;
+  translations?: ProjectI18n;
 };
 
 export type ProjectContent = {
@@ -30,6 +35,7 @@ export type CreateProjectInput = {
   projectUrl?: string;
   githubUrl?: string;
   videoUrl?: string;
+  translations?: ProjectI18n;
 };
 
 export type UpdateProjectInput = Partial<CreateProjectInput>;

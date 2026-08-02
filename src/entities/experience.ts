@@ -1,3 +1,7 @@
+export type ExperienceI18n = {
+  en?: { role?: string; description?: string; location?: string };
+};
+
 export type Experience = {
   id: string;
   company: string;
@@ -9,6 +13,7 @@ export type Experience = {
   skills: string[];
   location: string;
   companyUrl?: string;
+  translations?: ExperienceI18n;
 };
 
 export type CreateExperienceInput = Omit<Experience, "id">;
