@@ -47,6 +47,10 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
   const [githubUrl, setGithubUrl] = useState(initial?.githubUrl ?? "");
   const [videoUrl, setVideoUrl] = useState(initial?.videoUrl ?? "");
   const [videoUploading, setVideoUploading] = useState(false);
+  // English translation (base language is FR).
+  const [enTitle, setEnTitle] = useState(initial?.translations?.en?.title ?? "");
+  const [enDescription, setEnDescription] = useState(initial?.translations?.en?.desc ?? "");
+  const [enContent, setEnContent] = useState(initial?.translations?.en?.content ?? "");
 
   const toggleCategory = (c: string) =>
     setCategories((prev) =>
@@ -81,6 +85,13 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           projectUrl: projectUrl || undefined,
           githubUrl: githubUrl || undefined,
           videoUrl: videoUrl || undefined,
+          translations: {
+            en: {
+              title: enTitle.trim(),
+              desc: enDescription.trim(),
+              content: enContent.trim(),
+            },
+          },
         }),
       });
 
@@ -133,6 +144,37 @@ export default function ProjectForm({ initial, mode, slug }: ProjectFormProps) {
           label="Contenu"
           placeholder="Décrivez votre projet — contexte, stack, défis, résultats…"
         />
+
+        {/* English translation (base = FR) */}
+        <div className="rounded-xl border border-zinc-700 bg-zinc-900/40 p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-green-app border border-green-app/30 rounded px-1.5 py-0.5">EN</span>
+            <p className="text-xs text-zinc-400">Version anglaise (laisser vide = affiche le français)</p>
+          </div>
+          <Field label="Title (EN)">
+            <input
+              value={enTitle}
+              onChange={(e) => setEnTitle(e.target.value)}
+              placeholder="My awesome project"
+              className="input-base"
+            />
+          </Field>
+          <Field label="Short description (EN)">
+            <textarea
+              value={enDescription}
+              onChange={(e) => setEnDescription(e.target.value)}
+              rows={2}
+              placeholder="One-sentence summary…"
+              className="input-base resize-none"
+            />
+          </Field>
+          <RichEditor
+            value={enContent}
+            onChange={setEnContent}
+            label="Content (EN)"
+            placeholder="Describe your project — context, stack, challenges, results…"
+          />
+        </div>
 
         <div className="flex items-center gap-3 pt-2 lg:hidden">
           <SubmitBlock loading={loading} mode={mode} />

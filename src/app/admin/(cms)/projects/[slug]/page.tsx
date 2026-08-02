@@ -82,6 +82,8 @@ export default async function EditProjectPage({
           published: meta.published,
           projectUrl: meta.projectUrl ?? "",
           githubUrl: meta.githubUrl ?? "",
+          videoUrl: meta.videoUrl ?? "",
+          translations: meta.translations,
           content,
         }}
       />

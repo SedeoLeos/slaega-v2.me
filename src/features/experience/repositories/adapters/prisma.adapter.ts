@@ -12,7 +12,15 @@ function mapRow(row: {
   skills: string;
   location: string;
   companyUrl: string | null;
+  translations?: string | null;
 }): Experience {
+  let translations: Experience["translations"];
+  try {
+    const parsed = JSON.parse(row.translations || "{}");
+    if (parsed && typeof parsed === "object") translations = parsed;
+  } catch {
+    /* ignore malformed */
+  }
   return {
     id: row.id,
     company: row.company,
@@ -24,6 +32,7 @@ function mapRow(row: {
     skills: JSON.parse(row.skills || "[]") as string[],
     location: row.location,
     companyUrl: row.companyUrl ?? undefined,
+    translations,
   };
 }
 
@@ -59,6 +68,7 @@ export const prismaExperienceAdapter = {
         skills: JSON.stringify(data.skills ?? []),
         location: data.location ?? "",
         companyUrl: data.companyUrl ?? null,
+        translations: JSON.stringify(data.translations ?? {}),
       },
     });
     return mapRow(row);
@@ -79,6 +89,7 @@ export const prismaExperienceAdapter = {
         ...(data.skills !== undefined && { skills: JSON.stringify(data.skills) }),
         ...(data.location !== undefined && { location: data.location }),
         ...(data.companyUrl !== undefined && { companyUrl: data.companyUrl }),
+        ...(data.translations !== undefined && { translations: JSON.stringify(data.translations) }),
       },
     });
     return mapRow(row);

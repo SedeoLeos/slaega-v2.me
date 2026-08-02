@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
+import { localizeProject, localizeProjectContent } from "@/features/i18n/localize";
 import IllustrationBody from "@/components/Illustration/IllustrationBody";
 import IllustrationProject from "@/components/Illustration/IllustrationProject";
 import ProjectItem from "@/components/Projects/ProjectItem";
@@ -96,15 +97,17 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await getPost(slug);
-  if (!project) notFound();
+  const rawProject = await getPost(slug);
+  if (!rawProject) notFound();
 
   const t = await getTranslations();
+  const activeLocale = await getLocale();
   const months = t.raw("common.monthsShort") as string[];
 
+  const project = localizeProjectContent(rawProject, activeLocale);
   const { content, meta } = project;
 
-  const data = await getAllProjects();
+  const data = (await getAllProjects()).map((p) => localizeProject(p, activeLocale));
   const currentIndex = data.findIndex((item) => item.slug === slug);
 
   const similarProjects = data

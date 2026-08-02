@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale, getLocale } from 'next-intl/server';
 import { getExperiences } from '@/features/experience/use-cases/get-experiences.use-case';
 import { getAllProjects } from '@/features/projects/use-cases/get-projects.use-case';
+import { localizeExperience, localizeProject } from '@/features/i18n/localize';
 import { groupByCompany, matchProjectsToSkills } from '@/features/experience/group';
 import ExperienceItem from '@/components/Experience/ExperienceItem';
 import Reveal from '@/components/slaega/Reveal';
@@ -22,10 +23,13 @@ export default async function ExperienceDetailPage({ params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations();
-  const [experiences, projects] = await Promise.all([
+  const activeLocale = await getLocale();
+  const [rawExperiences, rawProjects] = await Promise.all([
     getExperiences().catch(() => []),
     getAllProjects().catch(() => []),
   ]);
+  const experiences = rawExperiences.map((e) => localizeExperience(e, activeLocale));
+  const projects = rawProjects.map((p) => localizeProject(p, activeLocale));
 
   const group = groupByCompany(experiences).find((c) => c.slug === slug);
   if (!group) notFound();

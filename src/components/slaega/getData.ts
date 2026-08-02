@@ -1,4 +1,6 @@
 import "server-only";
+import { getLocale } from "next-intl/server";
+import { localizeProject } from "@/features/i18n/localize";
 import { projectRepository } from "@/features/projects/repositories/project.repository";
 import { serviceRepository } from "@/features/services/repositories/service.repository";
 import { statRepository } from "@/features/banner/repositories/banner.repository";
@@ -30,14 +32,17 @@ export async function getSlaegaData(): Promise<SlaegaData> {
     faqRepository.getPublished().catch(() => []),
   ]);
 
-  const projects: SlaegaProject[] = rawProjects.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    desc: p.desc ?? "",
-    tags: Array.isArray(p.tags) ? p.tags : [],
-    image: p.image ?? "",
-    category: Array.isArray(p.categories) ? p.categories[0] : undefined,
-  }));
+  const locale = await getLocale().catch(() => "fr");
+  const projects: SlaegaProject[] = rawProjects
+    .map((p) => localizeProject(p, locale))
+    .map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      desc: p.desc ?? "",
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      image: p.image ?? "",
+      category: Array.isArray(p.categories) ? p.categories[0] : undefined,
+    }));
 
   const services: SlaegaService[] = rawServices.map((s) => ({
     title: s.title,
