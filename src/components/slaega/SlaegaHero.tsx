@@ -54,13 +54,13 @@ export default function SlaegaHero() {
       />
 
       {/* top meta row */}
-      <div className="relative z-10 flex flex-wrap items-start justify-between gap-4 text-[11px] uppercase tracking-[0.25em] text-white/45">
+      <div className="relative z-10 flex flex-wrap items-start justify-between gap-4 text-[11px] uppercase tracking-[0.25em] text-foreground/45">
         <span className="flex items-center gap-2">
-          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "#FF5A00" }} />
+          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent)" }} />
           salut — Seba Gedeon
         </span>
         <span className="max-w-[40ch] text-right leading-relaxed">
-          Brazzaville · <span className="text-white/80">disponible pour vos projets</span>
+          Brazzaville · <span className="text-foreground/80">disponible pour vos projets</span>
         </span>
       </div>
 
@@ -80,12 +80,12 @@ export default function SlaegaHero() {
           >
             <span
               data-drag-inner
-              className="slaega-node-inner flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 backdrop-blur-sm"
+              className="slaega-node-inner flex items-center gap-2 rounded-full border border-foreground/15 bg-foreground/[0.04] px-4 py-2 backdrop-blur-sm"
               style={{ animationDelay: `${(HERO_NODES.indexOf(n) % 5) * -1.4}s` }}
             >
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#FF5A00" }} />
-              <span className="font-space text-sm font-medium lowercase text-white">{n.label}</span>
-              <span className="hidden text-[10px] uppercase tracking-widest text-white/40 sm:inline">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent)" }} />
+              <span className="font-space text-sm font-medium lowercase text-foreground">{n.label}</span>
+              <span className="hidden text-[10px] uppercase tracking-widest text-foreground/40 sm:inline">
                 {n.hint}
               </span>
             </span>
@@ -95,32 +95,32 @@ export default function SlaegaHero() {
 
       {/* wordmark */}
       <div className="relative z-10 flex min-h-[62vh] flex-col justify-end">
-        <h1 className="font-space font-bold leading-[0.82] tracking-tighter text-white">
+        <h1 className="font-space font-bold leading-[0.82] tracking-tighter text-foreground">
           <span className="block text-[clamp(3.5rem,14vw,13rem)]">slaega</span>
         </h1>
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <p className="max-w-[42ch] text-lg leading-snug text-white/60 md:text-xl">
-            Ingénieur logiciel full-stack &amp; DevOps.{" "}
-            <span className="text-white">
-              Je construis des applications robustes et évolutives — mobile, web, backend — et des
-              infrastructures cloud sécurisées.
+          <p className="max-w-[42ch] text-lg leading-snug text-foreground/60 md:text-xl">
+            Architecte logiciel — full-stack &amp; DevOps.{" "}
+            <span className="text-foreground">
+              Je conçois et construis des applications robustes et évolutives — mobile, web,
+              backend — et des infrastructures cloud sécurisées.
             </span>
           </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-1 font-space text-sm uppercase tracking-[0.2em] text-white/40">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 font-space text-sm uppercase tracking-[0.2em] text-foreground/40">
             <span>DevOps</span>
-            <span className="text-[#FF5A00]">/</span>
+            <span className="text-green-app">/</span>
             <span>Mobile</span>
-            <span className="text-[#FF5A00]">/</span>
+            <span className="text-green-app">/</span>
             <span>Backend</span>
-            <span className="text-[#FF5A00]">/</span>
+            <span className="text-green-app">/</span>
             <span>Sécurité</span>
           </div>
         </div>
       </div>
 
       {/* scroll cue */}
-      <div className="relative z-10 mt-14 flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-white/40">
-        <span className="slaega-scroll inline-block h-8 w-[1px] bg-white/30" />
+      <div className="relative z-10 mt-14 flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-foreground/40">
+        <span className="slaega-scroll inline-block h-8 w-[1px] bg-foreground/30" />
         défiler · glissez les nodes
       </div>
     </section>

@@ -67,22 +67,22 @@ export default function SlaegaCursor() {
         style={{
           width: 40,
           height: 40,
-          border: "1px solid rgba(255,255,255,0.4)",
-          color: "#FF5A00",
+          border: "1px solid color-mix(in srgb, var(--foreground) 40%, transparent)",
+          color: "var(--accent)",
         }}
       />
       <div
         ref={dot}
         className="pointer-events-none fixed left-0 top-0 z-[10000] hidden rounded-full md:block"
-        style={{ width: 6, height: 6, background: "#FF5A00" }}
+        style={{ width: 6, height: 6, background: "var(--accent)" }}
       />
       <style jsx global>{`
         [data-hover="1"] {
           width: 76px !important;
           height: 76px !important;
-          background: #ff5a00;
-          border-color: #ff5a00 !important;
-          color: #0b0b0b !important;
+          background: var(--accent);
+          border-color: var(--accent) !important;
+          color: var(--background) !important;
         }
       `}</style>
     </>

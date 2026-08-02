@@ -6,14 +6,14 @@ import { STACK } from "./data";
 export default function SlaegaMarquee() {
   const row = [...STACK, ...STACK];
   return (
-    <div className="relative w-full overflow-hidden border-y border-white/10 py-6">
+    <div className="relative w-full overflow-hidden border-y border-foreground/10 py-6">
       <div className="slaega-marquee flex w-max items-center gap-8 whitespace-nowrap">
         {row.map((item, i) => (
           <span key={i} className="flex items-center gap-8">
-            <span className="font-space text-lg font-medium uppercase tracking-tight text-white/70">
+            <span className="font-space text-lg font-medium uppercase tracking-tight text-foreground/70">
               {item}
             </span>
-            <span className="text-[#FF5A00]">✦</span>
+            <span className="text-green-app">✦</span>
           </span>
         ))}
       </div>
