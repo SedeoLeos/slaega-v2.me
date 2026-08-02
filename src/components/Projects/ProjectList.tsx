@@ -41,10 +41,14 @@ function ProjectList({ origin }: ProjectListProps) {
   };
 
   return (
-    <div className='w-full max-w-content flex py-20 px-10 md:px-20 flex-col gap-10 justify-center items-center self-center'>
-      <div className='text-center space-y-1.5'>
-        <h2 className='text-5xl font-extrabold'>{t('projects.title')}</h2>
-        <span className='text-sm'>{t('projects.subtitle')}</span>
+    <div className='slaega-root w-full max-w-content self-center flex flex-col gap-10 px-6 md:px-12 lg:px-16 pt-28 pb-24 font-[var(--font-inter)] text-foreground'>
+      <div className='flex flex-col gap-5 border-b border-foreground/10 pb-10'>
+        <span className='font-space text-[11px] uppercase tracking-[0.25em] text-foreground/45'>
+          <span className='text-green-app'>✦</span> {t('projects.subtitle')}
+        </span>
+        <h1 className='font-space text-[clamp(2.4rem,8vw,6rem)] font-bold leading-[0.9] tracking-tighter text-foreground'>
+          {t('projects.title')}
+        </h1>
       </div>
 
       <FilterCategorie />
@@ -106,30 +110,33 @@ function ProjectList({ origin }: ProjectListProps) {
         </div>
       )}
 
-      <div className='flex justify-center items-center gap-4 w-full pt-4'>
+      <div className='flex justify-center items-center gap-3 w-full pt-4'>
         {origin === 'home' && visibleProjects.length > 0 && (
           <Link
             href='/project'
-            className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 transition-colors'
+            data-cursor
+            className='inline-flex items-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app'
           >
-            {t('projects.viewAll')}
+            {t('projects.viewAll')} <span aria-hidden>→</span>
           </Link>
         )}
         {origin === 'project' && (
           <>
             <button
               onClick={handleLoadLess}
-              className='py-3.5 px-8 rounded-full border border-foreground/20 text-sm font-semibold text-foreground/60 hover:text-foreground hover:border-foreground/50 disabled:opacity-25 transition-colors'
+              data-cursor
+              className='rounded-[2px] border border-foreground/15 px-7 py-4 font-space text-sm uppercase tracking-widest text-foreground/60 transition-colors hover:border-green-app hover:text-green-app disabled:opacity-25'
               disabled={!canLoadLess}
             >
               {t('projects.loadLess')}
             </button>
             <button
               onClick={handleLoadMore}
-              className='inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/80 disabled:opacity-25 transition-colors'
+              data-cursor
+              className='inline-flex items-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app disabled:opacity-25'
               disabled={!canLoadMore}
             >
-              {t('projects.loadMore')}
+              {t('projects.loadMore')} <span aria-hidden>↓</span>
             </button>
           </>
         )}
