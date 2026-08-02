@@ -19,6 +19,10 @@ type SavedCv = {
   language: string;
   data: unknown;
   createdAt: string;
+  /** Published on the public /cv gallery. */
+  isPublic?: boolean;
+  /** Domain / target label, e.g. "Banque", "Fintech", "Full-stack". */
+  domain?: string;
 };
 
 async function requireAuth() {
@@ -54,6 +58,33 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ items });
 }
 
+// PUT — update a saved CV's public flag / domain / title: { id, isPublic?, domain?, title? }
+export async function PUT(req: NextRequest) {
+  if (!(await requireAuth())) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+
+  const body = await req.json().catch(() => null);
+  const id = body?.id;
+  if (!id) return NextResponse.json({ message: "id requis" }, { status: 400 });
+
+  const row = await db.siteConfig.findUnique({ where: { key: PREFIX + id } });
+  if (!row) return NextResponse.json({ message: "Introuvable" }, { status: 404 });
+
+  let record: SavedCv;
+  try {
+    record = JSON.parse(row.value) as SavedCv;
+  } catch {
+    return NextResponse.json({ message: "Donnée corrompue" }, { status: 500 });
+  }
+
+  if (typeof body.isPublic === "boolean") record.isPublic = body.isPublic;
+  if (typeof body.domain === "string") record.domain = body.domain.slice(0, 60);
+  if (typeof body.title === "string" && body.title.trim()) record.title = body.title.slice(0, 160);
+
+  await db.siteConfig.update({ where: { key: PREFIX + id }, data: { value: JSON.stringify(record) } });
+  const { data: _d, ...summary } = record;
+  return NextResponse.json({ ok: true, item: summary });
+}
+
 // POST — save a generated CV: { title, jobOffer, language, data }
 export async function POST(req: NextRequest) {
   if (!(await requireAuth())) return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
@@ -71,6 +102,8 @@ export async function POST(req: NextRequest) {
     language: body.language === "en" ? "en" : "fr",
     data: body.data,
     createdAt: new Date().toISOString(),
+    isPublic: body.isPublic === true,
+    domain: typeof body.domain === "string" ? body.domain.slice(0, 60) : "",
   };
 
   await db.siteConfig.create({ data: { key: PREFIX + id, value: JSON.stringify(record) } });
