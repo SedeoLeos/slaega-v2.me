@@ -428,6 +428,16 @@ export async function POST(req: NextRequest) {
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
 
+  // Display order: most recent first. Relevance drives which items are kept
+  // (above), but the CV must read chronologically — latest experience/project
+  // on top.
+  const expRecencyKey = (e: { current: boolean; endDate: string | null; startDate: string }) =>
+    e.current ? "9999-99" : e.endDate || e.startDate || "0000-00";
+  hydratedExperiences.sort((a, b) => expRecencyKey(b).localeCompare(expRecencyKey(a)));
+  hydratedProjects.sort((a, b) =>
+    (projBySlug.get(b.slug)?.date ?? "").localeCompare(projBySlug.get(a.slug)?.date ?? "")
+  );
+
   // All skills (for the Compétences section)
   const allSkills = Array.from(
     new Set([
