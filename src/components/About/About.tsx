@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { aboutPageRepository } from '@/features/about/repositories/about-page.repository';
 import ContentRenderer from '@/components/Content/ContentRenderer';
+import Reveal from '@/components/slaega/Reveal';
 
 export default async function About() {
   const [about, t] = await Promise.all([
@@ -22,99 +23,117 @@ export default async function About() {
 
   const hasHighlights = data.highlights.length > 0;
 
+  const explore = [
+    { href: '/moi', title: 'La personne', desc: 'Seba Gedeon Matsoula Malonga' },
+    { href: '/philosophie', title: 'La philosophie', desc: 'slaega = king sedeo leos' },
+    { href: '/pensees', title: 'Mes écrits', desc: 'Croyances, vision, chansons' },
+  ];
+
   return (
-    <section className="w-full max-w-content self-center px-10 md:px-20 py-24 font-poppins flex flex-col items-center">
-      {/* Centered header */}
-      <div className="text-center mb-12 max-w-2xl mx-auto">
-        <span className="text-xs font-semibold uppercase tracking-widest text-green-app">
-          {data.label}
+    <section className="slaega-root w-full px-6 pb-32 pt-28 font-[var(--font-inter)] text-foreground md:px-12 lg:px-16">
+      {/* Header */}
+      <Reveal className="mx-auto flex max-w-content flex-col gap-8 border-b border-foreground/10 pb-16">
+        <span data-reveal-item className="font-space text-[11px] uppercase tracking-[0.25em] text-foreground/45">
+          <span className="text-green-app">✦</span> {data.label}
         </span>
-        <h2 className="text-5xl sm:text-6xl font-extrabold mt-3 leading-tight">{data.title}</h2>
-      </div>
+        <h1
+          data-reveal-item
+          className="font-space text-[clamp(2.6rem,9vw,7rem)] font-bold leading-[0.88] tracking-tighter text-foreground"
+        >
+          {data.title}
+        </h1>
+        {data.intro && (
+          <p data-reveal-item className="max-w-[62ch] text-xl leading-relaxed text-foreground/70 md:text-2xl">
+            {data.intro}
+          </p>
+        )}
+      </Reveal>
 
-      {/* Intro paragraph — centered, big */}
-      {data.intro && (
-        <p className="max-w-3xl text-center text-lg leading-relaxed text-foreground/80 mb-10">
-          {data.intro}
-        </p>
-      )}
-
-      {/* Body — markdown content with collapse */}
+      {/* Body */}
       {data.body && (
-        <div className="about-body max-w-3xl w-full mb-12 text-center">
-          <ContentRenderer content={data.body} collapseThreshold={2000} />
-        </div>
+        <Reveal className="mx-auto max-w-content pt-16">
+          <div data-reveal-item className="about-body max-w-3xl text-[15px] leading-relaxed text-foreground/65">
+            <ContentRenderer content={data.body} collapseThreshold={2000} />
+          </div>
+        </Reveal>
       )}
 
-      {/* Highlights grid */}
+      {/* Highlights */}
       {hasHighlights && (
-        <div className="max-w-5xl w-full grid sm:grid-cols-2 gap-5 mb-12">
-          {data.highlights.map((group, i) => (
-            <div
-              key={i}
-              className="bg-card border border-foreground/5 rounded-2xl p-6 hover:border-foreground/15 transition-colors"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-1 h-5 rounded-full bg-green-app" />
-                <h3 className="text-sm font-bold uppercase tracking-widest text-foreground">
+        <section className="mx-auto max-w-content pt-24">
+          <div className="mb-10 flex items-baseline gap-4 border-b border-foreground/10 pb-4">
+            <span className="font-space text-sm text-green-app">[ expertise ]</span>
+            <h2 className="font-space text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+              Ce que je maîtrise
+            </h2>
+          </div>
+          <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-foreground/10 sm:grid-cols-2">
+            {data.highlights.map((group, i) => (
+              <div key={i} data-reveal-item className="bg-background p-8 md:p-10">
+                <h3 className="font-space text-sm font-bold uppercase tracking-[0.15em] text-green-app">
                   {group.title}
                 </h3>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-[2px] border border-foreground/12 px-2.5 py-1 font-space text-[11px] uppercase tracking-wide text-foreground/60"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className="text-xs font-medium text-foreground/70 bg-foreground/5 border border-foreground/10 px-3 py-1.5 rounded-full"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </Reveal>
+        </section>
       )}
 
       {/* CTA */}
-      <Link
-        href={data.ctaHref}
-        className="inline-flex items-center gap-2 bg-foreground text-background py-3.5 px-8 rounded-full font-semibold text-sm hover:bg-foreground/85 transition-colors"
-      >
-        {data.ctaText}
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M9.53033 2.21968L9 1.68935L7.93934 2.75001L8.46967 3.28034L12.4393 7.25001H1.75H1V8.75001H1.75H12.4393L8.46967 12.7197L7.93934 13.25L9 14.3107L9.53033 13.7803L14.6036 8.70711C14.9941 8.31659 14.9941 7.68342 14.6036 7.2929L9.53033 2.21968Z"
-            fill="currentColor"
-          />
-        </svg>
-      </Link>
+      <Reveal className="mx-auto flex max-w-content flex-col items-start gap-8 pt-24">
+        <div data-reveal-item className="flex flex-wrap gap-3">
+          <Link
+            data-cursor
+            href={data.ctaHref}
+            className="inline-flex items-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app"
+          >
+            {data.ctaText} <span aria-hidden>→</span>
+          </Link>
+          <Link
+            data-cursor
+            href="/experience"
+            className="inline-flex items-center gap-3 rounded-[2px] border border-foreground/15 px-7 py-4 font-space text-sm uppercase tracking-widest text-foreground transition-colors hover:border-green-app hover:text-green-app"
+          >
+            Mon parcours <span aria-hidden>→</span>
+          </Link>
+        </div>
+      </Reveal>
 
-      {/* Aller plus loin — pages personnelles */}
-      <div className="mt-14 w-full max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-green-app text-center mb-5">
-          Aller plus loin
-        </p>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            { href: '/moi', title: 'La personne', desc: 'Seba Gedeon Matsoula' },
-            { href: '/philosophie', title: 'La philosophie', desc: 'slaega = king sedeo leos' },
-            { href: '/pensees', title: 'Mes écrits', desc: 'Croyances, vision, chansons' },
-          ].map((l) => (
+      {/* Aller plus loin */}
+      <section className="mx-auto max-w-content pt-24">
+        <div className="mb-8 flex items-baseline gap-4 border-b border-foreground/10 pb-4">
+          <span className="font-space text-sm text-green-app">[ aller plus loin ]</span>
+        </div>
+        <Reveal className="grid grid-cols-1 gap-px overflow-hidden rounded-[2px] bg-foreground/10 sm:grid-cols-3">
+          {explore.map((l) => (
             <Link
               key={l.href}
+              data-reveal-item
+              data-cursor
               href={l.href}
-              className="group bg-card border border-foreground/5 rounded-2xl p-5 hover:border-green-app/40 transition-colors"
+              className="group flex flex-col gap-1 bg-background p-8 transition-colors duration-500 hover:bg-foreground/[0.03]"
             >
-              <p className="text-sm font-bold text-foreground group-hover:text-green-app transition-colors">
+              <p className="font-space text-lg font-semibold text-foreground transition-colors group-hover:text-green-app">
                 {l.title}
               </p>
-              <p className="text-xs text-foreground/50 mt-1">{l.desc}</p>
+              <p className="text-sm text-foreground/50">{l.desc}</p>
+              <span aria-hidden className="mt-3 font-space text-foreground/30 transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </Link>
           ))}
-        </div>
-      </div>
+        </Reveal>
+      </section>
     </section>
   );
 }

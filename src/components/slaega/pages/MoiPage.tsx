@@ -26,10 +26,10 @@ export default function MoiPage() {
           >
             Seba Gedeon
             <br />
-            Matsoula
+            Matsoula Malonga
           </h1>
           <p data-reveal-item className="max-w-[58ch] text-lg leading-relaxed text-foreground/60">
-            Avant la marque, il y a l&apos;homme. Je suis Seba Gedeon Matsoula — architecte
+            Avant la marque, il y a l&apos;homme. Je suis Seba Gedeon Matsoula Malonga — architecte
             logiciel, curieux insatiable, bâtisseur. Ce que tu vois sous le nom <span className="text-foreground">slaega</span>,
             c&apos;est mon travail. Ici, c&apos;est un peu de qui je suis.
           </p>
@@ -40,7 +40,7 @@ export default function MoiPage() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-[3px] border border-foreground/10 bg-card">
             <Image
               src="/images/me.jpg"
-              alt="Seba Gedeon Matsoula"
+              alt="Seba Gedeon Matsoula Malonga"
               fill
               sizes="(max-width: 768px) 90vw, 360px"
               className="object-cover object-top"

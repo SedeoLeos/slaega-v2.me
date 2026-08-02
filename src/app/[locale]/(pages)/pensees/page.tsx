@@ -5,7 +5,7 @@ import { penseeRepository } from "@/features/pensee/repositories/pensee.reposito
 export const metadata: Metadata = {
   title: "Pensées & écrits — slaega",
   description:
-    "Croyances, vision de l'humanité, réflexions et paroles de chansons de Seba Gedeon Matsoula.",
+    "Croyances, vision de l'humanité, réflexions et paroles de chansons de Seba Gedeon Matsoula Malonga.",
 };
 
 // Content is managed at runtime from the CMS.
