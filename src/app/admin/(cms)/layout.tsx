@@ -174,6 +174,14 @@ export default async function AdminCmsLayout({
                     Générateur de CV
                   </AdminNavItem>
 
+                  <AdminNavItem href="/admin/cv-generator/saved">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
+                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                    </svg>
+                    CV enregistrés
+                  </AdminNavItem>
+
                   <AdminNavItem href="/admin/cover-letter">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75}
