@@ -1,69 +1,67 @@
 /**
- * slaega logo — "SL" badge over a lion-dragon fusion emblem (watermark),
- * with the SLAEGA19 wordmark. Theme-aware (foreground + accent), Space Grotesk.
+ * slaega logo — a lion mark (theme accent, adapts to light/dark) locked up with
+ * the SLAEGA / SL wordmark. No badge; the lion is the primary element.
  *
- *  variant="mark" → SL badge only (header, compact)
- *  variant="full" → badge + SLAEGA19 wordmark stacked (footer, hero)
+ *   variant="horizontal" → lion + [SL / SLAEGA·19]  (header, compact)
+ *   variant="vertical"   → lion above SLAEGA19        (footer, hero)
+ *
+ * `size` scales the lockup (sm/md for the header scroll states, lg for hero).
+ * The lion is exported so it can be reused on its own at any size.
  */
 
-function Emblem({ className = '' }: { className?: string }) {
+// Frontal lion head traced from the slaega gold lion — single path, filled with
+// the theme accent so it follows the palette and stays legible on any surface.
+const LION_PATH =
+  'M1000 316c-6 8-34 46-67 73 0 0 31 60 41 100l26-56 27 56c10-40 41-100 41-100-33-27-61-65-68-73zM1183 409c-30-1-77 14-77 14-62 56-73 181-73 181 56-130 149-195 150-195zM817 409c30-1 77 14 77 14 62 56 73 181 73 181-56-130-149-195-150-195zM1369 519s-165-58-297 97c0 0 23-110 145-200 0 0 58 7 76 14 0 0-73 24-86 40 0 0 80-24 162 49zM631 519s165-58 297 97c0 0-23-110-145-200 0 0-58 7-76 14 0 0 73 24 86 40 0 0-80-24-162 49zM1522 667c-125-154-271-24-271-24 84-30 173 4 173 4 23 63 12 144 12 144l21 8c21-58 5-145 5-145zM478 667c125-154 271-24 271-24-84-30-173 4-173 4-23 63-12 144-12 144l-21 8c-21-58-5-145-5-145zM1410 687s-58-21-82-25c-25-5-67 25-67 25 55-4 125 18 125 18-1 31-18 82-18 82l23 11c20-41 19-111 19-111zM590 687s58-21 82-25c25-5 67 25 67 25-55-4-125 18-125 18 1 31 18 82 18 82l-23 11c-20-41-19-111-19-111zM1384 559s-128 10-229 137l-23-41c-22 22-58 49-58 49l29 44c-37 14-53 29-56 32-3-3-19-18-56-32l29-44s-36-27-58-49l-23 41C808 569 680 559 680 559c-56 2-64 12-64 12s128 10 229 137l-74 54s72-3 108 9l17-15 14 23 44 12-46 40 20 51 23-26 48 34v1l1-1 1 1v-1l48-34 23 26 20-51-46-40 44-12 14-23 17 15c36-12 108-9 108-9l-74-54c101-127 229-137 229-137s-8-10-64-12zM1625 1027c-31-132-206-210-206-210 48 39 61 96 61 96-79-99-211-110-211-110 259 115 308 362 308 362 22-91-38-194-38-194 21 5 85 56 85 56zM375 1027c31-132 206-210 206-210-48 39-61 96-61 96 79-99 211-110 211-110C683 910 634 1157 634 1157c-22-91 38-194 38-194-21 5-85 56-85 56zM1520 1307c78-277-217-429-217-429 231 275 218 429 217 429zM480 1307C402 1030 697 878 697 878 466 1153 479 1307 480 1307zM1368 1290c-16-122-101-249-101-249 21 45 44 187 44 187-11-31-91-155-91-155s45 119 71 217c17 158-49 249-49 249 26-20 142-127 126-249zM632 1290c16-122 101-249 101-249-21 45-44 187-44 187 11-31 91-155 91-155s-45 119-71 217c-17 158 49 249 49 249-26-20-142-127-126-249zM1000 1684c54-82 211-189 211-189s29-60 40-130c11-76-59-218-59-218 17 118 12 257 12 257L1000 1619 797 1404s5-139-12-257c0 0-70 142-59 218 11 70 40 130 40 130 157 107 211 189 211 189zM1105 1099l-34 137s-42-16-71-14c-29-2-71 14-71 14l-34-137s-11 105-4 136c13 59 46 73 46 73-7-10-8-33-8-33 19 38 44 49 44 49-12-21-11-51-11-51l37 65 1 2 1-2 37-65s2 30-11 51c0 0 25-11 44-49 0 0-1 23-8 33 0 0 33-14 46-73 7-31-4-136-4-136zM1000 1416l-53 39 53 55 53-55zM1038 997v22l-11-11h-54l-11 11v-22z';
+
+export function SlaegaLion({ className = '' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} aria-hidden xmlns="http://www.w3.org/2000/svg">
-      <g fill="var(--accent, #FF5A00)">
-        {/* dragon wings */}
-        <path d="M 60 60 L 16 34 L 24 58 L 10 70 L 30 72 Z" opacity="0.6" />
-        <path d="M 60 60 L 104 34 L 96 58 L 110 70 L 90 72 Z" opacity="0.6" />
-        {/* dragon horns */}
-        <path d="M 44 30 C 34 16, 26 8, 20 4 C 30 12, 34 22, 42 40 Z" />
-        <path d="M 76 30 C 86 16, 94 8, 100 4 C 90 12, 86 22, 78 40 Z" />
-        {/* lion mane */}
-        <path d="M 60 14 L 71.4 28.8 L 89.4 23.5 L 89.9 42.3 L 107.6 48.5 L 97 64 L 107.6 79.5 L 89.9 85.7 L 89.4 104.5 L 71.4 99.2 L 60 114 L 48.6 99.2 L 30.6 104.5 L 30.1 85.7 L 12.4 79.5 L 23 64 L 12.4 48.5 L 30.1 42.3 L 30.6 23.5 L 48.6 28.8 Z" />
-        {/* head + ears */}
-        <circle cx="60" cy="64" r="32" />
-        <path d="M 42 36 l 9 4 l -5 8 Z" />
-        <path d="M 78 36 l -9 4 l 5 8 Z" />
-        {/* fangs */}
-        <path d="M 53 78 l 3 7 l 3 -6 Z" />
-        <path d="M 67 78 l -3 7 l -3 -6 Z" />
-      </g>
+    <svg viewBox="0 0 2000 2000" className={className} aria-hidden xmlns="http://www.w3.org/2000/svg">
+      <path fill="var(--accent, #FF5A00)" d={LION_PATH} />
     </svg>
   );
 }
 
-export default function SlaegaLogo({
-  variant = 'mark',
-  className = '',
-  badgeClass = 'text-xl',
-}: {
-  variant?: 'mark' | 'full';
-  className?: string;
-  badgeClass?: string;
-}) {
-  const badge = (
-    <span
-      className={`relative inline-flex items-center justify-center overflow-hidden rounded-[3px] border-2 border-green-app/45 bg-card px-2 py-1 font-space font-bold leading-none tracking-tighter ${badgeClass}`}
-    >
-      {/* lion-dragon fusion — background watermark */}
-      <Emblem className="pointer-events-none absolute inset-[-14%] h-[128%] w-[128%] opacity-[0.16]" />
-      <span className="relative text-foreground">S</span>
-      <span className="relative text-green-app">L</span>
-    </span>
-  );
+const LION_SIZE = { sm: 'h-8 w-8', md: 'h-9 w-9', lg: 'h-16 w-16' } as const;
 
-  if (variant === 'mark') {
+export default function SlaegaLogo({
+  variant = 'horizontal',
+  size = 'md',
+  className = '',
+}: {
+  variant?: 'horizontal' | 'vertical';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}) {
+  if (variant === 'vertical') {
     return (
-      <span className={`inline-flex ${className}`} role="img" aria-label="slaega">
-        {badge}
+      <span
+        className={`inline-flex flex-col items-center gap-3 ${className}`}
+        role="img"
+        aria-label="slaega19"
+      >
+        <SlaegaLion className={LION_SIZE.lg} />
+        <span className="font-space text-2xl font-extrabold leading-none tracking-tight text-foreground">
+          SLAEGA
+          <sub className="ml-0.5 align-sub text-[0.5em] font-bold text-green-app">19</sub>
+        </span>
       </span>
     );
   }
 
+  const slSize = size === 'sm' ? 'text-2xl' : 'text-[1.7rem]';
   return (
-    <span className={`inline-flex flex-col items-center gap-2 ${className}`} role="img" aria-label="slaega19">
-      {badge}
-      <span className="font-space text-[11px] font-semibold uppercase tracking-[0.35em] text-foreground">
-        SLAEGA
-        <sub className="ml-0.5 align-sub text-[0.7em] text-green-app">19</sub>
+    <span
+      className={`inline-flex items-center gap-2.5 ${className}`}
+      role="img"
+      aria-label="slaega — SL 19"
+    >
+      <SlaegaLion className={LION_SIZE[size === 'lg' ? 'lg' : size]} />
+      <span className="flex flex-col leading-none">
+        <span className={`font-space font-extrabold tracking-tight text-foreground ${slSize}`}>SL</span>
+        <span className="mt-0.5 font-space text-[0.6rem] font-semibold uppercase tracking-[0.26em] text-foreground">
+          SLAEGA<span className="text-green-app">·19</span>
+        </span>
       </span>
     </span>
   );
