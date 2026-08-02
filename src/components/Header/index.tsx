@@ -24,9 +24,8 @@ const Header = () => {
     <div data-global-header className={`w-full backdrop-blur-xl fixed justify-center flex z-30 transition-all duration-300 ${scrolled ? 'bg-background/85 border-b border-foreground/5' : 'bg-background/70 border-b border-transparent'}`}>
       <header className={`w-full px-10 md:px-20 text-foreground font-poppins flex justify-between items-center max-w-content transition-all duration-300 ${scrolled ? 'py-3' : 'py-6'}`}>
         {/* Logo */}
-        <Link href='/' className='flex items-center gap-2.5'>
-          <SlaegaLogo variant='mark' badgeClass={scrolled ? 'text-xs' : 'text-sm'} />
-          <h1 className={`font-space font-bold lowercase text-foreground tracking-tight transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{SiteConfig.brand}</h1>
+        <Link href='/' className='flex items-center' aria-label={SiteConfig.brand}>
+          <SlaegaLogo variant='horizontal' size={scrolled ? 'sm' : 'md'} />
         </Link>
 
         {/* Desktop nav */}

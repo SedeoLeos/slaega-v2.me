@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
@@ -28,6 +28,14 @@ export default function PublicCvGallery({ items }: { items: PublicCvSummary[] })
     () => (domain === 'all' ? items : items.filter((i) => i.domain === domain)),
     [items, domain],
   );
+
+  // Deep-link: /cv?cv=<id> opens that CV directly (shareable link from admin).
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('cv');
+    if (!id) return;
+    const match = items.find((i) => i.id === id);
+    if (match) setOpen(match);
+  }, [items]);
 
   return (
     <main className="slaega-root w-full px-6 pb-32 pt-28 font-[var(--font-inter)] text-foreground md:px-12 lg:px-16">
