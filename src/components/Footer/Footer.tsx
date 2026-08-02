@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SocialLink from '../SocialLink';
+import SlaegaLogo from '../brand/SlaegaLogo';
 import { useTranslations } from 'next-intl';
 import { SiteConfig } from '@/shared/config/site-config';
 import CarteCongoDecor from '@/components/CarteCongoDecor';
@@ -49,7 +50,7 @@ function Footer() {
         {/* Brand + meta */}
         <div className="mt-12 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="flex items-center gap-2.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-green-app keep-round" />
+            <SlaegaLogo variant="mark" badgeClass="text-xl" />
             <span className="text-3xl font-bold lowercase tracking-tight text-foreground">
               {SiteConfig.brand}
             </span>
