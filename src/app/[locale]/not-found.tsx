@@ -7,15 +7,15 @@ export default async function NotFound() {
   const t = await getTranslations({ locale, namespace: 'notFound' });
 
   return (
-    <main className="slaega-root relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#0B0B0B] px-6 py-24 font-[var(--font-inter)] text-white">
+    <main className="slaega-root relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background px-6 py-24 font-[var(--font-inter)] text-foreground">
       {/* Congo map — décoratif, très estompé */}
       <div className="pointer-events-none absolute inset-0 flex select-none items-center justify-center opacity-[0.05]">
-        <CarteCongoDecor stroke="#FF5A00" className="w-[620px] max-w-full" />
+        <CarteCongoDecor stroke="var(--accent)" className="w-[620px] max-w-full" />
       </div>
 
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center text-center">
-        <span className="text-[11px] uppercase tracking-[0.3em] text-white/45">
-          <span className="text-[#FF5A00]">✦</span> erreur 404
+        <span className="text-[11px] uppercase tracking-[0.3em] text-foreground/45">
+          <span className="text-green-app">✦</span> erreur 404
         </span>
 
         {/* Grand nombre 404 */}
@@ -23,16 +23,16 @@ export default async function NotFound() {
           aria-hidden
           className="mt-8 flex select-none items-center justify-center font-space text-[clamp(5rem,26vw,15rem)] font-bold leading-none tracking-tighter"
         >
-          <span className="text-white/12">4</span>
-          <span className="text-[#FF5A00]">0</span>
-          <span className="text-white/12">4</span>
+          <span className="text-foreground/12">4</span>
+          <span className="text-green-app">0</span>
+          <span className="text-foreground/12">4</span>
         </div>
 
         {/* Texte */}
-        <h1 className="mt-6 font-space text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        <h1 className="mt-6 font-space text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
           {t('title')}
         </h1>
-        <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/55">
+        <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-foreground/55">
           {t('description')}
         </p>
 
@@ -41,7 +41,7 @@ export default async function NotFound() {
           <Link
             data-cursor
             href={`/${locale}`}
-            className="group inline-flex items-center justify-center gap-3 rounded-[2px] bg-white px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-[#0B0B0B] transition-colors hover:bg-[#FF5A00]"
+            className="group inline-flex items-center justify-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app"
           >
             {t('backHome')}
             <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
@@ -49,15 +49,15 @@ export default async function NotFound() {
           <Link
             data-cursor
             href={`/${locale}/contact`}
-            className="inline-flex items-center justify-center gap-3 rounded-[2px] border border-white/15 px-7 py-4 font-space text-sm uppercase tracking-widest text-white transition-colors hover:border-[#FF5A00] hover:text-[#FF5A00]"
+            className="inline-flex items-center justify-center gap-3 rounded-[2px] border border-foreground/15 px-7 py-4 font-space text-sm uppercase tracking-widest text-foreground transition-colors hover:border-green-app hover:text-green-app"
           >
             {t('contact')}
           </Link>
         </div>
 
         {/* Wordmark */}
-        <span className="mt-16 font-space text-sm lowercase tracking-tight text-white/30">
-          slaega<span className="text-[#FF5A00]">.</span>
+        <span className="mt-16 font-space text-sm lowercase tracking-tight text-foreground/30">
+          slaega<span className="text-green-app">.</span>
         </span>
       </div>
     </main>

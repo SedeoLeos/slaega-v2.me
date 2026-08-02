@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import NavItem from './NavItem';
+import ThemeModeToggle from '../ThemeModeToggle';
 import Drawer from '../icons/drawer';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -70,6 +71,9 @@ const Header = () => {
               {t('header.social.linkedin')}
             </Link>
           </div>
+
+          {/* Light / dark toggle */}
+          <ThemeModeToggle />
 
           {/* Mobile menu button */}
           <div className='relative flex flex-col'>

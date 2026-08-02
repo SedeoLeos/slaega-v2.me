@@ -59,19 +59,19 @@ export default function SlaegaLanding({
   }, []);
 
   return (
-    <div className="slaega-root relative w-full bg-[#0B0B0B] font-[var(--font-inter)] text-white selection:bg-[#FF5A00] selection:text-[#0B0B0B]">
+    <div className="slaega-root relative w-full bg-background font-[var(--font-inter)] text-foreground selection:bg-green-app selection:text-background">
       <SlaegaHero />
       <SlaegaMarquee />
       <SlaegaServices projects={projects} services={services} stats={stats} steps={steps} faq={faq} />
 
       {immersive && (
-        <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
+        <footer className="border-t border-foreground/10 px-6 py-12 md:px-12 lg:px-16">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <span className="font-space text-2xl font-bold lowercase text-white">slaega</span>
-            <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
-              Seba Gedeon · ingénieur logiciel full-stack &amp; devops
+            <span className="font-space text-2xl font-bold lowercase text-foreground">slaega</span>
+            <span className="text-[11px] uppercase tracking-[0.25em] text-foreground/35">
+              Seba Gedeon · architecte logiciel — full-stack &amp; devops
             </span>
-            <span className="text-[11px] uppercase tracking-[0.25em] text-white/35">
+            <span className="text-[11px] uppercase tracking-[0.25em] text-foreground/35">
               © {new Date().getFullYear()}
             </span>
           </div>
@@ -96,14 +96,14 @@ export default function SlaegaLanding({
           transition: border-color 0.3s ease, background-color 0.3s ease;
         }
         .slaega-node:hover .slaega-node-inner {
-          border-color: rgba(255, 90, 0, 0.6);
-          background: rgba(255, 90, 0, 0.08);
+          border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+          background: color-mix(in srgb, var(--accent) 8%, transparent);
         }
         .slaega-node[data-dragging="1"] .slaega-node-inner {
           animation: none;
-          border-color: #ff5a00;
-          background: rgba(255, 90, 0, 0.14);
-          box-shadow: 0 20px 60px -20px rgba(255, 90, 0, 0.5);
+          border-color: var(--accent);
+          background: color-mix(in srgb, var(--accent) 14%, transparent);
+          box-shadow: 0 20px 60px -20px color-mix(in srgb, var(--accent) 50%, transparent);
         }
         @keyframes slaega-scroll {
           0%,

@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+/* ── Palette ──────────────────────────────────────────────────────────────
+   The brand accent (--accent / --primary / --green-app) is mode-independent
+   and comes from the DB theme. Background / foreground / card / secondary /
+   border flip between dark and light, driven by html[data-theme-mode].
+   :root holds the dark defaults (used before JS sets the mode). */
 :root {
-  /* Luxury-minimalist monochrome — warm cream canvas + ink; whitespace & type
-     do the work, no bright accent. Tune an accent in the back-office if wanted. */
   --background: #0B0B0B;            /* deep charcoal */
   --foreground: #FFFFFF;            /* crisp white */
   --secondary: #8C8C8C;             /* muted gray — labels / meta */
@@ -10,7 +13,16 @@
   --primary: #FF5A00;
   --green-app: #FF5A00;
   --card: #121212;                 /* near-black cards */
-  --border: rgba(18, 17, 16, 0.10);
+  --border: rgba(255, 255, 255, 0.10);
+}
+
+/* Light mode — warm cream canvas + ink, same accent. */
+html[data-theme-mode="light"] {
+  --background: #FAF8F4;
+  --foreground: #111111;
+  --secondary: #5E5E5E;
+  --card: #FFFFFF;
+  --border: rgba(17, 17, 17, 0.10);
 }
 
 @theme inline {
