@@ -128,7 +128,7 @@ export const CV_TEMPLATES: CVTemplateInfo[] = [
 export const CV_PROFILE = {
   name: "SEBA GEDEON",
   surname: "MATSOULA MALONGA",
-  email: "gedeon.matsoula@gmail.com",
+  email: "hello@slaega.com",
   phone: "+242066900110",
   linkedin: "linkedin.com/in/slaega",
   photo: "/images/me.jpg",
