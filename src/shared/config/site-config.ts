@@ -1,6 +1,6 @@
 export const SiteConfig = {
   brand: 'Slaega',
-  email: 'smatsoula19@gmail.com',
+  email: 'hello@slaega.com',
   socialLinks: {
     github: 'https://github.com/slaega',
     linkedin: 'https://linkedin.com/in/slaega',

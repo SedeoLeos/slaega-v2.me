@@ -27,7 +27,7 @@ type ApiResponse = {
 const PROFILE = {
   name: "SEBA GEDEON",
   surname: "MATSOULA MALONGA",
-  email: "gedeon.matsoula@gmail.com",
+  email: "hello@slaega.com",
   phone: "+242066900110",
   linkedin: "https://www.linkedin.com/in/slaega",
   city: "Brazzaville",
