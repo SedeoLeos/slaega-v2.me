@@ -1,28 +1,68 @@
 /**
- * slaega logo — a lion mark (theme accent, adapts to light/dark) locked up with
- * the SLAEGA / SL wordmark. No badge; the lion is the primary element.
+ * slaega logo — the real SL lockup (interlocking S/L monogram + swoosh + SLAEGA
+ * wordmark), traced from the brand artwork. Two-tone and theme-aware: the S,
+ * left foot and wordmark use --foreground; the L, its foot and the swoosh use
+ * --accent. So it follows light/dark and the site accent automatically.
  *
- *   variant="horizontal" → lion + [SL / SLAEGA·19]  (header, compact)
- *   variant="vertical"   → lion above SLAEGA19        (footer, hero)
- *
- * `size` scales the lockup (sm/md for the header scroll states, lg for hero).
- * The lion is exported so it can be reused on its own at any size.
+ *   variant="horizontal" → monogram + SLAEGA·19   (header, compact)
+ *   variant="vertical"   → full SL / SLAEGA lockup (footer, hero)
  */
 
-// Frontal lion head traced from the slaega gold lion — single path, filled with
-// the theme accent so it follows the palette and stays legible on any surface.
-const LION_PATH =
-  'M1000 316c-6 8-34 46-67 73 0 0 31 60 41 100l26-56 27 56c10-40 41-100 41-100-33-27-61-65-68-73zM1183 409c-30-1-77 14-77 14-62 56-73 181-73 181 56-130 149-195 150-195zM817 409c30-1 77 14 77 14 62 56 73 181 73 181-56-130-149-195-150-195zM1369 519s-165-58-297 97c0 0 23-110 145-200 0 0 58 7 76 14 0 0-73 24-86 40 0 0 80-24 162 49zM631 519s165-58 297 97c0 0-23-110-145-200 0 0-58 7-76 14 0 0 73 24 86 40 0 0-80-24-162 49zM1522 667c-125-154-271-24-271-24 84-30 173 4 173 4 23 63 12 144 12 144l21 8c21-58 5-145 5-145zM478 667c125-154 271-24 271-24-84-30-173 4-173 4-23 63-12 144-12 144l-21 8c-21-58-5-145-5-145zM1410 687s-58-21-82-25c-25-5-67 25-67 25 55-4 125 18 125 18-1 31-18 82-18 82l23 11c20-41 19-111 19-111zM590 687s58-21 82-25c25-5 67 25 67 25-55-4-125 18-125 18 1 31 18 82 18 82l-23 11c-20-41-19-111-19-111zM1384 559s-128 10-229 137l-23-41c-22 22-58 49-58 49l29 44c-37 14-53 29-56 32-3-3-19-18-56-32l29-44s-36-27-58-49l-23 41C808 569 680 559 680 559c-56 2-64 12-64 12s128 10 229 137l-74 54s72-3 108 9l17-15 14 23 44 12-46 40 20 51 23-26 48 34v1l1-1 1 1v-1l48-34 23 26 20-51-46-40 44-12 14-23 17 15c36-12 108-9 108-9l-74-54c101-127 229-137 229-137s-8-10-64-12zM1625 1027c-31-132-206-210-206-210 48 39 61 96 61 96-79-99-211-110-211-110 259 115 308 362 308 362 22-91-38-194-38-194 21 5 85 56 85 56zM375 1027c31-132 206-210 206-210-48 39-61 96-61 96 79-99 211-110 211-110C683 910 634 1157 634 1157c-22-91 38-194 38-194-21 5-85 56-85 56zM1520 1307c78-277-217-429-217-429 231 275 218 429 217 429zM480 1307C402 1030 697 878 697 878 466 1153 479 1307 480 1307zM1368 1290c-16-122-101-249-101-249 21 45 44 187 44 187-11-31-91-155-91-155s45 119 71 217c17 158-49 249-49 249 26-20 142-127 126-249zM632 1290c16-122 101-249 101-249-21 45-44 187-44 187 11-31 91-155 91-155s-45 119-71 217c-17 158 49 249 49 249-26-20-142-127-126-249zM1000 1684c54-82 211-189 211-189s29-60 40-130c11-76-59-218-59-218 17 118 12 257 12 257L1000 1619 797 1404s5-139-12-257c0 0-70 142-59 218 11 70 40 130 40 130 157 107 211 189 211 189zM1105 1099l-34 137s-42-16-71-14c-29-2-71 14-71 14l-34-137s-11 105-4 136c13 59 46 73 46 73-7-10-8-33-8-33 19 38 44 49 44 49-12-21-11-51-11-51l37 65 1 2 1-2 37-65s2 30-11 51c0 0 25-11 44-49 0 0-1 23-8 33 0 0 33-14 46-73 7-31-4-136-4-136zM1000 1416l-53 39 53 55 53-55zM1038 997v22l-11-11h-54l-11 11v-22z';
+type Glyph = { d: string; acc?: boolean };
 
-export function SlaegaLion({ className = '' }: { className?: string }) {
+// Paths 1-5 = monogram (S, L banner, L stem+foot, left foot, swoosh);
+// 6-13 = the SLAEGA wordmark. `acc` = tangerine, else foreground.
+const GLYPHS: Glyph[] = [
+  { d: 'M4336 9978 c-1152 -168 -1627 -1561 -806 -2362 300 -293 601 -396 1541 -525 1054 -146 1325 -426 1260 -1301 -24 -322 27 -351 235 -132 457 478 418 1307 -84 1802 -337 331 -686 455 -1670 590 -512 71 -676 138 -782 319 -153 260 -39 605 246 745 l114 56 607 10 607 10 218 390 c119 215 217 397 218 405 0 20 -1561 14 -1704 -7z' },
+  { d: 'M6063 9587 l-221 -390 -2 -533 c-3 -670 -5 -624 30 -624 190 0 749 -377 913 -615 93 -134 99 -116 89 240 -5 179 -10 773 -11 1321 l-1 995 -288 -2 -289 -3 -220 -389z', acc: true },
+  { d: 'M5260 5730 l0 -1150 1707 0 1706 0 226 345 c125 190 228 359 229 375 2 26 -180 31 -1503 35 l-1505 5 0 506 c0 753 -107 890 -795 1021 l-65 12 0 -1149z', acc: true },
+  { d: 'M3338 5175 c-168 -278 -318 -525 -334 -550 l-29 -45 1043 0 1042 0 0 550 0 550 -708 0 -708 0 -306 -505z' },
+  { d: 'M5200 4108 c-780 -54 -1500 -145 -1900 -238 -244 -58 -250 -58 460 10 789 74 1139 89 2150 89 1012 1 1337 -13 2180 -90 231 -21 479 -43 550 -49 l130 -10 -116 30 c-274 70 -967 171 -1514 221 -330 31 -1668 55 -1940 37z', acc: true },
+  { d: 'M1486 3441 c-178 -28 -286 -139 -286 -295 0 -190 136 -280 456 -303 293 -22 380 -84 296 -212 -43 -66 -125 -78 -444 -66 l-266 10 -21 -61 c-14 -40 -15 -68 -2 -81 32 -32 701 -28 761 4 148 82 205 201 163 341 -48 159 -152 207 -507 234 -227 17 -326 118 -218 226 62 62 353 77 603 30 52 -10 99 48 99 121 0 47 -438 82 -634 52z' },
+  { d: 'M8250 3440 c-313 -35 -509 -233 -510 -515 -1 -385 343 -583 883 -506 233 33 219 13 213 313 l-6 258 -240 6 c-311 7 -330 2 -330 -86 l0 -69 195 -5 195 -6 6 -124 6 -123 -93 -14 c-398 -60 -672 106 -644 391 24 258 291 385 655 311 90 -18 166 -30 168 -27 15 24 52 121 52 136 0 41 -365 82 -550 60z' },
+  { d: 'M2820 2930 l0 -510 420 0 420 0 0 70 0 69 -325 6 -325 5 -5 435 -6 435 -89 0 -90 0 0 -510z' },
+  { d: 'M4835 3367 c-27 -42 -146 -243 -264 -447 -119 -203 -234 -399 -255 -435 l-39 -65 99 0 99 0 184 319 c101 175 195 333 208 350 20 28 53 -17 212 -289 243 -416 215 -384 327 -376 l94 6 -291 490 c-346 581 -314 543 -374 447z' },
+  { d: 'M6160 3360 l0 -80 440 0 440 0 0 80 0 80 -440 0 -440 0 0 -80z' },
+  { d: 'M9898 3195 c-79 -135 -205 -349 -280 -476 -186 -316 -183 -299 -62 -299 75 0 103 8 113 34 30 78 381 662 393 655 7 -5 102 -162 211 -348 l197 -340 104 -1 104 0 -304 509 c-167 281 -310 510 -318 510 -8 1 -79 -109 -158 -244z' },
+  { d: 'M6160 2930 l0 -90 440 0 440 0 0 90 0 90 -440 0 -440 0 0 -90z' },
+  { d: 'M6160 2500 l0 -80 440 0 440 0 0 80 0 80 -440 0 -440 0 0 -80z' },
+];
+
+const SVG_TRANSFORM = 'translate(0,600) scale(0.05,-0.05)';
+
+function Glyphs({ count }: { count: number }) {
   return (
-    <svg viewBox="0 0 2000 2000" className={className} aria-hidden xmlns="http://www.w3.org/2000/svg">
-      <path fill="var(--accent, #FF5A00)" d={LION_PATH} />
+    <>
+      {GLYPHS.slice(0, count).map((g, i) => (
+        <path key={i} d={g.d} fill={g.acc ? 'var(--accent, #FF5A00)' : 'var(--foreground, #EDEDED)'} />
+      ))}
+    </>
+  );
+}
+
+/** SL monogram only (mark) — tightly cropped, square-ish. */
+export function SlaegaMonogram({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="148.5 100 308 309" className={className} aria-hidden xmlns="http://www.w3.org/2000/svg">
+      <g transform={SVG_TRANSFORM} stroke="none">
+        <Glyphs count={5} />
+      </g>
     </svg>
   );
 }
 
-const LION_SIZE = { sm: 'h-8 w-8', md: 'h-9 w-9', lg: 'h-16 w-16' } as const;
+/** Full lockup — monogram + swoosh + SLAEGA wordmark, tightly cropped. */
+export function SlaegaLockup({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="60 100 474 380" className={className} role="img" aria-label="slaega" xmlns="http://www.w3.org/2000/svg">
+      <g transform={SVG_TRANSFORM} stroke="none">
+        <Glyphs count={13} />
+      </g>
+    </svg>
+  );
+}
+
+const MARK_SIZE = { sm: 'h-8 w-8', md: 'h-9 w-9', lg: 'h-16 w-16' } as const;
 
 export default function SlaegaLogo({
   variant = 'horizontal',
@@ -34,34 +74,14 @@ export default function SlaegaLogo({
   className?: string;
 }) {
   if (variant === 'vertical') {
-    return (
-      <span
-        className={`inline-flex flex-col items-center gap-3 ${className}`}
-        role="img"
-        aria-label="slaega19"
-      >
-        <SlaegaLion className={LION_SIZE.lg} />
-        <span className="font-space text-2xl font-extrabold leading-none tracking-tight text-foreground">
-          SLAEGA
-          <sub className="ml-0.5 align-sub text-[0.5em] font-bold text-green-app">19</sub>
-        </span>
-      </span>
-    );
+    return <SlaegaLockup className={`h-24 w-auto ${className}`} />;
   }
 
-  const slSize = size === 'sm' ? 'text-2xl' : 'text-[1.7rem]';
   return (
-    <span
-      className={`inline-flex items-center gap-2.5 ${className}`}
-      role="img"
-      aria-label="slaega — SL 19"
-    >
-      <SlaegaLion className={LION_SIZE[size === 'lg' ? 'lg' : size]} />
-      <span className="flex flex-col leading-none">
-        <span className={`font-space font-extrabold tracking-tight text-foreground ${slSize}`}>SL</span>
-        <span className="mt-0.5 font-space text-[0.6rem] font-semibold uppercase tracking-[0.26em] text-foreground">
-          SLAEGA<span className="text-green-app">·19</span>
-        </span>
+    <span className={`inline-flex items-center gap-2.5 ${className}`} role="img" aria-label="slaega — SL 19">
+      <SlaegaMonogram className={MARK_SIZE[size === 'lg' ? 'lg' : size]} />
+      <span className="font-space text-[0.62rem] font-semibold uppercase tracking-[0.26em] text-foreground/80 leading-none">
+        SLAEGA<span className="text-green-app">·19</span>
       </span>
     </span>
   );

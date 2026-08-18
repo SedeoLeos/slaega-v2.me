@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/libs/posts";
 import { AppConfig } from "@/utils/app-config";
+import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
+import { groupByCompany } from "@/features/experience/group";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://slaega.me";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://slaega.com";
 
 // Static routes and their SEO priority / change frequency
 const STATIC_ROUTES: {
@@ -18,6 +20,7 @@ const STATIC_ROUTES: {
   { path: "/philosophie", priority: 0.6, changeFrequency: "monthly" },
   { path: "/pensees",   priority: 0.6, changeFrequency: "weekly"  },
   { path: "/cv",        priority: 0.6, changeFrequency: "monthly" },
+  { path: "/birthday",  priority: 0.4, changeFrequency: "yearly"  },
   { path: "/contact",   priority: 0.6, changeFrequency: "yearly"  },
 ];
 
@@ -75,5 +78,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If DB is unavailable at build time, skip project entries gracefully
   }
 
-  return [...staticEntries, ...projectEntries];
+  // ── Dynamic experience (company) detail pages ───────────────────────────────
+  let experienceEntries: MetadataRoute.Sitemap = [];
+  try {
+    const companies = groupByCompany(await getExperiences());
+    experienceEntries = companies.flatMap((c) => {
+      const p = `/experience/${c.slug}`;
+      return AppConfig.locales.map((locale) => ({
+        url: url(locale, p),
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+        alternates: {
+          languages: Object.fromEntries(AppConfig.locales.map((l) => [l, url(l, p)])),
+        },
+      }));
+    });
+  } catch {
+    // Skip gracefully if the DB is unavailable at build time.
+  }
+
+  return [...staticEntries, ...projectEntries, ...experienceEntries];
 }

@@ -5,14 +5,22 @@ import { groupByCompany } from '@/features/experience/group';
 import ExperienceCompany from '@/components/Experience/ExperienceCompany';
 import Reveal from '@/components/slaega/Reveal';
 import EmptyState from '@/components/ui/EmptyState';
+import { buildPageMetadata } from '@/shared/config/seo';
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'experience' });
-  return { title: t('pageTitle') };
+  return buildPageMetadata(locale, {
+    path: '/experience',
+    title: locale === 'en' ? 'Experience' : 'Expérience',
+    description:
+      locale === 'en'
+        ? 'Career of Seba Gedeon Matsoula Malonga (slaega): role progression by company — full-stack, technical lead, software architect.'
+        : "Parcours de Seba Gedeon Matsoula Malonga (slaega) : progression par entreprise — full-stack, responsable technique, architecte logiciel.",
+    keywords: ['expérience', 'parcours', 'carrière', 'architecte logiciel', 'responsable technique'],
+  });
 }
 
 export default async function ExperiencePage({ params }: Props) {

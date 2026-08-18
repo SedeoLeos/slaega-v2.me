@@ -7,6 +7,7 @@ import { localizeExperience, localizeProject } from '@/features/i18n/localize';
 import { groupByCompany, matchProjectsToSkills } from '@/features/experience/group';
 import ExperienceItem from '@/components/Experience/ExperienceItem';
 import Reveal from '@/components/slaega/Reveal';
+import { buildPageMetadata, FULL_NAME } from '@/shared/config/seo';
 
 export const dynamic = 'force-dynamic';
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -15,7 +16,20 @@ export async function generateMetadata({ params }: Props) {
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'experience' });
   const group = groupByCompany(await getExperiences().catch(() => [])).find((c) => c.slug === slug);
-  return { title: group ? `${group.company} — ${t('title')}` : t('pageTitle') };
+  if (!group) {
+    return buildPageMetadata(locale, { path: `/experience/${slug}`, title: t('pageTitle'), description: '' });
+  }
+  const roles = group.roles.map((r) => r.role).join(' → ');
+  return buildPageMetadata(locale, {
+    path: `/experience/${slug}`,
+    title: `${group.company} — ${t('title')}`,
+    description:
+      locale === 'en'
+        ? `${FULL_NAME} at ${group.company}: ${roles}.`
+        : `${FULL_NAME} chez ${group.company} : ${roles}.`,
+    keywords: [group.company, ...group.skills.slice(0, 12)],
+    type: 'article',
+  });
 }
 
 export default async function ExperienceDetailPage({ params }: Props) {
