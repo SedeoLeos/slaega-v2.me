@@ -54,7 +54,29 @@ export const TECH_KEYWORDS = [
   'Congo',
 ];
 
-export const KEYWORDS = [FULL_NAME, 'Seba Gedeon', 'Seba Gedeon Matsoula', ...ALIASES, ...TECH_KEYWORDS];
+// Name / given-name / surname fragments so every spelling is indexed.
+export const NAME_PARTS = [
+  'Seba Gedeon Matsoula',
+  'Seba Gedeon',
+  'Seba',
+  'Gedeon',
+  'Gédéon',
+  'Matsoula',
+  'Malonga',
+  'Matsoula Malonga',
+];
+
+// Birthday facts — "ma data d'anniversaire".
+export const BIRTH_KEYWORDS = ['Slaega19', '19 août 2000', 'né le 19 août 2000', 'August 19 2000'];
+export const BIRTH_DATE = '2000-08-19';
+
+export const KEYWORDS = [
+  FULL_NAME,
+  ...NAME_PARTS,
+  ...ALIASES,
+  ...BIRTH_KEYWORDS,
+  ...TECH_KEYWORDS,
+];
 
 // Public profiles for schema.org sameAs.
 export const SAME_AS = [
@@ -65,12 +87,25 @@ export const SAME_AS = [
   'https://audiomack.com/seba-g',
 ].filter((u) => u && u !== '#');
 
+export type JsonLdCompany = { name: string; url?: string; current?: boolean };
+
 /** schema.org Person JSON-LD for the site owner. */
-export function personJsonLd() {
+export function personJsonLd(opts?: { companies?: JsonLdCompany[] }) {
+  const companies = opts?.companies ?? [];
+  const orgs = companies.map((c) => ({
+    '@type': 'Organization',
+    name: c.name,
+    ...(c.url ? { url: c.url } : {}),
+  }));
+  const current = companies.filter((c) => c.current);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: FULL_NAME,
+    givenName: 'Seba Gedeon',
+    familyName: 'Matsoula Malonga',
+    additionalName: 'Gedeon',
     alternateName: ALIASES,
     jobTitle: 'Architecte logiciel',
     description:
@@ -78,8 +113,21 @@ export function personJsonLd() {
     url: SITE_URL,
     image: `${SITE_URL}/images/me.jpg`,
     email: `mailto:${SiteConfig.email}`,
+    birthDate: BIRTH_DATE,
+    nationality: { '@type': 'Country', name: 'Congo' },
     sameAs: SAME_AS,
     knowsAbout: TECH_KEYWORDS,
+    knowsLanguage: ['fr', 'en'],
+    ...(orgs.length ? { worksFor: orgs } : {}),
+    ...(current.length
+      ? {
+          hasOccupation: {
+            '@type': 'Occupation',
+            name: 'Architecte logiciel',
+            occupationLocation: { '@type': 'City', name: 'Brazzaville' },
+          },
+        }
+      : {}),
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Brazzaville',

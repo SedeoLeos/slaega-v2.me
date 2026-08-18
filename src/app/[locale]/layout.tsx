@@ -14,6 +14,8 @@ import Store from "@/Provider/Store";
 import { siteConfigRepository } from "@/features/site-config/repositories/site-config.repository";
 import { DEFAULT_THEME } from "@/features/site-config/types";
 import { SITE_URL, KEYWORDS, FULL_NAME, personJsonLd, websiteJsonLd } from "@/shared/config/seo";
+import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
+import { groupByCompany } from "@/features/experience/group";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -129,13 +131,20 @@ export default async function RootLayout({
   // Set the mode before first paint (no flash): stored choice → system → dark.
   const modeScript = `(function(){try{var m=localStorage.getItem('theme-mode');if(m!=='light'&&m!=='dark'){m=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme-mode',m);}catch(e){document.documentElement.setAttribute('data-theme-mode','dark');}})();`;
 
+  // Companies (from real experience data) → structured data worksFor.
+  const companies = groupByCompany(await getExperiences().catch(() => [])).map((c) => ({
+    name: c.company,
+    url: c.companyUrl,
+    current: c.current,
+  }));
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <style dangerouslySetInnerHTML={{ __html: themeCss }} />
       <script dangerouslySetInnerHTML={{ __html: modeScript }} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd({ companies })) }}
       />
       <script
         type="application/ld+json"
