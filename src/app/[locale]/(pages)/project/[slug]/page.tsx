@@ -9,8 +9,32 @@ import ProjectGraph from "@/components/Projects/ProjectGraph";
 import ContentRenderer from "@/components/Content/ContentRenderer";
 import { getAllProjects, getPost } from "@/libs/posts";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { buildPageMetadata, FULL_NAME } from "@/shared/config/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const raw = await getPost(slug).catch(() => null);
+  if (!raw) return buildPageMetadata(locale, { path: `/project/${slug}`, title: "Projet", description: "" });
+  const { meta } = localizeProjectContent(raw, locale);
+  const desc =
+    (meta.desc && meta.desc.trim()) ||
+    `${meta.title} — projet par ${FULL_NAME} (slaega).`;
+  return buildPageMetadata(locale, {
+    path: `/project/${slug}`,
+    title: meta.title,
+    description: desc.slice(0, 300),
+    keywords: [...(meta.categories ?? []), ...(meta.tags ?? [])],
+    image: meta.image || undefined,
+    type: "article",
+  });
+}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
