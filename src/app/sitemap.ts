@@ -4,6 +4,10 @@ import { AppConfig } from "@/utils/app-config";
 import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
 import { groupByCompany } from "@/features/experience/group";
 
+// Always run as a fresh serverless function on Vercel (never statically cached).
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://slaega.com";
 
 // Static routes and their SEO priority / change frequency
