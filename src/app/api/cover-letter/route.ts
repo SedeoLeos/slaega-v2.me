@@ -8,6 +8,7 @@
 import { auth } from "@/auth";
 import { aboutPageRepository } from "@/features/about/repositories/about-page.repository";
 import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
+import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-case";
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -120,20 +121,59 @@ export async function POST(req: NextRequest) {
   const role = extractRole(jobOffer);
 
   // Fetch context to ground the AI in the candidate's real background.
-  const [about, experiences] = await Promise.all([
+  const [about, experiences, projects] = await Promise.all([
     aboutPageRepository.getOrCreate().catch(() => null),
     getExperiences().catch(() => []),
+    getAllProjects().catch(() => []),
   ]);
 
   const aboutSummary = about
     ? `${about.intro ?? ""}\n${stripHtml(about.body ?? "")}`.slice(0, 1500)
     : "";
 
-  const recentExperiences = experiences.slice(0, 4).map((e) => ({
-    role: e.role,
-    company: e.company,
-    description: stripHtml(e.description).slice(0, 240),
-  }));
+  // Score portfolio items against the offer so the letter cites the RELEVANT
+  // experiences/projects (not just the most recent), aligned with the CV.
+  const offerWords = new Set(
+    jobOffer
+      .toLowerCase()
+      .split(/[^a-zà-ÿ0-9+#.]+/i)
+      .filter((w) => w.length > 3),
+  );
+  const overlap = (text: string) =>
+    text
+      .toLowerCase()
+      .split(/[^a-zà-ÿ0-9+#.]+/i)
+      .filter((w) => w.length > 3 && offerWords.has(w)).length;
+
+  const relevantExperiences = [...experiences]
+    .map((e) => ({
+      role: e.role,
+      company: e.company,
+      description: stripHtml(e.description).slice(0, 240),
+      score: overlap(`${e.role} ${stripHtml(e.description)} ${(e.skills ?? []).join(" ")}`),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+  // Keep at least the most-recent ones if nothing scored.
+  const recentExperiences = relevantExperiences.some((e) => e.score > 0)
+    ? relevantExperiences
+    : experiences.slice(0, 4).map((e) => ({
+        role: e.role,
+        company: e.company,
+        description: stripHtml(e.description).slice(0, 240),
+      }));
+
+  const relevantProjects = [...projects]
+    .map((p) => ({
+      title: p.title,
+      desc: stripHtml(p.desc ?? "").slice(0, 200),
+      score: overlap(
+        `${p.title} ${stripHtml(p.desc ?? "")} ${(p.tags ?? []).join(" ")} ${(p.categories ?? []).join(" ")}`,
+      ),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .filter((p) => p.score > 0)
+    .slice(0, 3);
 
   const provider = getActiveAiProvider();
 
@@ -147,6 +187,10 @@ export async function POST(req: NextRequest) {
     language === "en" ? "English" : "French"
   }. You ground every paragraph in the candidate's actual background; never invent experiences.
 
+POSITION FOR THE OFFER — infer its sector/role family (FinTech/payments/mobile money/banking, backend/API, DevOps/SRE/cloud, data/integration, security/audit, mobile, full-stack) and angle the whole letter for it, exactly like a CV tailored to the same offer would. Lead with what THIS offer values.
+STRATEGIC + TECHNICAL — the candidate is a hands-on engineer/architect AND strategic (product framing, systems design, applied research on mobile-money & instant-payment security, internet/neo-banking). Surface this credibly when the offer values judgement or domain insight.
+HONESTY — cite concrete experiences AND relevant projects. If an item is research/POC/study, keep that framing ("étudié et prototypé"); never present it as production work, and never invent employers or dates.
+
 Return ONLY valid JSON with this exact shape (no prose, no code fences):
 {
   "language": "${language}",
@@ -154,8 +198,8 @@ Return ONLY valid JSON with this exact shape (no prose, no code fences):
   "role": "<role title from the offer, or empty string>",
   "subject": "<one-line subject prefixed with 'Objet :' (FR) or 'Subject:' (EN)>",
   "greeting": "<formal salutation>",
-  "intro": "<2–3 sentences positioning the candidate vs the offer>",
-  "body": "<3–5 sentences citing 1–2 concrete experiences and matching them to the offer's needs>",
+  "intro": "<2–3 sentences positioning the candidate for the offer's sector/family>",
+  "body": "<3–5 sentences citing 1–2 concrete experiences AND, when relevant, a project/POC, matching them to the offer's needs and sector>",
   "closing": "<1–2 sentences expressing motivation to discuss further>",
   "signoff": "<formal closing — 'Cordialement,' / 'Sincerely,' or equivalent>"
 }
@@ -170,13 +214,20 @@ ${jobOffer.slice(0, 4000)}
 CANDIDATE BACKGROUND (use as truth — do not invent):
 ${aboutSummary}
 
-RECENT EXPERIENCES:
+RELEVANT EXPERIENCES (ranked for this offer):
 ${recentExperiences
   .map(
     (e, i) =>
       `${i + 1}. ${e.role} @ ${e.company}\n   ${e.description}`
   )
   .join("\n")}
+${
+  relevantProjects.length
+    ? `\nRELEVANT PROJECTS / POC (cite when they fit the offer):\n${relevantProjects
+        .map((p, i) => `${i + 1}. ${p.title}\n   ${p.desc}`)
+        .join("\n")}`
+    : ""
+}
 
 CANDIDATE NAME: Seba Gedeon Matsoula Malonga
 

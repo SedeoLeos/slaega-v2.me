@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Confettis multicolores — visibles sur fond clair comme sombre (pas de blanc pur).
 const COLORS = ["#FF5A00", "#5B8DEF", "#F5A623", "#22D3EE", "#FF3DA6", "#B6FF3C"];
@@ -24,9 +24,35 @@ const ALIASES = [
   { code: "GDBA", name: "GeDeon seBA", note: "l'origine" },
 ];
 
-export default function BirthdayPage() {
-  const [wished, setWished] = useState(false);
+// Les remerciements de slaega — visibles sur la page.
+const THANKS = [
+  {
+    title: "À ma maman",
+    accent: "Madame Matsoula Singoula Bathilde Octavie",
+    lines: [
+      "Aujourd'hui, je dédie ce jour à Madame Matsoula Singoula Bathilde Octavie.",
+      "Merci beaucoup, Maman. Les gens voient mes échecs et mes succès, mais ils ne connaissent pas toujours l'origine de ce que je suis devenu.",
+      "J'aimerais simplement que, lorsque les gens se souviennent de moi, ils pensent aussi à toi, la femme qui a forgé ma vie.",
+      "Merci pour tout, Maman.",
+    ],
+    sign: "❤️🕊️",
+  },
+  {
+    title: "À vous tous ❤️",
+    accent: "Ma famille, mes amis, mes proches",
+    lines: [
+      "Je remercie mes parents, mes frères et sœurs, mes amis, mes proches et tous ceux qui ont fait ou qui font encore partie de mon parcours.",
+      "À ceux qui m'ont connu depuis le début, à ceux qui m'ont vu grandir, et à ceux qui marchent avec moi aujourd'hui : merci.",
+      "Chacun de vous, à sa manière, a contribué à faire de moi la personne que je suis aujourd'hui.",
+      "Merci à tous ceux qui ont été là hier, qui sont là aujourd'hui et qui continueront à faire partie de ma route.",
+    ],
+    sign: "❤️",
+  },
+];
 
+type Wish = { id: string; name: string; message: string; createdAt: string };
+
+export default function BirthdayPage() {
   // Compteur slaega : slaega 1 → slaega 19 (né un 19).
   const [count, setCount] = useState(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -53,8 +79,63 @@ export default function BirthdayPage() {
     };
   }, []);
 
+  // ── Vœux ──────────────────────────────────────────────────────────────────
+  const [wishes, setWishes] = useState<Wish[]>([]);
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const loadWishes = useCallback(async () => {
+    try {
+      const res = await fetch("/api/birthday-wishes", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      setWishes(Array.isArray(data.items) ? data.items : []);
+    } catch {
+      /* silencieux */
+    }
+  }, []);
+
+  useEffect(() => {
+    loadWishes();
+  }, [loadWishes]);
+
+  const submit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!message.trim() || state === "sending") return;
+      setState("sending");
+      try {
+        const res = await fetch("/api/birthday-wishes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name.trim(), message: message.trim() }),
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (data.item) setWishes((prev) => [data.item as Wish, ...prev]);
+        setName("");
+        setMessage("");
+        setState("sent");
+        setTimeout(() => setState("idle"), 4000);
+      } catch {
+        setState("error");
+        setTimeout(() => setState("idle"), 4000);
+      }
+    },
+    [name, message, state],
+  );
+
+  const fmtDate = (iso: string) => {
+    try {
+      return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    } catch {
+      return "";
+    }
+  };
+
   return (
-    <div className="slaega-root relative flex min-h-[80vh] w-full flex-col items-center justify-center overflow-hidden bg-background px-6 py-24 font-[var(--font-inter)] text-foreground">
+    <div className="slaega-root relative flex min-h-[80vh] w-full flex-col items-center overflow-hidden bg-background px-6 py-24 font-[var(--font-inter)] text-foreground">
       {/* confetti */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         {PIECES.map((p) => (
@@ -78,7 +159,7 @@ export default function BirthdayPage() {
       {/* message */}
       <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
         <span className="text-[11px] uppercase tracking-[0.3em] text-foreground/45">
-          <span className="text-green-app">✦</span> slaega célèbre · 19 août 2000
+          <span className="text-green-app">✦</span> slaega célèbre · le 19 août
         </span>
         <h1 className="mt-8 font-space text-[clamp(2.6rem,11vw,9rem)] font-bold leading-[0.82] tracking-tighter text-foreground">
           Happy
@@ -131,20 +212,108 @@ export default function BirthdayPage() {
             = <span className="lowercase text-foreground">slaega</span>
           </p>
         </div>
-
-        <button
-          type="button"
-          data-cursor
-          onClick={() => setWished(true)}
-          className="mt-12 inline-flex items-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app"
-        >
-          {wished ? "Vœu envoyé ✓" : "Faire un vœu"}
-          <span aria-hidden>{wished ? "🎉" : "→"}</span>
-        </button>
-        {wished && (
-          <p className="mt-5 font-space text-sm text-green-app">Que tous tes projets aboutissent. 🚀</p>
-        )}
       </div>
+
+      {/* ── Mes remerciements ─────────────────────────────────────────── */}
+      <section className="relative z-10 mt-24 w-full max-w-3xl">
+        <p className="text-center text-[11px] uppercase tracking-[0.3em] text-foreground/40">
+          mes remerciements
+        </p>
+        <div className="mt-6 flex flex-col gap-5">
+          {THANKS.map((t) => (
+            <article
+              key={t.title}
+              className="rounded-[2px] border border-foreground/10 bg-card/60 p-7 text-left md:p-9"
+            >
+              <h2 className="font-space text-2xl font-bold text-foreground md:text-3xl">{t.title}</h2>
+              <p className="mt-1 font-space text-sm font-medium text-green-app">{t.accent}</p>
+              <div className="mt-5 space-y-3">
+                {t.lines.map((line, i) => (
+                  <p key={i} className="leading-relaxed text-foreground/75">
+                    {line}
+                  </p>
+                ))}
+              </div>
+              <p className="mt-5 text-2xl" aria-hidden>
+                {t.sign}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Faire un vœu ──────────────────────────────────────────────── */}
+      <section className="relative z-10 mt-24 w-full max-w-3xl">
+        <p className="text-center text-[11px] uppercase tracking-[0.3em] text-foreground/40">
+          fais-moi un vœu 🎉
+        </p>
+        <p className="mx-auto mt-3 max-w-[46ch] text-center text-foreground/55">
+          Laisse un vœu, un mot, un remerciement — il apparaîtra sur le mur ci-dessous.
+        </p>
+
+        <form
+          onSubmit={submit}
+          className="mx-auto mt-8 flex w-full max-w-xl flex-col gap-3"
+        >
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={60}
+            placeholder="Ton nom (ou Anonyme)"
+            className="w-full rounded-[2px] border border-foreground/15 bg-background px-4 py-3 text-foreground outline-none transition-colors placeholder:text-foreground/35 focus:border-green-app"
+          />
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            maxLength={500}
+            rows={4}
+            required
+            placeholder="Ton vœu pour slaega…"
+            className="w-full resize-y rounded-[2px] border border-foreground/15 bg-background px-4 py-3 text-foreground outline-none transition-colors placeholder:text-foreground/35 focus:border-green-app"
+          />
+          <div className="flex items-center gap-4">
+            <button
+              type="submit"
+              data-cursor
+              disabled={state === "sending" || !message.trim()}
+              className="inline-flex items-center gap-3 rounded-[2px] bg-foreground px-7 py-4 font-space text-sm font-semibold uppercase tracking-widest text-background transition-colors hover:bg-green-app disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {state === "sending" ? "Envoi…" : state === "sent" ? "Vœu envoyé ✓" : "Envoyer mon vœu"}
+              <span aria-hidden>{state === "sent" ? "🎉" : "→"}</span>
+            </button>
+            {state === "sent" && (
+              <span className="font-space text-sm text-green-app">Merci du fond du cœur ! 🙏</span>
+            )}
+            {state === "error" && (
+              <span className="font-space text-sm text-red-400">Oups, réessaie dans un instant.</span>
+            )}
+          </div>
+        </form>
+
+        {/* Mur des vœux */}
+        {wishes.length > 0 && (
+          <div className="mt-14">
+            <p className="text-center text-[11px] uppercase tracking-[0.3em] text-foreground/40">
+              le mur des vœux · {wishes.length}
+            </p>
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {wishes.map((w) => (
+                <article
+                  key={w.id}
+                  className="flex flex-col rounded-[2px] border border-foreground/10 bg-card/60 p-5 text-left"
+                >
+                  <p className="leading-relaxed text-foreground/80">{w.message}</p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="font-space text-sm font-semibold text-green-app">— {w.name}</span>
+                    <span className="text-xs text-foreground/35">{fmtDate(w.createdAt)}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
 
       <style jsx>{`
         @keyframes birthday-fall {

@@ -136,6 +136,164 @@ function livePreview(url: string | null, w = 1280, h = 800): string {
 //      proper case-study page. Card images are live previews of the real sites.
 // ═══════════════════════════════════════════════════════════════════════════
 const FEATURED_PROJECTS = [
+  // ── R&D / POC / études — profil stratégique (fintech, paiements, banque, sécurité).
+  //    Honnêtement étiquetés « Étude / POC / R&D » : recherche & prototypage, non déployés en production.
+  {
+    slug: "securite-mobile-money",
+    title: "Sécurité du Mobile Money — MoMo & Airtel Money",
+    date: "2026-02-01",
+    tags: ["Mobile Money", "MTN MoMo", "Airtel Money", "Sécurité", "Fraude", "Fintech", "R&D", "Afrique"],
+    categories: ["poc-prototype", "api-webservice"],
+    description:
+      "Recherche & article (en préparation) sur la sécurité des services Mobile Money en Afrique : surfaces d'attaque, fraude et réconciliation — étudié et prototypé.",
+    content: `## Sécurité du Mobile Money — étude & article (en préparation)
+
+**Pourquoi.** Le Mobile Money (MTN MoMo, Airtel Money) porte une part énorme des paiements en Afrique — et concentre autant de valeur que de risques : fraude, ingénierie sociale, faiblesses d'intégration côté marchand, réconciliation.
+
+**Ce que j'étudie**, côté intégrateur/marchand :
+- Cycle de vie d'une transaction et points de rupture (USSD, API, callbacks/webhooks).
+- **Fraude & abus** : rejeu, idempotence, double dépense, SIM-swap, hameçonnage.
+- **Réconciliation** marchand ↔ opérateur et détection d'anomalies.
+- Durcissement des intégrations (signatures, secrets, journalisation, moindre privilège).
+
+### Stack de prototypage
+Node.js/NestJS · PostgreSQL · Webhooks · Observabilité
+
+> **Étude / R&D** — recherche & prototypage (article en préparation), **volontairement générique** (aucune faille précise divulguée). Non déployé en production.`,
+  },
+  {
+    slug: "paiements-instantanes",
+    title: "Paiements instantanés & interopérabilité",
+    date: "2025-11-01",
+    tags: ["Paiements instantanés", "Interopérabilité", "ISO 20022", "Switch", "Temps réel", "Fintech", "POC"],
+    categories: ["poc-prototype", "api-webservice"],
+    description:
+      "Étude/POC d'un socle de paiements instantanés interopérables entre opérateurs et banques : messagerie normalisée, temps réel, idempotence.",
+    content: `## Paiements instantanés & interopérabilité — étude / POC
+
+**L'idée.** Rapprocher opérateurs Mobile Money et banques via un socle de **paiements instantanés interopérables** : un paiement passe d'un acteur à l'autre en temps réel, avec une messagerie normalisée.
+
+**Ce que je prototype**
+- Messagerie inspirée **ISO 20022** et notion de **switch** entre acteurs.
+- **Temps réel** : file d'événements, idempotence, garanties de livraison.
+- Traçabilité de bout en bout et réconciliation inter-acteurs.
+
+### Stack
+NestJS · PostgreSQL · file d'événements · API-first
+
+> **POC / étude** — prototype et modélisation, non déployé en production.`,
+  },
+  {
+    slug: "neobanque-internet-banking",
+    title: "Néo-banque & Internet Banking — architecture",
+    date: "2025-09-01",
+    tags: ["Néo-banque", "Internet Banking", "KYC", "Ledger", "Cartes virtuelles", "Banque", "Fintech", "POC"],
+    categories: ["poc-prototype", "api-webservice"],
+    description:
+      "Étude/POC d'architecture d'une néo-banque : comptes & ledger, KYC/onboarding, cartes virtuelles, sécurité — pensé pour le contexte africain.",
+    content: `## Néo-banque & Internet Banking — étude d'architecture
+
+**L'objectif.** Modéliser les briques d'une **néo-banque** utilisable dans le contexte africain (mobile-first, interopérable avec le Mobile Money).
+
+**Briques étudiées / prototypées**
+- **Comptes & ledger** : registre à double entrée, soldes, historique.
+- **Onboarding & KYC** : parcours d'ouverture, vérification d'identité, niveaux.
+- **Cartes virtuelles** et moyens de paiement rattachés aux comptes.
+- **Sécurité & conformité** : authentification forte, journal d'audit, moindre privilège.
+
+### Stack
+NestJS · PostgreSQL · authentification forte · API-first
+
+> **POC / étude** — architecture et prototypage, non déployé en production.`,
+  },
+  {
+    slug: "reconciliation-anti-fraude",
+    title: "Réconciliation & anti-fraude multi-PSP",
+    date: "2025-07-01",
+    tags: ["Réconciliation", "Anti-fraude", "MTN MoMo", "Airtel Money", "Stripe", "Paiements", "Fintech", "POC"],
+    categories: ["poc-prototype", "data-integration"],
+    description:
+      "POC d'un moteur de réconciliation et de détection d'anomalies pour paiements multi-PSP (MoMo, Airtel Money, Stripe).",
+    content: `## Réconciliation & anti-fraude multi-PSP — POC
+
+**Le problème.** Dès qu'un marchand accepte plusieurs moyens de paiement (MoMo, Airtel Money, Stripe), les écarts apparaissent : transactions en double, statuts divergents, timeouts, remboursements. Sans réconciliation fiable, l'argent et la confiance se perdent.
+
+**Ce que je prototype**
+- **Réconciliation** automatique marchand ↔ PSP (matching, écarts, statuts).
+- **Idempotence** et gestion des webhooks/callbacks non fiables.
+- **Détection d'anomalies** (montants, fréquences, patterns suspects).
+
+### Stack
+NestJS · PostgreSQL · règles + heuristiques · Webhooks
+
+> **POC** — moteur prototype, non déployé en production.`,
+  },
+  {
+    slug: "payment-gateway-unifie",
+    title: "Passerelle de paiement unifiée (MoMo / Airtel / cartes)",
+    date: "2025-05-01",
+    tags: ["Payment Gateway", "Agrégation", "MTN MoMo", "Airtel Money", "Cartes", "API", "Webhooks", "Fintech", "POC"],
+    categories: ["poc-prototype", "api-webservice"],
+    description:
+      "POC d'une passerelle de paiement unifiée : une seule API pour encaisser via MoMo, Airtel Money et cartes, avec webhooks et idempotence.",
+    content: `## Passerelle de paiement unifiée — POC
+
+**L'idée.** Offrir aux marchands **une seule API** pour encaisser, quel que soit le moyen : **MTN MoMo, Airtel Money, cartes**. La passerelle masque la complexité de chaque opérateur.
+
+**Ce que je prototype**
+- **API unique** d'initiation/capture, adaptateurs par opérateur.
+- **Webhooks** normalisés + **idempotence** et rejeu contrôlé.
+- **Statuts** cohérents et journal de transactions.
+
+### Stack
+NestJS · PostgreSQL · adaptateurs opérateurs · Webhooks
+
+> **POC** — prototype d'agrégation, non déployé en production.`,
+  },
+  {
+    slug: "scoring-nano-credit",
+    title: "Scoring & nano-crédit mobile — inclusion financière",
+    date: "2025-03-01",
+    tags: ["Scoring", "Nano-crédit", "Inclusion financière", "Data", "Mobile Money", "Fintech", "Étude"],
+    categories: ["poc-prototype", "data-integration"],
+    description:
+      "Étude/POC d'un scoring léger pour du nano-crédit mobile basé sur l'historique Mobile Money — inclusion financière.",
+    content: `## Scoring & nano-crédit mobile — étude / POC
+
+**Le contexte.** Beaucoup n'ont pas d'historique bancaire, mais **un historique Mobile Money**. C'est une base pour du **nano-crédit** responsable et de l'inclusion financière.
+
+**Ce que j'étudie**
+- Signaux de **scoring** à partir de l'usage Mobile Money (régularité, flux).
+- Règles d'octroi et garde-fous (plafonds, anti-surendettement).
+- Éthique & conformité des données.
+
+### Stack
+Python/Node · PostgreSQL · règles + features simples
+
+> **Étude / POC** — modélisation et prototype, non déployé en production.`,
+  },
+  {
+    slug: "sre-paiements",
+    title: "Observabilité & SRE pour plateformes de paiement",
+    date: "2025-01-01",
+    tags: ["SRE", "Observabilité", "Fiabilité", "Kubernetes", "SLA", "Paiements", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "POC reliant mon socle DevOps aux paiements : observabilité, SLO/SLA et résilience pour des systèmes transactionnels critiques.",
+    content: `## Observabilité & SRE pour plateformes de paiement — POC
+
+**L'angle.** Un système de paiement ne tolère ni panne silencieuse, ni transaction perdue. Ce POC relie mon socle **DevOps/SRE** aux exigences des **paiements**.
+
+**Ce que je prototype**
+- **Observabilité** : métriques, traces, logs corrélés autour de la transaction.
+- **SLO/SLA** et alerting sur les parcours critiques (échecs, latence, réconciliation).
+- **Résilience** : reprises, idempotence, dégradation contrôlée sur Kubernetes.
+
+### Stack
+Kubernetes/k3s · Docker · observabilité · Nginx
+
+> **POC** — banc d'essai fiabilité, non déployé en production.`,
+  },
   {
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",
@@ -386,7 +544,7 @@ const EXPERIENCES = [
     current: true,
     description:
       "Ingénieur logiciel senior avec une responsabilité DevOps de premier plan. Au-delà du développement, je pilote l'infrastructure de bout en bout : orchestration Kubernetes (k8s) & k3s, conteneurisation Docker, CI/CD, provisioning et administration de serveurs Linux, reverse-proxy Nginx, monitoring et observabilité. Objectif : des systèmes fiables, sécurisés, scalables et maintenables pour des environnements à forte exigence technique.",
-    skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Cloud", "Observabilité"],
+    skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Cloud", "Observabilité", "SRE", "Fiabilité", "Sécurité"],
     location: "Brazzaville, République du Congo (hybride)",
     companyUrl: null as string | null,
   },
@@ -399,7 +557,7 @@ const EXPERIENCES = [
     current: true,
     description:
       "Intervention sur e-Bourse, projet institutionnel à enjeux financiers de l'administration publique. Je développe l'application mobile (React Native / Expo) ainsi que son backend mobile (BFF) en Spring Boot : conception des parcours et écrans, exposition d'API adaptées au mobile, sécurité et performance — pour une solution fiable et accessible aux usagers du dispositif e-Bourse.",
-    skills: ["React Native", "Expo", "Spring Boot", "Java", "BFF", "PostgreSQL", "Sécurité"],
+    skills: ["React Native", "Expo", "Spring Boot", "Java", "BFF", "API REST", "PostgreSQL", "Sécurité", "Finance publique", "Fintech", "Décaissement"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
   },
@@ -411,8 +569,8 @@ const EXPERIENCES = [
     endDate: null,
     current: true,
     description:
-      "Fondateur et dirigeant de Slaega. Je porte une vision d'innovation et d'excellence technique : transformer des idées ambitieuses en réalisations concrètes, structurer des produits robustes et évolutifs, et inspirer une nouvelle génération d'ingénieurs à repousser les limites de l'exploration, de la science et du logiciel.",
-    skills: ["Leadership", "Vision produit", "Architecture", "Entrepreneuriat"],
+      "Fondateur et dirigeant de Slaega. Je porte une vision d'innovation et d'excellence technique : transformer des idées ambitieuses en réalisations concrètes, structurer des produits robustes et évolutifs, et inspirer une nouvelle génération d'ingénieurs. Slaega est aussi mon laboratoire de R&D : j'y mène des études et prototypes (POC/MVP) sur les paiements et le Mobile Money (MTN MoMo, Airtel Money), les paiements instantanés, l'internet banking et les néo-banques, ainsi que sur la sécurité des transactions — un profil à la fois technique et stratégique.",
+    skills: ["Leadership", "Vision produit", "Stratégie", "Architecture", "Entrepreneuriat", "R&D", "Fintech", "Paiements", "Sécurité"],
     location: "République du Congo",
     companyUrl: null as string | null,
   },
@@ -425,7 +583,7 @@ const EXPERIENCES = [
     current: false,
     description:
       "Progression d'Ingénieur Full-Stack à Lead puis Architecte logiciel. Conception d'architectures robustes (API-first, microservices, intégrations tierces), développement web & mobile (Next.js, React Native, Node.js/NestJS), pipelines CI/CD et DevOps, gestion des environnements serveurs et cloud, mentorat de l'équipe. Réalisations livrées en production : societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, le CMS Civis (ministères en RDC), et lead developer de pro.focus-suite.com. Mise en place de l'infrastructure (provisioning serveurs, Coolify, dont iolifescience.com).",
-    skills: ["Next.js", "React Native", "Node.js", "NestJS", "Microservices", "CI/CD", "Coolify", "Docker", "Keycloak", "OpenFGA", "Cerbos"],
+    skills: ["Next.js", "React Native", "Node.js", "NestJS", "Microservices", "API-first", "Multi-tenant", "SaaS", "CI/CD", "Coolify", "Docker", "Cloud", "IAM", "Keycloak", "OpenFGA", "Cerbos", "Architecture"],
     location: "Thiais, Île-de-France, France (à distance)",
     companyUrl: null as string | null,
   },
@@ -451,7 +609,7 @@ const EXPERIENCES = [
     current: false,
     description:
       "Développement et intégration de solutions backend, avec un focus sur les middleware, la gestion et le traitement des données et la communication entre systèmes : orchestration de services, intégration de données multi-sources, API sécurisées et robustes, monitoring et maintenance.",
-    skills: ["Node.js", "Middleware", "API", "Intégration de données", "Backend"],
+    skills: ["Node.js", "Middleware", "API", "API REST", "Intégration de données", "Intégration système", "Data", "Backend", "Sécurité"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
   },
