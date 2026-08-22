@@ -126,23 +126,34 @@ CRITICAL — ONE language only (no mixing):
 1. Detect the dominant language of the JOB OFFER (French OR English).
 2. Write ABSOLUTELY EVERYTHING in THAT single language — tagline, summary, jobTitle, capabilities, experience descriptions, project descriptions AND the tech/skill labels. NEVER mix English and French. If the CV is French, descriptive tech phrases like "Mobile Payment" → "Paiement mobile", "Task Management" → "Gestion de tâches", "Dashboard" → "Tableau de bord". Proper product/tech NAMES (Spring Boot, NestJS, Kubernetes, Docker, PostgreSQL, Flutter…) stay as-is.
 
-EMPHASIS — this candidate's core strength:
-- Foreground DEEP TECHNICAL expertise and especially DevOps & System Administration: Kubernetes (k8s) & k3s, Docker, CI/CD, Linux server provisioning & hardening, Nginx, Coolify, cloud (AWS/Azure/OpenStack), observability. Make these prominent whenever the offer is technical/DevOps/infra oriented.
+POSITION FOR THE OFFER (most important — do NOT force a fixed profile):
+- First infer the offer's SECTOR and ROLE FAMILY, then position the WHOLE CV (jobTitle, tagline, summary, order of emphasis) for it. Lead with what THIS offer values, not a fixed DevOps angle:
+  • FinTech / Payments / Mobile Money / Banking → payment integrations (MTN Mobile Money, Airtel Money, Stripe), transaction reliability & reconciliation, security, KYC/compliance awareness, distributed backend, APIs.
+  • Backend / API / Distributed systems → NestJS/Node.js, Spring Boot, PostgreSQL, event-driven, API design, performance, security.
+  • DevOps / SRE / Cloud / Infra → Kubernetes/k3s, Docker, CI/CD, Linux hardening, Nginx, observability, IaC, cloud.
+  • Data / Integration → pipelines, connectors, ETL, system integration.
+  • Security / Audit → threat modelling, secure SDLC, vulnerability research (esp. mobile money & banking), code/infra audit.
+  • Mobile → React Native/Expo, Flutter.
+  • Full-stack / Generalist → balanced backend + frontend + delivery.
+- Reorder experiences, projects and skills so the offer's family comes first.
 
-ADAPT & ENRICH:
-- Tailor every section to the offer AND the portfolio. If the portfolio is thin on a point the offer asks for, ENRICH and complete it with plausible, on-profile technical detail and keywords (skills, practices, tools consistent with this senior full-stack/DevOps engineer). Reformulate and CORRECT weak wording to sound senior and precise.
-- Never fabricate fake employers, fake dates, or false diplomas. You MAY strengthen phrasing, add realistic technical depth, and surface implicit skills.
+STRATEGIC + TECHNICAL:
+- This candidate is not only a hands-on engineer/architect — he is also STRATEGIC: product framing, systems design, and applied research on mobile-money & instant-payment security, internet/neo-banking. When the offer values judgement, ownership or domain insight, surface this credibly (grounded in the portfolio), e.g. FR "au-delà de l'architecture : cadrage produit, sécurité des paiements, R&D".
+
+ADAPT & ENRICH (no fabrication):
+- Tailor every section to the offer AND the portfolio; reformulate weak wording to sound senior, precise and results-oriented; surface implicit skills and add on-profile depth/keywords the offer asks for.
+- NEVER fabricate fake employers, fake dates, or false diplomas. Do NOT present research/POC as production: if the portfolio marks an item as étude/POC/R&D/article, keep that honest framing — it is still a strong signal ("étudié et prototypé", not "livré en production").
 
 Strict rules:
 - Reply ONLY with a valid JSON object. No text before/after. No markdown fence.
 - "language": "fr" or "en" (detected from the job offer).
-- "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate vs the offer. Example FR: "INGÉNIEUR FULL-STACK & DEVOPS SENIOR — KUBERNETES, APIS DISTRIBUÉES ET CLOUD". Example EN: "SENIOR FULL-STACK & DEVOPS ENGINEER — KUBERNETES, DISTRIBUTED APIS AND CLOUD".
-- "summary": 2-3 concise sentences (~60 words max) rewriting the bio to match the offer. Lead with technical & DevOps strengths. Include KEY METRICS and ACHIEVEMENTS when possible. Do NOT copy the bio verbatim. Focus on impact and measurable results.
-- "jobTitle": job title coherent with the offer, in the detected language.
-- "capabilities": 4-6 short bullets (5-12 words each), business-value + technical, in the detected language.
-- "experiences": ONLY the experiences relevant to this offer (3-5 max). Rewrite each description as 2-3 concise result-oriented sentences in detected language, foregrounding the technical/DevOps work. Include quantifiable achievements where possible. ID must match an input id.
-- "projects": ONLY relevant projects (3-5 max). Rewrite as 1-2 impact sentences in detected language. SLUG must match an input slug.
-- "relevantSkills": 8-15 key skills matching the offer, prioritising DevOps/infra (Kubernetes, k3s, Docker, CI/CD, Linux) and the backend/full-stack stack. Tech NAMES stay as-is; any descriptive skill is written in the CV language.
+- "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate for the OFFER'S family (not a fixed DevOps line). FR ex (fintech): "INGÉNIEUR BACKEND & PAIEMENTS — MOBILE MONEY, APIS FIABLES ET SÉCURISÉES". EN ex (devops): "SENIOR DEVOPS / SRE — KUBERNETES, CI/CD AND CLOUD RELIABILITY".
+- "summary": 2-3 concise sentences (~60 words max) rewriting the bio to match the offer. Lead with the strengths THIS offer values. Include KEY METRICS and ACHIEVEMENTS when possible. Do NOT copy the bio verbatim. Focus on impact and measurable results.
+- "jobTitle": positioned for the offer, in the detected language — NOT a generic fixed title. E.g. "Ingénieur Backend & Paiements", "Software Engineer — FinTech", "DevOps / SRE Engineer", "Ingénieur Logiciel — Banque/FinTech", "Architecte Logiciel".
+- "capabilities": 4-6 short bullets (5-12 words each), business-value + technical, aligned to the offer, in the detected language.
+- "experiences": ONLY the experiences relevant to this offer (3-5 max). Rewrite each description as 2-3 concise result-oriented sentences in detected language, foregrounding what the offer values. Include quantifiable achievements where possible. ID must match an input id.
+- "projects": ONLY relevant projects (3-5 max, POC/études included when they fit the sector). Rewrite as 1-2 impact sentences in detected language. SLUG must match an input slug.
+- "relevantSkills": 8-15 key skills matching the OFFER first (not a fixed DevOps list). Tech NAMES stay as-is; any descriptive skill is written in the CV language.
 
 Strict JSON format:
 {

@@ -328,7 +328,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
             <View>
               <View style={s.secHead}>
                 <View style={s.secDot} />
-                <Text style={s.secLabel}>Formation</Text>
+                <Text style={s.secLabel}>{L.education}</Text>
               </View>
               <View style={s.eduGrid}>
                 {data.experiences.slice(0, 6).map((exp, i) => (
@@ -359,7 +359,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
                 <View style={s.skillGroup}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 6 }}>
                     <View style={s.skillGroupLabelDot} />
-                    <Text style={s.skillGroupText}>Prioritaires</Text>
+                    <Text style={s.skillGroupText}>{L.priority}</Text>
                   </View>
                   <View style={s.skillsWrap}>
                     {relSkills.slice(0, 10).map((sk) => (
