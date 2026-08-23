@@ -85,7 +85,7 @@ async function seedProjects() {
     const projectUrl = data.projectUrl ? String(data.projectUrl) : null;
     // Projects with a public link get a live preview of the real site; others
     // keep their front-matter image.
-    const image = projectUrl ? livePreview(projectUrl) : String(data.image ?? "/images/img.jpg");
+    const image = projectUrl ? livePreview(projectUrl) : String(data.image ?? "");
 
     const payload = {
       title: String(data.title ?? slug),
@@ -115,7 +115,9 @@ async function seedProjects() {
 //  (WordPress mShots, no API key). Used as the card image for linked projects.
 //  Internal / non-public hosts get a designed placeholder instead.
 // ═══════════════════════════════════════════════════════════════════════════
-const PLACEHOLDER_IMG = "/images/img.jpg";
+// Empty on purpose: when a project has no real image / live preview, the UI
+// renders the tech schema (ProjectGraph) instead of a default stock picture.
+const PLACEHOLDER_IMG = "";
 function livePreview(url: string | null, w = 1280, h = 800): string {
   if (!url) return PLACEHOLDER_IMG;
   try {
