@@ -183,12 +183,19 @@ export default function SlaegaServices({
                         {t}
                       </span>
                     ))}
-                    <span
+                    <svg
                       aria-hidden
-                      className="ml-auto font-space text-xl text-foreground/20 transition-all duration-500 group-hover:translate-x-1 group-hover:text-green-app"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="ml-auto h-5 w-5 text-foreground/25 transition-all duration-500 group-hover:translate-x-1 group-hover:text-green-app"
                     >
-                      ↗
-                    </span>
+                      <path d="M7 17 17 7" />
+                      <path d="M8 7h9v9" />
+                    </svg>
                   </div>
                 </div>
               </Link>
