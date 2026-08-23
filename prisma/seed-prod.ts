@@ -459,6 +459,144 @@ NestJS · pgvector · PostgreSQL · Embeddings · LLM · Docker
 > **POC** — prototype IA, non déployé en production.`,
   },
   {
+    slug: "reverse-proxy-tls",
+    title: "Reverse-proxy & TLS — Traefik / Nginx + Let's Encrypt",
+    date: "2025-11-15",
+    tags: ["Nginx", "Traefik", "TLS", "Let's Encrypt", "Reverse-proxy", "Sécurité", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure", "reverse-proxy"],
+    description:
+      "Lab : exposer plusieurs services derrière un reverse-proxy avec TLS automatique — Traefik/Nginx, Let's Encrypt, routage et durcissement.",
+    content: `## Reverse-proxy & TLS automatique — lab
+
+**Le besoin.** Faire cohabiter plusieurs applications sur un même hôte, chacune joignable en HTTPS, sans jongler avec les ports ni renouveler les certificats à la main.
+
+**Ce que je configure**
+- **Traefik / Nginx** comme reverse-proxy : routage par domaine/sous-domaine, load-balancing.
+- **TLS automatique** via **Let's Encrypt** (ACME), renouvellement sans interruption.
+- **Durcissement** : en-têtes de sécurité, HSTS, redirections HTTP→HTTPS, rate-limiting.
+- Découverte dynamique des services (labels Docker) et middlewares.
+
+### Stack
+Traefik · Nginx · Let's Encrypt · Docker · Linux
+
+> **Lab / POC** — banc d'essai réseau, non destiné à la production.`,
+  },
+  {
+    slug: "coolify-selfhosted-paas",
+    title: "Coolify — PaaS auto-hébergé (alternative Heroku/Vercel)",
+    date: "2025-09-15",
+    tags: ["Coolify", "PaaS", "Self-hosted", "Docker", "CI/CD", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure", "self-hosted-platform", "platform-deployment"],
+    description:
+      "Lab : héberger un PaaS Coolify pour déployer apps & bases en un clic sur ma propre infra — alternative souveraine à Heroku/Vercel.",
+    content: `## Coolify — PaaS auto-hébergé — lab
+
+**L'idée.** Retrouver le confort d'un Heroku/Vercel (déploiement au push, bases managées, logs) **mais sur ma propre infrastructure** — maîtrise des coûts et des données.
+
+**Ce que je mets en place**
+- Installation **Coolify** sur serveur Linux, connexion aux dépôts Git.
+- **Déploiement au push** : build automatique, images Docker, environnements.
+- Bases de données, stockage, variables d'environnement et **webhooks**.
+- TLS automatique, logs et redémarrages, sauvegardes.
+
+### Stack
+Coolify · Docker · Linux · Git · Let's Encrypt
+
+> **Lab / POC** — plateforme de déploiement personnelle, non destinée à la production client.`,
+  },
+  {
+    slug: "backup-pra-disaster-recovery",
+    title: "Sauvegarde & PRA — reprise après sinistre",
+    date: "2025-07-15",
+    tags: ["Backup", "PRA", "Disaster Recovery", "restic", "RPO/RTO", "Sécurité", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure", "cloud-setup"],
+    description:
+      "POC : stratégie de sauvegarde et plan de reprise d'activité — sauvegardes chiffrées, tests de restauration, objectifs RPO/RTO.",
+    content: `## Sauvegarde & PRA — reprise après sinistre — POC
+
+**Pourquoi.** Une sauvegarde qu'on n'a jamais restaurée n'est pas une sauvegarde. Ce POC construit une stratégie **testée** de sauvegarde et de reprise.
+
+**Ce que je prototype**
+- **Sauvegardes chiffrées** et incrémentales (restic/borg) vers stockage objet (S3-compatible).
+- **Règle 3-2-1**, rotation et rétention.
+- **Tests de restauration** réguliers et automatisés (la partie qu'on oublie).
+- Objectifs **RPO/RTO** et runbook de bascule.
+
+### Stack
+restic/borg · S3-compatible · cron · Linux · chiffrement
+
+> **POC** — banc d'essai résilience, non déployé en production.`,
+  },
+  {
+    slug: "secrets-management-vault",
+    title: "Gestion des secrets — Vault & chiffrement",
+    date: "2025-05-15",
+    tags: ["Vault", "Secrets", "Chiffrement", "SOPS", "Sécurité", "Zero-trust", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure", "auth-system"],
+    description:
+      "POC : centraliser et sécuriser les secrets (Vault/SOPS) — rotation, accès contrôlé, chiffrement, zéro secret en clair dans le code.",
+    content: `## Gestion des secrets — Vault & chiffrement — POC
+
+**Le problème.** Les secrets traînent partout : fichiers \`.env\`, variables CI, dépôts Git. Un seul fuite et tout tombe.
+
+**Ce que je prototype**
+- **HashiCorp Vault** : stockage central, **accès contrôlé** (policies), audit.
+- **Rotation** dynamique des secrets et baux à durée de vie.
+- **SOPS + age/GPG** pour chiffrer les secrets versionnés en Git (GitOps-friendly).
+- **Zéro secret en clair** : injection au runtime, moindre privilège.
+
+### Stack
+Vault · SOPS · age/GPG · Kubernetes · CI/CD
+
+> **POC** — banc d'essai sécurité, non déployé en production.`,
+  },
+  {
+    slug: "homelab-proxmox-virtualisation",
+    title: "Homelab — virtualisation Proxmox & réseau",
+    date: "2025-03-15",
+    tags: ["Proxmox", "Virtualisation", "VLAN", "pfSense", "Homelab", "Réseau", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure", "cloud-setup", "self-hosted-platform"],
+    description:
+      "Lab : homelab de virtualisation Proxmox — VMs & conteneurs LXC, segmentation réseau (VLAN), pare-feu et services auto-hébergés.",
+    content: `## Homelab — virtualisation Proxmox & réseau — lab
+
+**L'objectif.** Un vrai terrain de jeu infra à la maison pour tester en conditions proches du réel : virtualisation, réseau segmenté, services auto-hébergés.
+
+**Ce que je construis**
+- **Proxmox VE** : VMs et conteneurs **LXC**, snapshots, templates.
+- **Réseau** : segmentation **VLAN**, pare-feu (pfSense/OPNsense), DNS interne.
+- Services auto-hébergés (Git, monitoring, reverse-proxy) sur cette base.
+- Sauvegardes et haute disponibilité entre nœuds.
+
+### Stack
+Proxmox VE · LXC · VLAN · pfSense · Linux
+
+> **Lab** — infrastructure d'expérimentation personnelle.`,
+  },
+  {
+    slug: "service-mesh-observability",
+    title: "Service mesh — trafic, mTLS & résilience (Istio/Linkerd)",
+    date: "2026-02-20",
+    tags: ["Service Mesh", "Istio", "Linkerd", "mTLS", "Kubernetes", "Microservices", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "POC : maillage de services sur Kubernetes — mTLS automatique, gestion fine du trafic (canary), résilience et observabilité.",
+    content: `## Service mesh — trafic, mTLS & résilience — POC
+
+**L'angle.** Quand les microservices se multiplient, la sécurité et le routage entre services deviennent le point dur. Un **service mesh** les industrialise.
+
+**Ce que je prototype**
+- **mTLS automatique** entre services (chiffrement + identité), zero-trust.
+- **Gestion du trafic** : canary, blue/green, retries, timeouts, circuit-breaking.
+- **Observabilité** native : traces, métriques, topologie des appels.
+- Comparaison **Istio vs Linkerd** (complexité, empreinte, cas d'usage).
+
+### Stack
+Istio/Linkerd · Kubernetes · mTLS · Envoy · observabilité
+
+> **POC** — banc d'essai microservices, non déployé en production.`,
+  },
+  {
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",
     date: "2023-09-01",
