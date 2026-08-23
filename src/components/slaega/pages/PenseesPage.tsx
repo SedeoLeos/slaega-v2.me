@@ -146,7 +146,20 @@ function PenseeCard({ pensee }: { pensee: Pensee }) {
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center gap-2 rounded-[2px] border border-foreground/15 px-5 py-3 font-space text-xs uppercase tracking-widest text-foreground transition-colors hover:border-green-app hover:text-green-app"
         >
-          Écouter <span aria-hidden>↗</span>
+          Écouter
+          <svg
+            aria-hidden
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-3.5 w-3.5"
+          >
+            <path d="M7 17 17 7" />
+            <path d="M8 7h9v9" />
+          </svg>
         </a>
       )}
     </article>
