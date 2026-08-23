@@ -34,6 +34,17 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async rewrites() {
+    // Serve the SEO endpoints from plain /api/* route handlers (which deploy
+    // reliably on Vercel) while keeping the canonical URLs. The `sitemap.xml`
+    // / `robots.txt` metadata-route conventions and dotted route folders were
+    // not routed on Vercel, causing a 404.
+    return [
+      { source: "/sitemap.xml", destination: "/api/sitemap" },
+      { source: "/robots.txt", destination: "/api/robots" },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n/request.ts');
