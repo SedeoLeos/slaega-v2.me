@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "(tsx scripts/db.ts migrate deploy || echo '⚠ migrate deploy skipped/failed — continuing build') && (tsx prisma/seed-prod.ts || echo '⚠ seed step failed — continuing build')",
+    "prebuild": "(tsx scripts/db.ts migrate deploy || echo '⚠ migrate deploy skipped/failed — continuing build') && (tsx prisma/seed-prod.ts || echo '⚠ seed step failed — continuing build') && (tsx scripts/gen-seo.ts || echo '⚠ gen-seo skipped/failed — continuing build')",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

@@ -501,7 +501,7 @@ article .article-content svg {
   margin: 0.6rem 0;
 }
 
-/* About page body — center prose paragraphs */
+/* About page body — editorial left-aligned prose */
 .about-body .prose p,
 .about-body .prose ul,
 .about-body .prose ol,
@@ -510,12 +510,20 @@ article .article-content svg {
 .about-body .prose h2,
 .about-body .prose h3,
 .about-body .prose h4 {
-  text-align: center;
+  text-align: left;
 }
-.about-body .prose ul,
-.about-body .prose ol {
-  list-style-position: inside;
-  padding-left: 0;
+.about-body .prose p {
+  margin: 0 0 1.1rem;
+}
+/* Lead-in first paragraph: larger, brighter — sets the tone. */
+.about-body .prose > p:first-of-type {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+}
+.about-body .prose strong {
+  color: var(--foreground);
+  font-weight: 600;
 }
 
 @layer base {

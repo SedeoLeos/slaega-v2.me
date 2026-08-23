@@ -296,6 +296,168 @@ Kubernetes/k3s · Docker · observabilité · Nginx
 
 > **POC** — banc d'essai fiabilité, non déployé en production.`,
   },
+  // ── DevOps / Infra / IA — labs & POC (homelab et bancs d'essai, honnêtement étiquetés).
+  {
+    slug: "cluster-kubernetes-kubeadm",
+    title: "Cluster Kubernetes from scratch (kubeadm)",
+    date: "2026-01-15",
+    tags: ["Kubernetes", "kubeadm", "containerd", "Calico", "HA", "Linux", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "Lab : montage d'un cluster Kubernetes de zéro avec kubeadm — control plane, nœuds workers, CNI, stockage et durcissement.",
+    content: `## Cluster Kubernetes from scratch avec kubeadm — lab
+
+**Pourquoi.** Comprendre Kubernetes en profondeur, c'est le monter soi-même — pas via un cluster managé. Ce lab installe un cluster **kubeadm** de bout en bout pour maîtriser chaque brique.
+
+**Ce que je monte**
+- **Bootstrap du control plane** avec \`kubeadm init\`, jonction des workers via \`kubeadm join\`.
+- **Runtime containerd** + **CNI** (Calico/Flannel) pour le réseau des pods.
+- **Ingress NGINX**, stockage persistant, et \`kube-vip\`/HAProxy pour un control plane **HA**.
+- **Durcissement** : RBAC, NetworkPolicies, secrets, mises à jour de version.
+
+### Stack
+Kubernetes · kubeadm · containerd · Calico · Ingress NGINX · Linux
+
+> **Lab / POC** — banc d'essai d'infrastructure, non destiné à la production.`,
+  },
+  {
+    slug: "k3s-edge-lightweight",
+    title: "k3s — Kubernetes léger pour edge & homelab",
+    date: "2025-12-01",
+    tags: ["k3s", "Kubernetes", "Edge", "Homelab", "Traefik", "GitOps", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "Lab : cluster k3s léger (edge/homelab) — installation multi-nœuds, Traefik, stockage local et déploiement d'apps.",
+    content: `## k3s — Kubernetes léger pour edge & homelab
+
+**L'idée.** Tous les projets n'ont pas besoin d'un cluster lourd. **k3s** offre un Kubernetes conforme mais minimal, idéal pour l'**edge**, l'IoT et le **homelab** — parfait pour héberger mes propres services.
+
+**Ce que je configure**
+- Installation **multi-nœuds** k3s (server + agents), embarquant **Traefik** et **containerd**.
+- **Stockage local** (local-path) et volumes persistants.
+- Déploiement d'applications réelles (services, bases, reverse proxy).
+- Comparaison **k3s vs kubeadm** : coût, empreinte, cas d'usage.
+
+### Stack
+k3s · Kubernetes · Traefik · Helm · Linux
+
+> **Lab / POC** — cluster de démonstration, non destiné à la production.`,
+  },
+  {
+    slug: "gitops-cicd-argocd",
+    title: "GitOps & CI/CD — pipeline déclaratif",
+    date: "2025-10-01",
+    tags: ["GitOps", "Argo CD", "CI/CD", "GitHub Actions", "Kubernetes", "Helm", "DevOps", "POC"],
+    categories: ["poc-prototype", "ci-cd", "devops-infrastructure"],
+    description:
+      "POC : chaîne GitOps — build/test en CI, images conteneurisées, déploiement continu piloté par Argo CD sur Kubernetes.",
+    content: `## GitOps & CI/CD — pipeline déclaratif — POC
+
+**Le principe.** L'état du cluster **vit dans Git**. On ne \`kubectl apply\` plus à la main : on pousse un commit, et l'infrastructure se réconcilie automatiquement.
+
+**Ce que je prototype**
+- **CI** : build, tests, lint, image Docker signée, push registry (GitHub Actions).
+- **CD GitOps** : **Argo CD** surveille le dépôt et applique les manifests/Helm.
+- **Rollback** par revert Git, environnements (dev/stag/prod) par branches/overlays.
+- **Kustomize/Helm** pour paramétrer sans dupliquer.
+
+### Stack
+Argo CD · GitHub Actions · Kubernetes · Helm · Kustomize · Docker
+
+> **POC** — chaîne de démonstration, non déployée en production.`,
+  },
+  {
+    slug: "iac-terraform-ansible",
+    title: "Infrastructure as Code — Terraform & Ansible",
+    date: "2025-08-01",
+    tags: ["Terraform", "Ansible", "IaC", "Provisioning", "Immutable", "Cloud", "DevOps", "Lab"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "Lab : provisionner et configurer une infra reproductible — Terraform pour les ressources, Ansible pour la configuration.",
+    content: `## Infrastructure as Code — Terraform & Ansible — lab
+
+**L'objectif.** Rendre l'infrastructure **reproductible et versionnée** : plus de serveurs configurés à la main, plus de dérive de configuration.
+
+**Ce que je construis**
+- **Terraform** : provisioning déclaratif des ressources (VMs, réseau, DNS), state géré.
+- **Ansible** : configuration idempotente des hôtes (paquets, users, services, durcissement).
+- **Cattle, not pets** : reconstruire l'infra depuis zéro à l'identique.
+- Secrets, modules réutilisables, et pipeline \`plan → apply\`.
+
+### Stack
+Terraform · Ansible · Linux · Cloud · Git
+
+> **Lab / POC** — socle d'automatisation, non destiné à la production.`,
+  },
+  {
+    slug: "observabilite-prometheus-grafana",
+    title: "Stack d'observabilité — Prometheus, Grafana, Loki",
+    date: "2025-06-01",
+    tags: ["Observabilité", "Prometheus", "Grafana", "Loki", "Alerting", "SRE", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure"],
+    description:
+      "POC : stack d'observabilité complète sur Kubernetes — métriques (Prometheus), dashboards (Grafana), logs (Loki) et alerting.",
+    content: `## Stack d'observabilité — Prometheus / Grafana / Loki — POC
+
+**Pourquoi.** On ne pilote pas ce qu'on ne mesure pas. Une plateforme sans observabilité tombe en panne **en silence**.
+
+**Ce que je déploie**
+- **Prometheus** : collecte des métriques, règles d'alerte, service discovery.
+- **Grafana** : dashboards (latence, erreurs, saturation — méthode RED/USE).
+- **Loki** : agrégation des logs corrélés aux métriques.
+- **Alertmanager** : routage des alertes, SLO/SLA, astreinte.
+
+### Stack
+Prometheus · Grafana · Loki · Alertmanager · Kubernetes
+
+> **POC** — banc d'essai SRE, non déployé en production.`,
+  },
+  {
+    slug: "llm-selfhosted-mlops",
+    title: "LLM auto-hébergé & MLOps — inférence privée",
+    date: "2026-03-01",
+    tags: ["IA", "LLM", "Ollama", "vLLM", "MLOps", "Kubernetes", "GPU", "DevOps", "POC"],
+    categories: ["poc-prototype", "devops-infrastructure", "api-webservice"],
+    description:
+      "POC DevOps × IA : héberger et servir des modèles LLM en privé (Ollama/vLLM) sur Kubernetes — inférence, mise à l'échelle et coûts.",
+    content: `## LLM auto-hébergé & MLOps — POC DevOps × IA
+
+**L'angle.** Croiser mon socle **DevOps** et l'**IA** : servir des modèles de langage **en privé**, sans dépendre d'une API tierce, avec la maîtrise des données et des coûts.
+
+**Ce que je prototype**
+- **Serving** de modèles ouverts via **Ollama / vLLM**, exposés en API OpenAI-compatible.
+- Déploiement sur **Kubernetes/k3s**, gestion **GPU** et mise à l'échelle.
+- **Observabilité** de l'inférence (latence, tokens/s, coût par requête).
+- Cache, quantization et arbitrages **coût/performance**.
+
+### Stack
+Ollama · vLLM · Kubernetes · Docker · GPU · API-first
+
+> **POC** — banc d'essai IA/MLOps, non déployé en production.`,
+  },
+  {
+    slug: "rag-assistant-devops",
+    title: "Assistant RAG — recherche augmentée sur mes données",
+    date: "2026-04-01",
+    tags: ["IA", "RAG", "Embeddings", "pgvector", "LLM", "NestJS", "DevOps", "POC"],
+    categories: ["poc-prototype", "api-webservice", "data-integration"],
+    description:
+      "POC IA : assistant RAG (Retrieval-Augmented Generation) sur une base documentaire — embeddings, pgvector, orchestration et garde-fous.",
+    content: `## Assistant RAG — recherche augmentée — POC IA
+
+**L'idée.** Un LLM ne connaît pas *mes* documents. Le **RAG** lui donne accès à une base documentaire à jour, sans réentraînement, avec des réponses **sourcées**.
+
+**Ce que je prototype**
+- **Ingestion & chunking** de documents, génération d'**embeddings**.
+- Recherche vectorielle avec **pgvector** (PostgreSQL), reranking.
+- Orchestration LLM + contexte, **citations** et garde-fous anti-hallucination.
+- API **NestJS** et intégration au socle auto-hébergé (voir LLM MLOps).
+
+### Stack
+NestJS · pgvector · PostgreSQL · Embeddings · LLM · Docker
+
+> **POC** — prototype IA, non déployé en production.`,
+  },
   {
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",

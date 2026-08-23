@@ -35,16 +35,10 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  async rewrites() {
-    // Serve the SEO endpoints from plain /api/* route handlers (which deploy
-    // reliably on Vercel) while keeping the canonical URLs. The `sitemap.xml`
-    // / `robots.txt` metadata-route conventions and dotted route folders were
-    // not routed on Vercel, causing a 404.
-    return [
-      { source: "/sitemap.xml", destination: "/api/sitemap" },
-      { source: "/robots.txt", destination: "/api/robots" },
-    ];
-  },
+  // NOTE: sitemap.xml / robots.txt are STATIC files in public/, generated at
+  // build time by scripts/gen-seo.ts (see prebuild). Static public/ assets are
+  // served directly by the Vercel CDN, so no rewrite/route handler is needed —
+  // and none can be, given every routed attempt 404'd in production.
 };
 
 const withNextIntl = createNextIntlPlugin('./src/libs/i18n/request.ts');
