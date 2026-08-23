@@ -26,8 +26,19 @@ function applySecurityHeaders(res: NextResponse): NextResponse {
   return res;
 }
 
+// Metadata / SEO endpoints + any file-like path (with a dot) must NEVER go
+// through i18n rewriting — otherwise next-intl turns /sitemap.xml into a
+// locale path and it 404s. This guard runs first, so even if Vercel's edge
+// runtime lets these into the middleware despite the matcher, they pass through.
+const PASS_THROUGH = new Set(["/sitemap.xml", "/robots.txt", "/manifest.webmanifest"]);
+
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // 0. Metadata/SEO endpoints and static-like files → serve as-is.
+  if (PASS_THROUGH.has(pathname) || pathname.includes(".")) {
+    return applySecurityHeaders(NextResponse.next());
+  }
 
   // 1. Admin routes → check GitHub auth, no i18n needed
   if (pathname.startsWith("/admin")) {
