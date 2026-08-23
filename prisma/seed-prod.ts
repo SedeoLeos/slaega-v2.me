@@ -512,11 +512,11 @@ async function seedFeaturedProjects() {
       date: p.date,
       tags: JSON.stringify(p.tags),
       categories: JSON.stringify(p.categories),
-      image: livePreview(p.projectUrl),
+      image: livePreview(p.projectUrl ?? null),
       description: p.description,
       content: p.content,
       published: true,
-      projectUrl: p.projectUrl,
+      projectUrl: p.projectUrl ?? null,
       githubUrl: null,
       videoUrl: null,
     };
