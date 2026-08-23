@@ -49,13 +49,31 @@ export default async function About() {
         )}
       </Reveal>
 
-      {/* Body */}
+      {/* Body — editorial two-column layout */}
       {data.body && (
-        <Reveal className="mx-auto max-w-content pt-16">
-          <div data-reveal-item className="about-body max-w-3xl text-[15px] leading-relaxed text-foreground/65">
-            <ContentRenderer content={data.body} collapseThreshold={2000} />
-          </div>
-        </Reveal>
+        <section className="mx-auto max-w-content pt-24">
+          <Reveal className="grid grid-cols-1 gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,15rem)_1fr]">
+            {/* Sticky label column */}
+            <div data-reveal-item className="lg:sticky lg:top-28 lg:self-start">
+              <span className="font-space text-sm text-green-app">[ approche ]</span>
+              <h2 className="mt-3 font-space text-2xl font-semibold leading-tight tracking-tight text-foreground md:text-3xl">
+                Comment j&rsquo;interviens
+              </h2>
+              <span
+                aria-hidden
+                className="mt-6 hidden h-px w-16 bg-gradient-to-r from-green-app to-transparent lg:block"
+              />
+            </div>
+
+            {/* Prose column */}
+            <div
+              data-reveal-item
+              className="about-body max-w-[68ch] border-l border-foreground/10 pl-6 text-[15px] leading-relaxed text-foreground/70 md:pl-10 md:text-[16px]"
+            >
+              <ContentRenderer content={data.body} collapseThreshold={2000} />
+            </div>
+          </Reveal>
+        </section>
       )}
 
       {/* Highlights */}

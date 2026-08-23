@@ -1,0 +1,19 @@
+# slaega — Seba Gedeon Matsoula Malonga
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: Omgilibot
+User-agent: FacebookBot
+User-agent: ia_archiver
+Disallow: /
+
+Host: https://slaega.com
+Sitemap: https://slaega.com/sitemap.xml
