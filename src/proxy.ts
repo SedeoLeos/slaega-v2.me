@@ -49,7 +49,11 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Run on all pages except static files, _next internals, and API routes.
-  // API routes handle their own rate-limiting at the handler level.
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  // Run on all pages except static files, _next internals, API routes, and the
+  // metadata/SEO endpoints (sitemap.xml, robots.txt, manifest, icons) — the
+  // latter are also excluded by the dotted-path rule but listed by name so the
+  // i18n middleware never intercepts them on Vercel's edge runtime.
+  matcher: [
+    "/((?!api|_next|_vercel|sitemap\\.xml|robots\\.txt|manifest\\.webmanifest|.*\\..*).*)",
+  ],
 };
