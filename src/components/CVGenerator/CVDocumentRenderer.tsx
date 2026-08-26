@@ -13,15 +13,7 @@ Font.registerHyphenationCallback((word) => [word]);
 import TemplateKronos from "./templates/TemplateKronos";
 import TemplateNexus from "./templates/TemplateNexus";
 import TemplatePrism from "./templates/TemplatePrism";
-import TemplateDuo from "./templates/TemplateDuo";
-import TemplateOrbit from "./templates/TemplateOrbit";
-import TemplateNova from "./templates/TemplateNova";
-import TemplatePulse from "./templates/TemplatePulse";
 import TemplateSupra from "./templates/TemplateSupra";
-import TemplateHello from "./templates/TemplateHello";
-import TemplateMosaic from "./templates/TemplateMosaic";
-import TemplateJulien from "./templates/TemplateJulien";
-import TemplateBright from "./templates/TemplateBright";
 
 type Props = {
   data: CVData;
@@ -40,23 +32,7 @@ export default function CVDocumentRenderer({
     return <TemplateNexus data={data} palette={palette} sections={sections} />;
   if (template === "prism")
     return <TemplatePrism data={data} palette={palette} sections={sections} />;
-  if (template === "duo")
-    return <TemplateDuo data={data} palette={palette} sections={sections} />;
-  if (template === "orbit")
-    return <TemplateOrbit data={data} palette={palette} sections={sections} />;
-  if (template === "nova")
-    return <TemplateNova data={data} palette={palette} sections={sections} />;
-  if (template === "pulse")
-    return <TemplatePulse data={data} palette={palette} sections={sections} />;
   if (template === "supra")
     return <TemplateSupra data={data} palette={palette} sections={sections} />;
-  if (template === "hello")
-    return <TemplateHello data={data} palette={palette} sections={sections} />;
-  if (template === "mosaic")
-    return <TemplateMosaic data={data} palette={palette} sections={sections} />;
-  if (template === "julien")
-    return <TemplateJulien data={data} palette={palette} sections={sections} />;
-  if (template === "bright")
-    return <TemplateBright data={data} palette={palette} sections={sections} />;
   return <TemplateKronos data={data} palette={palette} sections={sections} />;
 }

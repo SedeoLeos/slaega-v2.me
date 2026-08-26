@@ -65,19 +65,7 @@ export const defaultSections = (): CVSections => ({
 });
 
 // ─── Templates ───────────────────────────────────────────────────────────────
-export type CVTemplateId =
-  | "kronos"
-  | "nexus"
-  | "prism"
-  | "duo"
-  | "orbit"
-  | "nova"
-  | "pulse"
-  | "supra"
-  | "hello"
-  | "mosaic"
-  | "julien"
-  | "bright";
+export type CVTemplateId = "kronos" | "nexus" | "prism" | "supra";
 
 export type CVTemplateInfo = {
   id: CVTemplateId;
@@ -93,34 +81,10 @@ export const CV_TEMPLATES: CVTemplateInfo[] = [
   },
   { id: "nexus", label: "Nexus", description: "Sidebar sombre, icônes" },
   { id: "prism", label: "Prism", description: "Bandeau coloré, minimaliste" },
-  { id: "duo", label: "Duo", description: "Sidebar + dot ratings" },
-  { id: "orbit", label: "Orbit", description: "Globe géométrique, bicolonnes" },
-  { id: "nova", label: "Nova", description: "Header bold + décoration" },
-  {
-    id: "pulse",
-    label: "Pulse",
-    description: "Cards arrondies, hashtags colorés",
-  },
   {
     id: "supra",
     label: "Supra",
     description: "Photo pleine + sidebar + projets",
-  },
-  { id: "hello", label: "Hello", description: "Photo hero + progress bars" },
-  {
-    id: "mosaic",
-    label: "Mosaic",
-    description: "Mosaïque bleue fixe (no thème)",
-  },
-  {
-    id: "julien",
-    label: "Julien",
-    description: "Card bicolonne, hashtags, timeline",
-  },
-  {
-    id: "bright",
-    label: "Bright",
-    description: "Sidebar accent vive, projets 2-col",
   },
 ];
 
