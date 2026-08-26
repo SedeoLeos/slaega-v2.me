@@ -3,6 +3,7 @@ import { aboutPageRepository } from "@/features/about/repositories/about-page.re
 import { getExperiences } from "@/features/experience/use-cases/get-experiences.use-case";
 import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-case";
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
+import { localizeSkills } from "@/components/CVGenerator/cv-i18n-skills";
 import { NextRequest, NextResponse } from "next/server";
 
 // AI generation can exceed the default serverless timeout — allow up to 60s (Hobby plan cap).
@@ -126,6 +127,12 @@ CRITICAL — ONE language only (no mixing):
 1. Detect the dominant language of the JOB OFFER (French OR English).
 2. Write ABSOLUTELY EVERYTHING in THAT single language — tagline, summary, jobTitle, capabilities, experience descriptions, project descriptions AND the tech/skill labels. NEVER mix English and French. If the CV is French, descriptive tech phrases like "Mobile Payment" → "Paiement mobile", "Task Management" → "Gestion de tâches", "Dashboard" → "Tableau de bord". Proper product/tech NAMES (Spring Boot, NestJS, Kubernetes, Docker, PostgreSQL, Flutter…) stay as-is.
 
+SELECT & CURATE (act like a top recruiter building THIS candidate's best shot):
+- READ the full portfolio (every experience AND every project), then CHOOSE the items that will impress THIS specific company for THIS offer — the ones that prove the candidate can do exactly what they're hiring for. Ignore the rest.
+- Do NOT keep the portfolio's original order, and do NOT default to chronological order for projects. Order PROJECTS by how strongly they sell the candidate for this offer — most impressive / most relevant FIRST.
+- Do NOT copy the portfolio's project descriptions verbatim: re-author them to be attractive and to showcase the candidate's LEVEL (hard problems solved, architecture, scale, ownership) framed for what this employer is looking for.
+- Pick projects that fill gaps the experiences don't already cover, and that echo the offer's stack/domain.
+
 POSITION FOR THE OFFER (most important — do NOT force a fixed profile):
 - First infer the offer's SECTOR and ROLE FAMILY, then position the WHOLE CV (jobTitle, tagline, summary, order of emphasis) for it. Lead with what THIS offer values, not a fixed DevOps angle:
   • FinTech / Payments / Mobile Money / Banking → payment integrations (MTN Mobile Money, Airtel Money, Stripe), transaction reliability & reconciliation, security, KYC/compliance awareness, distributed backend, APIs.
@@ -144,15 +151,32 @@ ADAPT & ENRICH (no fabrication):
 - Tailor every section to the offer AND the portfolio; reformulate weak wording to sound senior, precise and results-oriented; surface implicit skills and add on-profile depth/keywords the offer asks for.
 - NEVER fabricate fake employers, fake dates, or false diplomas. Do NOT present research/POC as production: if the portfolio marks an item as étude/POC/R&D/article, keep that honest framing — it is still a strong signal ("étudié et prototypé", not "livré en production").
 
+★★★ WRITING STYLE — MAKE IT PUNCHY (this is the #1 quality criterion) ★★★
+The candidate's raw descriptions are flat first-person paragraphs. You MUST transform them into sharp, senior, achievement-oriented bullet points. A recruiter skims — every bullet must land in one glance.
+Rules for EVERY experience and project bullet:
+1. STRUCTURE: [strong action verb, past tense] + [what was built/led] + [concrete outcome / scale / business value]. Max ~22 words. Lead with the RESULT, not the task.
+2. NEVER start a bullet with "Je", "J'ai", "Intervention sur", "Participation à", "En charge de", "I", "Worked on", "Responsible for". Start with the VERB or the outcome.
+3. Use strong varied verbs: FR "Conçu, Livré, Architecturé, Industrialisé, Sécurisé, Automatisé, Optimisé, Intégré, Déployé, Piloté, Fiabilisé, Réduit, Accéléré, Migré, Mis à l'échelle" — EN "Built, Shipped, Architected, Scaled, Secured, Automated, Optimised, Integrated, Deployed, Led, Reduced, Accelerated, Migrated". Do not repeat the same verb twice in one experience.
+4. BE CONCRETE with TRUE specifics from the portfolio — named products/clients (societe.cg, focus-suite, Civis, ordredespharmaciens.cg…), real tech names, real scale words ("en production", "multi-tenant", "temps réel", "multi-marchés"). This is what makes it credible AND punchy.
+5. METRICS: use numbers ONLY if they are true/derivable from the portfolio. If none exist, DO NOT invent percentages — convey scale qualitatively and honestly ("plusieurs sites livrés en production", "architecture multi-tenant"). Never fake a metric.
+6. Weave the OFFER's key terms into the bullets when they are genuinely true for this candidate (e.g. for a mobile-money/USSD offer: "mobile money", "flux transactionnels temps réel", "réconciliation", "API opérateurs", "AWS").
+
+EXAMPLE — transform weak → punchy (FR):
+WEAK input: "Intervention sur e-Bourse, projet institutionnel à enjeux financiers. Je développe l'application mobile (React Native / Expo) ainsi que son backend (BFF) en Spring Boot : conception des parcours, exposition d'API, sécurité et performance."
+PUNCHY bullets:
+["Conçu et livré l'application mobile e-Bourse (React Native/Expo) et son backend BFF Spring Boot pour l'administration des finances publiques.",
+ "Exposé des API mobiles sécurisées et performantes sur un dispositif à fort enjeu financier, en production.",
+ "Modélisé les parcours utilisateurs de bout en bout pour une solution fiable et accessible aux usagers."]
+
 Strict rules:
 - Reply ONLY with a valid JSON object. No text before/after. No markdown fence.
 - "language": "fr" or "en" (detected from the job offer).
-- "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate for the OFFER'S family (not a fixed DevOps line). FR ex (fintech): "INGÉNIEUR BACKEND & PAIEMENTS — MOBILE MONEY, APIS FIABLES ET SÉCURISÉES". EN ex (devops): "SENIOR DEVOPS / SRE — KUBERNETES, CI/CD AND CLOUD RELIABILITY".
-- "summary": 2-3 concise sentences (~60 words max) rewriting the bio to match the offer. Lead with the strengths THIS offer values. Include KEY METRICS and ACHIEVEMENTS when possible. Do NOT copy the bio verbatim. Focus on impact and measurable results.
-- "jobTitle": positioned for the offer, in the detected language — NOT a generic fixed title. E.g. "Ingénieur Backend & Paiements", "Software Engineer — FinTech", "DevOps / SRE Engineer", "Ingénieur Logiciel — Banque/FinTech", "Architecte Logiciel".
-- "capabilities": 4-6 short bullets (5-12 words each), business-value + technical, aligned to the offer, in the detected language.
-- "experiences": ONLY the experiences relevant to this offer (3-5 max). Rewrite each description as 2-3 concise result-oriented sentences in detected language, foregrounding what the offer values. Include quantifiable achievements where possible. ID must match an input id.
-- "projects": ONLY relevant projects (3-5 max, POC/études included when they fit the sector). Rewrite as 1-2 impact sentences in detected language. SLUG must match an input slug.
+- "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate for the OFFER'S family (not a fixed DevOps line). FR ex (fintech): "INGÉNIEUR FULL-STACK & PAIEMENTS — MOBILE MONEY, SYSTÈMES TRANSACTIONNELS FIABLES". EN ex (devops): "SENIOR DEVOPS / SRE — KUBERNETES, CI/CD AND CLOUD RELIABILITY".
+- "summary": 2-3 punchy sentences (~55 words max) positioning the candidate for THIS offer. Open with the single strongest, offer-relevant claim (seniority + domain). Concrete, senior, results-oriented. Do NOT copy the bio verbatim, do NOT start with "Salut" or the full name.
+- "jobTitle": positioned for the offer, in the detected language — NOT a generic fixed title. E.g. "Ingénieur Full-Stack Senior — FinTech", "Senior Full Stack Engineer — Mobile Money", "DevOps / SRE Engineer", "Architecte Logiciel".
+- "capabilities": 4-6 short punchy bullets (5-12 words each), outcome + technical, aligned to the offer, in the detected language.
+- "experiences": ONLY the experiences relevant to this offer (3-5 max). For each, write "bullets": an array of 2-4 PUNCHY achievement bullets per the WRITING STYLE rules above. ID must match an input id.
+- "projects": ONLY relevant projects (3-5 max, POC/études included when they fit the sector). Rewrite "desc" as 1-2 punchy sentences that DEMONSTRATE THE CANDIDATE'S LEVEL — surface the hardest technical challenge solved, the architecture/scale/ownership (conçu, architecturé, livré en production), and the stack that proves seniority. Show caliber, not just "what the app does". Keep POC/étude items honestly framed. SLUG must match an input slug. Do NOT include the same project twice (dedupe by title/slug).
 - "relevantSkills": 8-15 key skills matching the OFFER first (not a fixed DevOps list). Tech NAMES stay as-is; any descriptive skill is written in the CV language.
 
 Strict JSON format:
@@ -162,7 +186,7 @@ Strict JSON format:
   "summary": "string",
   "jobTitle": "string",
   "capabilities": ["string", ...],
-  "experiences": [{"id":"string","role":"string","description":"string"}],
+  "experiences": [{"id":"string","role":"string","bullets":["string", ...]}],
   "projects": [{"slug":"string","title":"string","desc":"string"}],
   "relevantSkills": ["string", ...]
 }`;
@@ -231,12 +255,20 @@ Strict JSON format:
 
     const tailoredExperiences = (parsed.experiences ?? [])
       .filter((e: { id?: string }) => e.id && expById.has(e.id))
-      .map((e: { id: string; role: string; description: string }) => {
+      .map((e: { id: string; role: string; description?: string; bullets?: string[] }) => {
         const src = expById.get(e.id)!;
+        // Prefer the new punchy `bullets` array; join into a newline-separated
+        // string so every template (bullet-aware or plain) renders it well.
+        const bullets = Array.isArray(e.bullets)
+          ? e.bullets.map((b) => String(b).trim()).filter(Boolean)
+          : [];
+        const description = bullets.length
+          ? bullets.join("\n")
+          : e.description || src.description;
         return {
           id: e.id,
           role: e.role || src.role,
-          description: e.description || src.description,
+          description,
           score: scoreExperience(src, args.keywords),
         };
       });
@@ -402,6 +434,9 @@ export async function POST(req: NextRequest) {
       lang: detectedLang,
     });
 
+  // Single CV language: everything (skills, tags, labels) follows it.
+  const lang = tailored.language;
+
   // Hydrate experience metadata (company, location, dates) from source
   const expById = new Map(allExperiences.map((e) => [e.id, e]));
   const hydratedExperiences = tailored.experiences
@@ -416,7 +451,7 @@ export async function POST(req: NextRequest) {
         endDate: src.endDate,
         current: src.current,
         description: te.description,
-        skills: src.skills,
+        skills: localizeSkills(src.skills, lang),
         location: src.location,
         score: te.score,
       };
@@ -433,21 +468,23 @@ export async function POST(req: NextRequest) {
         slug: tp.slug,
         title: tp.title,
         desc: tp.desc,
-        tags: src.tags,
+        tags: localizeSkills(src.tags, lang),
         score: tp.score,
       };
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
 
-  // Display order: most recent first. Relevance drives which items are kept
-  // (above), but the CV must read chronologically — latest experience/project
-  // on top.
+  // Experiences read reverse-chronologically (recruiter standard — latest role
+  // on top). Selection is relevance-driven (above), display stays by date.
   const expRecencyKey = (e: { current: boolean; endDate: string | null; startDate: string }) =>
     e.current ? "9999-99" : e.endDate || e.startDate || "0000-00";
   hydratedExperiences.sort((a, b) => expRecencyKey(b).localeCompare(expRecencyKey(a)));
-  hydratedProjects.sort((a, b) =>
-    (projBySlug.get(b.slug)?.date ?? "").localeCompare(projBySlug.get(a.slug)?.date ?? "")
-  );
+  // Projects are NOT chronological: they are curated to sell the candidate for
+  // THIS offer, so keep the AI's relevance ordering (most impressive first).
+  // Fall back to keyword-relevance score when the AI order is unavailable.
+  if (getActiveAiProvider() === "mock") {
+    hydratedProjects.sort((a, b) => b.score - a.score);
+  }
 
   // All skills (for the Compétences section)
   const allSkills = Array.from(
@@ -466,7 +503,7 @@ export async function POST(req: NextRequest) {
     capabilities: tailored.capabilities,
     experiences: hydratedExperiences,
     projects: hydratedProjects,
-    relevantSkills: tailored.relevantSkills,
+    relevantSkills: localizeSkills(tailored.relevantSkills, lang),
     allSkills,
     aiProvider: getActiveAiProvider(),
   };

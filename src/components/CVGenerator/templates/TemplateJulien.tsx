@@ -20,6 +20,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CvBullets } from "./CvBullets";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -315,9 +316,7 @@ export default function TemplateJulien({ data, palette, sections }: Props) {
                         </Text>
                         <Text style={s.timelineTitle}>{exp.role}</Text>
                         <Text style={s.timelineSubtitle}>{exp.company}</Text>
-                        <Text style={s.timelineDesc}>
-                          {stripHtml(exp.description)}
-                        </Text>
+                        <CvBullets text={exp.description} textStyle={s.timelineDesc} />
                       </View>
                     </View>
                   ))}

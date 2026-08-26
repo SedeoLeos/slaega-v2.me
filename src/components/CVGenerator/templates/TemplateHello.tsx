@@ -18,6 +18,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CvBullets } from "./CvBullets";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -265,9 +266,7 @@ export default function TemplateHello({ data, palette, sections }: Props) {
                       </Text>
                     </View>
                     <Text style={s.expComp}>{exp.company}</Text>
-                    <Text style={s.expDesc}>
-                      {stripHtml(exp.description)}
-                    </Text>
+                    <CvBullets text={exp.description} textStyle={s.expDesc} />
                   </View>
                 ))}
               </View>

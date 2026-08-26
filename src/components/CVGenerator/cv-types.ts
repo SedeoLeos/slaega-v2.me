@@ -223,3 +223,23 @@ export function stripHtml(s: string): string {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+/**
+ * Turn an experience description into clean bullet lines.
+ * The AI now returns each experience as several punchy achievement bullets
+ * joined by newlines; legacy content may be HTML or a single paragraph.
+ * Block/`<br>` tags and newlines become bullet boundaries; each line is then
+ * HTML-stripped and de-bulleted. Returns [] for empty input.
+ */
+export function descToBullets(s: string): string[] {
+  if (!s) return [];
+  const withBreaks = (s ?? "")
+    .replace(/<\s*br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h[1-6])\s*>/gi, "\n")
+    .replace(/<li[^>]*>/gi, "\n");
+  return withBreaks
+    .split(/\r?\n+/)
+    .map((line) => stripHtml(line))
+    .map((l) => l.replace(/^[••\-*]\s*/, "").trim())
+    .filter(Boolean);
+}

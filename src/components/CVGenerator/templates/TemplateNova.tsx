@@ -11,6 +11,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CvBullets } from "./CvBullets";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -225,7 +226,7 @@ export default function TemplateNova({ data, palette, sections }: Props) {
                     <Text style={s.jobCo}>
                       {exp.company}{exp.location ? ` · ${exp.location}` : ""}
                     </Text>
-                    <Text style={s.jobDesc}>{stripHtml(exp.description)}</Text>
+                    <CvBullets text={exp.description} textStyle={s.jobDesc} />
                   </View>
                 ))}
               </View>
