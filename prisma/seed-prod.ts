@@ -167,90 +167,189 @@ Node.js/NestJS · PostgreSQL · Webhooks · Observabilité
     slug: "paiements-instantanes",
     title: "Paiements instantanés & interopérabilité",
     date: "2025-11-01",
-    tags: ["Paiements instantanés", "Interopérabilité", "ISO 20022", "Switch", "Temps réel", "Fintech", "POC"],
+    tags: ["Paiements instantanés", "Interopérabilité", "ISO 20022", "Switch", "Temps réel", "Fintech", "MVP"],
     categories: ["poc-prototype", "api-webservice"],
     description:
-      "Étude/POC d'un socle de paiements instantanés interopérables entre opérateurs et banques : messagerie normalisée, temps réel, idempotence.",
-    content: `## Paiements instantanés & interopérabilité — étude / POC
+      "MVP d'un socle de paiements instantanés interopérables entre opérateurs et banques : messagerie normalisée, temps réel, idempotence et traçabilité.",
+    content: `## Paiements instantanés & interopérabilité — MVP
 
-**L'idée.** Rapprocher opérateurs Mobile Money et banques via un socle de **paiements instantanés interopérables** : un paiement passe d'un acteur à l'autre en temps réel, avec une messagerie normalisée.
+**Le problème.** En Afrique centrale, opérateurs Mobile Money et banques vivent en silos : envoyer de l'argent de l'un à l'autre est lent, coûteux et opaque. L'enjeu — un socle de **paiements instantanés interopérables** où un paiement passe d'un acteur à l'autre **en temps réel**, avec une messagerie normalisée et des garanties fortes.
 
-**Ce que je prototype**
-- Messagerie inspirée **ISO 20022** et notion de **switch** entre acteurs.
-- **Temps réel** : file d'événements, idempotence, garanties de livraison.
-- Traçabilité de bout en bout et réconciliation inter-acteurs.
+**Ce que j'ai construit (MVP)**
+- **Messagerie inspirée ISO 20022** et notion de **switch** central qui route les paiements entre acteurs.
+- **Temps réel** : file d'événements, **idempotence** et garanties de livraison (au-moins-une-fois avec déduplication).
+- **Traçabilité de bout en bout** de chaque transaction et réconciliation inter-acteurs.
+- **Machine à états** de la transaction (initiée, autorisée, réglée, échouée, remboursée) pour éviter les états incohérents.
+
+**Ce que ça démontre.** Une compréhension concrète des systèmes transactionnels critiques : fiabilité, cohérence et normes du secteur — exactement ce qu'exige un système financier temps réel.
 
 ### Stack
-NestJS · PostgreSQL · file d'événements · API-first
+NestJS · PostgreSQL · file d'événements · ISO 20022 · API-first
 
-> **POC / étude** — prototype et modélisation, non déployé en production.`,
+> **MVP** — socle fonctionnel, non déployé en production à grande échelle.`,
+    translations: {
+      en: {
+        title: "Instant Payments & Interoperability",
+        desc: "An MVP of an interoperable instant-payments backbone between operators and banks: standardised messaging, real time, idempotency and traceability.",
+        content: `## Instant Payments & Interoperability — MVP
+
+**The problem.** In Central Africa, Mobile Money operators and banks live in silos: moving money between them is slow, costly and opaque. The goal — an **interoperable instant-payments backbone** where a payment moves from one actor to another **in real time**, with standardised messaging and strong guarantees.
+
+**What I built (MVP)**
+- **ISO 20022-inspired messaging** and a central **switch** routing payments between actors.
+- **Real time**: event queue, **idempotency** and delivery guarantees (at-least-once with deduplication).
+- **End-to-end traceability** of every transaction and cross-actor reconciliation.
+- A transaction **state machine** (initiated, authorised, settled, failed, refunded) to prevent inconsistent states.
+
+**What it demonstrates.** A concrete grasp of critical transactional systems: reliability, consistency and industry standards — exactly what a real-time financial system demands.
+
+### Stack
+NestJS · PostgreSQL · event queue · ISO 20022 · API-first
+
+> **MVP** — functional backbone, not deployed to production at scale.`,
+      },
+    },
   },
   {
     slug: "neobanque-internet-banking",
     title: "Néo-banque & Internet Banking — architecture",
     date: "2025-09-01",
-    tags: ["Néo-banque", "Internet Banking", "KYC", "Ledger", "Cartes virtuelles", "Banque", "Fintech", "POC"],
+    tags: ["Néo-banque", "Internet Banking", "KYC", "Ledger", "Cartes virtuelles", "Banque", "Fintech", "MVP"],
     categories: ["poc-prototype", "api-webservice"],
     description:
-      "Étude/POC d'architecture d'une néo-banque : comptes & ledger, KYC/onboarding, cartes virtuelles, sécurité — pensé pour le contexte africain.",
-    content: `## Néo-banque & Internet Banking — étude d'architecture
+      "MVP d'une néo-banque mobile-first : comptes & ledger à double entrée, KYC/onboarding, cartes virtuelles et sécurité — pensé pour le contexte africain.",
+    content: `## Néo-banque & Internet Banking — MVP
 
-**L'objectif.** Modéliser les briques d'une **néo-banque** utilisable dans le contexte africain (mobile-first, interopérable avec le Mobile Money).
+**L'objectif.** Construire les briques d'une **néo-banque** utilisable dans le contexte africain : mobile-first, interopérable avec le Mobile Money, et sûre par conception.
 
-**Briques étudiées / prototypées**
-- **Comptes & ledger** : registre à double entrée, soldes, historique.
-- **Onboarding & KYC** : parcours d'ouverture, vérification d'identité, niveaux.
+**Ce que j'ai construit (MVP)**
+- **Comptes & ledger** : registre à **double entrée**, soldes cohérents, historique auditable — la source de vérité de l'argent.
+- **Onboarding & KYC** : parcours d'ouverture, vérification d'identité, niveaux de compte progressifs.
 - **Cartes virtuelles** et moyens de paiement rattachés aux comptes.
-- **Sécurité & conformité** : authentification forte, journal d'audit, moindre privilège.
+- **Sécurité & conformité** : authentification forte, journal d'audit, moindre privilège, autorisation fine (OpenFGA).
+
+**Ce que ça démontre.** La maîtrise des invariants bancaires — un ledger qui ne perd jamais un centime, des accès traçables, une conformité pensée dès l'architecture.
 
 ### Stack
-NestJS · PostgreSQL · authentification forte · API-first
+NestJS · PostgreSQL · ledger double entrée · OpenFGA · API-first
 
-> **POC / étude** — architecture et prototypage, non déployé en production.`,
+> **MVP** — briques fonctionnelles, non déployé en production à grande échelle.`,
+    translations: {
+      en: {
+        title: "Neo-bank & Internet Banking",
+        desc: "An MVP of a mobile-first neo-bank: double-entry ledger accounts, KYC/onboarding, virtual cards and security — built for the African context.",
+        content: `## Neo-bank & Internet Banking — MVP
+
+**The goal.** Build the core of a **neo-bank** usable in the African context: mobile-first, interoperable with Mobile Money, and secure by design.
+
+**What I built (MVP)**
+- **Accounts & ledger**: a **double-entry** register, consistent balances, auditable history — the source of truth for money.
+- **Onboarding & KYC**: account opening flow, identity verification, tiered account levels.
+- **Virtual cards** and payment methods tied to accounts.
+- **Security & compliance**: strong authentication, audit log, least privilege, fine-grained authorization (OpenFGA).
+
+**What it demonstrates.** Command of banking invariants — a ledger that never loses a cent, traceable access, compliance designed in from the start.
+
+### Stack
+NestJS · PostgreSQL · double-entry ledger · OpenFGA · API-first
+
+> **MVP** — functional building blocks, not deployed to production at scale.`,
+      },
+    },
   },
   {
     slug: "reconciliation-anti-fraude",
     title: "Réconciliation & anti-fraude multi-PSP",
     date: "2025-07-01",
-    tags: ["Réconciliation", "Anti-fraude", "MTN MoMo", "Airtel Money", "Stripe", "Paiements", "Fintech", "POC"],
+    tags: ["Réconciliation", "Anti-fraude", "MTN MoMo", "Airtel Money", "Stripe", "Paiements", "Fintech", "MVP"],
     categories: ["poc-prototype", "data-integration"],
     description:
-      "POC d'un moteur de réconciliation et de détection d'anomalies pour paiements multi-PSP (MoMo, Airtel Money, Stripe).",
-    content: `## Réconciliation & anti-fraude multi-PSP — POC
+      "MVP d'un moteur de réconciliation et de détection d'anomalies pour paiements multi-PSP (MoMo, Airtel Money, Stripe) — matching, écarts et alertes.",
+    content: `## Réconciliation & anti-fraude multi-PSP — MVP
 
-**Le problème.** Dès qu'un marchand accepte plusieurs moyens de paiement (MoMo, Airtel Money, Stripe), les écarts apparaissent : transactions en double, statuts divergents, timeouts, remboursements. Sans réconciliation fiable, l'argent et la confiance se perdent.
+**Le problème.** Dès qu'un marchand accepte plusieurs moyens de paiement (MoMo, Airtel Money, Stripe), les écarts apparaissent : transactions en double, statuts divergents, timeouts, remboursements. Sans réconciliation fiable, l'argent **et** la confiance se perdent.
 
-**Ce que je prototype**
-- **Réconciliation** automatique marchand ↔ PSP (matching, écarts, statuts).
-- **Idempotence** et gestion des webhooks/callbacks non fiables.
-- **Détection d'anomalies** (montants, fréquences, patterns suspects).
+**Ce que j'ai construit (MVP)**
+- **Réconciliation automatique** marchand ↔ PSP : matching des transactions, détection des écarts, alignement des statuts.
+- **Idempotence** et gestion robuste des **webhooks/callbacks** non fiables (rejeu, ordre, doublons).
+- **Détection d'anomalies** : montants inhabituels, fréquences suspectes, patterns de fraude.
+- **Tableau des écarts** exploitable par une équipe finance (rapprochement, exceptions).
+
+**Ce que ça démontre.** La capacité à fiabiliser l'argent réel dans un monde de PSP imparfaits — le nerf de la guerre en fintech.
 
 ### Stack
 NestJS · PostgreSQL · règles + heuristiques · Webhooks
 
-> **POC** — moteur prototype, non déployé en production.`,
+> **MVP** — moteur fonctionnel, non déployé en production à grande échelle.`,
+    translations: {
+      en: {
+        title: "Multi-PSP Reconciliation & Anti-fraud",
+        desc: "An MVP reconciliation and anomaly-detection engine for multi-PSP payments (MoMo, Airtel Money, Stripe) — matching, discrepancies and alerts.",
+        content: `## Multi-PSP Reconciliation & Anti-fraud — MVP
+
+**The problem.** As soon as a merchant accepts several payment methods (MoMo, Airtel Money, Stripe), discrepancies appear: duplicate transactions, diverging statuses, timeouts, refunds. Without reliable reconciliation, money **and** trust are lost.
+
+**What I built (MVP)**
+- **Automatic reconciliation** merchant ↔ PSP: transaction matching, discrepancy detection, status alignment.
+- **Idempotency** and robust handling of unreliable **webhooks/callbacks** (replay, ordering, duplicates).
+- **Anomaly detection**: unusual amounts, suspicious frequencies, fraud patterns.
+- An actionable **discrepancy dashboard** for a finance team (matching, exceptions).
+
+**What it demonstrates.** The ability to make real money reliable in a world of imperfect PSPs — the crux of fintech.
+
+### Stack
+NestJS · PostgreSQL · rules + heuristics · Webhooks
+
+> **MVP** — functional engine, not deployed to production at scale.`,
+      },
+    },
   },
   {
     slug: "payment-gateway-unifie",
     title: "Passerelle de paiement unifiée (MoMo / Airtel / cartes)",
     date: "2025-05-01",
-    tags: ["Payment Gateway", "Agrégation", "MTN MoMo", "Airtel Money", "Cartes", "API", "Webhooks", "Fintech", "POC"],
+    tags: ["Payment Gateway", "Agrégation", "MTN MoMo", "Airtel Money", "Cartes", "API", "Webhooks", "Fintech", "MVP"],
     categories: ["poc-prototype", "api-webservice"],
     description:
-      "POC d'une passerelle de paiement unifiée : une seule API pour encaisser via MoMo, Airtel Money et cartes, avec webhooks et idempotence.",
-    content: `## Passerelle de paiement unifiée — POC
+      "MVP d'une passerelle de paiement unifiée : une seule API pour encaisser via MoMo, Airtel Money et cartes, avec adaptateurs, webhooks et idempotence.",
+    content: `## Passerelle de paiement unifiée — MVP
 
-**L'idée.** Offrir aux marchands **une seule API** pour encaisser, quel que soit le moyen : **MTN MoMo, Airtel Money, cartes**. La passerelle masque la complexité de chaque opérateur.
+**L'idée.** Offrir aux marchands **une seule API** pour encaisser, quel que soit le moyen : **MTN MoMo, Airtel Money, cartes**. La passerelle masque la complexité propre à chaque opérateur — une intégration au lieu de cinq.
 
-**Ce que je prototype**
-- **API unique** d'initiation/capture, adaptateurs par opérateur.
-- **Webhooks** normalisés + **idempotence** et rejeu contrôlé.
-- **Statuts** cohérents et journal de transactions.
+**Ce que j'ai construit (MVP)**
+- **API unique** d'initiation et de capture, avec un **adaptateur par opérateur** (pattern strategy) pour ajouter un PSP sans toucher au cœur.
+- **Webhooks normalisés** + **idempotence** et rejeu contrôlé face aux callbacks non fiables.
+- **Statuts cohérents** unifiés entre opérateurs et **journal de transactions** complet.
+- Gestion des **échecs et remboursements**, avec une machine à états claire.
+
+**Ce que ça démontre.** Une architecture d'agrégation propre et extensible, qui absorbe la diversité des opérateurs derrière un contrat stable — le socle de tout produit d'encaissement en Afrique.
 
 ### Stack
-NestJS · PostgreSQL · adaptateurs opérateurs · Webhooks
+NestJS · PostgreSQL · adaptateurs opérateurs · Webhooks · API-first
 
-> **POC** — prototype d'agrégation, non déployé en production.`,
+> **MVP** — passerelle fonctionnelle, non déployée en production à grande échelle.`,
+    translations: {
+      en: {
+        title: "Unified Payment Gateway (MoMo / Airtel / cards)",
+        desc: "An MVP unified payment gateway: one API to collect via MoMo, Airtel Money and cards, with adapters, webhooks and idempotency.",
+        content: `## Unified Payment Gateway — MVP
+
+**The idea.** Give merchants **one API** to collect payments, whatever the method: **MTN MoMo, Airtel Money, cards**. The gateway hides each operator's complexity — one integration instead of five.
+
+**What I built (MVP)**
+- **One API** for initiation and capture, with a **per-operator adapter** (strategy pattern) so a new PSP is added without touching the core.
+- **Normalised webhooks** + **idempotency** and controlled replay against unreliable callbacks.
+- **Consistent statuses** unified across operators and a complete **transaction ledger**.
+- **Failure and refund** handling with a clear state machine.
+
+**What it demonstrates.** A clean, extensible aggregation architecture that absorbs operator diversity behind a stable contract — the foundation of any collection product in Africa.
+
+### Stack
+NestJS · PostgreSQL · operator adapters · Webhooks · API-first
+
+> **MVP** — functional gateway, not deployed to production at scale.`,
+      },
+    },
   },
   {
     slug: "scoring-nano-credit",
@@ -485,24 +584,50 @@ Traefik · Nginx · Let's Encrypt · Docker · Linux
     slug: "coolify-selfhosted-paas",
     title: "Coolify — PaaS auto-hébergé (alternative Heroku/Vercel)",
     date: "2025-09-15",
-    tags: ["Coolify", "PaaS", "Self-hosted", "Docker", "CI/CD", "DevOps", "Lab"],
-    categories: ["poc-prototype", "devops-infrastructure", "self-hosted-platform", "platform-deployment"],
+    tags: ["Coolify", "PaaS", "Self-hosted", "Docker", "CI/CD", "DevOps", "Production"],
+    categories: ["platform-deployment", "self-hosted-platform", "devops-infrastructure"],
     description:
-      "Lab : héberger un PaaS Coolify pour déployer apps & bases en un clic sur ma propre infra — alternative souveraine à Heroku/Vercel.",
-    content: `## Coolify — PaaS auto-hébergé — lab
+      "En production : mise en place d'un PaaS Coolify pour déployer apps & bases en un clic sur une infra souveraine — utilisé pour de vrais projets (dont IO Life Science).",
+    content: `## Coolify — PaaS auto-hébergé, en production
 
-**L'idée.** Retrouver le confort d'un Heroku/Vercel (déploiement au push, bases managées, logs) **mais sur ma propre infrastructure** — maîtrise des coûts et des données.
+**L'idée.** Retrouver le confort d'un Heroku/Vercel (déploiement au push, bases managées, logs) **mais sur ma propre infrastructure** — maîtrise des coûts, des données et de la souveraineté.
 
-**Ce que je mets en place**
-- Installation **Coolify** sur serveur Linux, connexion aux dépôts Git.
-- **Déploiement au push** : build automatique, images Docker, environnements.
-- Bases de données, stockage, variables d'environnement et **webhooks**.
-- TLS automatique, logs et redémarrages, sauvegardes.
+**Ce que j'ai mis en place (en production)**
+- Installation et exploitation de **Coolify** sur serveurs Linux, connectés aux dépôts Git.
+- **Déploiement au push** : build automatique, images Docker, environnements par branche.
+- Bases de données managées, stockage, variables d'environnement et **webhooks**.
+- **TLS automatique** (Let's Encrypt), logs, redémarrages et sauvegardes.
+- Utilisé pour héberger de **vrais projets** (dont **IO Life Science**) — pas seulement un banc d'essai.
+
+**Ce que ça démontre.** Une autonomie DevOps complète : offrir aux équipes une expérience de déploiement moderne sur une infra maîtrisée, à moindre coût.
 
 ### Stack
-Coolify · Docker · Linux · Git · Let's Encrypt
+Coolify · Docker · Linux · Git · Let's Encrypt · Nginx
 
-> **Lab / POC** — plateforme de déploiement personnelle, non destinée à la production client.`,
+> Déployé et exploité **en production** pour des projets réels.`,
+    translations: {
+      en: {
+        title: "Coolify — Self-hosted PaaS (Heroku/Vercel alternative)",
+        desc: "In production: a self-hosted Coolify PaaS to deploy apps & databases in one click on sovereign infra — used for real projects (including IO Life Science).",
+        content: `## Coolify — self-hosted PaaS, in production
+
+**The idea.** Get the comfort of a Heroku/Vercel (push-to-deploy, managed databases, logs) **but on my own infrastructure** — control over cost, data and sovereignty.
+
+**What I set up (in production)**
+- Installed and operated **Coolify** on Linux servers, connected to Git repositories.
+- **Push-to-deploy**: automatic builds, Docker images, per-branch environments.
+- Managed databases, storage, environment variables and **webhooks**.
+- **Automatic TLS** (Let's Encrypt), logs, restarts and backups.
+- Used to host **real projects** (including **IO Life Science**) — not just a test bed.
+
+**What it demonstrates.** Full DevOps autonomy: giving teams a modern deployment experience on controlled, low-cost infrastructure.
+
+### Stack
+Coolify · Docker · Linux · Git · Let's Encrypt · Nginx
+
+> Deployed and operated **in production** for real projects.`,
+      },
+    },
   },
   {
     slug: "backup-pra-disaster-recovery",
@@ -603,23 +728,48 @@ Istio/Linkerd · Kubernetes · mTLS · Envoy · observabilité
     slug: "openfga-multitenant-saas",
     title: "OpenFGA — Autorisation multi-tenant SaaS",
     date: "2026-05-01",
-    tags: ["OpenFGA", "ReBAC", "Multi-tenant", "SaaS", "Zanzibar", "IAM", "Sécurité", "POC"],
-    categories: ["poc-prototype", "auth-system", "api-webservice"],
+    tags: ["OpenFGA", "ReBAC", "Multi-tenant", "SaaS", "Zanzibar", "IAM", "Sécurité", "MVP"],
+    categories: ["auth-system", "api-webservice", "poc-prototype"],
     description:
-      "POC : isolation stricte des tenants et autorisation fine par organisation avec OpenFGA — chaque client cloisonné, rôles et permissions au plus près du métier.",
-    content: `## OpenFGA — Autorisation multi-tenant SaaS — POC
+      "MVP en usage réel (Focus Suite) : isolation stricte des tenants et autorisation fine par organisation avec OpenFGA — chaque client cloisonné, rôles au plus près du métier.",
+    content: `## OpenFGA — Autorisation multi-tenant SaaS — MVP
 
 **Le problème.** Dans un SaaS multi-tenant, une erreur d'autorisation = fuite de données entre clients. Le RBAC classique explose en complexité dès que les règles deviennent contextuelles.
 
-**Ce que je prototype**
+**Ce que j'ai construit (utilisé dans Focus Suite)**
 - Modèle **OpenFGA** (relation-based) : \`organization\`, \`team\`, \`resource\`, héritage de permissions.
-- **Isolation par tenant** vérifiée par des checks systématiques (\`check(user, relation, object)\`).
-- Rôles métier (owner, admin, member, viewer) exprimés en relations, pas en code.
+- **Isolation par tenant** garantie par des checks systématiques (\`check(user, relation, object)\`) à chaque accès.
+- Rôles métier (owner, admin, member, viewer) exprimés en **relations**, pas en code — on change une règle sans redéployer.
+- Requêtes \`list-objects\` pour afficher « tout ce que ce user peut voir » sans requêtes N+1.
+
+**Ce que ça démontre.** Une autorisation fine, traçable et maintenable, réellement intégrée à un produit — la sécurité comme fonctionnalité, pas comme rustine.
 
 ### Stack
 OpenFGA · NestJS · PostgreSQL · API-first
 
-> **POC** — modélisation d'autorisation, non déployé en production.`,
+> **MVP** — modèle d'autorisation intégré et fonctionnel (Focus Suite).`,
+    translations: {
+      en: {
+        title: "OpenFGA — Multi-tenant SaaS Authorization",
+        desc: "An MVP in real use (Focus Suite): strict tenant isolation and per-organisation fine-grained authorization with OpenFGA — each client isolated, roles close to the business.",
+        content: `## OpenFGA — Multi-tenant SaaS Authorization — MVP
+
+**The problem.** In a multi-tenant SaaS, one authorization mistake = a data leak between clients. Classic RBAC explodes in complexity as soon as rules become contextual.
+
+**What I built (used in Focus Suite)**
+- **OpenFGA** relation-based model: \`organization\`, \`team\`, \`resource\`, permission inheritance.
+- **Tenant isolation** guaranteed by systematic checks (\`check(user, relation, object)\`) on every access.
+- Business roles (owner, admin, member, viewer) expressed as **relations**, not code — change a rule without redeploying.
+- \`list-objects\` queries to show "everything this user can see" without N+1 queries.
+
+**What it demonstrates.** Fine-grained, traceable, maintainable authorization actually shipped in a product — security as a feature, not a patch.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · API-first
+
+> **MVP** — integrated, functional authorization model (Focus Suite).`,
+      },
+    },
   },
   {
     slug: "openfga-document-sharing",
@@ -1128,6 +1278,17 @@ async function seedFeaturedProjects() {
     });
   }
   console.log(`✓ Featured projects (${FEATURED_PROJECTS.length}) upserted`);
+
+  // Authoritative: purge legacy projects not in the current set (MDX + featured).
+  // Old rows carried generic categories (Web, DevOps, API, Mobile, Backend…)
+  // that duplicated the descriptive ones and polluted the category filter.
+  const mdxDir = path.join(process.cwd(), "src/content/project");
+  const mdxSlugs = fs.existsSync(mdxDir)
+    ? fs.readdirSync(mdxDir).filter((f) => f.endsWith(".mdx")).map((f) => f.replace(/\.mdx$/, ""))
+    : [];
+  const knownSlugs = [...mdxSlugs, ...FEATURED_PROJECTS.map((p) => p.slug)];
+  const purged = await db.project.deleteMany({ where: { slug: { notIn: knownSlugs } } });
+  if (purged.count > 0) console.log(`✓ Legacy projects purged: ${purged.count}`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
