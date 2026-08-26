@@ -207,21 +207,40 @@ export function formatMonth(
   return `${months[parseInt(m) - 1]} ${y}`;
 }
 
-export function stripHtml(s: string): string {
+/**
+ * Remove Markdown syntax so nothing like `##`, `**`, `>` or `` ` `` ever
+ * reaches the PDF — the reader must see clean prose only.
+ */
+export function stripMarkdown(s: string): string {
   return (s ?? "")
-    .replace(
-      /<\/?(p|br|div|h[1-6]|li|ul|ol|strong|em|a|u|span|table|tr|td|th|img|hr)[^>]*>/gi,
-      " ",
-    )
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, " ")
+    .replace(/```[\s\S]*?```/g, " ") // fenced code blocks
+    .replace(/`([^`]+)`/g, "$1") // inline code
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "") // images
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1") // links → text
+    .replace(/(\*\*|__)(.*?)\1/g, "$2") // bold
+    .replace(/(\*|_)(.*?)\1/g, "$2") // italic
+    .replace(/(^|[\n\s])#{1,6}\s+/g, "$1") // ATX headings
+    .replace(/(^|[\n\s.])>+\s+/g, "$1") // blockquote markers
+    .replace(/^\s{0,3}[-*+]\s+/gm, "") // list bullets at line start
+    .replace(/\*{2,}|_{2,}|~{2,}/g, "") // stray emphasis runs
     .trim();
+}
+
+export function stripHtml(s: string): string {
+  return stripMarkdown(
+    (s ?? "")
+      .replace(
+        /<\/?(p|br|div|h[1-6]|li|ul|ol|strong|em|a|u|span|table|tr|td|th|img|hr)[^>]*>/gi,
+        " ",
+      )
+      .replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'"),
+  ).replace(/\s+/g, " ").trim();
 }
 
 /**

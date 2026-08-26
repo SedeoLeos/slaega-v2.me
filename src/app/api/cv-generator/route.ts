@@ -21,6 +21,16 @@ function stripHtml(s: string): string {
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    // Strip Markdown so no ##, **, >, ` leak into the CV text.
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/(\*\*|__)(.*?)\1/g, "$2")
+    .replace(/(\*|_)(.*?)\1/g, "$2")
+    .replace(/(^|[\n\s])#{1,6}\s+/g, "$1")
+    .replace(/(^|[\n\s.])>+\s+/g, "$1")
+    .replace(/\*{2,}|_{2,}|~{2,}/g, "")
     .replace(/\s+/g, " ")
     .trim();
 }
