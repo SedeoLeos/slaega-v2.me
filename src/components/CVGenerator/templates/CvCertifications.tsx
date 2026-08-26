@@ -13,11 +13,14 @@ export function CvCertifications({
   accent = "#111827",
   color = "#111827",
   muted = "#6b7280",
+  border = "#e5e7eb",
   compact = false,
 }: {
   accent?: string;
   color?: string;
   muted?: string;
+  /** Card border colour — keep it light (default is a soft gray). */
+  border?: string;
   compact?: boolean;
 }) {
   if (!CERTIFICATIONS.length) return null;
@@ -52,8 +55,8 @@ export function CvCertifications({
               gap: compact ? 5 : 7,
               width: "48%",
               padding: compact ? 5 : 7,
-              borderWidth: 0.6,
-              borderColor: muted,
+              borderWidth: 0.5,
+              borderColor: border,
               borderRadius: 3,
             }}
           >

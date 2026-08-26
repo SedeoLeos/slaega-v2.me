@@ -354,7 +354,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
             </>
           )}
 
-          <CvCertifications accent={ACC} color={TEXT} muted={MUTED} />
+          <CvCertifications accent={ACC} color={TEXT} muted={MUTED} border={DIVIDER} />
         </View>
       </Page>
     </Document>
