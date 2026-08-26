@@ -18,6 +18,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml, descToBullets } from "../cv-types";
+import { CvCertifications } from "./CvCertifications";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -352,6 +353,8 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
               ))}
             </>
           )}
+
+          <CvCertifications accent={ACC} color={TEXT} muted={MUTED} />
         </View>
       </Page>
     </Document>

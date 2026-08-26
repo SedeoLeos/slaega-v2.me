@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://slaega.com</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com"/>
@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://slaega.com/project</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project"/>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience"/>
@@ -32,7 +32,7 @@
   </url>
   <url>
     <loc>https://slaega.com/about</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/about"/>
@@ -42,7 +42,7 @@
   </url>
   <url>
     <loc>https://slaega.com/moi</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/moi"/>
@@ -52,7 +52,7 @@
   </url>
   <url>
     <loc>https://slaega.com/philosophie</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/philosophie"/>
@@ -62,7 +62,7 @@
   </url>
   <url>
     <loc>https://slaega.com/pensees</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/pensees"/>
@@ -72,7 +72,7 @@
   </url>
   <url>
     <loc>https://slaega.com/cv</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/cv"/>
@@ -82,7 +82,7 @@
   </url>
   <url>
     <loc>https://slaega.com/birthday</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/birthday"/>
@@ -92,7 +92,7 @@
   </url>
   <url>
     <loc>https://slaega.com/contact</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/contact"/>
@@ -511,8 +511,108 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/service-mesh-observability"/>
   </url>
   <url>
+    <loc>https://slaega.com/project/openfga-multitenant-saas</loc>
+    <lastmod>2026-05-01T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-multitenant-saas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-multitenant-saas"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-multitenant-saas"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-multitenant-saas"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-document-sharing</loc>
+    <lastmod>2026-04-15T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-document-sharing"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-document-sharing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-document-sharing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-document-sharing"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-org-hierarchy</loc>
+    <lastmod>2026-03-20T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-org-hierarchy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-org-hierarchy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-org-hierarchy"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-org-hierarchy"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-fintech-approvals</loc>
+    <lastmod>2026-02-10T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-fintech-approvals"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-fintech-approvals"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-fintech-approvals"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-fintech-approvals"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-neobank-accounts</loc>
+    <lastmod>2026-01-15T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-neobank-accounts"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-neobank-accounts"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-neobank-accounts"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-neobank-accounts"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-keycloak-integration</loc>
+    <lastmod>2025-12-05T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-keycloak-integration"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-keycloak-integration"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-keycloak-integration"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-keycloak-integration"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-api-gateway</loc>
+    <lastmod>2025-11-10T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-api-gateway"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-api-gateway"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-api-gateway"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-api-gateway"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-healthcare-consent</loc>
+    <lastmod>2025-10-01T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-healthcare-consent"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-healthcare-consent"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-healthcare-consent"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-healthcare-consent"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-marketplace</loc>
+    <lastmod>2025-08-20T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-marketplace"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-marketplace"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-marketplace"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-marketplace"/>
+  </url>
+  <url>
+    <loc>https://slaega.com/project/openfga-modeling-patterns</loc>
+    <lastmod>2025-06-15T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/project/openfga-modeling-patterns"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://slaega.com/en/project/openfga-modeling-patterns"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://slaega.com/es/project/openfga-modeling-patterns"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://slaega.com/pt/project/openfga-modeling-patterns"/>
+  </url>
+  <url>
     <loc>https://slaega.com/experience/novenvera</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/novenvera"/>
@@ -522,7 +622,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/ministere-des-finances-du-budget-et-du-portefeuille-public-congo</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/ministere-des-finances-du-budget-et-du-portefeuille-public-congo"/>
@@ -532,7 +632,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/slaega</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/slaega"/>
@@ -542,7 +642,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/nanocreatives</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/nanocreatives"/>
@@ -552,7 +652,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/baye-conception</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/baye-conception"/>
@@ -562,7 +662,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/ginov-digital</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/ginov-digital"/>
@@ -572,7 +672,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/cfi-ciras</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/cfi-ciras"/>
@@ -582,7 +682,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/soprim-societe-de-promotion-immobiliere</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/soprim-societe-de-promotion-immobiliere"/>
@@ -592,7 +692,7 @@
   </url>
   <url>
     <loc>https://slaega.com/experience/freelance-independant</loc>
-    <lastmod>2026-08-23T11:42:27.766Z</lastmod>
+    <lastmod>2026-08-26T21:11:17.018Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://slaega.com/experience/freelance-independant"/>
