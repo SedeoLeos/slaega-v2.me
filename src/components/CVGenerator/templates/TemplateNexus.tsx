@@ -12,6 +12,7 @@ import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
 import { CvBullets } from "./CvBullets";
+import { CvCertifications } from "./CvCertifications";
 
 // ── SVG Icons ─────────────────────────────────────────────────────────────────
 function IconEmail({ color }: { color: string }) {
@@ -245,6 +246,8 @@ export default function TemplateNexus({ data, palette, sections }: Props) {
               ))}
             </View>
           ) : null}
+
+          <CvCertifications accent={palette.accent} />
         </View>
       </Page>
     </Document>
