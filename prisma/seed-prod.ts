@@ -792,6 +792,25 @@ OpenFGA · NestJS · PostgreSQL · API-first
 OpenFGA · NestJS · PostgreSQL
 
 > **POC** — banc d'essai autorisation, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Document Sharing (Google Docs-style)",
+        desc: "POC: granular sharing permissions (viewer/commenter/editor), shared links and per-folder inheritance with OpenFGA.",
+        content: `## OpenFGA — Google Docs-style document sharing — POC
+
+**The idea.** Reproduce the web's most demanding sharing model: viewer / commenter / editor, link sharing, folder → document inheritance, groups.
+
+**What I prototype**
+- **OpenFGA** model: \`document\`, \`folder\`, \`group\`, relations \`viewer\`/\`commenter\`/\`editor\`/\`owner\`.
+- **Inheritance**: a folder's rights propagate to its documents.
+- Sharing via **public link** and by group, with instant revocation.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — authorization test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-org-hierarchy",
@@ -814,6 +833,25 @@ OpenFGA · NestJS · PostgreSQL
 OpenFGA · NestJS · PostgreSQL
 
 > **POC** — modélisation hiérarchique, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Organisational Hierarchy & Inheritance",
+        desc: "POC: model org → department → team → resource with rights inheritance and delegation, in OpenFGA relations.",
+        content: `## OpenFGA — Organisational hierarchy — POC
+
+**The context.** Large structures have rights that flow down the hierarchy: a director sees what their teams see. Hard-coding that is unmanageable.
+
+**What I prototype**
+- **OpenFGA** model: \`org\` → \`department\` → \`team\` → \`resource\`, inheritance relations.
+- **Temporary delegation** (cover, leave) without duplicating rules.
+- \`list-objects\` queries for "everything this user can see".
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — hierarchical modelling, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-fintech-approvals",
@@ -836,6 +874,25 @@ OpenFGA · NestJS · PostgreSQL
 OpenFGA · NestJS · PostgreSQL · Paiements
 
 > **POC** — banc d'essai conformité, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Payment Approvals & Access (fintech)",
+        desc: "POC: who can initiate / approve / view a transaction — separation of duties and approval limits modelled with OpenFGA.",
+        content: `## OpenFGA — Payment authorization — POC
+
+**The stakes.** In fintech, authorization IS the internal control: separation of duties (whoever initiates ≠ whoever approves), limits, scopes.
+
+**What I prototype**
+- **OpenFGA** relations: \`initiator\`, \`approver\`, \`viewer\` on a \`transaction\` / \`wallet\`.
+- **Separation of duties** (SoD) enforced by the model, not by application code.
+- Per-market/account scopes and audit trails of access decisions.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · Payments
+
+> **POC** — compliance test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-neobank-accounts",
@@ -858,6 +915,25 @@ OpenFGA · NestJS · PostgreSQL · Paiements
 OpenFGA · NestJS · PostgreSQL · Banque
 
 > **POC** — modélisation bancaire, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Shared Accounts & Banking Delegation",
+        desc: "POC: joint accounts, powers of attorney and access delegation (proxy, accountant) for a neo-bank, modelled with OpenFGA.",
+        content: `## OpenFGA — Shared accounts & delegation — POC
+
+**The need.** A bank account rarely has a single "owner": joint accounts, powers of attorney, proxies, the company accountant. The access model must reflect these relations.
+
+**What I prototype**
+- **OpenFGA** relations: \`holder\`, \`co-holder\`, \`delegate\`, \`accountant\` on an \`account\`.
+- **Delegation** with limited duration and restricted scope (read-only, capped transfers).
+- Immediate revocation and traceability.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · Banking
+
+> **POC** — banking modelling, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-keycloak-integration",
@@ -880,6 +956,25 @@ OpenFGA · NestJS · PostgreSQL · Banque
 Keycloak · OpenFGA · NestJS · OIDC
 
 > **POC** — intégration IAM, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA + Keycloak — identity & fine-grained authorization",
+        desc: "POC: combine Keycloak (authentication/OIDC) and OpenFGA (fine-grained authorization) — strong identity + relationship-based permissions.",
+        content: `## OpenFGA + Keycloak — identity & authorization — POC
+
+**The architecture.** Cleanly separate **authentication** (who are you — Keycloak/OIDC) and **authorization** (are you allowed — OpenFGA). Two responsibilities, two building blocks.
+
+**What I prototype**
+- **Keycloak**: login, OIDC, tokens, identity federation.
+- **OpenFGA**: fine-grained authorization decisions from the Keycloak identity.
+- Middleware chaining \`verify token\` → \`check permission\`.
+
+### Stack
+Keycloak · OpenFGA · NestJS · OIDC
+
+> **POC** — IAM integration, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-api-gateway",
@@ -902,6 +997,25 @@ Keycloak · OpenFGA · NestJS · OIDC
 OpenFGA · Nginx/Gateway · NestJS · Microservices
 
 > **POC** — banc d'essai d'architecture, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — API Gateway authorization middleware",
+        desc: "POC: centralise authorization at the API gateway — every request checked against OpenFGA before it reaches the services.",
+        content: `## OpenFGA — Authorization at the gateway — POC
+
+**The idea.** Rather than scattering checks across every microservice, centralise authorization at the **gateway**: a single, consistent decision point.
+
+**What I prototype**
+- Gateway middleware translating route + method → \`check(user, relation, object)\` OpenFGA.
+- **Decision cache** and low-latency evaluation.
+- Explicit denial and access logging.
+
+### Stack
+OpenFGA · Nginx/Gateway · NestJS · Microservices
+
+> **POC** — architecture test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-healthcare-consent",
@@ -924,6 +1038,25 @@ OpenFGA · Nginx/Gateway · NestJS · Microservices
 OpenFGA · NestJS · PostgreSQL
 
 > **POC** — modélisation confidentialité, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Consent & health-record access",
+        desc: "POC: access to medical records driven by patient consent (treating physician, emergency, family) with OpenFGA.",
+        content: `## OpenFGA — Patient consent & health access — POC
+
+**The stakes.** In healthcare, access to a record depends on **consent** and context: treating doctor, referred specialist, emergency, authorised relative.
+
+**What I prototype**
+- **OpenFGA** relations: \`treating_doctor\`, \`referred\`, \`emergency\`, \`guardian\` on a \`record\`.
+- Patient **consent** as a revocable relation.
+- Traced emergency access ("break glass") and auditable.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — confidentiality modelling, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-marketplace",
@@ -946,6 +1079,25 @@ OpenFGA · NestJS · PostgreSQL
 OpenFGA · NestJS · PostgreSQL · E-commerce
 
 > **POC** — modélisation multi-acteurs, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Multi-actor marketplace permissions",
+        desc: "POC: marketplace authorization (vendor, store manager, platform admin, customer) and product scopes with OpenFGA.",
+        content: `## OpenFGA — Marketplace permissions — POC
+
+**The context.** A marketplace mixes actors with very different rights: vendors on their stores, managers, platform admins, customers.
+
+**What I prototype**
+- **OpenFGA** relations: \`store\` → \`product\`/\`order\`, roles \`vendor\`/\`manager\`/\`platform_admin\`.
+- A vendor acts only on **their** store; the platform admin sees everything.
+- Delegation to managers and per-category scopes.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · E-commerce
+
+> **POC** — multi-actor modelling, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "openfga-modeling-patterns",
@@ -968,6 +1120,25 @@ OpenFGA · NestJS · PostgreSQL · E-commerce
 OpenFGA · modélisation · NestJS · tests
 
 > **Étude / POC** — synthèse et bonnes pratiques, non déployé en production.`,
+    translations: {
+      en: {
+        title: "OpenFGA — Modelling patterns & RBAC→ReBAC migration",
+        desc: "Study/POC: a catalogue of OpenFGA patterns (groups, inheritance, ownership, sharing) and a method to migrate an existing RBAC to ReBAC.",
+        content: `## OpenFGA — Patterns & RBAC→ReBAC migration — study / POC
+
+**The through-line of the series.** After several POCs, this work consolidates the **reusable patterns** and a migration method from classic RBAC.
+
+**What I document / prototype**
+- Patterns: **groups**, **inheritance**, **ownership**, **sharing**, **temporary delegation**.
+- **RBAC → ReBAC migration** method: map roles → relations without a big bang.
+- Authorization tests (\`check\` assertions) as a safety net.
+
+### Stack
+OpenFGA · modelling · NestJS · tests
+
+> **Study / POC** — synthesis and best practices, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "focus-suite",
