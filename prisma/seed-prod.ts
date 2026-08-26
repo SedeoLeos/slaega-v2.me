@@ -938,21 +938,46 @@ WordPress · WooCommerce · Paiement · Responsive
     tags: ["WordPress", "PHP", "Vitrine", "Congo", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
-      "Societe.cg : un site web livré en production chez Nanocreatives — conception, intégration et mise en ligne.",
+      "Societe.cg — plateforme web livrée en production chez Nanocreatives : conception, intégration sur mesure, performance et SEO, du cadrage à l'exploitation.",
     projectUrl: "https://societe.cg",
-    content: `## Societe.cg — un site web livré en production
+    content: `## Societe.cg — une plateforme web livrée en production
 
-**Le projet.** Conception, intégration et mise en ligne de **Societe.cg**, un site web bâti sur **WordPress** et livré en production.
+**Le contexte.** Une organisation a besoin d'une présence digitale crédible : un site rapide, clair et bien référencé, capable de porter son image et de convertir ses visiteurs. J'ai pris en charge **Societe.cg** de bout en bout — du cadrage jusqu'à l'exploitation en production.
 
-### Ce que j'ai apporté
-- **Intégration WordPress** — thème sur mesure, contenus structurés.
-- **Interface soignée** — claire, responsive, orientée usage.
-- **Mise en production** — déploiement, SEO et exploitation réels.
+**Ma contribution.** Conception de l'architecture d'information, **intégration WordPress sur mesure** (thème, gabarits, composants réutilisables), structuration éditoriale et optimisation continue. J'ai porté autant le front que la mise en ligne réelle : hébergement, déploiement, sécurité de base et **SEO technique**.
+
+### Ce que j'ai livré
+- **Intégration sur mesure** — thème et gabarits taillés pour le besoin, pas un template générique.
+- **Performance web** — temps de chargement maîtrisés, images optimisées, bonnes pratiques Core Web Vitals.
+- **SEO technique** — structure sémantique, métadonnées, indexation propre.
+- **Mise en production & exploitation** — déploiement, suivi, maintenance.
 
 ### Stack
-WordPress · PHP · SEO · Responsive
+WordPress · PHP · SEO · Performance · Responsive
 
-> _Aperçu en direct ci-dessus._`,
+> Livré en production et exploité — une base saine, rapide et maintenable.`,
+    translations: {
+      en: {
+        title: "Societe.cg — Web Platform",
+        desc: "Societe.cg — a web platform shipped to production at Nanocreatives: bespoke design and integration, performance and SEO, from scoping to operations.",
+        content: `## Societe.cg — a web platform shipped to production
+
+**The context.** An organisation needs a credible digital presence: a fast, clear, well-ranked site that carries its brand and converts visitors. I owned **Societe.cg** end to end — from scoping to running it in production.
+
+**My contribution.** Information architecture, **bespoke WordPress integration** (theme, templates, reusable components), editorial structuring and continuous optimisation. I handled both the front end and the real go-live: hosting, deployment, baseline security and **technical SEO**.
+
+### What I delivered
+- **Bespoke integration** — theme and templates built for the need, not a generic template.
+- **Web performance** — controlled load times, optimised images, Core Web Vitals best practices.
+- **Technical SEO** — semantic structure, metadata, clean indexing.
+- **Go-live & operations** — deployment, monitoring, maintenance.
+
+### Stack
+WordPress · PHP · SEO · Performance · Responsive
+
+> Shipped to production and operated — a clean, fast, maintainable foundation.`,
+      },
+    },
   },
   {
     slug: "bralima",
@@ -961,23 +986,46 @@ WordPress · PHP · SEO · Responsive
     tags: ["WordPress", "PHP", "Corporate", "Vitrine", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
-      "Le site corporate de Bralima : une présence digitale à la hauteur d'un grand groupe industriel, moderne et performante.",
+      "Site corporate de Bralima : une présence digitale à la hauteur d'un grand groupe industriel — image de marque, contenus institutionnels, performance et SEO.",
     projectUrl: "https://bralima.net/",
-    content: `## Bralima — la présence digitale d'un grand groupe
+    content: `## Bralima — la présence digitale d'un grand groupe industriel
 
-**L'enjeu.** Pour un acteur industriel majeur, le site corporate est une **carte de visite institutionnelle** : il doit refléter la solidité et l'envergure de la marque.
+**L'enjeu.** Pour un acteur industriel majeur, le site corporate n'est pas un détail : c'est la **carte de visite institutionnelle** de la marque. Il doit inspirer la solidité, refléter l'envergure du groupe et servir plusieurs publics — clients, partenaires, presse, candidats.
 
-**La réalisation.** Un **site corporate** moderne et performant : présentation du groupe, de ses activités et de ses actualités, avec une exécution soignée.
+**La réalisation.** J'ai conçu et intégré un **site corporate** moderne, structuré autour de l'identité du groupe : présentation des activités, des engagements et des actualités, avec une exécution soignée et une attention forte à la crédibilité perçue.
 
 ### Points forts
-- **Identité forte** — un design à la mesure de la marque.
-- **Contenus institutionnels** — activités, engagements, actualités.
-- **Performance & SEO** — rapide, responsive, bien référencé.
+- **Identité de marque** — un design à la mesure d'un grand groupe, cohérent et affirmé.
+- **Architecture éditoriale** — activités, engagements RSE, actualités, organisés pour chaque audience.
+- **Performance & SEO** — pages rapides, responsive, structure sémantique et référencement propre.
+- **Fiabilité** — un site institutionnel qui doit rester disponible et à jour.
 
 ### Stack
-WordPress · PHP · SEO · Responsive
+WordPress · PHP · SEO · Performance · Responsive
 
-> Une vitrine corporate crédible et durable.`,
+> Une vitrine corporate crédible, durable et à la hauteur de la marque.`,
+    translations: {
+      en: {
+        title: "Bralima — Corporate Website",
+        desc: "Bralima's corporate website: a digital presence worthy of a major industrial group — brand image, institutional content, performance and SEO.",
+        content: `## Bralima — the digital presence of a major industrial group
+
+**The stakes.** For a major industrial player, the corporate website is no detail: it is the brand's **institutional business card**. It must convey solidity, reflect the group's scale and serve several audiences — clients, partners, press, candidates.
+
+**The build.** I designed and integrated a modern **corporate website**, structured around the group's identity: activities, commitments and news, with careful execution and strong attention to perceived credibility.
+
+### Highlights
+- **Brand identity** — a design worthy of a major group, coherent and assertive.
+- **Editorial architecture** — activities, CSR commitments, news, organised per audience.
+- **Performance & SEO** — fast, responsive pages, semantic structure and clean ranking.
+- **Reliability** — an institutional site that must stay available and up to date.
+
+### Stack
+WordPress · PHP · SEO · Performance · Responsive
+
+> A credible, durable corporate showcase worthy of the brand.`,
+      },
+    },
   },
   {
     slug: "retailix-partners",
@@ -986,21 +1034,46 @@ WordPress · PHP · SEO · Responsive
     tags: ["WordPress", "PHP", "Retail", "B2B", "SEO"],
     categories: ["web-app", "showcase-site"],
     description:
-      "Retailix Partners : le site B2B des acteurs du retail — présentation de l'offre, crédibilité et génération de contacts.",
+      "Retailix Partners : la plateforme B2B des acteurs du retail — présentation de l'offre, crédibilité, génération de leads qualifiés et SEO.",
     projectUrl: "https://retailixpartners.com/",
-    content: `## Retailix Partners — la vitrine B2B du retail
+    content: `## Retailix Partners — la plateforme B2B du retail
 
-**Le projet.** Conception et intégration de **Retailix Partners**, un site **B2B** dédié au secteur du retail : présenter l'offre, inspirer confiance et générer des contacts qualifiés.
+**Le projet.** Concevoir et intégrer **Retailix Partners**, un site **B2B** dédié au secteur du retail. L'objectif n'est pas seulement de « présenter » : il faut inspirer confiance à des décideurs, clarifier une offre complexe et **générer des contacts qualifiés**.
+
+**L'approche.** Un parcours pensé pour la cible B2B : messages clés en tête, preuves et bénéfices structurés, appels à l'action orientés conversion. Le tout dans une intégration **WordPress sur mesure**, facile à faire vivre côté client.
 
 ### Ce qui a été construit
-- **Présentation de l'offre** — claire, structurée, orientée décideurs.
-- **Intégration WordPress** — thème sur mesure, contenus faciles à maintenir.
-- **Performance & SEO** — rapide, responsive, bien référencé.
+- **Discours B2B** — offre clarifiée, orientée décideurs, hiérarchie de l'information soignée.
+- **Génération de leads** — parcours et CTA pensés pour convertir le visiteur en contact.
+- **Intégration sur mesure** — thème et contenus maintenables sans dépendance technique.
+- **Performance & SEO** — rapide, responsive, bien référencé sur les requêtes métier.
 
 ### Stack
-WordPress · PHP · SEO · Responsive
+WordPress · PHP · SEO · Performance · Responsive
 
-> Une vitrine B2B crédible, pensée pour convertir.`,
+> Une plateforme B2B crédible, pensée pour convertir et durer.`,
+    translations: {
+      en: {
+        title: "Retailix Partners — B2B Retail Platform",
+        desc: "Retailix Partners: the B2B platform for retail players — offering presentation, credibility, qualified lead generation and SEO.",
+        content: `## Retailix Partners — the B2B retail platform
+
+**The project.** Design and integrate **Retailix Partners**, a **B2B** website for the retail sector. The goal isn't merely to "present": it must earn decision-makers' trust, clarify a complex offering and **generate qualified leads**.
+
+**The approach.** A journey built for a B2B audience: key messages up front, structured proof and benefits, conversion-oriented calls to action — all in a **bespoke WordPress integration** that's easy for the client to maintain.
+
+### What was built
+- **B2B narrative** — clarified offering, decision-maker focus, careful information hierarchy.
+- **Lead generation** — journeys and CTAs designed to turn visitors into contacts.
+- **Bespoke integration** — maintainable theme and content, no technical lock-in.
+- **Performance & SEO** — fast, responsive, well-ranked on business queries.
+
+### Stack
+WordPress · PHP · SEO · Performance · Responsive
+
+> A credible B2B platform, built to convert and to last.`,
+      },
+    },
   },
   {
     slug: "iolifescience-infra",
@@ -1044,6 +1117,9 @@ async function seedFeaturedProjects() {
       projectUrl: p.projectUrl ?? null,
       githubUrl: null,
       videoUrl: null,
+      translations: JSON.stringify(
+        (p as { translations?: unknown }).translations ?? {},
+      ),
     };
     await db.project.upsert({
       where: { slug: p.slug },
