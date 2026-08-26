@@ -1278,6 +1278,17 @@ async function seedFeaturedProjects() {
     });
   }
   console.log(`✓ Featured projects (${FEATURED_PROJECTS.length}) upserted`);
+
+  // Authoritative: purge legacy projects not in the current set (MDX + featured).
+  // Old rows carried generic categories (Web, DevOps, API, Mobile, Backend…)
+  // that duplicated the descriptive ones and polluted the category filter.
+  const mdxDir = path.join(process.cwd(), "src/content/project");
+  const mdxSlugs = fs.existsSync(mdxDir)
+    ? fs.readdirSync(mdxDir).filter((f) => f.endsWith(".mdx")).map((f) => f.replace(/\.mdx$/, ""))
+    : [];
+  const knownSlugs = [...mdxSlugs, ...FEATURED_PROJECTS.map((p) => p.slug)];
+  const purged = await db.project.deleteMany({ where: { slug: { notIn: knownSlugs } } });
+  if (purged.count > 0) console.log(`✓ Legacy projects purged: ${purged.count}`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
