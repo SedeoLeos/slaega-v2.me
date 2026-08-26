@@ -162,6 +162,26 @@ const FEATURED_PROJECTS = [
 Node.js/NestJS · PostgreSQL · Webhooks · Observabilité
 
 > **Étude / R&D** — recherche & prototypage (article en préparation), **volontairement générique** (aucune faille précise divulguée). Non déployé en production.`,
+    translations: {
+      en: {
+        title: "Mobile Money Security — MoMo & Airtel Money",
+        desc: "Research & article (in progress) on the security of Mobile Money services in Africa: attack surfaces, fraud and reconciliation — studied and prototyped.",
+        content: `## Mobile Money Security — study & article (in progress)
+
+**Why.** Mobile Money (MTN MoMo, Airtel Money) carries a huge share of payments in Africa — concentrating as much value as risk: fraud, social engineering, merchant-side integration weaknesses, reconciliation.
+
+**What I study**, from the integrator/merchant side:
+- Transaction lifecycle and break points (USSD, API, callbacks/webhooks).
+- **Fraud & abuse**: replay, idempotency, double-spend, SIM-swap, phishing.
+- **Reconciliation** merchant ↔ operator and anomaly detection.
+- Hardening integrations (signatures, secrets, logging, least privilege).
+
+### Prototyping stack
+Node.js/NestJS · PostgreSQL · Webhooks · Observability
+
+> **Study / R&D** — research & prototyping (article in progress), **deliberately generic** (no specific vulnerability disclosed). Not deployed to production.`,
+      },
+    },
   },
   {
     slug: "paiements-instantanes",
@@ -372,6 +392,25 @@ NestJS · PostgreSQL · operator adapters · Webhooks · API-first
 Python/Node · PostgreSQL · règles + features simples
 
 > **Étude / POC** — modélisation et prototype, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Scoring & mobile nano-credit — financial inclusion",
+        desc: "Study/POC of a lightweight scoring for mobile nano-credit based on Mobile Money history — financial inclusion.",
+        content: `## Scoring & mobile nano-credit — study / POC
+
+**The context.** Many have no banking history, but **a Mobile Money history**. That's a basis for responsible **nano-credit** and financial inclusion.
+
+**What I study**
+- **Scoring** signals from Mobile Money usage (regularity, flows).
+- Lending rules and safeguards (limits, over-indebtedness prevention).
+- Data ethics & compliance.
+
+### Stack
+Python/Node · PostgreSQL · rules + simple features
+
+> **Study / POC** — modelling and prototype, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "sre-paiements",
@@ -394,6 +433,25 @@ Python/Node · PostgreSQL · règles + features simples
 Kubernetes/k3s · Docker · observabilité · Nginx
 
 > **POC** — banc d'essai fiabilité, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Observability & SRE for payment platforms",
+        desc: "A POC connecting my DevOps foundation to payments: observability, SLO/SLA and resilience for critical transactional systems.",
+        content: `## Observability & SRE for payment platforms — POC
+
+**The angle.** A payment system tolerates neither silent failure nor a lost transaction. This POC connects my **DevOps/SRE** foundation to the demands of **payments**.
+
+**What I prototype**
+- **Observability**: metrics, traces, logs correlated around the transaction.
+- **SLO/SLA** and alerting on critical paths (failures, latency, reconciliation).
+- **Resilience**: retries, idempotency, controlled degradation on Kubernetes.
+
+### Stack
+Kubernetes/k3s · Docker · observability · Nginx
+
+> **POC** — reliability test bed, not deployed to production.`,
+      },
+    },
   },
   // ── DevOps / Infra / IA — labs & POC (homelab et bancs d'essai, honnêtement étiquetés).
   {
@@ -418,6 +476,26 @@ Kubernetes/k3s · Docker · observabilité · Nginx
 Kubernetes · kubeadm · containerd · Calico · Ingress NGINX · Linux
 
 > **Lab / POC** — banc d'essai d'infrastructure, non destiné à la production.`,
+    translations: {
+      en: {
+        title: "Kubernetes cluster from scratch (kubeadm)",
+        desc: "Lab: building a Kubernetes cluster from scratch with kubeadm — control plane, worker nodes, CNI, storage and hardening.",
+        content: `## Kubernetes cluster from scratch with kubeadm — lab
+
+**Why.** To understand Kubernetes deeply, you build it yourself — not via a managed cluster. This lab installs a **kubeadm** cluster end to end to master every building block.
+
+**What I build**
+- **Control plane bootstrap** with \`kubeadm init\`, joining workers via \`kubeadm join\`.
+- **containerd runtime** + **CNI** (Calico/Flannel) for pod networking.
+- **NGINX Ingress**, persistent storage, and \`kube-vip\`/HAProxy for an **HA** control plane.
+- **Hardening**: RBAC, NetworkPolicies, secrets, version upgrades.
+
+### Stack
+Kubernetes · kubeadm · containerd · Calico · NGINX Ingress · Linux
+
+> **Lab / POC** — infrastructure test bed, not intended for production.`,
+      },
+    },
   },
   {
     slug: "k3s-edge-lightweight",
@@ -441,6 +519,26 @@ Kubernetes · kubeadm · containerd · Calico · Ingress NGINX · Linux
 k3s · Kubernetes · Traefik · Helm · Linux
 
 > **Lab / POC** — cluster de démonstration, non destiné à la production.`,
+    translations: {
+      en: {
+        title: "k3s — lightweight Kubernetes for edge & homelab",
+        desc: "Lab: a lightweight k3s cluster (edge/homelab) — multi-node install, Traefik, local storage and app deployment.",
+        content: `## k3s — lightweight Kubernetes for edge & homelab
+
+**The idea.** Not every project needs a heavy cluster. **k3s** offers a conformant but minimal Kubernetes, ideal for **edge**, IoT and the **homelab** — perfect for hosting my own services.
+
+**What I configure**
+- **Multi-node** k3s install (server + agents), bundling **Traefik** and **containerd**.
+- **Local storage** (local-path) and persistent volumes.
+- Deploying real applications (services, databases, reverse proxy).
+- **k3s vs kubeadm** comparison: cost, footprint, use cases.
+
+### Stack
+k3s · Kubernetes · Traefik · Helm · Linux
+
+> **Lab / POC** — demo cluster, not intended for production.`,
+      },
+    },
   },
   {
     slug: "gitops-cicd-argocd",
@@ -464,6 +562,26 @@ k3s · Kubernetes · Traefik · Helm · Linux
 Argo CD · GitHub Actions · Kubernetes · Helm · Kustomize · Docker
 
 > **POC** — chaîne de démonstration, non déployée en production.`,
+    translations: {
+      en: {
+        title: "GitOps & CI/CD — declarative pipeline",
+        desc: "POC: a GitOps chain — build/test in CI, containerised images, continuous deployment driven by Argo CD on Kubernetes.",
+        content: `## GitOps & CI/CD — declarative pipeline — POC
+
+**The principle.** The cluster's state **lives in Git**. No more manual \`kubectl apply\`: you push a commit, and the infrastructure reconciles automatically.
+
+**What I prototype**
+- **CI**: build, tests, lint, signed Docker image, registry push (GitHub Actions).
+- **GitOps CD**: **Argo CD** watches the repo and applies manifests/Helm.
+- **Rollback** via Git revert, environments (dev/stag/prod) by branches/overlays.
+- **Kustomize/Helm** to parameterise without duplication.
+
+### Stack
+Argo CD · GitHub Actions · Kubernetes · Helm · Kustomize · Docker
+
+> **POC** — demo chain, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "iac-terraform-ansible",
@@ -487,6 +605,26 @@ Argo CD · GitHub Actions · Kubernetes · Helm · Kustomize · Docker
 Terraform · Ansible · Linux · Cloud · Git
 
 > **Lab / POC** — socle d'automatisation, non destiné à la production.`,
+    translations: {
+      en: {
+        title: "Infrastructure as Code — Terraform & Ansible",
+        desc: "Lab: provision and configure reproducible infrastructure — Terraform for resources, Ansible for configuration.",
+        content: `## Infrastructure as Code — Terraform & Ansible — lab
+
+**The goal.** Make infrastructure **reproducible and versioned**: no more hand-configured servers, no more configuration drift.
+
+**What I build**
+- **Terraform**: declarative resource provisioning (VMs, network, DNS), managed state.
+- **Ansible**: idempotent host configuration (packages, users, services, hardening).
+- **Cattle, not pets**: rebuild the infra from scratch, identically.
+- Secrets, reusable modules, and a \`plan → apply\` pipeline.
+
+### Stack
+Terraform · Ansible · Linux · Cloud · Git
+
+> **Lab / POC** — automation foundation, not intended for production.`,
+      },
+    },
   },
   {
     slug: "observabilite-prometheus-grafana",
@@ -510,6 +648,26 @@ Terraform · Ansible · Linux · Cloud · Git
 Prometheus · Grafana · Loki · Alertmanager · Kubernetes
 
 > **POC** — banc d'essai SRE, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Observability stack — Prometheus, Grafana, Loki",
+        desc: "POC: a complete observability stack on Kubernetes — metrics (Prometheus), dashboards (Grafana), logs (Loki) and alerting.",
+        content: `## Observability stack — Prometheus / Grafana / Loki — POC
+
+**Why.** You can't run what you don't measure. A platform without observability fails **silently**.
+
+**What I deploy**
+- **Prometheus**: metric collection, alert rules, service discovery.
+- **Grafana**: dashboards (latency, errors, saturation — RED/USE method).
+- **Loki**: log aggregation correlated with metrics.
+- **Alertmanager**: alert routing, SLO/SLA, on-call.
+
+### Stack
+Prometheus · Grafana · Loki · Alertmanager · Kubernetes
+
+> **POC** — SRE test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "llm-selfhosted-mlops",
@@ -533,6 +691,26 @@ Prometheus · Grafana · Loki · Alertmanager · Kubernetes
 Ollama · vLLM · Kubernetes · Docker · GPU · API-first
 
 > **POC** — banc d'essai IA/MLOps, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Self-hosted LLM & MLOps — private inference",
+        desc: "DevOps × AI POC: host and serve LLMs privately (Ollama/vLLM) on Kubernetes — inference, scaling and cost.",
+        content: `## Self-hosted LLM & MLOps — DevOps × AI POC
+
+**The angle.** Cross my **DevOps** foundation with **AI**: serve language models **privately**, without depending on a third-party API, keeping control of data and cost.
+
+**What I prototype**
+- **Serving** open models via **Ollama / vLLM**, exposed as an OpenAI-compatible API.
+- Deployment on **Kubernetes/k3s**, **GPU** management and scaling.
+- **Inference observability** (latency, tokens/s, cost per request).
+- Caching, quantization and **cost/performance** trade-offs.
+
+### Stack
+Ollama · vLLM · Kubernetes · Docker · GPU · API-first
+
+> **POC** — AI/MLOps test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "rag-assistant-devops",
@@ -556,6 +734,26 @@ Ollama · vLLM · Kubernetes · Docker · GPU · API-first
 NestJS · pgvector · PostgreSQL · Embeddings · LLM · Docker
 
 > **POC** — prototype IA, non déployé en production.`,
+    translations: {
+      en: {
+        title: "RAG Assistant — augmented search over my data",
+        desc: "AI POC: a RAG (Retrieval-Augmented Generation) assistant over a document base — embeddings, pgvector, orchestration and guardrails.",
+        content: `## RAG Assistant — augmented search — AI POC
+
+**The idea.** An LLM doesn't know *my* documents. **RAG** gives it access to an up-to-date document base, without retraining, with **sourced** answers.
+
+**What I prototype**
+- **Ingestion & chunking** of documents, **embedding** generation.
+- Vector search with **pgvector** (PostgreSQL), reranking.
+- LLM + context orchestration, **citations** and anti-hallucination guardrails.
+- **NestJS** API and integration with the self-hosted stack (see LLM MLOps).
+
+### Stack
+NestJS · pgvector · PostgreSQL · Embeddings · LLM · Docker
+
+> **POC** — AI prototype, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "reverse-proxy-tls",
@@ -579,6 +777,26 @@ NestJS · pgvector · PostgreSQL · Embeddings · LLM · Docker
 Traefik · Nginx · Let's Encrypt · Docker · Linux
 
 > **Lab / POC** — banc d'essai réseau, non destiné à la production.`,
+    translations: {
+      en: {
+        title: "Reverse-proxy & TLS — Traefik / Nginx + Let's Encrypt",
+        desc: "Lab: expose several services behind a reverse proxy with automatic TLS — Traefik/Nginx, Let's Encrypt, routing and hardening.",
+        content: `## Reverse-proxy & automatic TLS — lab
+
+**The need.** Run several applications on one host, each reachable over HTTPS, without juggling ports or renewing certificates by hand.
+
+**What I configure**
+- **Traefik / Nginx** as a reverse proxy: per-domain/subdomain routing, load balancing.
+- **Automatic TLS** via **Let's Encrypt** (ACME), renewal without downtime.
+- **Hardening**: security headers, HSTS, HTTP→HTTPS redirects, rate limiting.
+- Dynamic service discovery (Docker labels) and middlewares.
+
+### Stack
+Traefik · Nginx · Let's Encrypt · Docker · Linux
+
+> **Lab / POC** — network test bed, not intended for production.`,
+      },
+    },
   },
   {
     slug: "coolify-selfhosted-paas",
@@ -651,6 +869,26 @@ Coolify · Docker · Linux · Git · Let's Encrypt · Nginx
 restic/borg · S3-compatible · cron · Linux · chiffrement
 
 > **POC** — banc d'essai résilience, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Backup & DR — disaster recovery",
+        desc: "POC: a backup strategy and disaster-recovery plan — encrypted backups, restore tests, RPO/RTO objectives.",
+        content: `## Backup & DR — disaster recovery — POC
+
+**Why.** A backup you've never restored isn't a backup. This POC builds a **tested** backup and recovery strategy.
+
+**What I prototype**
+- **Encrypted, incremental backups** (restic/borg) to object storage (S3-compatible).
+- **3-2-1 rule**, rotation and retention.
+- **Regular, automated restore tests** (the part everyone forgets).
+- **RPO/RTO** objectives and a failover runbook.
+
+### Stack
+restic/borg · S3-compatible · cron · Linux · encryption
+
+> **POC** — resilience test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "secrets-management-vault",
@@ -674,6 +912,26 @@ restic/borg · S3-compatible · cron · Linux · chiffrement
 Vault · SOPS · age/GPG · Kubernetes · CI/CD
 
 > **POC** — banc d'essai sécurité, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Secrets management — Vault & encryption",
+        desc: "POC: centralise and secure secrets (Vault/SOPS) — rotation, controlled access, encryption, zero plaintext secrets in code.",
+        content: `## Secrets management — Vault & encryption — POC
+
+**The problem.** Secrets lie around everywhere: \`.env\` files, CI variables, Git repos. One leak and everything falls.
+
+**What I prototype**
+- **HashiCorp Vault**: central storage, **controlled access** (policies), audit.
+- **Dynamic rotation** of secrets and time-limited leases.
+- **SOPS + age/GPG** to encrypt secrets versioned in Git (GitOps-friendly).
+- **Zero plaintext secrets**: runtime injection, least privilege.
+
+### Stack
+Vault · SOPS · age/GPG · Kubernetes · CI/CD
+
+> **POC** — security test bed, not deployed to production.`,
+      },
+    },
   },
   {
     slug: "homelab-proxmox-virtualisation",
@@ -697,6 +955,26 @@ Vault · SOPS · age/GPG · Kubernetes · CI/CD
 Proxmox VE · LXC · VLAN · pfSense · Linux
 
 > **Lab** — infrastructure d'expérimentation personnelle.`,
+    translations: {
+      en: {
+        title: "Homelab — Proxmox virtualisation & networking",
+        desc: "Lab: a Proxmox virtualisation homelab — VMs & LXC containers, network segmentation (VLAN), firewall and self-hosted services.",
+        content: `## Homelab — Proxmox virtualisation & networking — lab
+
+**The goal.** A real infra playground at home to test in near-real conditions: virtualisation, segmented networking, self-hosted services.
+
+**What I build**
+- **Proxmox VE**: VMs and **LXC** containers, snapshots, templates.
+- **Networking**: **VLAN** segmentation, firewall (pfSense/OPNsense), internal DNS.
+- Self-hosted services (Git, monitoring, reverse proxy) on this base.
+- Backups and high availability across nodes.
+
+### Stack
+Proxmox VE · LXC · VLAN · pfSense · Linux
+
+> **Lab** — personal experimentation infrastructure.`,
+      },
+    },
   },
   {
     slug: "service-mesh-observability",
@@ -720,6 +998,26 @@ Proxmox VE · LXC · VLAN · pfSense · Linux
 Istio/Linkerd · Kubernetes · mTLS · Envoy · observabilité
 
 > **POC** — banc d'essai microservices, non déployé en production.`,
+    translations: {
+      en: {
+        title: "Service mesh — traffic, mTLS & resilience (Istio/Linkerd)",
+        desc: "POC: a service mesh on Kubernetes — automatic mTLS, fine-grained traffic control (canary), resilience and observability.",
+        content: `## Service mesh — traffic, mTLS & resilience — POC
+
+**The angle.** As microservices multiply, security and routing between services become the hard part. A **service mesh** industrialises them.
+
+**What I prototype**
+- **Automatic mTLS** between services (encryption + identity), zero-trust.
+- **Traffic management**: canary, blue/green, retries, timeouts, circuit-breaking.
+- Native **observability**: traces, metrics, call topology.
+- **Istio vs Linkerd** comparison (complexity, footprint, use cases).
+
+### Stack
+Istio/Linkerd · Kubernetes · mTLS · Envoy · observability
+
+> **POC** — microservices test bed, not deployed to production.`,
+      },
+    },
   },
   // ── OpenFGA / autorisation fine (ReBAC, modèle Zanzibar) — série de POC.
   //    Ancrés dans une pratique réelle d'OpenFGA (Nanocreatives, Focus Suite),
