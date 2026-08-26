@@ -10,6 +10,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CvBullets } from "./CvBullets";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -294,7 +295,7 @@ export default function TemplateSupra({ data, palette, sections }: Props) {
                       </View>
                     </View>
                   </View>
-                  <Text style={s.expDesc}>{stripHtml(exp.description)}</Text>
+                  <CvBullets text={exp.description} textStyle={s.expDesc} />
                 </View>
               ))}
             </View>

@@ -17,7 +17,7 @@ import {
 } from "@react-pdf/renderer";
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
-import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml, descToBullets } from "../cv-types";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -228,10 +228,8 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
 
         {/* ── Contenu ── */}
         <View style={s.content}>
-          {/* Ligne + titre + ligne */}
-          <View style={s.topLine} />
+          {/* Titre (lignes décoratives retirées) */}
           <Text style={s.jobTitleText}>{tagline}</Text>
-          <View style={s.bottomLine} />
 
           {/* Nom + photo (sans border) */}
           <View style={s.namePhotoRow}>
@@ -296,11 +294,8 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
               </View>
               <View style={s.secDivider} />
               {data.experiences.map((exp) => {
-                const raw = stripHtml(exp.description);
-                const bullets = raw
-                  .split(/(?:\r?\n)+/)
-                  .map((b) => b.trim())
-                  .filter(Boolean);
+                const bullets = descToBullets(exp.description);
+                const raw = bullets.join(" ");
                 return (
                   <View key={exp.id} style={s.expItem}>
                     <View style={s.expSquare} />
