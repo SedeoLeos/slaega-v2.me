@@ -1344,13 +1344,13 @@ const ABOUT_PAGE = {
   title: "À propos",
   intro:
     "Salut ! Je suis Seba Gedeon Matsoula Malonga — architecte logiciel & ingénieur full-stack basé à Brazzaville, avec une expérience couvrant des projets institutionnels, des missions de conseil et des solutions métiers à enjeux financiers.",
-  body: `J'interviens sur l'analyse des besoins, la conception et l'intégration de **systèmes numériques complexes**, en privilégiant des solutions pragmatiques, sécurisées et adaptées aux réalités des organisations publiques et privées.
+  body: `Architecte logiciel, ingénieur full-stack et DevOps, je transforme des besoins complexes en **systèmes fiables, sécurisés et durables**. Ma marque de fabrique : relier la vision produit à l'exécution technique — de l'architecture jusqu'à la mise en production et l'exploitation.
 
-Au sein du **Ministère des Finances de Brazzaville**, je contribue à des projets institutionnels structurants : *e-Bourse* (Flutter / Spring Boot), *Syspace* (gestion des contribuables), et l'assistance technique POC auprès du DSI. En parallèle, je conçois chez **Nanocreatives** des plateformes de gestion d'entreprise (ventes, facturation, achats, RH, paie, audit) avec un focus fort sur la sécurité — intégration de **Keycloak** pour l'authentification, **OpenFGA** et **Cerbos** pour la gestion fine des autorisations.
+Mon terrain de jeu couvre **plusieurs univers**. Des projets institutionnels à fort enjeu financier — comme *e-Bourse*, la digitalisation du décaissement des bourses de l'État. Des plateformes métier pour des entreprises privées — ventes, facturation, achats, RH, paie, audit — avec une exigence forte de sécurité (**Keycloak** pour l'identité, **OpenFGA** et **Cerbos** pour l'autorisation fine). Et une **R&D appliquée en fintech** : sécurité du Mobile Money, paiements instantanés, internet banking et néo-banques — un profil à la fois technique et stratégique.
 
-Mais ma vraie force, c'est le **DevOps et l'administration système** : je conçois, provisionne et opère l'infrastructure de bout en bout. **Orchestration Kubernetes (k8s) & k3s**, conteneurisation Docker, mise en place de **Coolify** pour accélérer les équipes, reverse-proxy Nginx & TLS, pipelines CI/CD, gestion et durcissement de serveurs Linux, monitoring — sur AWS, Azure et OpenStack.
+Ma vraie force reste le **DevOps et l'administration système** : je conçois, provisionne et opère l'infrastructure de bout en bout. Orchestration **Kubernetes (k8s) & k3s**, conteneurisation Docker, **Coolify** pour accélérer les équipes, reverse-proxy Nginx & TLS, pipelines CI/CD, durcissement de serveurs Linux et observabilité — sur AWS, Azure et OpenStack. Objectif : des systèmes prévisibles, résilients et sous contrôle.
 
-Ma stack quotidienne côté développement : **Spring Boot, NestJS, Next.js, Laravel, Flutter, Expo, Go**. J'aime particulièrement les architectures distribuées, les microservices et l'orchestration multi-systèmes (ERP, CRM, CMS, SaaS).`,
+Côté développement, ma stack quotidienne : **Spring Boot, NestJS, Next.js, Laravel, Flutter, Expo, Go**. J'aime particulièrement les **architectures distribuées**, les microservices et l'orchestration multi-systèmes (ERP, CRM, CMS, SaaS) — là où la complexité doit devenir simple à opérer.`,
   highlights: [
     {
       title: "DevOps & Administration système",
