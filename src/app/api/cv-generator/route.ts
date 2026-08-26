@@ -52,6 +52,20 @@ function extractKeywords(text: string): string[] {
   return Array.from(new Set(tech.filter((t) => lower.includes(t))));
 }
 
+/**
+ * Robust FR/EN detection from the job offer, by counting distinctive function
+ * words (far more reliable than keyword matching — "senior"/"junior" exist in
+ * both languages, and an English offer can mention "French"). Ties → English,
+ * since most international offers default to English.
+ */
+function detectOfferLang(text: string): "fr" | "en" {
+  const t = " " + (text || "").toLowerCase().replace(/[^a-zàâäçéèêëîïôöùûü']/g, " ") + " ";
+  const FR = [" le ", " la ", " les ", " des ", " une ", " un ", " avec ", " pour ", " dans ", " vous ", " nous ", " votre ", " notre ", " est ", " sur ", " aux ", " du ", " au ", " que ", " qui ", " être ", " vos ", " ses ", " chez ", " vous "];
+  const EN = [" the ", " and ", " with ", " for ", " you ", " are ", " this ", " that ", " our ", " your ", " will ", " of ", " to ", " on ", " is ", " as ", " we ", " an ", " from ", " have ", " they ", " their "];
+  const count = (arr: string[]) => arr.reduce((n, w) => n + (t.split(w).length - 1), 0);
+  return count(EN) >= count(FR) ? "en" : "fr";
+}
+
 function scoreExperience(
   exp: { description: string; skills: string[]; role: string },
   keywords: string[]
@@ -127,6 +141,7 @@ async function tailorWithAI(args: {
     slug: string;
   }>;
   keywords: string[];
+  lang: "fr" | "en";
 }): Promise<TailoredOutput | null> {
   const provider = getActiveAiProvider();
   if (provider === "mock") return null;
@@ -134,8 +149,8 @@ async function tailorWithAI(args: {
   const system = `You are an expert recruiter and CV writer. From a job offer and the candidate's full portfolio, you build an ULTRA-TARGETED CV that rewrites each section to match the offer.
 
 CRITICAL — ONE language only (no mixing):
-1. Detect the dominant language of the JOB OFFER (French OR English).
-2. Write ABSOLUTELY EVERYTHING in THAT single language — tagline, summary, jobTitle, capabilities, experience descriptions, project descriptions AND the tech/skill labels. NEVER mix English and French. If the CV is French, descriptive tech phrases like "Mobile Payment" → "Paiement mobile", "Task Management" → "Gestion de tâches", "Dashboard" → "Tableau de bord". Proper product/tech NAMES (Spring Boot, NestJS, Kubernetes, Docker, PostgreSQL, Flutter…) stay as-is.
+1. The TARGET LANGUAGE is provided to you in the payload as "targetLanguage" ("fr" or "en"). It has already been detected from the job offer — DO NOT override it, DO NOT re-detect. Set "language" to exactly that value.
+2. Write ABSOLUTELY EVERYTHING in THAT single language — tagline, summary, jobTitle, capabilities, experience bullets, project descriptions AND the tech/skill labels. NEVER mix English and French. If targetLanguage is "en", write the whole CV in English even if some source material is French (translate it). If "fr", write everything in French. Descriptive tech phrases translate ("Mobile Payment" ↔ "Paiement mobile", "Task Management" ↔ "Gestion de tâches"); proper product/tech NAMES (Spring Boot, NestJS, Kubernetes, Docker, PostgreSQL, Flutter…) stay as-is.
 
 SELECT & CURATE (act like a top recruiter building THIS candidate's best shot):
 - READ the full portfolio (every experience AND every project), then CHOOSE the items that will impress THIS specific company for THIS offer — the ones that prove the candidate can do exactly what they're hiring for. Ignore the rest.
@@ -220,6 +235,7 @@ Strict JSON format:
   }));
 
   const userPayload = {
+    targetLanguage: args.lang,
     jobOffer: args.jobOffer,
     detectedKeywords: args.keywords,
     candidate: {
@@ -298,12 +314,10 @@ Strict JSON format:
         };
       });
 
-    // Inline language detection (isEnglish defined later in file)
-    const detectedLanguage: 'fr' | 'en' = parsed.language ?? (args.jobOffer.match(/\b(we are looking for|job description|requirements|engineer|developer)\b/gi)?.length ?? 0) >
-      (args.jobOffer.match(/\b(nous recherchons|description du poste|profil recherché|ingénieur|développeur)\b/gi)?.length ?? 0) ? 'en' : 'fr';
-
     return {
-      language: detectedLanguage,
+      // Authoritative: the language detected from the offer, never the model's
+      // self-report (which can drift and produce a wrong-language CV).
+      language: args.lang,
       tagline: parsed.tagline ?? "",
       summary: parsed.summary ?? "",
       jobTitle: parsed.jobTitle ?? extractJobTitle(args.jobOffer),
@@ -420,18 +434,18 @@ export async function POST(req: NextRequest) {
     slug: p.slug,
   }));
 
+  // Detect the offer language ONCE, robustly, and make it authoritative for the
+  // whole CV (title, bullets, projects, skills, section labels).
+  const detectedLang: "fr" | "en" = detectOfferLang(jobOffer);
+
   const aiResult = await tailorWithAI({
     jobOffer,
     about: about ? { intro: about.intro, body: about.body } : null,
     experiences: allExperiences,
     projects: projectsForAi,
     keywords,
+    lang: detectedLang,
   });
-
-  // Inline language detection
-  const enMatches = (jobOffer.match(/\b(we are looking for|job description|requirements|engineer|developer|architect|senior|junior|software)\b/gi) || []).length;
-  const frMatches = (jobOffer.match(/\b(nous recherchons|description du poste|profil recherché|ingénieur|développeur|architecte|senior|junior|logiciel)\b/gi) || []).length;
-  const detectedLang: 'fr' | 'en' = enMatches > frMatches ? 'en' : 'fr';
 
   const tailored =
     aiResult ??
