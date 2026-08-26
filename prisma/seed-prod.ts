@@ -596,6 +596,229 @@ Istio/Linkerd · Kubernetes · mTLS · Envoy · observabilité
 
 > **POC** — banc d'essai microservices, non déployé en production.`,
   },
+  // ── OpenFGA / autorisation fine (ReBAC, modèle Zanzibar) — série de POC.
+  //    Ancrés dans une pratique réelle d'OpenFGA (Nanocreatives, Focus Suite),
+  //    déclinés en bancs d'essai honnêtement étiquetés.
+  {
+    slug: "openfga-multitenant-saas",
+    title: "OpenFGA — Autorisation multi-tenant SaaS",
+    date: "2026-05-01",
+    tags: ["OpenFGA", "ReBAC", "Multi-tenant", "SaaS", "Zanzibar", "IAM", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system", "api-webservice"],
+    description:
+      "POC : isolation stricte des tenants et autorisation fine par organisation avec OpenFGA — chaque client cloisonné, rôles et permissions au plus près du métier.",
+    content: `## OpenFGA — Autorisation multi-tenant SaaS — POC
+
+**Le problème.** Dans un SaaS multi-tenant, une erreur d'autorisation = fuite de données entre clients. Le RBAC classique explose en complexité dès que les règles deviennent contextuelles.
+
+**Ce que je prototype**
+- Modèle **OpenFGA** (relation-based) : \`organization\`, \`team\`, \`resource\`, héritage de permissions.
+- **Isolation par tenant** vérifiée par des checks systématiques (\`check(user, relation, object)\`).
+- Rôles métier (owner, admin, member, viewer) exprimés en relations, pas en code.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · API-first
+
+> **POC** — modélisation d'autorisation, non déployé en production.`,
+  },
+  {
+    slug: "openfga-document-sharing",
+    title: "OpenFGA — Partage de documents (style Google Docs)",
+    date: "2026-04-15",
+    tags: ["OpenFGA", "ReBAC", "Partage", "Permissions", "Collaboration", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "POC : permissions de partage granulaires (viewer/commenter/editor), liens partagés et héritage par dossier avec OpenFGA.",
+    content: `## OpenFGA — Partage de documents façon Google Docs — POC
+
+**L'idée.** Reproduire le modèle de partage le plus exigeant du web : viewer / commenter / editor, partage par lien, héritage dossier → document, groupes.
+
+**Ce que je prototype**
+- Modèle **OpenFGA** : \`document\`, \`folder\`, \`group\`, relations \`viewer\`/\`commenter\`/\`editor\`/\`owner\`.
+- **Héritage** : les droits d'un dossier se propagent à ses documents.
+- Partage par **lien public** et par groupe, révocation instantanée.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — banc d'essai autorisation, non déployé en production.`,
+  },
+  {
+    slug: "openfga-org-hierarchy",
+    title: "OpenFGA — Hiérarchie organisationnelle & héritage",
+    date: "2026-03-20",
+    tags: ["OpenFGA", "ReBAC", "Hiérarchie", "RBAC", "Permissions", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "POC : modéliser org → département → équipe → ressource avec héritage de droits et délégation, en relations OpenFGA.",
+    content: `## OpenFGA — Hiérarchie organisationnelle — POC
+
+**Le contexte.** Les grandes structures ont des droits qui descendent la hiérarchie : un directeur voit ce que voient ses équipes. Coder ça en dur est ingérable.
+
+**Ce que je prototype**
+- Modèle **OpenFGA** : \`org\` → \`department\` → \`team\` → \`resource\`, relations d'héritage.
+- **Délégation** temporaire (remplacement, congés) sans dupliquer les règles.
+- Requêtes \`list-objects\` pour « tout ce que ce user peut voir ».
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — modélisation hiérarchique, non déployé en production.`,
+  },
+  {
+    slug: "openfga-fintech-approvals",
+    title: "OpenFGA — Approbations & accès paiements (fintech)",
+    date: "2026-02-10",
+    tags: ["OpenFGA", "ReBAC", "Fintech", "Paiements", "Séparation des tâches", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system", "api-webservice"],
+    description:
+      "POC : qui peut initier / approuver / voir une transaction — séparation des tâches et plafonds d'approbation modélisés avec OpenFGA.",
+    content: `## OpenFGA — Autorisation des paiements — POC
+
+**L'enjeu.** En fintech, l'autorisation EST le contrôle interne : séparation des tâches (celui qui initie ≠ celui qui approuve), plafonds, périmètres.
+
+**Ce que je prototype**
+- Relations **OpenFGA** : \`initiator\`, \`approver\`, \`viewer\` sur une \`transaction\` / \`wallet\`.
+- **Séparation des tâches** (SoD) imposée par le modèle, pas par le code applicatif.
+- Périmètres par marché/compte et pistes d'audit des décisions d'accès.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · Paiements
+
+> **POC** — banc d'essai conformité, non déployé en production.`,
+  },
+  {
+    slug: "openfga-neobank-accounts",
+    title: "OpenFGA — Comptes partagés & délégation bancaire",
+    date: "2026-01-15",
+    tags: ["OpenFGA", "ReBAC", "Néo-banque", "Comptes joints", "Délégation", "Banque", "POC"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "POC : comptes joints, procurations et délégation d'accès (mandataire, comptable) pour une néo-banque, modélisés avec OpenFGA.",
+    content: `## OpenFGA — Comptes partagés & délégation — POC
+
+**Le besoin.** Un compte bancaire n'a pas un seul « propriétaire » : comptes joints, procurations, mandataires, comptable de l'entreprise. Le modèle d'accès doit refléter ces relations.
+
+**Ce que je prototype**
+- Relations **OpenFGA** : \`holder\`, \`co-holder\`, \`delegate\`, \`accountant\` sur un \`account\`.
+- **Délégation** à durée limitée et périmètre restreint (lecture seule, virements plafonnés).
+- Révocation immédiate et traçabilité.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · Banque
+
+> **POC** — modélisation bancaire, non déployé en production.`,
+  },
+  {
+    slug: "openfga-keycloak-integration",
+    title: "OpenFGA + Keycloak — identité & autorisation fine",
+    date: "2025-12-05",
+    tags: ["OpenFGA", "Keycloak", "OIDC", "IAM", "ReBAC", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system", "api-webservice"],
+    description:
+      "POC : combiner Keycloak (authentification/OIDC) et OpenFGA (autorisation fine) — identité forte + permissions relationnelles.",
+    content: `## OpenFGA + Keycloak — identité & autorisation — POC
+
+**L'architecture.** Séparer proprement **authentification** (qui es-tu — Keycloak/OIDC) et **autorisation** (as-tu le droit — OpenFGA). Deux responsabilités, deux briques.
+
+**Ce que je prototype**
+- **Keycloak** : login, OIDC, tokens, fédération d'identité.
+- **OpenFGA** : décisions d'autorisation fine à partir de l'identité Keycloak.
+- Middleware qui enchaîne \`verify token\` → \`check permission\`.
+
+### Stack
+Keycloak · OpenFGA · NestJS · OIDC
+
+> **POC** — intégration IAM, non déployé en production.`,
+  },
+  {
+    slug: "openfga-api-gateway",
+    title: "OpenFGA — Middleware d'autorisation API Gateway",
+    date: "2025-11-10",
+    tags: ["OpenFGA", "API Gateway", "Middleware", "ReBAC", "Microservices", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system", "api-webservice"],
+    description:
+      "POC : centraliser l'autorisation au niveau de la passerelle API — chaque requête vérifiée contre OpenFGA avant d'atteindre les services.",
+    content: `## OpenFGA — Autorisation à la passerelle — POC
+
+**L'idée.** Plutôt que de disséminer les checks dans chaque microservice, centraliser l'autorisation à la **passerelle** : un seul point de décision, cohérent.
+
+**Ce que je prototype**
+- Middleware gateway qui traduit route + méthode → \`check(user, relation, object)\` OpenFGA.
+- **Cache** des décisions et évaluation à faible latence.
+- Refus explicite et journalisation des accès.
+
+### Stack
+OpenFGA · Nginx/Gateway · NestJS · Microservices
+
+> **POC** — banc d'essai d'architecture, non déployé en production.`,
+  },
+  {
+    slug: "openfga-healthcare-consent",
+    title: "OpenFGA — Consentement & accès dossiers santé",
+    date: "2025-10-01",
+    tags: ["OpenFGA", "ReBAC", "Santé", "Consentement", "Confidentialité", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "POC : accès aux dossiers médicaux piloté par le consentement du patient (soignant traitant, urgences, famille) avec OpenFGA.",
+    content: `## OpenFGA — Consentement patient & accès santé — POC
+
+**L'enjeu.** En santé, l'accès à un dossier dépend du **consentement** et du contexte : médecin traitant, spécialiste référé, urgences, proche autorisé.
+
+**Ce que je prototype**
+- Relations **OpenFGA** : \`treating_doctor\`, \`referred\`, \`emergency\`, \`guardian\` sur un \`record\`.
+- **Consentement** du patient comme relation révocable.
+- Accès d'urgence tracé (« break glass ») et auditable.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL
+
+> **POC** — modélisation confidentialité, non déployé en production.`,
+  },
+  {
+    slug: "openfga-marketplace",
+    title: "OpenFGA — Permissions marketplace multi-acteurs",
+    date: "2025-08-20",
+    tags: ["OpenFGA", "ReBAC", "Marketplace", "E-commerce", "Multi-vendeur", "Sécurité", "POC"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "POC : autorisation d'une marketplace (vendeur, gestionnaire de boutique, admin plateforme, client) et périmètres produits avec OpenFGA.",
+    content: `## OpenFGA — Permissions marketplace — POC
+
+**Le contexte.** Une marketplace mélange des acteurs aux droits très différents : vendeurs sur leurs boutiques, gestionnaires, admins plateforme, clients.
+
+**Ce que je prototype**
+- Relations **OpenFGA** : \`store\` → \`product\`/\`order\`, rôles \`vendor\`/\`manager\`/\`platform_admin\`.
+- Un vendeur n'agit que sur **sa** boutique ; l'admin plateforme voit tout.
+- Délégation à des gestionnaires et périmètres par catégorie.
+
+### Stack
+OpenFGA · NestJS · PostgreSQL · E-commerce
+
+> **POC** — modélisation multi-acteurs, non déployé en production.`,
+  },
+  {
+    slug: "openfga-modeling-patterns",
+    title: "OpenFGA — Patterns de modélisation & migration RBAC→ReBAC",
+    date: "2025-06-15",
+    tags: ["OpenFGA", "ReBAC", "RBAC", "Zanzibar", "Architecture", "Sécurité", "Étude"],
+    categories: ["poc-prototype", "auth-system"],
+    description:
+      "Étude/POC : catalogue de patterns OpenFGA (groupes, héritage, propriété, partage) et méthode de migration d'un RBAC existant vers le ReBAC.",
+    content: `## OpenFGA — Patterns & migration RBAC→ReBAC — étude / POC
+
+**Le fil rouge de la série.** Après plusieurs POC, ce travail consolide les **patterns réutilisables** et une méthode de migration depuis un RBAC classique.
+
+**Ce que je documente / prototype**
+- Patterns : **groupes**, **héritage**, **propriété**, **partage**, **délégation temporaire**.
+- Méthode de **migration RBAC → ReBAC** : mapper rôles → relations sans big-bang.
+- Tests d'autorisation (assertions \`check\`) comme filet de sécurité.
+
+### Stack
+OpenFGA · modélisation · NestJS · tests
+
+> **Étude / POC** — synthèse et bonnes pratiques, non déployé en production.`,
+  },
   {
     slug: "focus-suite",
     title: "Focus Suite — Plateforme SaaS de gestion",
