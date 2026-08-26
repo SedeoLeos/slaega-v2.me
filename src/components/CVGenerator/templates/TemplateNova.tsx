@@ -12,6 +12,7 @@ import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
 import { CvBullets } from "./CvBullets";
+import { CvCertifications } from "./CvCertifications";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -251,6 +252,8 @@ export default function TemplateNova({ data, palette, sections }: Props) {
                 ))}
               </View>
             )}
+
+            <CvCertifications accent={palette.accent} />
 
             {/* Skills */}
             {sections.skills.visible && data.allSkills.length > 0 && (

@@ -12,6 +12,7 @@ import {
 import type { CVData, CVSections } from "../cv-types";
 import type { CVPalette } from "../cv-palettes";
 import { CV_PROFILE, CV_LABELS, formatMonth, stripHtml } from "../cv-types";
+import { CvCertifications } from "./CvCertifications";
 
 type Props = { data: CVData; palette: CVPalette; sections: CVSections };
 
@@ -253,6 +254,8 @@ export default function TemplatePulse({ data, palette, sections }: Props) {
               </View>
             </View>
           )}
+
+          <CvCertifications accent={palette.accent} />
         </View>
 
         {/* ═══ RIGHT ═══ */}
