@@ -104,11 +104,11 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
 
     /* ── Résumé ── */
     summaryText: {
-      fontSize: 10.5,
+      fontSize: 10,
       color: TEXT,
-      lineHeight: 1.6,
-      marginTop: 12,
-      marginBottom: 16,
+      lineHeight: 1.5,
+      marginTop: 8,
+      marginBottom: 10,
     },
 
     /* ── Contact ── */
@@ -147,7 +147,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     secRow: {
       flexDirection: "row",
       alignItems: "center",
-      marginTop: 16,
+      marginTop: 10,
       marginBottom: 3,
     },
     secTitle: {
@@ -163,11 +163,11 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       marginLeft: 8,
       marginTop: 3,
     },
-    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 12 },
+    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 8 },
 
     /* ── Expérience ── */
     expItem: {
-      marginBottom: 12,
+      marginBottom: 8,
       flexDirection: "row",
       alignItems: "flex-start",
     },
@@ -208,7 +208,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     expBulletText: { fontSize: 10, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── Projets ── */
-    projItem: { marginBottom: 11, flexDirection: "column" },
+    projItem: { marginBottom: 7, flexDirection: "column" },
     projTitle: {
       fontSize: 11,
       fontFamily: "Helvetica-Bold",
