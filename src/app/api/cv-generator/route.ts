@@ -4,6 +4,7 @@ import { getExperiences } from "@/features/experience/use-cases/get-experiences.
 import { getAllProjects } from "@/features/projects/use-cases/get-projects.use-case";
 import { aiGenerate, getActiveAiProvider } from "@/lib/ai-provider";
 import { localizeSkills } from "@/components/CVGenerator/cv-i18n-skills";
+import { localizeExperience, localizeProject } from "@/features/i18n/localize";
 import { NextRequest, NextResponse } from "next/server";
 
 // AI generation can exceed the default serverless timeout — allow up to 60s (Hobby plan cap).
@@ -391,7 +392,9 @@ function tailorHeuristic(args: {
   return {
     language: args.lang,
     tagline: "",
-    summary: stripHtml(args.about?.intro ?? ""),
+    // The bio is stored in French; don't leak it into an English CV. The AI
+    // path writes a proper localized summary when available.
+    summary: args.lang === "en" ? "" : stripHtml(args.about?.intro ?? ""),
     jobTitle: extractJobTitle(args.jobOffer),
     capabilities: [],
     experiences: exps,
@@ -426,7 +429,17 @@ export async function POST(req: NextRequest) {
 
   const keywords = extractKeywords(jobOffer);
 
-  const projectsForAi = allProjects.map((p) => ({
+  // Detect the offer language ONCE, robustly, and make it authoritative for the
+  // whole CV (title, bullets, projects, skills, section labels).
+  const detectedLang: "fr" | "en" = detectOfferLang(jobOffer);
+
+  // Localize source content to the OFFER language (not the site locale) using
+  // the per-item FR/EN translations. Critical so the CV body reads in the right
+  // language even when the AI is unavailable and the heuristic fallback runs.
+  const allExperiencesLoc = allExperiences.map((e) => localizeExperience(e, detectedLang));
+  const allProjectsLoc = allProjects.map((p) => localizeProject(p, detectedLang));
+
+  const projectsForAi = allProjectsLoc.map((p) => ({
     title: p.title,
     desc: p.desc,
     tags: p.tags,
@@ -434,14 +447,10 @@ export async function POST(req: NextRequest) {
     slug: p.slug,
   }));
 
-  // Detect the offer language ONCE, robustly, and make it authoritative for the
-  // whole CV (title, bullets, projects, skills, section labels).
-  const detectedLang: "fr" | "en" = detectOfferLang(jobOffer);
-
   const aiResult = await tailorWithAI({
     jobOffer,
     about: about ? { intro: about.intro, body: about.body } : null,
-    experiences: allExperiences,
+    experiences: allExperiencesLoc,
     projects: projectsForAi,
     keywords,
     lang: detectedLang,
@@ -452,7 +461,7 @@ export async function POST(req: NextRequest) {
     tailorHeuristic({
       jobOffer,
       about: about ? { intro: about.intro, body: about.body } : null,
-      experiences: allExperiences,
+      experiences: allExperiencesLoc,
       projects: projectsForAi,
       keywords,
       lang: detectedLang,
@@ -462,7 +471,7 @@ export async function POST(req: NextRequest) {
   const lang = tailored.language;
 
   // Hydrate experience metadata (company, location, dates) from source
-  const expById = new Map(allExperiences.map((e) => [e.id, e]));
+  const expById = new Map(allExperiencesLoc.map((e) => [e.id, e]));
   const hydratedExperiences = tailored.experiences
     .map((te) => {
       const src = expById.get(te.id);
@@ -483,7 +492,7 @@ export async function POST(req: NextRequest) {
     .filter((x): x is NonNullable<typeof x> => x !== null);
 
   // Hydrate project metadata from source
-  const projBySlug = new Map(allProjects.map((p) => [p.slug, p]));
+  const projBySlug = new Map(allProjectsLoc.map((p) => [p.slug, p]));
   const hydratedProjects = tailored.projects
     .map((tp) => {
       const src = projBySlug.get(tp.slug);

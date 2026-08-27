@@ -1778,6 +1778,13 @@ const EXPERIENCES = [
     skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Cloud", "Observabilité", "SRE", "Fiabilité", "Sécurité", "Backend", "API REST"],
     location: "Brazzaville, République du Congo (hybride)",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Senior Software Engineer & Principal DevOps`,
+        description: `Senior software engineer with a leading DevOps responsibility: I design as much as I operate. On the platform side, I own the infrastructure end to end — Kubernetes (k8s) & k3s orchestration, Docker containerization, CI/CD chains, Linux server provisioning and hardening, Nginx reverse proxy & TLS, observability (metrics, logs, alerting). On the software side, I build robust backend services and reliable APIs, with a strong focus on security, resilience and cost control. My through-line: make systems predictable — reproducible deployments, incident recovery, least privilege — for demanding technical environments.`,
+        location: `Brazzaville, Republic of Congo (hybrid)`,
+      },
+    },
   },
   {
     id: "ministere-finances-ebourse",
@@ -1791,6 +1798,13 @@ const EXPERIENCES = [
     skills: ["React Native", "Expo", "Spring Boot", "Java", "BFF", "API REST", "PostgreSQL", "Sécurité", "Finance publique", "Fintech", "Décaissement", "Temps réel"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Senior Software Engineer — e-Bourse Project`,
+        description: `e-Bourse is a high-stakes institutional project for the Congolese public administration: digitalising the management and disbursement of scholarships. I design and build the mobile app (React Native / Expo) and its mobile backend (BFF) in Spring Boot — end-to-end user journeys and screens, mobile-tailored APIs, strong authentication and securing of financial flows. I put particular care into reliability and performance: idempotency of sensitive operations, disbursement state management, traceability, and an experience accessible under constrained network conditions. The goal: a reliable, secure, auditable chain from the user's device to the State's financial system.`,
+        location: `Brazzaville, Republic of Congo`,
+      },
+    },
   },
   {
     id: "slaega",
@@ -1804,6 +1818,13 @@ const EXPERIENCES = [
     skills: ["Leadership", "Vision produit", "Stratégie", "Architecture", "Entrepreneuriat", "R&D", "Fintech", "Paiements", "Sécurité"],
     location: "République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Principal / CEO`,
+        description: `Founder and director of Slaega. I carry a vision of innovation and technical excellence: turning ambitious ideas into concrete deliverables, structuring robust and scalable products, and inspiring a new generation of engineers. Slaega is also my R&D lab: I run studies and prototypes (POC/MVP) on payments and Mobile Money (MTN MoMo, Airtel Money), instant payments, internet banking and neo-banks, as well as transaction security — a profile that is both technical and strategic.`,
+        location: `Republic of Congo`,
+      },
+    },
   },
   {
     id: "nanocreatives",
@@ -1817,6 +1838,13 @@ const EXPERIENCES = [
     skills: ["Next.js", "React Native", "Node.js", "NestJS", "Microservices", "API-first", "Multi-tenant", "SaaS", "CI/CD", "Coolify", "Docker", "Cloud", "IAM", "Keycloak", "OpenFGA", "Cerbos", "Architecture"],
     location: "Thiais, Île-de-France, France (à distance)",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Software Architect & Full-Stack Lead`,
+        description: `Progressed from Full-Stack Engineer to Lead then Software Architect. Designed robust architectures (API-first, microservices, third-party integrations), built web & mobile products (Next.js, React Native, Node.js/NestJS), CI/CD and DevOps pipelines, managed server and cloud environments, and mentored the team. Production deliverables: societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, the Civis CMS (ministries in DRC), and lead developer of pro.focus-suite.com. Infrastructure setup (server provisioning, Coolify, including iolifescience.com).`,
+        location: `Thiais, Île-de-France, France (remote)`,
+      },
+    },
   },
   {
     id: "baye-conception",
@@ -1830,6 +1858,13 @@ const EXPERIENCES = [
     skills: ["Full-Stack", "Architecture", "API", "Cloud", "CI/CD", "React", "Next.js", "Conseil"],
     location: "Maroc (à distance)",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Full-Stack Software Engineer (Freelance)`,
+        description: `As a freelancer for Baye Conception, I took ownership of bespoke digital solutions end to end: scoping and needs analysis, architecture, front & back development, integration, testing and go-live. Beyond the code, a technical consulting role — arbitrating architecture choices, making deliveries reliable and accelerating time-to-market. I worked autonomously, with a demand for quality and pragmatism suited to short timelines and controlled budgets.`,
+        location: `Morocco (remote)`,
+      },
+    },
   },
   {
     id: "ginov-digital",
@@ -1843,6 +1878,13 @@ const EXPERIENCES = [
     skills: ["Node.js", "Middleware", "API", "API REST", "Intégration de données", "Intégration système", "Data", "Backend", "Sécurité", "Temps réel"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Backend Developer`,
+        description: `Backend developer on integration systems at the core of the IS: making heterogeneous applications talk to each other reliably. I designed middleware and secure APIs, orchestrated services and integrated multi-source data (synchronisation, transformation, consistency) between platforms that did not communicate. Focus on the robustness of exchanges (error handling, retries, idempotency), access security and maintainability — with monitoring and supervision to keep flows under control. Integration engineering where data must arrive correct, on time and securely.`,
+        location: `Brazzaville, Republic of Congo`,
+      },
+    },
   },
   {
     id: "cfi-ciras",
@@ -1856,6 +1898,13 @@ const EXPERIENCES = [
     skills: ["Flutter", "Formation", "Mentorat", "Agile", "Mobile"],
     location: "République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Mobile Development Instructor`,
+        description: `Designed and delivered mobile development training modules (Flutter): transferring best practices, supervising practical projects, raising awareness of agile methodologies and DevOps workflows, mentoring and assessing learners.`,
+        location: `Republic of Congo`,
+      },
+    },
   },
   {
     id: "ministere-finances-alternance",
@@ -1869,6 +1918,13 @@ const EXPERIENCES = [
     skills: ["Full-Stack", "Frontend", "Backend", "Transformation digitale", "Finance publique"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Full-Stack Software Engineer (Apprenticeship)`,
+        description: `First immersion within the public finance administration: developing and improving internal digital tools supporting administrative and financial operations. Full-stack across the whole cycle (analysis, design, front & back, testing), I discovered the requirements specific to the public sector — rigor, traceability, reliability — that shape the way I design high-stakes systems today. A first stone that brought me back, years later, to large institutional projects such as e-Bourse.`,
+        location: `Brazzaville, Republic of Congo`,
+      },
+    },
   },
   {
     id: "soprim",
@@ -1882,6 +1938,13 @@ const EXPERIENCES = [
     skills: ["Django", "Django REST", "Python", "PostgreSQL", "Gestion de stock"],
     location: "Brazzaville, République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `IT Officer (Apprenticeship)`,
+        description: `IT officer apprenticeship within a real-estate development company. Needs analysis, design and development of a stock-management solution, maintenance of internal tools and contribution to the digitalisation of business processes, with the Django / Django REST framework.`,
+        location: `Brazzaville, Republic of Congo`,
+      },
+    },
   },
   {
     id: "freelance-2019",
@@ -1895,6 +1958,13 @@ const EXPERIENCES = [
     skills: ["Full-Stack", "Django", "Gestion de stock", "PME", "Support IT", "Fintech"],
     location: "République du Congo",
     companyUrl: null as string | null,
+    translations: {
+      en: {
+        role: `Freelance Software Developer`,
+        description: `My beginnings as an engineer, in direct contact with the field: I equipped local SMEs (shops, pharmacies) with bespoke tools — stock management, tontine systems and small financial tools. From needs analysis and data modelling through front & back development and IT support, I carried these projects alone, from A to Z. That's where I learned to turn a concrete business need into useful, reliable, adopted software — a solid foundation that still feeds my practice, especially on financial use cases in the African context.`,
+        location: `Republic of Congo`,
+      },
+    },
   },
 ];
 
@@ -1910,6 +1980,9 @@ async function seedExperiences() {
       skills: JSON.stringify(exp.skills),
       location: exp.location,
       companyUrl: exp.companyUrl,
+      translations: JSON.stringify(
+        (exp as { translations?: unknown }).translations ?? {},
+      ),
     };
     await db.experience.upsert({
       where: { id: exp.id },
