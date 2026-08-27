@@ -93,10 +93,10 @@ function scoreExperience(
 }
 
 function scoreProject(
-  proj: { desc: string; tags: string[]; categories: string[]; title: string },
+  proj: { desc: string; tags: string[]; categories?: string[]; title: string },
   keywords: string[]
 ): number {
-  const text = `${stripHtml(proj.desc)} ${proj.tags.join(" ")} ${proj.categories.join(" ")} ${proj.title}`.toLowerCase();
+  const text = `${stripHtml(proj.desc)} ${proj.tags.join(" ")} ${(proj.categories ?? []).join(" ")} ${proj.title}`.toLowerCase();
   return keywords.filter((k) => text.includes(k)).length;
 }
 
@@ -243,32 +243,34 @@ Strict JSON format:
   "relevantSkills": ["string", ...]
 }`;
 
+  // Keep the prompt SMALL — free Groq tiers cap tokens-per-minute (~8k). The AI
+  // rewrites everything, so it only needs short source hints, not full text.
   const cleanExperiences = args.experiences.map((e) => ({
     id: e.id,
     company: e.company,
     role: e.role,
     startDate: e.startDate,
     endDate: e.endDate ?? (e.current ? "présent" : ""),
-    location: e.location,
-    skills: e.skills,
-    description: stripHtml(e.description),
+    skills: e.skills.slice(0, 8),
+    description: brief(e.description, 240),
   }));
-  const cleanProjects = args.projects.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    desc: stripHtml(p.desc),
-    tags: p.tags,
-    categories: p.categories,
-  }));
+  // Only send the ~12 most offer-relevant projects, with short descriptions.
+  const cleanProjects = args.projects
+    .map((p) => ({ p, s: scoreProject(p, args.keywords) }))
+    .sort((a, b) => b.s - a.s)
+    .slice(0, 12)
+    .map(({ p }) => ({
+      slug: p.slug,
+      title: p.title,
+      desc: brief(p.desc, 130),
+      tags: p.tags.slice(0, 6),
+    }));
 
   const userPayload = {
     targetLanguage: args.lang,
-    jobOffer: args.jobOffer,
+    // Cap the offer text so a very long posting can't blow the token budget.
+    jobOffer: args.jobOffer.slice(0, 2200),
     detectedKeywords: args.keywords,
-    candidate: {
-      bio: args.about?.intro ?? "",
-      bioBody: stripHtml(args.about?.body ?? ""),
-    },
     portfolio: {
       experiences: cleanExperiences,
       projects: cleanProjects,
@@ -289,7 +291,7 @@ Strict JSON format:
         },
       ],
       json: true,
-      maxTokens: 4096,
+      maxTokens: 2000,
       temperature: 0.4,
     });
 

@@ -196,13 +196,21 @@ async function callGroq(opts: AiGenerateOptions): Promise<AiResult> {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("[ai] GROQ_API_KEY not set");
   const model = await resolveGroqModel(apiKey);
-  return callOpenAICompat({
-    baseURL: "https://api.groq.com/openai/v1",
-    apiKey,
-    model,
-    provider: "groq",
-    generate: opts,
-  });
+  const base = { baseURL: "https://api.groq.com/openai/v1", apiKey, provider: "groq" as const, generate: opts };
+  try {
+    return await callOpenAICompat({ ...base, model });
+  } catch (e) {
+    // Free Groq tiers cap tokens-per-minute per model. On a "too large / rate
+    // limit" (413) error, retry once on the highest-TPM small model so the CV
+    // still gets AI-tailored instead of silently falling back to the heuristic.
+    const msg = String((e as Error)?.message ?? "");
+    const HIGH_TPM = "llama-3.1-8b-instant";
+    if (/\b413\b|rate_limit|too large|reduce your message/i.test(msg) && model !== HIGH_TPM) {
+      cachedGroqModel = HIGH_TPM;
+      return await callOpenAICompat({ ...base, model: HIGH_TPM });
+    }
+    throw e;
+  }
 }
 
 async function callOpenRouter(opts: AiGenerateOptions): Promise<AiResult> {
