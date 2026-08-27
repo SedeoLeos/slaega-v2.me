@@ -36,6 +36,16 @@ function stripHtml(s: string): string {
     .trim();
 }
 
+/** Trim text to ~maxChars, cutting at a sentence boundary when possible. */
+function brief(text: string, maxChars: number): string {
+  const t = stripHtml(text);
+  if (t.length <= maxChars) return t;
+  const cut = t.slice(0, maxChars);
+  const lastDot = cut.lastIndexOf(". ");
+  if (lastDot > 60) return cut.slice(0, lastDot + 1);
+  return cut.replace(/\s+\S*$/, "") + "…";
+}
+
 function extractKeywords(text: string): string[] {
   const tech = [
     "react", "next.js", "nextjs", "vue", "angular", "typescript", "javascript",
@@ -48,6 +58,13 @@ function extractKeywords(text: string): string[] {
     "git", "github", "gitlab", "devops", "linux", "nginx", "coolify",
     "electron", ".net", "keycloak", "openfga", "cerbos", "oauth", "jwt",
     "microservices", "saas", "erp", "crm", "cms", "n8n", "langchain",
+    // Domain terms — so DOMAIN-relevant projects (not just tech-matching ones)
+    // score higher. Critical for "show you understand the employer's stakes".
+    "fintech", "mobile money", "momo", "airtel", "payment", "payments", "paiement",
+    "wallet", "reconciliation", "réconciliation", "banking", "banque", "bank",
+    "ussd", "credit", "crédit", "savings", "épargne", "kyc", "transaction",
+    "transactional", "ledger", "neo-bank", "néo-banque", "compliance", "fraud",
+    "fraude", "instant payment", "paiements instantanés", "financial inclusion",
   ];
   const lower = text.toLowerCase();
   return Array.from(new Set(tech.filter((t) => lower.includes(t))));
@@ -153,10 +170,19 @@ CRITICAL — ONE language only (no mixing):
 1. The TARGET LANGUAGE is provided to you in the payload as "targetLanguage" ("fr" or "en"). It has already been detected from the job offer — DO NOT override it, DO NOT re-detect. Set "language" to exactly that value.
 2. Write ABSOLUTELY EVERYTHING in THAT single language — tagline, summary, jobTitle, capabilities, experience bullets, project descriptions AND the tech/skill labels. NEVER mix English and French. If targetLanguage is "en", write the whole CV in English even if some source material is French (translate it). If "fr", write everything in French. Descriptive tech phrases translate ("Mobile Payment" ↔ "Paiement mobile", "Task Management" ↔ "Gestion de tâches"); proper product/tech NAMES (Spring Boot, NestJS, Kubernetes, Docker, PostgreSQL, Flutter…) stay as-is.
 
+★★★ ONE-PAGE CV — BE CONCISE (hard constraint) ★★★
+The whole CV MUST fit on a SINGLE page. Be ruthless:
+- Keep at most 4 experiences and at most 3 projects. Drop everything else.
+- Each experience = 1 to 2 SHORT bullets (max ~16 words each). No paragraphs.
+- Each project description = ONE short sentence (max ~18 words).
+- Summary = 2 short sentences max. Capabilities = 4 max.
+Density and impact over exhaustiveness — a recruiter must grasp the fit in seconds.
+
 SELECT & CURATE (act like a top recruiter building THIS candidate's best shot):
 - READ the full portfolio (every experience AND every project), then CHOOSE the items that will impress THIS specific company for THIS offer — the ones that prove the candidate can do exactly what they're hiring for. Ignore the rest.
-- Do NOT keep the portfolio's original order, and do NOT default to chronological order for projects. Order PROJECTS by how strongly they sell the candidate for this offer — most impressive / most relevant FIRST.
-- Do NOT copy the portfolio's project descriptions verbatim: re-author them to be attractive and to showcase the candidate's LEVEL (hard problems solved, architecture, scale, ownership) framed for what this employer is looking for.
+- CHOOSE PROJECTS THAT SHOW THE CANDIDATE UNDERSTANDS THE EMPLOYER'S BUSINESS AND STAKES, not projects that happen to be live/deployed. For a fintech/mobile-money offer, pick the payments/Mobile Money/reconciliation/neo-bank/security projects — even if they are POC/MVP — over unrelated ones (e-commerce, ride-hailing, generic CMS), because they prove domain understanding. Relevance to the employer's domain beats "it's online".
+- Do NOT keep the portfolio's original order, and do NOT default to chronological order for projects. Order PROJECTS by how strongly they prove domain fit for this offer — most relevant FIRST.
+- Do NOT copy the portfolio's project descriptions verbatim: re-author them in ONE punchy sentence that ties the project to the employer's challenges.
 - Pick projects that fill gaps the experiences don't already cover, and that echo the offer's stack/domain.
 
 POSITION FOR THE OFFER (most important — do NOT force a fixed profile):
@@ -198,11 +224,11 @@ Strict rules:
 - Reply ONLY with a valid JSON object. No text before/after. No markdown fence.
 - "language": "fr" or "en" (detected from the job offer).
 - "tagline": single line in UPPERCASE, ~80-110 chars, positioning the candidate for the OFFER'S family (not a fixed DevOps line). FR ex (fintech): "INGÉNIEUR FULL-STACK & PAIEMENTS — MOBILE MONEY, SYSTÈMES TRANSACTIONNELS FIABLES". EN ex (devops): "SENIOR DEVOPS / SRE — KUBERNETES, CI/CD AND CLOUD RELIABILITY".
-- "summary": 2-3 punchy sentences (~55 words max) positioning the candidate for THIS offer. Open with the single strongest, offer-relevant claim (seniority + domain). Concrete, senior, results-oriented. Do NOT copy the bio verbatim, do NOT start with "Salut" or the full name.
+- "summary": 2 SHORT sentences max (~35 words) positioning the candidate for THIS offer. Open with the single strongest, offer-relevant claim (seniority + domain). Concrete, senior. Do NOT copy the bio verbatim, do NOT start with "Salut" or the full name.
 - "jobTitle": positioned for the offer, in the detected language — NOT a generic fixed title. E.g. "Ingénieur Full-Stack Senior — FinTech", "Senior Full Stack Engineer — Mobile Money", "DevOps / SRE Engineer", "Architecte Logiciel".
-- "capabilities": 4-6 short punchy bullets (5-12 words each), outcome + technical, aligned to the offer, in the detected language.
-- "experiences": ONLY the experiences relevant to this offer (3-5 max). For each, write "bullets": an array of 2-4 PUNCHY achievement bullets per the WRITING STYLE rules above. ID must match an input id.
-- "projects": ONLY relevant projects (3-5 max, POC/études included when they fit the sector). Rewrite "desc" as 1-2 punchy sentences that DEMONSTRATE THE CANDIDATE'S LEVEL — surface the hardest technical challenge solved, the architecture/scale/ownership (conçu, architecturé, livré en production), and the stack that proves seniority. Show caliber, not just "what the app does". Keep POC/étude items honestly framed. SLUG must match an input slug. Do NOT include the same project twice (dedupe by title/slug).
+- "capabilities": 4 short punchy bullets max (5-10 words each), outcome + technical, aligned to the offer, in the detected language.
+- "experiences": ONLY the experiences relevant to this offer (4 MAX). For each, write "bullets": an array of 1 to 2 PUNCHY achievement bullets (max ~16 words each) per the WRITING STYLE rules above. Keep it tight — one page. ID must match an input id.
+- "projects": ONLY the 3 MOST DOMAIN-RELEVANT projects (POC/MVP included — pick the ones that prove understanding of the employer's business, not the ones merely deployed). Rewrite "desc" as ONE punchy sentence (max ~18 words) tying the project to the employer's challenges. Keep POC/MVP items honestly framed. SLUG must match an input slug. Do NOT include the same project twice (dedupe by title/slug).
 - "relevantSkills": 8-15 key skills matching the OFFER first (not a fixed DevOps list). Tech NAMES stay as-is; any descriptive skill is written in the CV language.
 
 Strict JSON format:
@@ -362,24 +388,27 @@ function tailorHeuristic(args: {
     .map((e) => ({
       id: e.id,
       role: e.role,
-      description: stripHtml(e.description),
+      // Keep it to ~2 sentences so the fallback CV stays close to one page.
+      description: brief(e.description, 220),
       score: scoreExperience(e, args.keywords),
     }))
     .sort((a, b) => b.score - a.score)
-    // Keep only experiences with at least one keyword match (or top 3 if no match)
-    .filter((e, i) => e.score > 0 || i < 3)
-    .slice(0, 5);
+    // Keep only experiences with at least one keyword match (or top 4 if no match)
+    .filter((e, i) => e.score > 0 || i < 4)
+    .slice(0, 4);
 
   const projs = args.projects
     .map((p) => ({
       slug: p.slug,
       title: p.title,
-      desc: stripHtml(p.desc),
+      desc: brief(p.desc, 130),
       score: scoreProject(p, args.keywords),
     }))
     .sort((a, b) => b.score - a.score)
+    // Domain relevance first: only keep projects that actually match the offer;
+    // top 3 by score (fintech/domain terms now boost the right ones).
     .filter((p, i) => p.score > 0 || i < 3)
-    .slice(0, 5);
+    .slice(0, 3);
 
   const allSkillsSet = new Set<string>();
   args.experiences.forEach((e) => e.skills.forEach((s) => allSkillsSet.add(s)));
@@ -519,13 +548,17 @@ export async function POST(req: NextRequest) {
     hydratedProjects.sort((a, b) => b.score - a.score);
   }
 
+  // ONE-PAGE constraint: hard caps on how much reaches the template.
+  const cappedExperiences = hydratedExperiences.slice(0, 4);
+  const cappedProjects = hydratedProjects.slice(0, 3);
+
   // All skills (for the Compétences section)
   const allSkills = Array.from(
     new Set([
-      ...hydratedExperiences.flatMap((e) => e.skills),
-      ...hydratedProjects.flatMap((p) => p.tags),
+      ...cappedExperiences.flatMap((e) => e.skills),
+      ...cappedProjects.flatMap((p) => p.tags),
     ])
-  ).slice(0, 24);
+  ).slice(0, 18);
 
   const cv = {
     keywords,
@@ -533,9 +566,9 @@ export async function POST(req: NextRequest) {
     tagline: tailored.tagline,
     summary: tailored.summary,
     jobTitle: tailored.jobTitle,
-    capabilities: tailored.capabilities,
-    experiences: hydratedExperiences,
-    projects: hydratedProjects,
+    capabilities: (tailored.capabilities ?? []).slice(0, 4),
+    experiences: cappedExperiences,
+    projects: cappedProjects,
     relevantSkills: localizeSkills(tailored.relevantSkills, lang),
     allSkills,
     aiProvider: getActiveAiProvider(),
