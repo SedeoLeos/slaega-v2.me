@@ -388,8 +388,8 @@ function tailorHeuristic(args: {
     .map((e) => ({
       id: e.id,
       role: e.role,
-      // Keep it to ~2 sentences so the fallback CV stays close to one page.
-      description: brief(e.description, 220),
+      // One short sentence so the fallback CV stays on one page.
+      description: brief(e.description, 150),
       score: scoreExperience(e, args.keywords),
     }))
     .sort((a, b) => b.score - a.score)
@@ -466,7 +466,20 @@ export async function POST(req: NextRequest) {
   // the per-item FR/EN translations. Critical so the CV body reads in the right
   // language even when the AI is unavailable and the heuristic fallback runs.
   const allExperiencesLoc = allExperiences.map((e) => localizeExperience(e, detectedLang));
-  const allProjectsLoc = allProjects.map((p) => localizeProject(p, detectedLang));
+
+  // For a non-French CV, ONLY keep projects that actually have a translation in
+  // the target language — otherwise a French-only project (e.g. an untranslated
+  // MDX case study) would appear in French on an English CV. This also steers
+  // selection toward the translated, offer-relevant pool (the fintech set).
+  const hasLangTranslation = (p: { translations?: unknown }, lang: "fr" | "en") => {
+    if (lang === "fr") return true;
+    const tr = (p.translations as Record<string, { title?: string; desc?: string; content?: string }> | undefined)?.[lang];
+    return !!(tr && (tr.desc || tr.title || tr.content));
+  };
+  const projectPool = allProjects.filter((p) => hasLangTranslation(p, detectedLang));
+  const allProjectsLoc = (projectPool.length >= 3 ? projectPool : allProjects).map((p) =>
+    localizeProject(p, detectedLang),
+  );
 
   const projectsForAi = allProjectsLoc.map((p) => ({
     title: p.title,
