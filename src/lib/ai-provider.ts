@@ -148,13 +148,58 @@ async function callOpenAI(opts: AiGenerateOptions): Promise<AiResult> {
   });
 }
 
+// Groq decommissions model ids regularly (e.g. llama-3.3-70b-versatile →
+// 404 model_not_found). To stay working without redeploys, we ask Groq which
+// models the key can actually use and pick the best one by preference. An
+// explicit GROQ_MODEL always wins; the resolved id is cached per process.
+const GROQ_MODEL_PREFERENCE = [
+  "llama-3.3-70b-versatile",
+  "openai/gpt-oss-120b",
+  "moonshotai/kimi-k2-instruct",
+  "meta-llama/llama-4-maverick-17b-128e-instruct",
+  "meta-llama/llama-4-scout-17b-16e-instruct",
+  "qwen/qwen3-32b",
+  "deepseek-r1-distill-llama-70b",
+  "llama-3.1-8b-instant",
+  "gemma2-9b-it",
+];
+let cachedGroqModel: string | null = null;
+
+async function resolveGroqModel(apiKey: string): Promise<string> {
+  const explicit = process.env.GROQ_MODEL?.trim();
+  if (explicit) return explicit;
+  if (cachedGroqModel) return cachedGroqModel;
+  try {
+    const res = await fetch("https://api.groq.com/openai/v1/models", {
+      headers: { authorization: `Bearer ${apiKey}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const available = new Set<string>(
+        (data?.data ?? []).map((m: { id?: string }) => m.id).filter(Boolean),
+      );
+      const pick =
+        GROQ_MODEL_PREFERENCE.find((m) => available.has(m)) ??
+        [...available].find((id) => /llama|gpt-oss|qwen|kimi|gemma|mixtral/i.test(id));
+      if (pick) {
+        cachedGroqModel = pick;
+        return pick;
+      }
+    }
+  } catch {
+    /* fall through to a sane default */
+  }
+  return GROQ_MODEL_PREFERENCE[0];
+}
+
 async function callGroq(opts: AiGenerateOptions): Promise<AiResult> {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("[ai] GROQ_API_KEY not set");
+  const model = await resolveGroqModel(apiKey);
   return callOpenAICompat({
     baseURL: "https://api.groq.com/openai/v1",
     apiKey,
-    model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
+    model,
     provider: "groq",
     generate: opts,
   });
