@@ -36,14 +36,51 @@ function stripHtml(s: string): string {
     .trim();
 }
 
-/** Trim text to ~maxChars, cutting at a sentence boundary when possible. */
+/**
+ * Keep the first COMPLETE sentence(s) that fit within ~maxChars — never cut a
+ * word mid-way and never append an ugly "…". Always returns at least the first
+ * full sentence (a clean, whole sentence reads far better on a CV).
+ */
 function brief(text: string, maxChars: number): string {
   const t = stripHtml(text);
   if (t.length <= maxChars) return t;
-  const cut = t.slice(0, maxChars);
-  const lastDot = cut.lastIndexOf(". ");
-  if (lastDot > 60) return cut.slice(0, lastDot + 1);
-  return cut.replace(/\s+\S*$/, "") + "…";
+  const sentences = t.match(/[^.!?]+[.!?]+/g) ?? [t];
+  let out = "";
+  for (const s of sentences) {
+    if (out && out.length + s.length > maxChars) break;
+    out += s;
+  }
+  return (out || sentences[0] || t).trim();
+}
+
+/**
+ * A concise POSITIONING summary for the heuristic fallback — tuned to the
+ * offer's domain, grounded in the candidate's real profile (no invented
+ * metrics). The AI writes a better one when available.
+ */
+function heuristicSummary(lang: "fr" | "en", keywords: string[]): string {
+  const k = keywords.join(" ");
+  const fintech = /mobile money|momo|airtel|payment|paiement|fintech|banking|banque|reconciliation|réconciliation|ussd|wallet|credit|crédit|transaction|ledger/i.test(k);
+  // IT systems / network / security / support ops (e.g. a bank's "Informaticien":
+  // sysadmin + réseau + sauvegarde + supervision + sécurité + droits d'accès).
+  const infra = /administration système|sysadmin|réseau|réseaux|serveur|sauvegarde|backup|supervision|itil|virtualisation|windows|active directory|support technique|sécurité it|droits d'accès|infrastructure|pra|disaster recovery|network|server/i.test(k);
+  const devops = /kubernetes|docker|ci\/cd|devops|terraform|aws|azure|nginx|linux/i.test(k);
+  if (lang === "en") {
+    if (fintech)
+      return "Senior full-stack & backend engineer focused on reliable, secure transactional systems and Mobile Money. Delivers products end-to-end — from architecture to production — for high-stakes financial and public-sector platforms.";
+    if (infra)
+      return "IT engineer specialised in systems, networks and security. Administers Linux servers, virtualisation, backups & disaster recovery and access rights; monitors availability and enforces IT security policies.";
+    if (devops)
+      return "Senior full-stack engineer and DevOps practitioner. Designs, provisions and operates reliable, secure and scalable systems end-to-end, from architecture to production.";
+    return "Senior full-stack software engineer and architect. Turns complex needs into reliable, secure and scalable systems, from architecture to production and operations.";
+  }
+  if (fintech)
+    return "Ingénieur full-stack & backend senior, orienté systèmes transactionnels fiables et sécurisés et Mobile Money. Livre des produits de bout en bout — de l'architecture à la production — pour des plateformes financières et publiques à fort enjeu.";
+  if (infra)
+    return "Ingénieur informatique orienté systèmes, réseaux et sécurité. Administre serveurs Linux, virtualisation, sauvegardes et reprise après sinistre, gestion des droits d'accès ; supervise la disponibilité et applique les politiques de sécurité IT.";
+  if (devops)
+    return "Ingénieur full-stack senior et DevOps. Conçoit, provisionne et opère des systèmes fiables, sécurisés et scalables de bout en bout, de l'architecture à la production.";
+  return "Ingénieur logiciel full-stack senior et architecte. Transforme des besoins complexes en systèmes fiables, sécurisés et scalables, de l'architecture à l'exploitation.";
 }
 
 function extractKeywords(text: string): string[] {
@@ -65,6 +102,18 @@ function extractKeywords(text: string): string[] {
     "ussd", "credit", "crédit", "savings", "épargne", "kyc", "transaction",
     "transactional", "ledger", "neo-bank", "néo-banque", "compliance", "fraud",
     "fraude", "instant payment", "paiements instantanés", "financial inclusion",
+    // IT systems / network / security / support ops — so an "Informaticien" /
+    // sysadmin / IT-security offer (esp. banking) surfaces the infra, backup,
+    // virtualisation, réseau, supervision, IAM/droits-d'accès & security work.
+    "sécurité", "cybersécurité", "security", "réseau", "réseaux", "network",
+    "serveur", "serveurs", "server", "sauvegarde", "backup", "supervision",
+    "monitoring", "observabilité", "itil", "virtualisation", "virtualization",
+    "vmware", "proxmox", "hyper-v", "vlan", "vpn", "firewall", "pare-feu",
+    "windows", "active directory", "support", "support technique", "helpdesk",
+    "incident", "système", "systèmes", "administration système", "sysadmin",
+    "infrastructure", "haute disponibilité", "disponibilité", "pra",
+    "disaster recovery", "base de données", "droits d'accès", "iam", "grafana",
+    "prometheus", "vault", "tls", "ssl", "dns", "dhcp", "san", "nas", "maintenance",
   ];
   const lower = text.toLowerCase();
   return Array.from(new Set(tech.filter((t) => lower.includes(t))));
@@ -102,17 +151,27 @@ function scoreProject(
 
 function extractJobTitle(text: string): string {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const TITLE_TERMS = [
+    "développeur", "ingénieur", "engineer", "developer", "architect", "lead",
+    // IT systems / security / support titles (banking "Informaticien" & co.)
+    "informaticien", "administrateur", "administrator", "technicien",
+    "technician", "sysadmin", "systèmes", "système", "sécurité", "security",
+    "support", "réseau", "infrastructure", "devops", "sre",
+  ];
   const titleLine = lines.find(
     (l) =>
       l.length < 80 &&
-      (l.toLowerCase().includes("développeur") ||
-        l.toLowerCase().includes("ingénieur") ||
-        l.toLowerCase().includes("engineer") ||
-        l.toLowerCase().includes("developer") ||
-        l.toLowerCase().includes("architect") ||
-        l.toLowerCase().includes("lead"))
+      // Skip the poster's header/marketing lines — they aren't the job title.
+      !/annonce|recrutement|offre d'emploi|nous recrutons|job offer|we are hiring/i.test(l) &&
+      TITLE_TERMS.some((t) => l.toLowerCase().includes(t)),
   );
-  return titleLine ?? "Ingénieur Logiciel Full-Stack";
+  if (!titleLine) return "Ingénieur Logiciel Full-Stack";
+  // Strip a leading label ("INTITULÉ DU POSTE:", "Poste —", "Job title:") and
+  // any leftover leading punctuation so the CV shows just the role.
+  return titleLine
+    .replace(/^\s*(intitul[ée] du poste|intitul[ée]|poste|job title|position|titre)\s*[:\-–—]\s*/i, "")
+    .replace(/^[\s:\-–—•]+/, "")
+    .trim() || "Ingénieur Logiciel Full-Stack";
 }
 
 // ── AI tailoring ───────────────────────────────────────────────────
@@ -184,12 +243,15 @@ SELECT & CURATE (act like a top recruiter building THIS candidate's best shot):
 - Do NOT keep the portfolio's original order, and do NOT default to chronological order for projects. Order PROJECTS by how strongly they prove domain fit for this offer — most relevant FIRST.
 - Do NOT copy the portfolio's project descriptions verbatim: re-author them in ONE punchy sentence that ties the project to the employer's challenges.
 - Pick projects that fill gaps the experiences don't already cover, and that echo the offer's stack/domain.
+- LEAD WITH PROOF OF PRODUCTION: the candidate's strongest fintech evidence is real production work (e.g. e-Bourse — a live public-finance disbursement platform). Foreground production/real-client work; place POC/MVP after and keep them honestly labeled (POC/MVP/study). Never present a POC as production.
+- QUANTIFY only with numbers that are TRUE and present in the source material — never invent metrics, users, volumes or percentages. If no number exists, convey scale honestly in words.
 
 POSITION FOR THE OFFER (most important — do NOT force a fixed profile):
 - First infer the offer's SECTOR and ROLE FAMILY, then position the WHOLE CV (jobTitle, tagline, summary, order of emphasis) for it. Lead with what THIS offer values, not a fixed DevOps angle:
   • FinTech / Payments / Mobile Money / Banking → payment integrations (MTN Mobile Money, Airtel Money, Stripe), transaction reliability & reconciliation, security, KYC/compliance awareness, distributed backend, APIs.
   • Backend / API / Distributed systems → NestJS/Node.js, Spring Boot, PostgreSQL, event-driven, API design, performance, security.
   • DevOps / SRE / Cloud / Infra → Kubernetes/k3s, Docker, CI/CD, Linux hardening, Nginx, observability, IaC, cloud.
+  • IT Support / System & Network Admin / Infrastructure & Security Ops (incl. bank "Informaticien") → Linux/Windows server administration, réseaux & servers, sauvegarde & PRA/disaster recovery, virtualisation (Proxmox/VMware), supervision/monitoring (Grafana/Prometheus), IAM & gestion des droits d'accès (OpenFGA/Keycloak), reverse-proxy/TLS & secrets, IT security policies & incident handling, ITIL awareness. Foreground operations, availability, security and support — NOT app-building — for this family.
   • Data / Integration → pipelines, connectors, ETL, system integration.
   • Security / Audit → threat modelling, secure SDLC, vulnerability research (esp. mobile money & banking), code/infra audit.
   • Mobile → React Native/Expo, Flutter.
@@ -423,9 +485,9 @@ function tailorHeuristic(args: {
   return {
     language: args.lang,
     tagline: "",
-    // The bio is stored in French; don't leak it into an English CV. The AI
-    // path writes a proper localized summary when available.
-    summary: args.lang === "en" ? "" : stripHtml(args.about?.intro ?? ""),
+    // A domain-tuned positioning line (grounded, no invented metrics). The AI
+    // path writes a better, offer-specific one when available.
+    summary: heuristicSummary(args.lang, args.keywords),
     jobTitle: extractJobTitle(args.jobOffer),
     capabilities: [],
     experiences: exps,
