@@ -1,4 +1,4 @@
-import CoverLetterGenerator from "@/components/admin/CoverLetterGenerator";
+import CoverLetterGenerator from "@/components/admin/CoverLetterGeneratorNoSSR";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Lettre de motivation — Admin" };
