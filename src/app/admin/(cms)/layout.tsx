@@ -6,6 +6,7 @@ import Toaster from "@/components/admin/Toaster";
 import AdminNavItem from "@/components/admin/AdminNavItem";
 import { AdminThemeProvider } from "@/components/admin/AdminThemeProvider";
 import AdminThemeToggle from "@/components/admin/AdminThemeToggle";
+import AdminShell from "@/components/admin/AdminShell";
 import CarteCongoDecor from "@/components/CarteCongoDecor";
 
 export const metadata = { title: "Admin — Slaega" };
@@ -31,9 +32,10 @@ export default async function AdminCmsLayout({
         className={`${inter.variable} ${poppins.variable} antialiased h-full bg-zinc-950 text-zinc-100`}
       >
         <AdminThemeProvider>
-          <div className="flex h-full">
-            {/* ── Sidebar ── */}
-            <aside className="w-64 flex-shrink-0 flex flex-col bg-zinc-900 border-r border-zinc-800/60">
+          <AdminShell
+            sidebar={
+            /* ── Sidebar ── */
+            <aside className="w-full h-full flex flex-col bg-zinc-900 border-r border-zinc-800/60">
               {/* Logo + theme toggle */}
               <div className="px-5 py-5 border-b border-zinc-800/60 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-green-app flex items-center justify-center flex-shrink-0 shadow-sm shadow-green-app/30">
@@ -310,12 +312,10 @@ export default async function AdminCmsLayout({
               </div>
 
             </aside>
-
-            {/* ── Main ── */}
-            <main className="flex-1 overflow-auto min-h-full bg-zinc-950">
-              {children}
-            </main>
-          </div>
+            }
+          >
+            {children}
+          </AdminShell>
         </AdminThemeProvider>
         <Toaster />
       </body>

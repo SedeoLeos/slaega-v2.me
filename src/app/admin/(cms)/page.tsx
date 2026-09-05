@@ -125,7 +125,7 @@ export default async function AdminDashboard() {
   const chartData = buildChartData(projects, experiences, stats, messages);
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-5 sm:p-8 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white tracking-tight">Bonjour 👋</h1>
