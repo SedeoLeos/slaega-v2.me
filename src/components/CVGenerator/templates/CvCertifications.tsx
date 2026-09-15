@@ -40,7 +40,7 @@ export function CvCertifications({
             key={i}
             style={{ width: "50%", flexDirection: "row", alignItems: "baseline", marginBottom: 2.5, paddingRight: 8 }}
           >
-            <Text style={{ fontSize: 7, color: accent, marginRight: 3 }}>▪</Text>
+            <Text style={{ fontSize: 7, color: accent, marginRight: 3 }}>•</Text>
             <Text style={{ flex: 1, fontSize: 7.8, color, lineHeight: 1.2 }}>
               <Text style={{ fontWeight: 600 }}>{c.name}</Text>
               <Text style={{ color: muted }}>
