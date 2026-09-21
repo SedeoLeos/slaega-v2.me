@@ -2,15 +2,10 @@ import { projectRepository } from "@/features/projects/repositories/project.repo
 import { experienceRepository } from "@/features/experience/repositories/experience.repository";
 
 /**
- * /sitemap.xml — served by an explicit Route Handler (not the Next.js metadata
- * convention) so we control the raw XML output.
- *
- * Why a Route Handler and not app/sitemap.ts:
- *  - The metadata sitemap serializes the XML itself and gives no way to inject
- *    an `<?xml-stylesheet?>` processing instruction. We need that instruction so
- *    the sitemap renders as a readable table in the browser (Chrome drops its
- *    native tree view as soon as a document references the xhtml namespace,
- *    which our hreflang <xhtml:link> alternates do).
+ * /sitemap.xml — served by an explicit Route Handler so we control the raw XML
+ * output. We serve plain, native XML (no XSLT stylesheet): desktop browsers show
+ * their built-in XML tree view, and crawlers parse it directly. hreflang
+ * alternates (<xhtml:link>) are kept for multilingual SEO.
  *
  * Reliability on Vercel:
  *  - `dynamic = "force-static"` makes Next prerender this into the build output
@@ -113,7 +108,6 @@ export async function GET(): Promise<Response> {
   }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries.map(renderUrl).join("\n")}
 </urlset>`;
