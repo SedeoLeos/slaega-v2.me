@@ -133,26 +133,10 @@ async function fetchDynamicEntries(now: string): Promise<Entry[]> {
 
 // ── Main ─────────────────────────────────────────────────────────────
 async function main() {
-  // A fixed timestamp keeps the committed baseline diff-stable; on Vercel the
-  // build regenerates it fresh each deploy anyway.
-  const now = new Date().toISOString();
-
-  const staticEntries: Entry[] = STATIC_ROUTES.map((r) => ({
-    path: r.path,
-    lastmod: now,
-    changefreq: r.changefreq,
-    priority: r.priority,
-  }));
-
-  const dynamicEntries = await fetchDynamicEntries(now);
-  const entries = [...staticEntries, ...dynamicEntries];
-
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${entries.map(renderUrl).join("\n")}
-</urlset>
-`;
-
+  // NOTE: the sitemap is now served by src/app/sitemap.ts (a native Next.js
+  // metadata route → correct application/xml Content-Type). We must NOT also
+  // write public/sitemap.xml here, otherwise the static file conflicts with the
+  // route at build time. This script now only writes robots.txt.
   const robots = `# slaega — Seba Gedeon Matsoula Malonga
 User-agent: *
 Allow: /
@@ -169,10 +153,9 @@ Sitemap: ${BASE}/sitemap.xml
 
   const publicDir = path.join(process.cwd(), "public");
   fs.mkdirSync(publicDir, { recursive: true });
-  fs.writeFileSync(path.join(publicDir, "sitemap.xml"), sitemap, "utf8");
   fs.writeFileSync(path.join(publicDir, "robots.txt"), robots, "utf8");
 
-  console.log(`✓ gen-seo: wrote public/sitemap.xml (${entries.length} urls) + public/robots.txt`);
+  console.log("✓ gen-seo: wrote public/robots.txt (sitemap served by app/sitemap.ts)");
 }
 
 main().catch((err) => {
