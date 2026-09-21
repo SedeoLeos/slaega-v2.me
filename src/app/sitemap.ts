@@ -3,16 +3,21 @@ import { projectRepository } from "@/features/projects/repositories/project.repo
 import { experienceRepository } from "@/features/experience/repositories/experience.repository";
 
 /**
- * Native Next.js sitemap route → served at /sitemap.xml with the correct
- * `application/xml` Content-Type by the framework itself (same mechanism as
- * app/manifest.ts, which already works here). This replaces the static
- * public/sitemap.xml file, which the Vercel CDN served as text/html — a header
- * that could not be overridden via next.config or vercel.json.
+ * /sitemap.xml — Next.js native metadata route (same convention as
+ * app/manifest.ts, which works here). Next serves it with the correct
+ * `application/xml` Content-Type.
  *
- * /sitemap.xml is excluded from the i18n middleware (proxy.ts matcher +
- * PASS_THROUGH), exactly like /manifest.webmanifest, so this route is reached
- * without being rewritten to a locale path.
+ * `force-dynamic` makes it a runtime function response rather than a statically
+ * generated .xml asset — the static asset was what the Vercel CDN served as
+ * text/html (browsers / Search Console then reject it as "not XML"). A dynamic
+ * response can't be re-typed by the CDN.
+ *
+ * NOTE: a Route Handler at app/sitemap.xml/route.ts 404s in this app, so the
+ * metadata convention (this file) is the only approach that both serves AND
+ * sets the right Content-Type.
  */
+export const dynamic = "force-dynamic";
+
 const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://slaega.com").replace(/\/+$/, "");
 const LOCALES = ["fr", "en", "es", "pt"] as const;
 const DEFAULT_LOCALE = "fr";
@@ -57,8 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: { languages: languages(r.path) },
   }));
 
-  // Dynamic entries are best-effort: if the DB is unreachable we still ship a
-  // valid sitemap with the static routes rather than fail.
+  // Best-effort dynamic entries — never fail the sitemap over a DB hiccup.
   try {
     const projects = await projectRepository.getPublished();
     for (const p of projects) {
@@ -87,7 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch {
-    // static routes only
+    /* static routes only */
   }
 
   return items;
