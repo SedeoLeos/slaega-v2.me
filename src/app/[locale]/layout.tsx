@@ -86,6 +86,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Only the real locales match the [locale] segment. Without this, dynamicParams
+// defaults to true and [locale] greedily captures ANY first path segment —
+// including /sitemap.xml, /manifest.webmanifest, etc. — routing them into this
+// layout with an invalid "locale", which then calls notFound() → 404. Pinning it
+// to false lets those root metadata routes (app/sitemap.ts, app/manifest.ts) be
+// reached instead. With localePrefix "as-needed", the middleware always rewrites
+// real requests to a valid locale, so unprefixed default-locale pages still work.
+export const dynamicParams = false;
+
 export default async function RootLayout({
   children,
   params,
