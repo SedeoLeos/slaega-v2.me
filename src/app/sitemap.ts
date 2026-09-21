@@ -4,19 +4,23 @@ import { experienceRepository } from "@/features/experience/repositories/experie
 
 /**
  * /sitemap.xml — Next.js native metadata route (same convention as
- * app/manifest.ts, which works here). Next serves it with the correct
- * `application/xml` Content-Type.
+ * app/manifest.ts). Next generates it at build time and serves it with the
+ * correct `application/xml` Content-Type — the standard, best-supported path on
+ * Vercel.
  *
- * `force-dynamic` makes it a runtime function response rather than a statically
- * generated .xml asset — the static asset was what the Vercel CDN served as
- * text/html (browsers / Search Console then reject it as "not XML"). A dynamic
- * response can't be re-typed by the CDN.
+ * We deliberately do NOT use `export const dynamic = "force-dynamic"` here:
+ * a force-dynamic metadata route is served as an on-demand function, which is a
+ * known source of 404s for sitemap.xml on Vercel. A statically generated
+ * metadata route is emitted straight into the build output at /sitemap.xml, so
+ * the platform serves it as a first-class route (not a re-typed static asset,
+ * and not a fragile function). `revalidate` lets it refresh from the DB
+ * periodically without a full redeploy.
  *
  * NOTE: a Route Handler at app/sitemap.xml/route.ts 404s in this app, so the
  * metadata convention (this file) is the only approach that both serves AND
  * sets the right Content-Type.
  */
-export const dynamic = "force-dynamic";
+export const revalidate = 86400; // 1 day
 
 const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://slaega.com").replace(/\/+$/, "");
 const LOCALES = ["fr", "en", "es", "pt"] as const;
