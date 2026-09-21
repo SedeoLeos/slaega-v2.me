@@ -47,6 +47,13 @@ prisma/.active-provider
 prisma/dev.db
 prisma/dev.db-journal
 prisma/prisma/
+/dev.db
+/dev.db-journal
+
+# Local build/test artifacts (never committed)
+/node-compile-cache/
+/tsx-0/
+/scratchpad/
 
 # Uploaded media (keep dir, ignore content)
 public/uploads/*
