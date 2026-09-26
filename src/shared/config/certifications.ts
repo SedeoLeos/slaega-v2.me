@@ -54,11 +54,11 @@ export const CERTIFICATIONS: Certification[] = [
     verified: false,
   },
   {
-    name: "Cisco — Networking / Security badge",
+    name: "Cisco Certified Network Associate (CCNA)",
     issuer: "Cisco",
     topic: "Networking",
     url: "https://www.credly.com/badges/399d8011-05c7-4596-a300-5e8c6c039d8a/public_url",
-    verified: false,
+    verified: true,
   },
   {
     name: "API Fundamentals Student Expert",
