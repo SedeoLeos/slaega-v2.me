@@ -1,4 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Portfolio de **Seba Gedeon Matsoula Malonga** (slaega) — [slaega.com](https://slaega.com). Projet [Next.js](https://nextjs.org).
+
+## 🔌 API publique — données de carrière (pour génération de CV par IA)
+
+Un point d'entrée **public et sans clé API** expose toute la matière de carrière du
+portfolio (profil, expériences, projets & POC, certifications, compétences,
+formation). But : donner cette URL — ou son contenu — à **n'importe quel modèle
+d'IA** pour générer un CV à partir de **données réelles**, même sans clé API.
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api/cv` | JSON agrégé complet (projets = résumé) + bloc `_meta` |
+| `GET /api/cv?full=1` | + le contenu détaillé de chaque projet |
+| `GET /api/cv?format=md` | Un document **Markdown** prêt à coller dans un modèle |
+| `GET /api/experience` | Expériences seules |
+| `GET /api/projects` | Projets publiés seuls |
+| `GET /api/stats` | Chiffres clés |
+
+- **CORS ouvert** (lecture publique), cache CDN ~1 h. Aucune donnée privée exposée
+  (numéro de téléphone volontairement exclu).
+- Les données proviennent de la base (seed `prisma/seed-prod.ts` + fiches
+  `src/content/project/*.mdx`) — donc mettre à jour le portfolio met à jour l'API.
+
+### Exemples
+
+```bash
+# JSON complet
+curl https://slaega.com/api/cv
+
+# Markdown prêt pour un modèle
+curl "https://slaega.com/api/cv?format=md"
+```
+
+Prompt type pour un modèle :
+
+> Récupère mes données sur `https://slaega.com/api/cv?format=md` et génère-moi un
+> CV d'une page pour un poste de **[intitulé]** chez **[entreprise]**. N'invente
+> aucun fait : utilise uniquement ces données. Mets en avant **[angle]**.
+
+(Si le modèle ne navigue pas : ouvre l'URL `?format=md`, copie le contenu, colle-le
+dans le modèle avec le même prompt.)
 
 ## Getting Started
 
