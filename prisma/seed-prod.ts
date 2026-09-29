@@ -1769,19 +1769,19 @@ const EXPERIENCES = [
   {
     id: "novenvera",
     company: "Novenvera",
-    role: "Ingénieur Logiciel Senior & Principal DevOps",
+    role: "Ingénieur Logiciel & DevOps",
     startDate: "2026-06",
     endDate: null,
     current: true,
     description:
-      "Ingénieur logiciel senior doublé d'une responsabilité DevOps de premier plan : je conçois autant que j'opère. Côté plateforme, je pilote l'infrastructure de bout en bout — orchestration Kubernetes (k8s) & k3s, conteneurisation Docker, chaînes CI/CD, provisioning et durcissement de serveurs Linux, reverse-proxy Nginx & TLS, observabilité (métriques, logs, alerting). Côté logiciel, je conçois des services backend robustes et des APIs fiables, avec une exigence forte sur la sécurité, la résilience et la maîtrise des coûts. Mon fil rouge : rendre les systèmes prévisibles — déploiements reproductibles, reprise sur incident, moindre privilège — pour des environnements à forte contrainte technique.",
-    skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Cloud", "Observabilité", "SRE", "Fiabilité", "Sécurité", "Backend", "API REST"],
+      "Double rôle développement & infrastructure : je code (services backend, APIs) autant que je pilote l'infrastructure de bout en bout — orchestration Kubernetes (k8s) & k3s, conteneurisation Docker, chaînes CI/CD, provisioning et durcissement de serveurs Linux, reverse-proxy Nginx & TLS, observabilité (métriques, logs, alerting). Sur le volet applicatif métier, j'accompagne et développe des solutions ERP/SaaS sur Odoo : modules de facturation, RH, stock, CRM et intégrations, dont un module de gestion de garantie. Au quotidien, je rédige la documentation fonctionnelle et technique des projets, et j'assure le mentorat et la formation des nouveaux arrivants sur les outils, l'environnement et les bonnes pratiques de l'équipe.",
+    skills: ["Kubernetes", "k3s", "Docker", "CI/CD", "Linux", "Nginx", "Odoo", "ERP", "SaaS", "Observabilité", "Sécurité", "Backend", "API REST", "Documentation", "Mentorat", "Formation"],
     location: "Brazzaville, République du Congo (hybride)",
     companyUrl: null as string | null,
     translations: {
       en: {
-        role: `Senior Software Engineer & Principal DevOps`,
-        description: `Senior software engineer with a leading DevOps responsibility: I design as much as I operate. On the platform side, I own the infrastructure end to end — Kubernetes (k8s) & k3s orchestration, Docker containerization, CI/CD chains, Linux server provisioning and hardening, Nginx reverse proxy & TLS, observability (metrics, logs, alerting). On the software side, I build robust backend services and reliable APIs, with a strong focus on security, resilience and cost control. My through-line: make systems predictable — reproducible deployments, incident recovery, least privilege — for demanding technical environments.`,
+        role: `Software Engineer & DevOps`,
+        description: `Dual role across development and infrastructure: I write code (backend services, APIs) as much as I run the infrastructure end to end — Kubernetes (k8s) & k3s orchestration, Docker containerization, CI/CD chains, Linux server provisioning and hardening, Nginx reverse proxy & TLS, observability (metrics, logs, alerting). On the business-application side, I develop and support ERP/SaaS solutions on Odoo: billing, HR, inventory and CRM modules plus integrations, including a warranty-management module. Day to day, I write functional and technical documentation, and mentor and onboard new team members on the tooling, environment and best practices.`,
         location: `Brazzaville, Republic of Congo (hybrid)`,
       },
     },
@@ -1834,14 +1834,14 @@ const EXPERIENCES = [
     endDate: "2026-06",
     current: false,
     description:
-      "Progression d'Ingénieur Full-Stack à Lead puis Architecte logiciel. Conception d'architectures robustes (API-first, microservices, intégrations tierces), développement web & mobile (Next.js, React Native, Node.js/NestJS), pipelines CI/CD et DevOps, gestion des environnements serveurs et cloud, mentorat de l'équipe. Réalisations livrées en production : societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, le CMS Civis (ministères en RDC), et lead developer de pro.focus-suite.com. Mise en place de l'infrastructure (provisioning serveurs, Coolify, dont iolifescience.com).",
-    skills: ["Next.js", "React Native", "Node.js", "NestJS", "Microservices", "API-first", "Multi-tenant", "SaaS", "CI/CD", "Coolify", "Docker", "Cloud", "IAM", "Keycloak", "OpenFGA", "Cerbos", "Architecture"],
+      "Progression d'Ingénieur Full-Stack à Lead puis Architecte logiciel, avec l'encadrement d'une équipe de plus de 5 développeurs (répartition des tâches, revues de code, standards, mentorat). Conception d'architectures robustes (API-first, microservices, intégrations tierces), développement web & mobile (Next.js, React Native, Node.js/NestJS), pipelines CI/CD et DevOps, gestion des environnements serveurs et cloud. Réalisations livrées en production : societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, le CMS Civis (ministères en RDC), et lead developer de pro.focus-suite.com. Mise en place de l'infrastructure (provisioning serveurs, Coolify, dont iolifescience.com).",
+    skills: ["Next.js", "React Native", "Node.js", "NestJS", "Microservices", "API-first", "Multi-tenant", "SaaS", "CI/CD", "Coolify", "Docker", "Cloud", "IAM", "Keycloak", "OpenFGA", "Cerbos", "Architecture", "Management d'équipe"],
     location: "Thiais, Île-de-France, France (à distance)",
     companyUrl: null as string | null,
     translations: {
       en: {
         role: `Software Architect & Full-Stack Lead`,
-        description: `Progressed from Full-Stack Engineer to Lead then Software Architect. Designed robust architectures (API-first, microservices, third-party integrations), built web & mobile products (Next.js, React Native, Node.js/NestJS), CI/CD and DevOps pipelines, managed server and cloud environments, and mentored the team. Production deliverables: societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, the Civis CMS (ministries in DRC), and lead developer of pro.focus-suite.com. Infrastructure setup (server provisioning, Coolify, including iolifescience.com).`,
+        description: `Progressed from Full-Stack Engineer to Lead then Software Architect, leading a team of more than 5 developers (task allocation, code reviews, standards, mentoring). Designed robust architectures (API-first, microservices, third-party integrations), built web & mobile products (Next.js, React Native, Node.js/NestJS), CI/CD and DevOps pipelines, and managed server and cloud environments. Production deliverables: societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, the Civis CMS (ministries in DRC), and lead developer of pro.focus-suite.com. Infrastructure setup (server provisioning, Coolify, including iolifescience.com).`,
         location: `Thiais, Île-de-France, France (remote)`,
       },
     },
