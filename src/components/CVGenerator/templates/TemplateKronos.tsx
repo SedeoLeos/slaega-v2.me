@@ -320,7 +320,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                       {(bullets.length > 1 ? bullets : [raw])
                         .slice(0, 5)
                         .map((b, i) => (
-                          <View key={i} style={s.expBullet}>
+                          <View key={i} style={s.expBullet} wrap={false}>
                             <Text style={s.expBulletDot}>•</Text>
                             <Text style={s.expBulletText}>{b}</Text>
                           </View>
