@@ -1,185 +1,24 @@
 ---
-title: "Wapi Taxis Client"
+title: "Wapi Taxi — Mise en relation clients et chauffeurs"
 date: "2023-01-15"
-tags: ["Flutter", "Django", "Django Channels", "Django REST", "PostgreSQL", "Redis", "Google Maps", "WebSocket", "Mobility", "Urban Transport", "Real-time", "Geolocation", "Cross-platform", "Mobile Development"]
+tags: ["Flutter", "Django", "Mobile", "Transport"]
 categories: ["mobile-app"]
-image: "/images/img.jpg"
 ---
 
-# Wapi Taxis Client – Révolution de la mobilité urbaine
+# Wapi Taxi — Mise en relation clients et chauffeurs
 
-## Introduction
+## Contexte
 
-Dans l'écosystème complexe de la mobilité urbaine africaine, où les défis de transport constituent un frein majeur au développement économique et social, j'ai conçu et développé **Wapi Taxis Client**, une application mobile révolutionnaire qui transforme l'expérience de déplacement des citadins. Cette solution innovante répond aux besoins spécifiques des utilisateurs en quête de solutions de transport fiables, accessibles et sécurisées.
+Projet personnel pour faciliter la mise en relation entre clients et chauffeurs de taxi, sur le modèle des applications de VTC.
 
-Construite avec **Flutter** pour garantir une expérience native cross-platform, alimentée par un backend **Django** robuste avec **Django Channels** pour la communication temps réel, **Django REST Framework** pour les APIs, **PostgreSQL** pour la persistance des données et **Redis** pour la mise en cache, et enrichie par les **APIs Google Maps** pour une géolocalisation précise, **Wapi Taxis Client** ne se contente pas de connecter passagers et chauffeurs : elle crée un véritable **écosystème de mobilité intelligente** qui optimise chaque aspect du voyage urbain.
+## Ce que j'ai construit
 
-L'ambition était claire : **démocratiser l'accès au transport de qualité** en créant une plateforme technologique qui allie simplicité d'utilisation, fiabilité opérationnelle et innovation continue pour répondre aux défis uniques de la mobilité en Afrique.
+Une application mobile de **gestion et de mise en relation** entre clients et chauffeurs : demande de course côté client, prise en charge côté chauffeur.
 
----
+## Stack
 
-## Description détaillée du projet
+Application mobile **Flutter**, backend **Django**.
 
-### Contexte et enjeux de la mobilité urbaine
+## Mon rôle
 
-Mon analyse approfondie du secteur du transport urbain a révélé des problématiques structurelles majeures :
-
-**Inefficacité des systèmes traditionnels** : Les méthodes conventionnelles de héler un taxi (arrêt de rue, stations fixes) génèrent des temps d'attente imprévisibles et une expérience utilisateur frustrante, particulièrement dans les zones à faible densité de véhicules.
-
-**Manque de transparence tarifaire** : L'absence de tarification standardisée et transparente crée des incertitudes financières pour les utilisateurs et peut conduire à des pratiques de surfacturation.
-
-**Problèmes de sécurité** : Le manque de traçabilité des courses et l'absence de vérification des conducteurs constituent des risques sécuritaires significatifs pour les passagers.
-
-**Inefficacité opérationnelle** : La mauvaise coordination entre l'offre et la demande entraîne des temps morts pour les chauffeurs et des délais d'attente prolongés pour les clients.
-
-### Architecture technique innovante
-
-J'ai développé une architecture mobile moderne et scalable :
-
-**Framework Flutter cross-platform** : Choix stratégique de Flutter pour garantir une expérience utilisateur native identique sur iOS et Android, optimisant les coûts de développement tout en maximisant la portée.
-
-**Backend Django robuste** : Architecture backend basée sur Django avec Django REST Framework pour les APIs RESTful, Django Channels pour les WebSockets et la communication temps réel, PostgreSQL pour la base de données relationnelle et Redis pour la mise en cache et les sessions.
-
-**Communication temps réel** : Utilisation de Django Channels et WebSockets pour la synchronisation instantanée des données, essentielle pour le suivi des courses et la communication en temps réel entre passagers et chauffeurs.
-
-**Intégration Google Maps avancée** : Implémentation complète des APIs Google pour offrir une expérience cartographique professionnelle avec géolocalisation précise et calcul d'itinéraires optimisés.
-
-### Modules développés
-
-#### Système de géolocalisation intelligent
-- **GPS haute précision** : Algorithmes de fusion de données GPS, réseau et WiFi pour une localisation optimale
-- **Géocodage avancé** : Conversion bidirectionnelle adresses/coordonnées avec support des adresses locales
-- **Zones de service dynamiques** : Délimitation intelligente des zones de couverture selon la disponibilité
-- **Points d'intérêt contextuels** : Intégration des lieux populaires et repères locaux
-
-#### Moteur de réservation sophistiqué
-- **Matching intelligent** : Algorithmes d'optimisation pour associer passagers et chauffeurs disponibles
-- **Réservation différée** : Planification de courses avec notifications automatiques
-- **Estimation tarifaire prédictive** : Calcul en temps réel basé sur la distance, le trafic et la demande
-- **Gestion des préférences** : Personnalisation selon l'historique et les habitudes utilisateur
-
-#### Interface de communication intégrée
-- **Chat temps réel** : Messagerie instantanée sécurisée entre passager et chauffeur
-- **Appels VoIP** : Communication vocale intégrée sans révéler les numéros personnels
-- **Notifications contextuelles** : Alertes intelligentes selon l'état de la course
-- **Partage de trajet** : Fonctionnalité de sécurité pour partager sa position avec des proches
-
----
-
-## Fonctionnalités et innovations
-
-### Expérience utilisateur optimisée
-- **Interface intuitive** : Design Material adapté aux usages locaux et aux différents niveaux de littératie numérique
-- **Cartographie avancée** : Visualisation temps réel avec couches de trafic et points d'intérêt
-- **Recherche intelligente** : Autocomplétion contextuelle avec apprentissage des habitudes
-- **Profil personnalisé** : Gestion des préférences, adresses favorites et historique
-
-### Gestion des courses sophistiquée
-- **Réservation instantanée** : Commande en moins de 30 secondes avec confirmation automatique
-- **Planification avancée** : Réservation jusqu'à 7 jours à l'avance avec rappels
-- **Suivi temps réel** : Visualisation de la position du chauffeur avec ETA dynamique
-- **Historique détaillé** : Archive complète avec évaluations et reçus numériques
-
-### Système de paiement sécurisé
-- **Multi-méthodes** : Espèces, mobile money, cartes bancaires selon les standards locaux
-- **Tarification transparente** : Calcul détaillé avec frais, taxes et pourboires optionnels
-- **Facturation automatique** : Génération de reçus avec détails fiscaux
-- **Sécurité bancaire** : Chiffrement PCI DSS et tokenisation des données sensibles
-
-### Communication temps réel
-- **Appels masqués** : Communication sans révéler les numéros personnels
-- **Chat multilingue** : Messagerie avec traduction automatique
-- **Notifications smart** : Alertes contextuelles selon l'état de la course
-- **Partage sécurisé** : Envoi de position aux contacts d'urgence
-
----
-
-## Stack technologique
-
-### Développement mobile
-- **Framework** : Flutter 3.x avec Dart pour la performance native cross-platform
-- **Architecture** : Clean Architecture avec séparation domaine/présentation/données
-- **State Management** : Bloc pattern avec Cubit pour la gestion d'état réactive
-- **Navigation** : Auto Route pour la navigation déclarative et type-safe
-
-### Backend et services cloud
-- **BaaS** : Firebase avec Firestore pour la synchronisation temps réel
-- **Authentification** : Firebase Auth avec vérification SMS et OAuth
-- **Storage** : Firebase Storage pour documents, photos et cache offline
-- **Analytics** : Firebase Analytics avec événements métier personnalisés
-
-### Intégrations cartographiques
-- **SDK Maps** : Google Maps avec clustering et optimisations de performance
-- **Géocodage** : Google Geocoding API avec cache local et fallback
-- **Directions** : Google Directions API avec calcul multi-modal
-- **Places** : Google Places API avec autocomplétion et détails enrichis
-
-### Communication et notifications
-- **WebSocket** : Connexions persistantes avec reconnexion automatique
-- **Push** : Firebase Cloud Messaging avec segmentation utilisateur
-- **VoIP** : Intégration Twilio pour les appels masqués
-- **Chat** : Stream Chat SDK avec modération automatique
-
-### Sécurité et monitoring
-- **Chiffrement** : AES-256 pour les données sensibles locales
-- **Network** : Certificate pinning et détection de proxy
-- **Crash reporting** : Firebase Crashlytics avec symbolication
-- **Performance** : Firebase Performance Monitoring avec métriques custom
-
----
-
-## Résultats et impact transformationnel
-
-### Adoption et engagement
-- **Téléchargements** : Plus de 25 000 installations en 8 mois
-- **Utilisateurs actifs** : 12 000 utilisateurs mensuels réguliers
-- **Satisfaction** : Note moyenne de 4.7/5 sur Google Play et App Store
-- **Rétention** : Taux de rétention de 68% à 30 jours
-
-### Performance opérationnelle
-- **Temps de réservation** : Réduction de 65% par rapport aux méthodes traditionnelles
-- **Précision géolocalisation** : 98% de précision dans la localisation des courses
-- **Temps de réponse** : Confirmation de course en moins de 2 minutes en moyenne
-- **Taux de completion** : 94% des courses réservées sont effectuées avec succès
-
-### Impact économique
-- **Volume de transactions** : Plus de 150 000€ de courses traitées
-- **Croissance mensuelle** : +25% d'augmentation du volume d'activité
-- **Efficacité chauffeurs** : +40% d'augmentation des revenus moyens
-- **Paiements digitaux** : 78% des transactions via mobile money
-
-### Innovation et différenciation
-- **Adaptation locale** : Support des langues locales et méthodes de paiement régionales
-- **Sécurité renforcée** : Système de vérification d'identité et traçabilité complète
-- **Accessibilité** : Interface adaptée aux smartphones d'entrée de gamme
-- **Inclusion sociale** : Facilitation de l'accès au transport pour tous les segments
-
----
-
-## Évolutions et perspectives
-
-### Intelligence artificielle
-- **Prédiction de demande** : ML pour anticiper les pics d'activité et optimiser la flotte
-- **Tarification dynamique** : Algorithmes de pricing intelligent selon l'offre et la demande
-- **Recommandations personnalisées** : IA pour suggérer destinations et horaires optimaux
-- **Détection d'anomalies** : Système de sécurité prédictif pour identifier les comportements suspects
-
-### Extensions fonctionnelles
-- **Multi-modal** : Intégration transport public, vélos et trottinettes partagées
-- **Livraison** : Extension vers la livraison de colis et courses express
-- **Covoiturage** : Fonctionnalité de partage de trajets pour optimiser les coûts
-- **Accessibilité** : Véhicules adaptés aux personnes à mobilité réduite
-
-### Expansion géographique
-- **Nouvelles villes** : Déploiement dans 5 nouvelles métropoles africaines
-- **Partenariats locaux** : Collaboration avec opérateurs de transport existants
-- **Adaptation culturelle** : Personnalisation selon les spécificités régionales
-- **Conformité réglementaire** : Respect des législations locales sur le transport
-
-### Innovation technologique
-- **IoT intégration** : Capteurs véhicules pour maintenance prédictive et sécurité
-- **Blockchain** : Système de réputation décentralisé et paiements transparents
-- **AR/VR** : Réalité augmentée pour faciliter la localisation des véhicules
-- **Edge computing** : Traitement local pour réduire la latence et améliorer l'offline
-
-Ce projet illustre ma capacité à concevoir des solutions mobiles innovantes qui transforment des secteurs traditionnels, en combinant excellence technique, compréhension des enjeux locaux et vision stratégique pour créer un impact sociétal positif.
+Conception et développement de bout en bout (projet personnel).
