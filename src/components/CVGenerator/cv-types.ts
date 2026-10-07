@@ -23,6 +23,12 @@ export type CVProject = {
   score: number;
 };
 
+export type CVEducation = {
+  degree: string;
+  institution?: string;
+  year?: string;
+};
+
 export type CVData = {
   keywords: string[];
   tagline?: string;
@@ -32,6 +38,7 @@ export type CVData = {
   capabilities?: string[];
   experiences: CVExperience[];
   projects: CVProject[];
+  education?: CVEducation[];
   relevantSkills: string[];
   allSkills: string[];
 };
