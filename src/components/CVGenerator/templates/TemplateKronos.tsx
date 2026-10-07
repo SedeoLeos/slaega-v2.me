@@ -217,6 +217,19 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     },
     projDesc: { fontSize: 10, color: TEXT, lineHeight: 1.5, marginTop: 0 },
     projTags: { fontSize: 8.5, color: ACC, marginTop: 4 },
+
+    /* ── Formation ── */
+    eduItem: { marginBottom: 6, flexDirection: "row", alignItems: "flex-start" },
+    eduSquare: {
+      width: 7,
+      height: 7,
+      backgroundColor: ACC,
+      marginRight: 9,
+      marginTop: 3,
+      flexShrink: 0,
+    },
+    eduDegree: { fontSize: 10.5, fontFamily: "Helvetica-Bold", color: DARK },
+    eduMeta: { fontSize: 9.5, color: MUTED, marginTop: 2 },
   });
 
   return (
@@ -349,6 +362,30 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                       {p.tags.slice(0, 5).join(" · ")}
                     </Text>
                   )}
+                </View>
+              ))}
+            </>
+          )}
+
+          {/* Formation */}
+          {(data.education?.length ?? 0) > 0 && (
+            <>
+              <View style={s.secRow} minPresenceAhead={40}>
+                <Text style={s.secTitle}>{L.education}</Text>
+                <View style={s.secLine} />
+              </View>
+              <View style={s.secDivider} />
+              {data.education!.map((edu, i) => (
+                <View key={i} style={s.eduItem}>
+                  <View style={s.eduSquare} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.eduDegree}>{edu.degree}</Text>
+                    {(edu.institution || edu.year) && (
+                      <Text style={s.eduMeta}>
+                        {[edu.institution, edu.year].filter(Boolean).join("  ·  ")}
+                      </Text>
+                    )}
+                  </View>
                 </View>
               ))}
             </>
