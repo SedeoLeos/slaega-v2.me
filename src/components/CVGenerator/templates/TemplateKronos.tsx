@@ -311,7 +311,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
                 const bullets = descToBullets(exp.description);
                 const raw = bullets.join(" ");
                 return (
-                  <View key={exp.id} style={s.expItem}>
+                  <View key={exp.id} style={s.expItem} wrap={false}>
                     <View style={s.expSquare} />
                     <View style={s.expContent}>
                       <View style={s.expHeader}>
@@ -354,7 +354,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
               </View>
               <View style={s.secDivider} />
               {data.projects.slice(0, 4).map((p) => (
-                <View key={p.slug} style={s.projItem}>
+                <View key={p.slug} style={s.projItem} wrap={false}>
                   <Text style={s.projTitle}>{p.title}</Text>
                   <Text style={s.projDesc}>{stripHtml(p.desc)}</Text>
                   {p.tags.length > 0 && (
@@ -376,7 +376,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
               </View>
               <View style={s.secDivider} />
               {data.education!.map((edu, i) => (
-                <View key={i} style={s.eduItem}>
+                <View key={i} style={s.eduItem} wrap={false}>
                   <View style={s.eduSquare} />
                   <View style={{ flex: 1 }}>
                     <Text style={s.eduDegree}>{edu.degree}</Text>
