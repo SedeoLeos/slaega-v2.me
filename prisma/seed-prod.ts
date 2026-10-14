@@ -1854,14 +1854,14 @@ const EXPERIENCES = [
     endDate: "2024-12",
     current: false,
     description:
-      "En freelance pour Baye Conception, j'ai pris en charge des solutions digitales sur mesure de bout en bout : cadrage et analyse des besoins, architecture, développement front & back, intégration, tests et mise en production. Au-delà du code, un rôle de conseil technique — arbitrer les choix d'architecture, fiabiliser les livraisons et accélérer le time-to-market. J'ai travaillé en autonomie, avec une exigence de qualité et de pragmatisme adaptée à des délais courts et des budgets maîtrisés.",
-    skills: ["Full-Stack", "Architecture", "API", "Cloud", "CI/CD", "React", "Next.js", "Conseil"],
+      "En freelance pour Baye Conception, j'ai pris en charge des solutions digitales sur mesure de bout en bout : cadrage et analyse des besoins, architecture, développement front & back, intégration, tests et mise en production. Bases de données MongoDB et stockage objet (MinIO, Cloudflare R2, AWS S3) selon les besoins des projets. Au-delà du code, un rôle de conseil technique — arbitrer les choix d'architecture, fiabiliser les livraisons et accélérer le time-to-market. J'ai travaillé en autonomie, avec une exigence de qualité et de pragmatisme adaptée à des délais courts et des budgets maîtrisés.",
+    skills: ["Full-Stack", "Architecture", "API", "Cloud", "CI/CD", "React", "Next.js", "MongoDB", "MinIO", "Cloudflare R2", "AWS S3", "Conseil"],
     location: "Maroc (à distance)",
     companyUrl: null as string | null,
     translations: {
       en: {
         role: `Full-Stack Software Engineer (Freelance)`,
-        description: `As a freelancer for Baye Conception, I took ownership of bespoke digital solutions end to end: scoping and needs analysis, architecture, front & back development, integration, testing and go-live. Beyond the code, a technical consulting role — arbitrating architecture choices, making deliveries reliable and accelerating time-to-market. I worked autonomously, with a demand for quality and pragmatism suited to short timelines and controlled budgets.`,
+        description: `As a freelancer for Baye Conception, I took ownership of bespoke digital solutions end to end: scoping and needs analysis, architecture, front & back development, integration, testing and go-live. MongoDB databases and object storage (MinIO, Cloudflare R2, AWS S3) depending on project needs. Beyond the code, a technical consulting role — arbitrating architecture choices, making deliveries reliable and accelerating time-to-market. I worked autonomously, with a demand for quality and pragmatism suited to short timelines and controlled budgets.`,
         location: `Morocco (remote)`,
       },
     },
