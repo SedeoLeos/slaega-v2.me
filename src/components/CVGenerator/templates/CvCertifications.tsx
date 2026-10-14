@@ -11,13 +11,17 @@ export function CvCertifications({
   color = "#111827",
   muted = "#6b7280",
   border = "#e5e7eb",
+  /** Optional cap on how many certifications to show (list is pre-sorted by relevance). Undefined = show all. */
+  limit,
 }: {
   accent?: string;
   color?: string;
   muted?: string;
   border?: string;
+  limit?: number;
 }) {
   if (!CERTIFICATIONS.length) return null;
+  const items = limit ? CERTIFICATIONS.slice(0, limit) : CERTIFICATIONS;
   return (
     <View style={{ marginTop: 10 }} wrap={false}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 5 }}>
@@ -35,7 +39,7 @@ export function CvCertifications({
         <View style={{ flex: 1, height: 0.5, backgroundColor: border }} />
       </View>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {CERTIFICATIONS.map((c, i) => (
+        {items.map((c, i) => (
           <View
             key={i}
             style={{ width: "50%", flexDirection: "row", alignItems: "baseline", marginBottom: 2.5, paddingRight: 8 }}
