@@ -300,50 +300,73 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
           )}
 
           {/* Expérience */}
-          {sections.experience.visible && data.experiences.length > 0 && (
-            <>
-              <View style={s.secRow} minPresenceAhead={60}>
-                <Text style={s.secTitle}>{L.experience}</Text>
-                <View style={s.secLine} />
-              </View>
-              <View style={s.secDivider} />
-              {data.experiences.map((exp) => {
-                const bullets = descToBullets(exp.description);
-                const raw = bullets.join(" ");
-                return (
-                  <View key={exp.id} style={s.expItem} wrap={false}>
-                    <View style={s.expSquare} />
-                    <View style={s.expContent}>
-                      <View style={s.expHeader}>
-                        <Text style={s.expTitle}>{exp.role}</Text>
-                        <Text style={s.expDate}>
-                          {formatMonth(exp.startDate, false, lang, L.present)} –{" "}
-                          {formatMonth(
-                            exp.endDate,
-                            exp.current,
-                            lang,
-                            L.present,
-                          )}
-                        </Text>
-                      </View>
-                      <Text style={s.expCompany}>
-                        {exp.company}
-                        {exp.location ? `  ·  ${exp.location}` : ""}
+          {sections.experience.visible && data.experiences.length > 0 && (() => {
+            const renderExpItem = (exp: (typeof data.experiences)[number]) => {
+              const bullets = descToBullets(exp.description);
+              const raw = bullets.join(" ");
+              return (
+                <View key={exp.id} style={s.expItem} wrap={false}>
+                  <View style={s.expSquare} />
+                  <View style={s.expContent}>
+                    <View style={s.expHeader}>
+                      <Text style={s.expTitle}>{exp.role}</Text>
+                      <Text style={s.expDate}>
+                        {formatMonth(exp.startDate, false, lang, L.present)} –{" "}
+                        {formatMonth(exp.endDate, exp.current, lang, L.present)}
                       </Text>
-                      {(bullets.length > 1 ? bullets : [raw])
-                        .slice(0, 5)
-                        .map((b, i) => (
-                          <View key={i} style={s.expBullet} wrap={false}>
-                            <Text style={s.expBulletDot}>•</Text>
-                            <Text style={s.expBulletText}>{b}</Text>
-                          </View>
-                        ))}
                     </View>
+                    <Text style={s.expCompany}>
+                      {exp.company}
+                      {exp.location ? `  ·  ${exp.location}` : ""}
+                    </Text>
+                    {(bullets.length > 1 ? bullets : [raw])
+                      .slice(0, 5)
+                      .map((b, i) => (
+                        <View key={i} style={s.expBullet} wrap={false}>
+                          <Text style={s.expBulletDot}>•</Text>
+                          <Text style={s.expBulletText}>{b}</Text>
+                        </View>
+                      ))}
                   </View>
-                );
-              })}
-            </>
-          )}
+                </View>
+              );
+            };
+
+            const freelance = data.experiences.filter((e) => e.employmentType === "freelance");
+            const fixed = data.experiences.filter((e) => e.employmentType !== "freelance");
+            const hasSplit = freelance.length > 0 && fixed.length > 0;
+
+            if (!hasSplit) {
+              return (
+                <>
+                  <View style={s.secRow} minPresenceAhead={60}>
+                    <Text style={s.secTitle}>{L.experience}</Text>
+                    <View style={s.secLine} />
+                  </View>
+                  <View style={s.secDivider} />
+                  {data.experiences.map(renderExpItem)}
+                </>
+              );
+            }
+
+            return (
+              <>
+                <View style={s.secRow} minPresenceAhead={60}>
+                  <Text style={s.secTitle}>{L.experienceFixed}</Text>
+                  <View style={s.secLine} />
+                </View>
+                <View style={s.secDivider} />
+                {fixed.map(renderExpItem)}
+
+                <View style={s.secRow} minPresenceAhead={60}>
+                  <Text style={s.secTitle}>{L.experienceFreelance}</Text>
+                  <View style={s.secLine} />
+                </View>
+                <View style={s.secDivider} />
+                {freelance.map(renderExpItem)}
+              </>
+            );
+          })()}
 
           {/* Projets */}
           {sections.projects.visible && data.projects.length > 0 && (
