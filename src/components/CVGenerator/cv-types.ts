@@ -13,6 +13,8 @@ export type CVExperience = {
   skills: string[];
   location: string;
   score: number;
+  /** "emploi" (poste fixe) vs "freelance" (mission/vacation) — absent = traité comme emploi */
+  employmentType?: "emploi" | "freelance";
 };
 
 export type CVProject = {
@@ -113,6 +115,8 @@ export const CV_LABELS = {
     linkedin: "LINKEDIN",
     canDo: "CE QUE J'APPORTE",
     experience: "EXPÉRIENCES",
+    experienceFixed: "EMPLOIS",
+    experienceFreelance: "MISSIONS FREELANCE & VACATIONS",
     projects: "PROJETS MARQUANTS",
     skills: "COMPÉTENCES CLÉS",
     education: "PARCOURS",
@@ -126,6 +130,8 @@ export const CV_LABELS = {
     linkedin: "LINKEDIN",
     canDo: "WHAT I CAN DELIVER",
     experience: "EXPERIENCE",
+    experienceFixed: "EMPLOYMENT",
+    experienceFreelance: "FREELANCE & PART-TIME WORK",
     projects: "KEY PROJECTS",
     skills: "KEY SKILLS",
     education: "BACKGROUND",
