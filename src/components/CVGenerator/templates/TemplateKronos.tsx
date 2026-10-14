@@ -106,14 +106,14 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     summaryText: {
       fontSize: 10,
       color: TEXT,
-      lineHeight: 1.5,
-      marginTop: 8,
-      marginBottom: 10,
+      lineHeight: 1.55,
+      marginTop: 9,
+      marginBottom: 13,
     },
 
     /* ── Contact ── */
     contactDivider: { height: 0.8, backgroundColor: DIVIDER, marginBottom: 10 },
-    contactRow: { flexDirection: "row", marginBottom: 10 },
+    contactRow: { flexDirection: "row", marginBottom: 12 },
     contactCol: { flex: 1 },
     contactLabel: {
       fontSize: 7.5,
@@ -138,7 +138,7 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     capItem: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 4.5,
+      marginBottom: 6,
     },
     capDot: { fontSize: 10, color: ACC, marginRight: 6 },
     capText: { fontSize: 10, color: TEXT, flex: 1, lineHeight: 1.5 },
@@ -147,8 +147,8 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
     secRow: {
       flexDirection: "row",
       alignItems: "center",
-      marginTop: 10,
-      marginBottom: 3,
+      marginTop: 15,
+      marginBottom: 5,
     },
     secTitle: {
       fontSize: 15,
@@ -163,11 +163,11 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       marginLeft: 8,
       marginTop: 3,
     },
-    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 8 },
+    secDivider: { height: 0.5, backgroundColor: DIVIDER, marginBottom: 11 },
 
     /* ── Expérience ── */
     expItem: {
-      marginBottom: 8,
+      marginBottom: 12,
       flexDirection: "row",
       alignItems: "flex-start",
     },
@@ -198,28 +198,28 @@ export default function TemplateKronos({ data, palette, sections }: Props) {
       flexShrink: 0,
       marginLeft: 6,
     },
-    expCompany: { fontSize: 9.5, color: MUTED, marginBottom: 4 },
+    expCompany: { fontSize: 9.5, color: MUTED, marginBottom: 5 },
     expBullet: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 3,
+      marginBottom: 4,
     },
     expBulletDot: { fontSize: 10, color: TEXT, marginRight: 5 },
     expBulletText: { fontSize: 10, color: TEXT, flex: 1, lineHeight: 1.5 },
 
     /* ── Projets ── */
-    projItem: { marginBottom: 7, flexDirection: "column" },
+    projItem: { marginBottom: 11, flexDirection: "column" },
     projTitle: {
       fontSize: 11,
       fontFamily: "Helvetica-Bold",
       color: DARK,
-      marginBottom: 4,
+      marginBottom: 5,
     },
-    projDesc: { fontSize: 10, color: TEXT, lineHeight: 1.5, marginTop: 0 },
-    projTags: { fontSize: 8.5, color: ACC, marginTop: 4 },
+    projDesc: { fontSize: 10, color: TEXT, lineHeight: 1.55, marginTop: 0 },
+    projTags: { fontSize: 8.5, color: ACC, marginTop: 5 },
 
     /* ── Formation ── */
-    eduItem: { marginBottom: 6, flexDirection: "row", alignItems: "flex-start" },
+    eduItem: { marginBottom: 9, flexDirection: "row", alignItems: "flex-start" },
     eduSquare: {
       width: 7,
       height: 7,
