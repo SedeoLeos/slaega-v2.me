@@ -1445,30 +1445,34 @@ OpenFGA · modelling · NestJS · tests
     tags: ["NestJS", "Next.js", "OpenFGA", "RH & Paie", "SaaS", "Multi-tenant"],
     categories: ["web-app", "api-webservice"],
     description:
-      "Lead developer de Focus Suite : l'outil tout-en-un qui pilote toute la vie de l'entreprise — employés, paie, contrats, facturation, temps, absences et tâches.",
+      "Architecte, lead du projet et principal développeur backend de Focus Suite : l'outil tout-en-un qui pilote toute la vie de l'entreprise — employés, ancienneté, contrats fournisseurs, paie, congés et facturation.",
     projectUrl: "https://pro.focus-suite.com",
     content: `## Focus Suite — piloter toute l'entreprise depuis un seul outil
 
 **Le problème.** Gérer une entreprise, c'est jongler avec des dizaines d'outils qui ne se parlent pas : un pour la paie, un autre pour les contrats, un tableur pour les absences, un logiciel à part pour la facturation. Les données sont éclatées, ressaisies, et personne n'a de vision d'ensemble.
 
-**La réponse.** En tant que **lead developer**, j'ai conçu et piloté **Focus Suite**, un outil **puissant et tout-en-un** qui réunit la gestion des ressources humaines et de l'activité dans une seule plateforme cohérente, sécurisée et temps réel.
+**La réponse.** En tant qu'**architecte, lead du projet et principal développeur backend**, j'ai conçu et piloté **Focus Suite**, un outil **puissant et tout-en-un** qui réunit la gestion des ressources humaines et de l'activité dans une seule plateforme cohérente, sécurisée et temps réel. J'ai également développé le frontend en Next.js.
 
 ### Ce que Focus Suite gère
-- **Employés** — dossiers, rôles, organisation, cycle de vie complet.
-- **Contrats** — création, suivi et échéances des contrats.
+- **Employés** — dossiers, rôles, ancienneté, organisation, cycle de vie complet.
+- **Contrats fournisseurs** — création, suivi et échéances.
 - **Paie** — calcul et gestion de la paie, connectée aux données RH.
 - **Temps & activités** — pointage, activités des employés, **heures supplémentaires**.
 - **Absences & congés** — demandes, validations, soldes.
 - **Tâches** — affectation et suivi de l'activité opérationnelle.
 - **Facturation** — édition et suivi des factures, reliés aux données de l'entreprise.
+- **Documents** — génération de documents (contrats, attestations) assistée par IA.
 
 ### Sous le capot
 - **Multi-tenant natif** — chaque organisation a son espace isolé, ses données, ses règles.
 - **Autorisation fine avec OpenFGA** — qui voit quoi, qui peut quoi, au plus près du métier et traçable.
+- **Files d'attente avec RabbitMQ** — traitements asynchrones (génération de documents, notifications) sans bloquer l'utilisateur.
+- **Cache avec Redis** — réduire la charge sur les lectures fréquentes.
+- **Stockage S3** — fichiers et documents générés.
 - **Architecture évolutive** — back **NestJS** modulaire, front **Next.js**, API-first.
 
 ### Stack
-NestJS · Next.js · TypeScript · PostgreSQL · OpenFGA · Docker
+NestJS · Next.js · TypeScript · PostgreSQL · OpenFGA · RabbitMQ · Redis · S3 · Docker
 
 > Un produit pensé pour durer : propre, documenté, et prêt à grandir avec ses utilisateurs.`,
   },
@@ -1479,22 +1483,26 @@ NestJS · Next.js · TypeScript · PostgreSQL · OpenFGA · Docker
     tags: ["Strapi", "Next.js", "CMS", "Gouvernement", "Multi-site", "PostgreSQL"],
     categories: ["web-app", "platform-deployment"],
     description:
-      "Civis : un CMS institutionnel déployé pour des ministères en RDC, pour publier et gouverner des contenus officiels à grande échelle.",
+      "Civis : un CMS institutionnel déployé pour des ministères en RDC, pour publier et gouverner des contenus officiels à grande échelle. Développement et volet infrastructure (déploiement, CI/CD, QA).",
     projectUrl: "https://cms.internal.nncrtvs.xyz/", // lien staging (no-prod), non public
     content: `## Civis — publier l'information publique, avec exigence
 
 **Le contexte.** Une administration publique ne publie pas comme une entreprise : chaque contenu engage l'institution. Il faut des rôles, des validations, une traçabilité — et une fiabilité sans faille.
 
-**Le projet.** **Civis** est un **CMS institutionnel** bâti sur **Strapi** (back headless) et **Next.js** (front), **utilisé par des ministères en République Démocratique du Congo** pour créer, valider et diffuser leurs contenus officiels.
+**Le projet.** **Civis** est un **CMS institutionnel** bâti sur **Strapi** (back headless) et **Next.js** (front), **utilisé par des ministères en République Démocratique du Congo** pour créer, valider et diffuser leurs contenus officiels. La plupart des sites de ces ministères s'appuient sur une **librairie UI développée en interne** pour ce CMS, plutôt que sur des composants tiers.
+
+**Mon rôle.** Développement applicatif, et volet infrastructure du projet : déploiement, chaînes CI/CD, QA/tests.
 
 ### Points forts
 - **Headless (Strapi + Next.js)** — un back CMS souple, un front rapide et sur-mesure.
+- **Librairie UI interne** — composants cohérents et réutilisables entre les sites des différents ministères.
 - **Multi-site** — plusieurs entités administrées depuis une même base.
 - **Workflow éditorial** — rédaction, relecture, validation puis publication.
+- **CI/CD & QA** — pipelines de déploiement et tests pour fiabiliser les mises en production.
 - **Robuste et déployable** — pensé pour des environnements réglementés.
 
 ### Stack
-Strapi · Next.js · PostgreSQL · Docker
+Strapi · Next.js · PostgreSQL · Docker · CI/CD
 
 > _Lien de démonstration interne (staging) : cms.internal.nncrtvs.xyz — non accessible publiquement._`,
   },
@@ -1834,14 +1842,14 @@ const EXPERIENCES = [
     endDate: "2026-06",
     current: false,
     description:
-      "Progression d'Ingénieur Full-Stack à Lead puis Architecte logiciel, avec l'encadrement d'une équipe de plus de 7 développeurs (répartition des tâches, revues de code, standards, mentorat). Stack applicative large : backend Node.js/NestJS et Spring Boot, frontend Next.js, mobile React Native/Expo et Flutter ; CMS et outils headless (Strapi, Directus, WordPress). Architecture API-first et microservices avec messagerie événementielle (RabbitMQ, Kafka) et API gateway Kong ; intégration de paiements mobiles (MTN MoMo, Airtel Money, PawaPay) ; authentification (Supabase/GoTrue, Appwrite, Authentik) et autorisation fine (OpenFGA, Keycloak, Cerbos). Infrastructure et exploitation : conteneurisation et déploiement (Docker, k3s, Coolify, Dokploy), gestion des secrets et observabilité (Infisical, SigNoz), cache (Redis). Réalisations livrées en production : societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, le CMS Civis (ministères en RDC), et lead developer de pro.focus-suite.com (Focus, système de gestion d'entreprise). Développement d'applications mobiles telles que Keba (signalement d'incidents communautaires), Alpha8 (gestion & suivi immobilier pour la diaspora) et Weedo (gestion de prestataires événementiels).",
-    skills: ["Next.js", "React Native", "Expo", "Flutter", "Node.js", "NestJS", "Spring Boot", "Microservices", "API-first", "Kong", "RabbitMQ", "Kafka", "Redis", "Multi-tenant", "SaaS", "Strapi", "Directus", "WordPress", "CI/CD", "Coolify", "Dokploy", "Docker", "k3s", "Cloud", "IAM", "Supabase", "Appwrite", "GoTrue", "Authentik", "Keycloak", "OpenFGA", "Cerbos", "Infisical", "SigNoz", "Mobile Money", "Architecture", "Management d'équipe"],
+      "Progression d'Ingénieur Full-Stack à Lead puis Architecte logiciel, avec l'encadrement d'une équipe de plus de 7 développeurs (répartition des tâches, revues de code, standards, mentorat). Architecture de Keba, plateforme de signalement anti-agression (mobile React Native, backend NestJS). Lead tech sur Alpha8, application de signalement pour la gestion immobilière (mobile React Native, backoffice Next.js, backend NestJS) : conception, documentation technique, développement et suivi de l'équipe. Développement de Weedo, application de gestion de prestataires événementiels. Architecte, lead du projet et principal développeur backend de Focus Suite (pro.focus-suite.com), plateforme de gestion d'entreprise (congés, ancienneté, contrats fournisseurs, paie) : NestJS, autorisation fine avec OpenFGA, files d'attente et cache (RabbitMQ, Redis), stockage S3, génération de documents assistée par IA ; développement du frontend en Next.js. Développement et volet infrastructure (déploiement, CI/CD, QA) du CMS Civis pour des ministères en RDC, en Next.js et Strapi — la plupart des sites de ces ministères s'appuient sur la librairie UI développée en interne pour ce CMS. Conception du Nano Starter Kit (NestJS, Spring Boot), socle d'architecture pour les futurs projets de l'équipe, et de Nano UI, une librairie de composants interne construite sur notre charte graphique plutôt que sur des librairies existantes. Stack applicative large par ailleurs : mobile Flutter, CMS headless (Directus, WordPress), intégration de paiements mobiles (MTN MoMo, Airtel Money, PawaPay), authentification (Supabase/GoTrue, Appwrite, Authentik) et autorisation fine (Keycloak, Cerbos). Infrastructure et exploitation : conteneurisation et déploiement (Docker, k3s, Coolify, Dokploy), gestion des secrets et observabilité (Infisical, SigNoz). Réalisations livrées en production : societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net.",
+    skills: ["Next.js", "React Native", "Expo", "Flutter", "Node.js", "NestJS", "Spring Boot", "Microservices", "API-first", "Kong", "RabbitMQ", "Kafka", "Redis", "S3", "Multi-tenant", "SaaS", "Strapi", "Directus", "WordPress", "CI/CD", "QA", "Coolify", "Dokploy", "Docker", "k3s", "Cloud", "IAM", "Supabase", "Appwrite", "GoTrue", "Authentik", "Keycloak", "OpenFGA", "Cerbos", "Infisical", "SigNoz", "Mobile Money", "Architecture", "Design system", "Management d'équipe"],
     location: "Thiais, Île-de-France, France (à distance)",
     companyUrl: null as string | null,
     translations: {
       en: {
         role: `Software Architect & Full-Stack Lead`,
-        description: `Progressed from Full-Stack Engineer to Lead then Software Architect, leading a team of more than 7 developers (task allocation, code reviews, standards, mentoring). Broad application stack: Node.js/NestJS and Spring Boot backends, Next.js frontend, React Native/Expo and Flutter mobile; headless CMS and tools (Strapi, Directus, WordPress). API-first and microservices architecture with event messaging (RabbitMQ, Kafka) and a Kong API gateway; mobile payment integrations (MTN MoMo, Airtel Money, PawaPay); authentication (Supabase/GoTrue, Appwrite, Authentik) and fine-grained authorization (OpenFGA, Keycloak, Cerbos). Infrastructure and operations: containerization and deployment (Docker, k3s, Coolify, Dokploy), secrets management and observability (Infisical, SigNoz), caching (Redis). Production deliverables: societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net, the Civis CMS (ministries in DRC), and lead developer of pro.focus-suite.com (Focus, a business management system). Built mobile apps including Keba (community incident reporting), Alpha8 (real-estate management & tracking for the diaspora) and Weedo (event vendor management).`,
+        description: `Progressed from Full-Stack Engineer to Lead then Software Architect, leading a team of more than 7 developers (task allocation, code reviews, standards, mentoring). Architected Keba, an anti-aggression reporting platform (React Native mobile, NestJS backend). Tech lead on Alpha8, a reporting app for property management (React Native mobile, Next.js backoffice, NestJS backend): specification, technical documentation, development and team follow-up. Built Weedo, an event vendor management app. Architect, project lead and main backend developer of Focus Suite (pro.focus-suite.com), a business management platform (leave, seniority, supplier contracts, payroll): NestJS, fine-grained authorization with OpenFGA, queues and caching (RabbitMQ, Redis), S3 storage, AI-assisted document generation; also built the Next.js frontend. Development and infrastructure work (deployment, CI/CD, QA) on the Civis CMS for ministries in the DRC, in Next.js and Strapi — most of these ministries' sites run on the UI library built in-house for this CMS. Designed the Nano Starter Kit (NestJS, Spring Boot), a base architecture for the team's future projects, and Nano UI, an in-house component library built on our design system rather than existing libraries. Broad application stack beyond that: Flutter mobile, headless CMS (Directus, WordPress), mobile payment integrations (MTN MoMo, Airtel Money, PawaPay), authentication (Supabase/GoTrue, Appwrite, Authentik) and fine-grained authorization (Keycloak, Cerbos). Infrastructure and operations: containerization and deployment (Docker, k3s, Coolify, Dokploy), secrets management and observability (Infisical, SigNoz). Production deliverables: societe.cg, ordredespharmaciens.cg, nutrisports-shop.com, retailixpartners.com, bralima.net.`,
         location: `Thiais, Île-de-France, France (remote)`,
       },
     },
